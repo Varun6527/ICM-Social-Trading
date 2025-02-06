@@ -222,14 +222,19 @@ export class ConvertValueToCurrency {
       }
 
     getConvertedValue() {
-        const currencySign = this.tradingCurrency.filter(obj => obj.currency == this.currency).map(o => o.sign);
-        if (this.val < 0) {
-            let posNum: any = Math.abs(this.val);
-            return `-${currencySign}${parseFloat(posNum).toFixed(2)}`;
-        } else if(this.val == 0 && this.skipifZeroFound) {
-            return ``;
+        if (typeof Intl !== "undefined" && typeof Intl.NumberFormat === "function") {
+            if(this.val == 0 && this.skipifZeroFound) return "";
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: this.currency }).format(this.val);
         } else {
-            return `${currencySign}${parseFloat(this.val).toFixed(2)}`;
+            const currencySign = this.tradingCurrency.filter(obj => obj.currency == this.currency).map(o => o.sign);
+            if (this.val < 0) {
+                let posNum: any = Math.abs(this.val);
+                return `-${currencySign}${parseFloat(posNum).toFixed(2)}`;
+            } else if(this.val == 0 && this.skipifZeroFound) {
+                return ``;
+            } else {
+                return `${currencySign}${parseFloat(this.val).toFixed(2)}`;
+            }
         }
     }
 }
