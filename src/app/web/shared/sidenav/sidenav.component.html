@@ -1,0 +1,93 @@
+<div class="sidenav-parent">
+    <div class="sidenav-logo">
+        <img src="../../../../assets/logo/ICM Logo White 1.png" />
+    </div>
+    <div class="sidenav-menu">
+        <div class="search-bar">
+            <img src="../../../../assets/icons/searchIcon.png" />
+            <input type="text" placeholder="Search" />
+        </div>
+        <div class="sidebar-menu-items">
+            <ul class="menu-list-top">
+                <a [routerLink]="'/portal'">
+                    <li [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/Home Icon.png" />
+                        <p>{{"SIDEBAR.Home"|translate}}</p>
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/providers'" *ngIf="showProvider">
+                    <li routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/Portfolio Icon.png" />
+                        <p>{{"SIDEBAR.My Providers"|translate}}</p>
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/subscriptions'" *ngIf="showSubscription">
+                    <li routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/Portfolio Icon.png" />
+                        <p>{{"SIDEBAR.My Portfolio"|translate}}</p>
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/account'" routerLinkActive="menu-active">
+                    <li routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/User Icon.png" />
+                        <p> {{"SIDEBAR.My Accounts"|translate}}</p>
+
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/transactions'" routerLinkActive="menu-active">
+                    <li routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/Transaction Icon.png" />
+                        <p> {{"SIDEBAR.Transaction History"|translate}}</p>
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/ratings'" routerLinkActive="menu-active" *ngIf="showRatingWidget">
+                    <li routerLinkActive="menu-active">
+                        <img src="../../../../assets/icons/star.png" />
+                        <p>{{"SIDEBAR.Providers"|translate}}</p>
+                    </li>
+                </a>
+                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="showProvider || showSubscription">
+                    <li routerLinkActive="menu-active">
+                        <img class="reports-icon" src="../../../../assets/icons/file.png" />
+                        <p>{{"SIDEBAR.Reports"|translate}}</p>
+                    </li>
+                </a>
+            </ul>
+            <ul class="menu-list-bottom">
+                <li>
+                    <img src="../../../../assets/icons/sun-Icon-white.png" />
+                    <p>{{"SIDEBAR.Dark/Light Mode"|translate}}</p>
+                </li>
+                <li [matMenuTriggerFor]="languageMenu">
+                    <img class="lang-icon" width="24" height="24" [src]="'../../../../assets/icons/' + selectedLangObj.icon" />
+                    <a href="javascript:void(0)" class="anchor-decore-none">{{selectedLangObj.displayLabel}}</a>
+                </li>
+                <li>
+                    <img src="../../../../assets/icons/settingsIcon.png" />
+                    <p>{{"SIDEBAR.Settings"|translate}}</p>
+                </li>
+                <li class="logout-item">
+                    <img src="../../../../assets/icons/Avatar.png" />
+                    <div>
+                        <p>Olivia Rhye</p>
+                        <span>olivia.untitledui.com</span>
+                    </div>
+                    <a (click)="logoutUser()">
+                        <img src="../../../../assets/icons/logout.png" />
+                    </a>
+                </li>
+            </ul>
+            
+            <mat-menu #languageMenu="matMenu" class="languageMenu">
+                <div class="custom-lang-dropdow-height">
+                    <button mat-menu-item *ngFor="let lang of languages" (click)="selectLanguage(lang)">
+                        {{lang.name}}
+                        <ng-container *ngIf="lang.code !== 'en'">
+                            ({{ lang.displayLabel }})
+                        </ng-container>
+                    </button>
+                </div>
+            </mat-menu>              
+        </div>
+    </div>
+</div>

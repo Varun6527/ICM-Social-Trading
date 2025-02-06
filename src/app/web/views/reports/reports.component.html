@@ -1,0 +1,208 @@
+<mat-card appearance="outlined" class="section-card">
+    <mat-card-content class="section-card-content">
+        <div class="home-card">
+            <div class="header d-flex justify-space-between align-center">
+                <div class="header-title">
+                    <h5>{{"REPORTS.Reports"|translate}}</h5>
+                    <p>{{"REPORTS.Different kinds of reports"|translate}}</p>
+                </div>
+            </div>
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
+                <mat-tab label="Earnings">
+                    <div class="providers-list">
+                        <div class="header d-flex justify-space-between align-center pb-20">
+                            <div class="header-subtitle">
+                                <h5>{{"REPORTS.Providers Report"|translate}}</h5>
+                                <p>{{"REPORTS.Report on earnings of providers"|translate}}</p>
+                            </div>
+                        </div>
+                        <div class="header-buttons d-flex justify-space-between align-center ">
+                            <div class="d-flex align-center">
+                                <button class="secondary-btn reports-datepicker-menu" [matMenuTriggerFor]="providersDateActions">
+                                  {{providersSelectedDateRange}}
+                                </button>
+                                <mat-menu #providersDateActions="matMenu" class="dateActions-menu">
+                                  <button mat-menu-item (click)="selectProviderDateRange('Last month')">{{"REPORTS.Last month"|translate}}</button>
+                                  <button mat-menu-item (click)="selectProviderDateRange('Last 7 days')">{{"REPORTS.Last 7 days"|translate}}</button>
+                                  <button mat-menu-item (click)="selectProviderDateRange('Current month')">{{"REPORTS.Current month"|translate}}</button>
+                                  <button mat-menu-item (click)="selectProviderDateRange('Today')">{{"REPORTS.Today"|translate}}</button>
+                                  <button mat-menu-item (click)="selectProviderDateRange('Custom')">{{"REPORTS.Custom"|translate}}</button>
+                                </mat-menu>    
+                                <div style="font-size: 12px;">
+                                  <mat-form-field class="reports-datepicker-filter" (click)="providerRangePicker.open()">
+                                    <mat-date-range-input [rangePicker]="providerRangePicker">
+                                      <input matStartDate placeholder="Start date" [value]="providerStartDate" />
+                                      <input matEndDate placeholder="End date" [value]="providersEndDate" />
+                                    </mat-date-range-input>
+                                    <mat-date-range-picker #providerRangePicker></mat-date-range-picker>
+                                  </mat-form-field>
+                                </div>            
+                              </div>
+                              
+                            <div class="d-flex justify-space-between g-10">
+                                <div class="d-flex justify-center g-10 align-baseline">
+                                    <button class="secondary-btn">
+                                        <img src="../../../../assets/icons/rotateIcon.svg" />
+                                        {{"COMMON.Refresh"|translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-20">
+                            <div class="table">
+                                <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
+                                    [columnDefs]="providersReportsCol" [suppressRowHoverHighlight]="true">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="offers-list">
+                        <div class="header d-flex justify-space-between align-center pb-20">
+                            <div class="header-subtitle">
+                                <h5>{{"REPORTS.Offers Report"|translate}}</h5>
+                                <p>{{"REPORTS.Report on earnings of providers per offer"|translate}}</p>
+                            </div>
+                        </div>
+                        <div class="header-buttons d-flex justify-space-between align-center ">
+                            <div class="d-flex align-center">
+                                <button class="secondary-btn reports-datepicker-menu" [matMenuTriggerFor]="offersDateActions">
+                                  {{ offersSelectedDateRange }}
+                                </button>
+                                <mat-menu #offersDateActions="matMenu" class="dateActions-menu">
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last month')">{{"REPORTS.Last month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last 7 days')">{{"REPORTS.Last 7 days"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Current month')">{{"REPORTS.Current month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Today')">{{"REPORTS.Today"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Custom')">{{"REPORTS.Custom"|translate}}</button>
+                                </mat-menu>    
+                                <div style="font-size: 12px;">
+                                  <mat-form-field class="reports-datepicker-filter" (click)="offersRangePicker.open()">
+                                    <mat-date-range-input [rangePicker]="offersRangePicker">
+                                      <input matStartDate placeholder="Start date" [value]="offersStartDate" />
+                                      <input matEndDate placeholder="End date" [value]="offersEndDate" />
+                                    </mat-date-range-input>
+                                    <mat-date-range-picker #offersRangePicker></mat-date-range-picker>
+                                  </mat-form-field>
+                                </div>            
+                              </div>
+                              
+                            <div class="d-flex justify-space-between g-10">
+                                <div class="d-flex justify-center g-10 align-baseline">
+                                    <button class="secondary-btn">
+                                        <img src="../../../../assets/icons/rotateIcon.svg" />
+                                        {{"COMMON.Refresh"|translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-20">
+                            <div class="table">
+                                <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
+                                    [columnDefs]="offersReportsCol" [suppressRowHoverHighlight]="true">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Fees">
+                    <div class="providers-list">
+                        <div class="header d-flex justify-space-between align-center pb-20">
+                            <div class="header-subtitle">
+                                <h5>{{"REPORTS.Received fees"|translate}}</h5>
+                                <p>{{"REPORTS.The list of fee payments received by your providers during the specified period"|translate}}</p>
+                            </div>
+                        </div>
+                        <div class="header-buttons d-flex justify-space-between align-center ">
+                            <div class="d-flex align-center">
+                                <button class="secondary-btn reports-datepicker-menu" [matMenuTriggerFor]="feeDateActions">
+                                  {{ feesSelectedDateRange }}
+                                </button>
+                                <mat-menu #feeDateActions="matMenu" class="dateActions-menu">
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last month')">{{"REPORTS.Last month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last 7 days')">{{"REPORTS.Last 7 days"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Current month')">{{"REPORTS.Current month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Today')">{{"REPORTS.Today"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Custom')">{{"REPORTS.Custom"|translate}}</button>
+                                </mat-menu>    
+                                <div style="font-size: 12px;">
+                                  <mat-form-field class="reports-datepicker-filter" (click)="feesRangePicker.open()">
+                                    <mat-date-range-input [rangePicker]="feesRangePicker">
+                                      <input matStartDate placeholder="Start date" [value]="feesStartDate" />
+                                      <input matEndDate placeholder="End date" [value]="feesEndDate" />
+                                    </mat-date-range-input>
+                                    <mat-date-range-picker #feesRangePicker></mat-date-range-picker>
+                                  </mat-form-field>
+                                </div>            
+                              </div>
+                              
+                            <div class="d-flex justify-space-between g-10">
+                                <div class="d-flex justify-center g-10 align-baseline">
+                                    <button class="secondary-btn">
+                                        <img src="../../../../assets/icons/rotateIcon.svg" />
+                                        {{"COMMON.Refresh"|translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-20">
+                            <div class="table">
+                                <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
+                                    [columnDefs]="recivedFeesCol" [suppressRowHoverHighlight]="true">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Trading">
+                    <div class="providers-list">
+                        <div class="header d-flex justify-space-between align-center pb-20">
+                            <div class="header-subtitle">
+                                <h5>{{"REPORTS.Published Positions Report"|translate}}</h5>
+                                <p>{{"REPORTS.Report on positions published by providers"|translate}}</p>
+                            </div>
+                        </div>
+                        <div class="header-buttons d-flex justify-space-between align-center ">
+                            <div class="d-flex align-center">
+                                <button class="secondary-btn reports-datepicker-menu" [matMenuTriggerFor]="tradingDateActions">
+                                  {{ tradingSelectedDateRange }}
+                                </button>
+                                <mat-menu #tradingDateActions="matMenu" class="dateActions-menu">
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last month')">{{"REPORTS.Last month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Last 7 days')">{{"REPORTS.Last 7 days"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Current month')">{{"REPORTS.Current month"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Today')">{{"REPORTS.Today"|translate}}</button>
+                                    <button mat-menu-item (click)="selectProviderDateRange('Custom')">{{"REPORTS.Custom"|translate}}</button>
+                                </mat-menu>    
+                                <div style="font-size: 12px;">
+                                  <mat-form-field class="reports-datepicker-filter" (click)="tradingRangePicker.open()">
+                                    <mat-date-range-input [rangePicker]="tradingRangePicker">
+                                      <input matStartDate placeholder="Start date" [value]="tradingStartDate" />
+                                      <input matEndDate placeholder="End date" [value]="tradingEndDate" />
+                                    </mat-date-range-input>
+                                    <mat-date-range-picker #tradingRangePicker></mat-date-range-picker>
+                                  </mat-form-field>
+                                </div>            
+                              </div>
+                            <div class="d-flex justify-space-between g-10">
+                                <div class="d-flex justify-center g-10 align-baseline">
+                                    <button class="secondary-btn">
+                                        <img src="../../../../assets/icons/rotateIcon.svg" />
+                                        {{"COMMON.Refresh"|translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-20">
+                            <div class="table">
+                                <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
+                                    [columnDefs]="publishedCol" [suppressRowHoverHighlight]="true">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </mat-card-content>
+</mat-card>

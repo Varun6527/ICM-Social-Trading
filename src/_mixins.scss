@@ -1,0 +1,33 @@
+@mixin common-dropdown($width) {
+    background-color: var(--primaryWhite) !important;
+    border: 1px solid var(--border-color) !important;
+    border-bottom: 0px !important;
+    border-radius: 8px !important;
+    width: $width;
+
+    &--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+        border-bottom-color: var(--border-color) !important;
+    }
+
+    &--filled:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-line-ripple::before {
+        border-bottom-color: var(--border-color) !important;
+    }
+}
+
+@mixin common-secondry-btn($margin-bottom: 0px) {
+    background: #ffffff;
+    color: black;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 18px;
+    border: 1px solid #D0D5DD;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    min-height: 56px;
+    transition: background-color 0.3s linear, border-radius 0.3s linear, padding 0.3s linear, width 0.3s linear;
+    margin-bottom: $margin-bottom;
+}

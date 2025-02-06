@@ -1,0 +1,17 @@
+@import "../../../../mixins";
+
+.refresh-btn {
+    @include common-secondry-btn(20px);
+}
+
+::ng-deep .common-dropdown .mdc-text-field {
+    @include common-dropdown(150px);
+}
+
+.green-color {
+    color: var(--primary-positive-color);
+}
+
+.red-color {
+    color: var(--error-message--container-color);
+}

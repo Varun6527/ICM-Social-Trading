@@ -1,0 +1,46 @@
+<mat-card appearance="outlined" class="section-card">
+    <mat-card-content class="section-card-content" *ngIf="!showLoader">
+        <div class="home-card">
+            <div class="header d-flex justify-space-between align-center">
+                <div class="header-title">
+                    <h5>{{"ACCOUNTS.Accounts" | translate}}</h5>
+                    <p>{{"ACCOUNTS.List of accounts"|translate}}</p>
+                </div>
+            </div>
+            <div class="metrics-table">
+                <div class="header-buttons d-flex justify-space-between">
+                    <div class="d-flex g-20 justify-center align-center">
+                        <button class="secondary-btn" (click)="applyFilters()">
+                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            {{"COMMON.Filters"|translate}}
+                        </button>
+                        <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
+                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            {{"COMMON.Clear"|translate}}
+                        </button>
+                    </div>
+                    <div class="d-flex g-20 common-dropdown">
+                        <mat-form-field *ngIf="showFilters">
+                            <mat-label>{{"PROVIDERS_PROFILE.Scope"|translate}}</mat-label>
+                            <mat-select [(ngModel)]="selectedAccountStatus" (selectionChange)="refreshAccountDataList()">
+                              <mat-option [value]="'Active'">{{"COMMON.Active"|translate}}</mat-option>
+                              <mat-option [value]="'All'">{{"COMMON.All"|translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button class="refresh-btn" (click)="refreshAccountDataList()">
+                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                            {{"COMMON.Refresh"|translate}}
+                        </button>
+                    </div>
+                </div>
+                    <common-ag-grid [gridConfig]="gridConfig" 
+                    [gridData]="accountGridData" [showGridLoader]="showGridLoader">
+                    </common-ag-grid>
+            </div>
+        </div>
+    </mat-card-content>
+    <div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
+</mat-card>
+<show-error-message></show-error-message>

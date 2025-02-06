@@ -1,0 +1,116 @@
+<mat-card appearance="outlined" class="section-card">
+    <mat-card-content class="section-card-content">
+        <div class="home-card">
+            <div class="header d-flex justify-space-between align-center">
+                <div class="header-title">
+                    <h5>{{ 'PROVIDERS.Providers' | translate }}</h5>
+                    <p>{{ 'PROVIDERS.List of Providers' | translate }}</p>
+                </div>
+            </div>
+            <div class="stats d-flex justify-space-between align-center g-20">
+                <div class="stats-card">
+                    <h6>{{ 'COMMON.Status' | translate }}</h6>
+                    <div class="stats-info">
+                        <h5>{{ 'COMMON.Active' | translate }}</h5>
+                        <h5>15</h5>
+                    </div>
+                    <div class="stats-info">
+                        <h5>{{ 'COMMON.Inactive' | translate }}</h5>
+                        <h5>03</h5>
+                    </div>
+                    <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
+                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h6>{{ 'PROVIDERS.Popular Providers' | translate }}</h6>
+                    <h3>15</h3>
+                    <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> <span class="d-flex align-center negative"><img
+                                    src="../../../../assets/icons/arrow-down.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h6>{{ 'PROVIDERS.Profitable Providers' | translate }}</h6>
+                    <h3>21</h3>
+                    <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
+                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h6>{{ 'PROVIDERS.Performance Fee' | translate }}</h6>
+                    <div class="stats-info">
+                        <h5>{{ 'PROVIDERS.This month' | translate }}</h5>
+                        <h5>$5.00</h5>
+                    </div>
+                    <div class="stats-info">
+                        <h5>{{ 'PROVIDERS.Previous month' | translate }}</h5>
+                        <h5>$14.00</h5>
+                    </div>
+                    <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
+                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-table">
+                <div class="header">
+                    <div class="header-title">
+                        <h5>{{ 'PROVIDERS.Provider Metrics' | translate }}</h5>
+                        <p>{{ 'PROVIDERS.Metrics of individual providers' | translate }}</p>
+                    </div>
+                    <div class="header-buttons d-flex justify-space-between align-center g-20 pb-10">
+                        <div class="d-flex justify-space-between align-center g-10">
+                            <button class="secondary-btn" (click)="toggleFilter()">
+                                <img src="../../../../assets/icons/filterIcon.svg" />
+                                {{ 'COMMON.Filter' | translate }}
+                            </button>
+                            <button class="secondary-btn" *ngIf="filterEnabled">
+                                {{ 'COMMON.Clear' | translate }}
+                            </button>
+                        </div>
+                        <div class="d-flex justify-space-between align-center g-10">
+                            <div class="filters d-flex justify-space-between align-center g-20" *ngIf="filterEnabled">
+                                <mat-form-field class="filter-opts" appearance="outline">
+                                    <mat-label>{{ 'COMMON.Id' | translate }}</mat-label>
+                                    <input type="number" matInput placeholder="{{ 'Agent' | translate }}">
+                                </mat-form-field>
+                                <mat-form-field class="filter-opts" appearance="outline">
+                                    <mat-label>{{ 'COMMON.Key' | translate }}</mat-label>
+                                    <input type="text" matInput placeholder="{{ 'Key' | translate }}">
+                                </mat-form-field>
+                                <mat-form-field class="filter-opts" appearance="outline">
+                                    <mat-label>{{ 'COMMON.Agent' | translate }}</mat-label>
+                                    <input type="number" matInput placeholder="{{ 'Agent' | translate }}">
+                                </mat-form-field>
+                                <mat-form-field class="filter-opts" appearance="outline">
+                                    <mat-label>{{ 'COMMON.Status' | translate }}</mat-label>
+                                    <mat-select>
+                                        <mat-option value="active">{{ 'COMMON.Active' | translate }}</mat-option>
+                                        <mat-option value="all">{{ 'COMMON.All' | translate }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <button class="secondary-btn">
+                                <img src="../../../../assets/icons/rotateIcon.svg" />
+                                {{ 'COMMON.Refresh' | translate }}
+                            </button>
+                            <button class="primary-btn" (click)="openNewProviderDialog()">
+                                <img src="../../../../assets/icons/plusIcon.png" />
+                                {{ 'COMMON.Create' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table">
+                    <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
+                        [columnDefs]="colDefs" [suppressRowHoverHighlight]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

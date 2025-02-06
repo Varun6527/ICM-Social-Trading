@@ -1,0 +1,233 @@
+@use '@angular/material' as mat;
+
+.search-provider-form {
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+}
+
+// .search-provider-field {
+//   width: 600px;
+// }
+
+.search-provider-field .mat-form-field-outline {
+  border-color: #D0D5DD !important;
+  /* Replace #your-color with your desired border color */
+}
+
+.divider {
+  font-size: 40px;
+  padding-top: 5px;
+  color: #D0D5DD;
+  font-weight: 100;
+}
+
+// ::ng-deep .providerProfile-tabGroup .mdc-tab__text-label{
+//     font-size: 20px !important;
+//     font-weight: 500;
+//     color: #667085 !important;
+// }
+// ::ng-deep .providerProfile-tabGroup .mdc-tab{
+//     padding: 0 50px !important;
+// }
+
+.providerProfile-tabGroup {
+  .providerProfile-tabFilters {
+    h5 {
+      font-size: 16px;
+      padding: 0px 12px;
+      border-radius: 6px;
+      transition: background-color 0.3s linear, border-radius 0.3s linear, padding 0.3s linear, width 0.3s linear;
+    }
+
+    h5:hover {
+      background-color: #e3e3e396;
+    }
+
+    h5:hover {
+      background-color: #e3e3e396;
+    }
+    .active {
+      background-color: #e3e3e396;
+    }
+  }
+}
+
+.providersList-header-buttons{
+
+  @include mat.form-field-density(-2);
+  .search-provider-field{
+    background-color: white;
+    position: relative; /* To position child elements properly */
+    display: flex;
+    align-items: center;
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+    ::ng-deep .mat-label{
+      padding-left: 30px !important;
+    }
+    ::ng-deep .mat-mdc-form-field-icon-prefix  .mat-icon {
+      height: 20px;
+      padding-right: 0 !important; /* Overrides default padding */
+  }
+  }
+  .search-provider-field img[matPrefix] {
+    margin-right: 8px; /* Add spacing between icon and input */
+    vertical-align: middle;
+    position: absolute;
+    left: 12px; /* Adjust padding to match design */
+    top: 50%;
+    transform: translateY(-50%); /* Center the icon vertically */
+  }
+
+  .switchMode-btn{
+    img{
+      height: 18px;
+      width: 18px;
+    }
+  }
+  
+}
+
+.providersList-section{
+  .providersList-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  
+    .providersList-card {
+      width: 340px;
+      border: 1px solid #EAECF0;
+      box-shadow: 0px 1px 3px 0px #1018281A;
+      // .mat-mdc-card-content{
+      //   padding: unset !important;
+      // }
+      // .mat-mdc-card-content:first-child{
+      //   padding: unset !important;
+      // }
+      // .mat-mdc-card-content:last-child{
+      //   padding: unset !important;
+      // }
+    
+      #chart {
+        touch-action: none;
+      }
+    
+      .header {
+        .title {
+          a{
+            text-decoration: none !important;
+          }
+          .text {
+            .heading {
+              font-size: 14px;
+              font-weight: 500;
+              color: #101828;
+            }
+    
+            .sub-heading {
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 14px;
+              color: #667085;
+            }
+          }
+        }
+      }
+    
+      .main {
+        .main-head {
+          .title {
+            color: #667085;
+            font-weight: 400;
+            font-size: 14px;
+          }
+    
+          .value {
+            color: #12B76A;
+          }
+        }
+    
+        .main-content {
+          .text {
+            width: 28%;
+    
+            .title {
+              font-size: 14px;
+              color: #101828;
+            }
+    
+            .subtitle {
+              color: #667085;
+            }
+          }
+        }
+      }
+    
+      .footer {
+        border-top: 2px solid #EAECF0;
+        margin-block: 20px;
+    
+        .content {
+          margin-top: 20px;
+    
+          .badge {
+            padding: 4px 4px 4px 12px;
+            background-color: #FEF3F2;
+            border-radius: 16px;
+    
+            p {
+              color: #B42318;
+              font-size: 12px;
+            }
+    
+            .badge-count {
+              background-color: #D92D20;
+              padding: 2px 8px;
+              border-radius: 16px;
+    
+              p {
+                color: white;
+                font-size: 12px;
+                line-height: 20px;
+              }
+            }
+          }
+    
+          .content-btn {
+            margin-block: unset !important;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+  .providersList-table{
+    height: 500px;
+    width: 100%;
+  }
+}
+
+
+
+.provider-icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+}
+
+.saveIcon {
+  height: 20px;
+  width: 20px;
+}
+
+.countryIcon {
+  height: 30px;
+  width: 30px;
+}
+::ng-deep .chartHeader .ag-header-cell-comp-wrapper .ag-header-cell-label{
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,9 @@
+@import "../../../../mixins";
+
+::ng-deep .common-dropdown .mdc-text-field {
+    @include common-dropdown(150px);
+}
+
+.refresh-btn {
+    @include common-secondry-btn(20px);
+}

@@ -1,0 +1,29 @@
+<h2 mat-dialog-title class="text-center">{{'HOME.New Provider' | translate}}</h2>
+<p class="text-center">{{'COMMON.CreateNewProvider' | translate}}</p>
+<form [formGroup]="createproviderForm">
+    <mat-dialog-content class="mat-typography">
+        <mat-form-field class="commonInfo-Scope">
+            <mat-label>{{'SUBSCRIPTION.Trading account' | translate}}</mat-label>
+            <mat-select formControlName="accountId">
+                <mat-option *ngFor="let obj of tradingIdArr" [value]="obj.accountId">{{obj.tradingIdAndName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p class="pb-10" *ngIf="!showError || !createproviderForm.controls['accountId'].errors?.['required']">{{'PROVIDERS_PROFILE.SelectAvailTradeAccountForNewProvider' | translate}}</p>
+        <mat-error class="pb-10" *ngIf="showError && createproviderForm.controls['accountId'].errors?.['required']">{{'login.FieldRequired' | translate}}</mat-error>
+        
+        <mat-form-field class="commonInfo-Email">
+            <mat-label>{{'OFFERS.Nickname' | translate}}</mat-label>
+            <input type="text" matInput placeholder="Provider 1" formControlName="nickname">
+        </mat-form-field>
+
+        <p class="pb-10" *ngIf="!showError || (!createproviderForm.controls['nickname'].errors?.['required'] && !createproviderForm.controls['nickname'].errors?.['minlength'])">{{"PROVIDERS_PROFILE.Provider's name to be displayed for followers" | translate}}</p>
+        <mat-error class="pb-10" *ngIf="showError && createproviderForm.controls['nickname'].errors?.['required']">{{'login.FieldRequired' | translate}}</mat-error>
+        <mat-error class="pb-10" *ngIf="showError && createproviderForm.controls['nickname'].errors?.['minlength']">{{'COMMON.Warn6CharMsg' | translate}}</mat-error>
+    
+    </mat-dialog-content>
+    <div class="d-flex justify-center g-20">
+        <button class="secondary-btn" (click)="closeCreateProviderForm()">{{'COMMON.Cancel' | translate}}</button>
+        <button class="primary-btn" type="submit" (click)="createProviderUser()">{{'COMMON.Create' | translate}}</button>
+    </div>
+</form>
+<show-error-message></show-error-message>

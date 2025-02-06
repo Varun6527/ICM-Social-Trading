@@ -1,0 +1,87 @@
+<div class="parent-div d-flex justify-space-between">
+    <div class="child-div-left">
+        <h2 mat-dialog-title class="text-center">{{'HOME.New Subscription' | translate}}</h2>
+        <p class="text-center">{{'SUBSCRIPTION.CreateSubscription' | translate}}</p>
+        <form [formGroup]="createFollowerForm">
+            <mat-dialog-content class="mat-typography">
+                <mat-form-field class="commonInfo-Scope">
+                    <mat-label>{{'SUBSCRIPTION.Trading account' | translate}}</mat-label>
+                    <mat-select formControlName="accountId">
+                        <mat-option *ngFor="let obj of tradingIdArr"
+                            [value]="obj.accountId">{{obj.tradingIdAndName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="pb-10" *ngIf="!showError || !createFollowerForm.controls['accountId'].errors?.['required']">
+                    {{'ACCOUNTS.OneOfTradeAccounts' | translate}}</p>
+                <mat-error class="pb-10"
+                    *ngIf="showError && createFollowerForm.controls['accountId'].errors?.['required']">
+                    {{'login.FieldRequired' | translate}}</mat-error>
+
+                <mat-form-field class="commonInfo-Email">
+                    <mat-label>{{'HOME.Provider' | translate}}</mat-label>
+                    <input type="text" formControlName="providerObj" matInput placeholder="Provider 1" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getOffersOfProvider()">
+                        @for (option of filteredOptions | async; track option) {
+                          <mat-option [value]="option">{{option.nickName}} #{{option.id}}</mat-option>
+                        }
+                      </mat-autocomplete>
+                </mat-form-field>
+                <p class="pb-10" *ngIf="!showError || !createFollowerForm.controls['providerObj'].errors?.['required']">
+                    {{'ACCOUNTS.ProviderToCopyTrades' | translate}}
+                </p>
+                <mat-error class="pb-10" *ngIf="showError && createFollowerForm.controls['providerObj'].errors?.['required']">
+                    {{'login.FieldRequired' | translate}}
+                </mat-error>
+
+                <mat-form-field class="commonInfo-Scope">
+                    <mat-label>{{'PROVIDERS_PROFILE.Offer' | translate}}</mat-label>
+                    <mat-select formControlName="offerObj">
+                        <mat-option *ngFor="let obj of offersArr"
+                            [value]="obj">{{obj.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="pb-10" *ngIf="!showError || !createFollowerForm.controls['offerObj'].errors?.['required']">
+                    {{'ACCOUNTS.SelectOfferOfProvider' | translate}}
+                </p>
+                <mat-error class="pb-10" *ngIf="showError && createFollowerForm.controls['offerObj'].errors?.['required']">
+                    {{'login.FieldRequired' | translate}}
+                </mat-error>
+
+            </mat-dialog-content>
+            <div class="d-flex justify-center g-20">
+                <button mat-dialog-close class="secondary-btn" (click)="closeCreateFollowerForm()">{{'COMMON.Cancel' | translate}}</button>
+                <button class="primary-btn" type="submit" (click)="createFollowerUser()">{{'COMMON.Create' | translate}}</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="child-div-right">
+        <h2 mat-dialog-title class="text-center">{{'ACCOUNTS.Details' | translate}}</h2>
+        <p class="text-center">{{'ACCOUNTS.InfoChosenProviderAndSubscription' | translate}}</p>
+        <mat-dialog-content class="mat-typography" *ngIf="createFollowerForm.controls['providerObj'].value && createFollowerForm.controls['offerObj'].value && createFollowerForm.controls['providerObj'].value?.nickName">
+            <div class="pb-5">
+                <h6>{{'HOME.Provider' | translate}}</h6>
+                <div class="d-flex justify-space-between pb-5">
+                    <p>{{'HOME.Nickname' | translate}}</p>
+                    <p>{{getControl['providerObj'].value?.nickName}}</p>
+                </div>
+                <div class="d-flex justify-space-between pb-5">
+                    <p>{{'PROVIDERS_PROFILE.Visibility' | translate}}</p>
+                    <p>{{getControl['providerObj'].value?.visibility}}</p>
+                </div>
+            </div>
+            <div class="pb-5">
+                <h6>{{'PROVIDERS_PROFILE.Offer' | translate}}</h6>
+                <div class="d-flex justify-space-between pb-5">
+                    <p>{{'PROVIDERS_PROFILE.Title' | translate}}</p>
+                    <p>{{getControl['offerObj'].value?.name}}</p>
+                </div>
+                <div class="d-flex justify-space-between pb-5">
+                    <p>{{'OFFERS.Performance fee' | translate}}</p>
+                    <p>{{getControl['offerObj'].value?.performance?.fee}}% ({{getControl['offerObj'].value?.performance?.interval}})</p>
+                </div>
+            </div>
+        </mat-dialog-content>
+    </div>
+</div>
+<show-error-message></show-error-message>
