@@ -1,0 +1,56 @@
+<h2 mat-dialog-title class="text-center">{{commonDialogData.mainTitle | translate}}</h2>
+<p class="text-center">{{commonDialogData.secondryTitle | translate}}</p>
+<mat-dialog-content class="mat-typography">
+    <div class="account-details-container">
+        <div class="d-flex justify-space-between align-center" *ngFor="let labelObj of commonDialogData.labelDetails">
+            <div>{{labelObj.title | translate}}</div>
+            <ng-container [ngSwitch]="labelObj.type">
+                <ng-container *ngSwitchCase="'tag'">
+                    <div class="tag">{{labelObj.value}}</div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'transaction_amount'">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-left g-10 align-center line-height-2">
+                          <div class="{{labelObj.value.direction == 'Deposit' ? 'deposit' : 'withdraw'}}">
+                            {{ labelObj.value.direction == "Deposit" ? "<--" : "-->" }}
+                          </div>
+                          <div>
+                          {{ labelObj.value.amount }}
+                          </div>
+                        </div>
+                        <div class="line-height-1">{{ labelObj.value.type }}</div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'trading_reason'">
+                    <a class="nickname-link" [routerLink]="labelObj.redirectionUrl">{{labelObj.value}}</a>
+                </ng-container>
+                <ng-container *ngSwitchCase="'sender'">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex justify-right g-5 align-center line-height-2">
+                          <a (click)="redirectToSubscription(labelObj.value)" href="javascript:void(0)" class="nickname-link">
+                              {{ labelObj.value.name }}
+                          </a>
+                          <div>
+                          #{{ labelObj.value.subscriptionId }}
+                          </div>
+                        </div>
+                        <div class="line-height-1">{{ labelObj.value.account }}/{{labelObj.value.server}}</div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'recipent'">
+                    <a class="nickname-link" (click)="redirectToProvider(labelObj.value)">
+                        {{labelObj.value.name}}
+                    </a>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <div>{{labelObj.value}}</div>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</mat-dialog-content>
+<div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeCommonDialogPopup()">
+        {{'COMMON.Cancel'|translate}}
+    </button>
+</div>

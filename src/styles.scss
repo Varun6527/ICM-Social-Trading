@@ -79,6 +79,15 @@ body { margin: 0;
 .justify-center{
   justify-content: center !important;
 }
+.justify-left{
+  justify-content: left !important;
+}
+.justify-end{
+  justify-content: end !important;
+}
+.justify-right{
+  justify-content: right !important;
+}
 .justify-space-between{
   justify-content: space-between;
 }
@@ -100,7 +109,9 @@ body { margin: 0;
 .flex-wrap{
   flex-wrap: wrap;
 }
-
+.g-5 {
+  gap:5px;
+}
 .g-10{
   gap: 10px;
 }
@@ -109,6 +120,26 @@ body { margin: 0;
 }
 .w-100{
   width: 100%;
+}
+
+.line-height-1-7 {
+  line-height: 1.7;
+}
+.line-height-2 {
+  line-height: 2;
+}
+.line-height-1 {
+  line-height: 1;
+}
+.deposit {
+  color: var(--primary-positive-color);
+  font-weight: bolder;
+  font-size: 15px;
+}
+.withdraw {
+  color: var(--error-message--container-color);
+  font-weight: bolder;
+  font-size: 15px;
 }
 
 h1{

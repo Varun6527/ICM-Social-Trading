@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ColDef } from "ag-grid-community";
-import { NicknameRendererStandAloneComponent } from '../providers/cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 import { DateAdapter } from '@angular/material/core';
 import { MatDateRangePicker } from '@angular/material/datepicker';
 import { TranslateService } from '@ngx-translate/core';
@@ -66,24 +66,24 @@ export class ReportsComponent {
 
   initializeColDefs() {
     this.providersReportsCol=[
-      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: NicknameRendererStandAloneComponent,flex:1},
+      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1},
       { field: "amount" , headerName : this.translate.instant('REPORTS.Amount'),resizable: false,flex:1},
     ];
   
     this.offersReportsCol = [
       { field: "title" , headerName : this.translate.instant('REPORTS.Title'),resizable: false,flex:1},
-      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: NicknameRendererStandAloneComponent,flex:1},
+      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1},
       { field: "amount" ,headerName:this.translate.instant('REPORTS.Amount'),resizable: false,flex:1},
     ];
   
     this.recivedFeesCol = [
-      { field: "title" , headerName:this.translate.instant('REPORTS.Name'),resizable: false , suppressSizeToFit: true,cellRenderer: NicknameRendererStandAloneComponent,flex:1},
+      { field: "title" , headerName:this.translate.instant('REPORTS.Name'),resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1},
       { field: "amount" , headerName : this.translate.instant('REPORTS.Fees'),resizable: false,flex:1},
       { field: "amount" ,headerName:this.translate.instant('REPORTS.Amount'),resizable: false,flex:1},
     ];
   
     this.publishedCol = [
-      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: NicknameRendererStandAloneComponent,flex:1},
+      { field: "nickname" , headerName:this.translate.instant('REPORTS.Nickname'),resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1},
       { field: "amount" , headerName : this.translate.instant('REPORTS.Count'),resizable: false,flex:1},
     ];
   }

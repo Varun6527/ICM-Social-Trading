@@ -30,7 +30,7 @@
                     <ng-container *ngIf="role['hasProvider']">
                         <div class="d-flex justify-space-between">
                             @for (fees of providerMetric?.monthlyFeesArr; track fees.month) {
-                                <div>
+                                <div class="d-flex align-center justify-end flex-column">
                                     <h3>{{fees.feesValue}}</h3>
                                     <p>{{fees.month | date:'MMM'}}</p><!-- <p>{{'COMMON.September' | translate}}</p> -->
                                 </div>
@@ -42,7 +42,7 @@
                     <ng-container *ngIf="role['hasFollower']">
                         <div class="d-flex justify-space-between">
                             @for (fees of followerMetric?.monthlyTradeArr; track fees.month) {
-                                <div>
+                                <div class="d-flex align-center justify-end flex-column">
                                     <h3>{{fees.monthTradeProfit}}</h3>
                                     <p>{{fees.month | date:'MMM'}}</p><!-- <p>{{'COMMON.September' | translate}}</p> -->
                                 </div>

@@ -10,7 +10,7 @@ import { ActionButtonStanAloneComponent } from './shared/action-button/action-bu
 import { TransactionsStandAloneComponent } from './views/transactions/transactions.standalone.component';
 import { TypeCellRendererStandAloneComponent } from './shared/type-cell-renderer/type-cell-renderer.standalone.component';
 import { ProviderProfileComponent } from './views/providers/provider-profile/provider-profile.component';
-import { NicknameRendererStandAloneComponent } from './views/providers/cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from './views/providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from './shared/status-btn-renderer/status-btn-renderer.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
@@ -73,7 +73,7 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
     MatAutocompleteModule,MatCardModule,NgApexchartsModule,MatNativeDateModule,MatDatepickerModule,
     MatIconModule,MatButtonToggleModule,MatDividerModule,TranslateModule,ShowErrorStandAloneComponent,
     TransactionsStandAloneComponent,
-    NicknameRendererStandAloneComponent,TypeCellRendererStandAloneComponent,ActionButtonStanAloneComponent
+    CommonCellRendererStandAloneComponent,TypeCellRendererStandAloneComponent,ActionButtonStanAloneComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

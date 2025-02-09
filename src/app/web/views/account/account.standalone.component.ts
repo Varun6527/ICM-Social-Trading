@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { BeTradeAccDetailsStandAloneComponent } from '../home/dialogBox/beTradeAccountDetailsDialog.standalone.component';
+import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
-import { NicknameRendererStandAloneComponent } from '../providers/cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 
 @Component({
   selector: 'app-account',
@@ -30,7 +30,7 @@ export class AccountStandAloneComponent {
   gridConfig!: AgGridConfig;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
-  readonly beTradeAccDetailDialog = inject(MatDialog);
+  readonly commonDialog = inject(MatDialog);
   hideAgGrid!: boolean;
 
   constructor(private _webService: WebService) {
@@ -76,7 +76,7 @@ export class AccountStandAloneComponent {
 
   setupAccountGridConfig() {
     let colDefs = [
-      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: NicknameRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, type: 'accountDetailsPopup' },
+      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, colId: 'accountDetailsPopup' },
       { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, resizable: false, width: 140, maxWidth: 140 },
       { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', resizable: false, width: 200, maxWidth: 250 },
       { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
@@ -126,11 +126,34 @@ export class AccountStandAloneComponent {
   }
   
   openBeTradingAccountPopup(data: any) {
-    this.beTradeAccDetailDialog.open(BeTradeAccDetailsStandAloneComponent, {
-      panelClass: 'beTradeAccDetails-dialog',
-      data: data
+    this.commonDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareTradingAccountData(data)
     });
-    this.beTradeAccDetailDialog.afterAllClosed.subscribe((result)=>{});
+    this.commonDialog.afterAllClosed.subscribe((result)=>{});
+  }
+
+  prepareTradingAccountData(tradingAccountDetails: any) {
+    let commonDialogData = {
+      mainTitle: 'HOME.TradingAccInfo',
+      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
+      labelDetails: [
+        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
+        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
+        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
+        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
+        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
+        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
+        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
+        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
+        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
+        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
+        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
+        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
+        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
+      ] 
+    }
+    return commonDialogData;
   }
 
   ngOnDestroy() {

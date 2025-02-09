@@ -220,7 +220,12 @@
         "MT order": "MT order",
         "Sender": "Sender",
         "Recipient": "Recipient",
-        "Processed": "Processed"
+        "Processed": "Processed",
+        "InfoAboutTransact": "Information about the transaction",
+        "Requested amount": "Requested amount",
+        "Processed amount": "Processed amount",
+        "Reason": "Reason",
+        "Trading result": "Trading result"
     },
     "REPORTS":{
         "Reports":"Reports",

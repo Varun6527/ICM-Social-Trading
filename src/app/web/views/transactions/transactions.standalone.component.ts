@@ -10,8 +10,8 @@ import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/comm
 import { MatDialog } from '@angular/material/dialog';
 import { WebService } from '../../service/web.service';
 import { TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
-import { BeTradeAccDetailsStandAloneComponent } from '../home/dialogBox/beTradeAccountDetailsDialog.standalone.component';
-import { NicknameRendererStandAloneComponent } from '../providers/cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 
 @Component({
   selector: 'app-transactions',
@@ -42,10 +42,10 @@ export class TransactionsStandAloneComponent {
     let param = {
       $count: true
     }
-    this._webService.getTransactionHistoryData(param).subscribe({
+    this._webService.getTransactionPageData(param).subscribe({
       next: (response: any) => {
         this.transactionGridData = [];
-        // response.items.forEach((obj: any) => this.transactionGridData.push(new TransactionHistoryUiModal(obj)));
+        response.transactHistory.items.forEach((obj: any) => this.transactionGridData.push(new TransactionHistoryUiModal(obj, response.providerData)));
         this.toggleLoadingOverlay(loaderType, false);
       },
       error: (errorObj) => {
@@ -71,14 +71,14 @@ export class TransactionsStandAloneComponent {
 
   setupTransactionGridConfig() {
     let colDefs = [
-      { field: "id", headerName: 'TRANSACTIONS.Transaction', cellRenderer: NicknameRendererStandAloneComponent, resizable: false, maxWidth: 200, suppressSizeToFit: true, type: 'transactionTitlePopup' },
+      { field: "transactionObj", headerName: 'TRANSACTIONS.Transaction', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, maxWidth: 200, suppressSizeToFit: true, colId: 'transactionTitlePopup' },
       { field: "externalAccount", headerName: 'TRANSACTIONS.Account', resizable: false, maxWidth: 200 },
       { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, maxWidth: 200 },
-      { field: "amount", headerName: 'REPORTS.Amount', resizable: false, maxWidth: 200 },
-      { field: "senderName", headerName: 'TRANSACTIONS.Sender', resizable: false, maxWidth: 200, cellRenderer: NicknameRendererStandAloneComponent, type: 'transactionsenderAction' },
-      { field: "recipientName", headerName: 'TRANSACTIONS.Recipient', resizable: false, maxWidth: 200, cellRenderer: NicknameRendererStandAloneComponent, type: 'transactionRecipientAction' },
-      { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, maxWidth: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, type: 'transactionDetailsPopup' }
+      { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, maxWidth: 200, colId: 'transactionAmountViewDisplay'  },
+      { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction' },
+      { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction' },
+      { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200 },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, sortable : false, type: 'transactionDetailsPopup' }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -108,11 +108,34 @@ export class TransactionsStandAloneComponent {
   }
   
   openBeTransactDetailsPopup(data: any) {
-    this.beTradeAccDetailDialog.open(BeTradeAccDetailsStandAloneComponent, {
-      panelClass: 'beTradeAccDetails-dialog',
-      data: data
+    this.beTradeAccDetailDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareTransactHistoryData(data)
     });
     this.beTradeAccDetailDialog.afterAllClosed.subscribe((result)=>{});
+  }
+
+  prepareTransactHistoryData(transactionHistoryDetails: any) {
+    let commonDialogData = {
+      mainTitle: 'TRANSACTIONS.Transaction',
+      secondryTitle: 'TRANSACTIONS.InfoAboutTransact',
+      labelDetails: [
+        { title: 'COMMON.State', value: transactionHistoryDetails.transactionObj.state },
+        { title: 'SUBSCRIPTION.Trading account', value: transactionHistoryDetails.externalAccount },
+        { title: 'TRANSACTIONS.MT order', value: transactionHistoryDetails.platformId },
+        { title: 'TRANSACTIONS.Requested amount', value: transactionHistoryDetails.transactionAmountObj, type: 'transaction_amount' },
+        { title: 'TRANSACTIONS.Processed amount', value: transactionHistoryDetails.processedAmountObj, type: 'transaction_amount' },
+        { title: 'TRANSACTIONS.Reason', value: transactionHistoryDetails.transactionObj.reason },
+        { title: 'TRANSACTIONS.Trading result', value: transactionHistoryDetails.senderObj.reasonId, type: 'trading_reason', redirectionUrl: `/portal/providers/${transactionHistoryDetails.senderObj.providerId}/subscriptions/${transactionHistoryDetails.senderObj.subscriptionId}/results/${transactionHistoryDetails.senderObj.reasonId}` },
+        { title: 'TRANSACTIONS.Sender', value: transactionHistoryDetails.senderObj, type: 'sender' },
+        { title: 'TRANSACTIONS.Recipient', value: transactionHistoryDetails.reciepentObj, type: 'recipent' },
+        { title: 'TRANSACTIONS.Processed', value: transactionHistoryDetails.processTime },
+      ] 
+    };
+    if(transactionHistoryDetails.senderObj.ownerType != "Provider") {
+      commonDialogData.labelDetails.splice(6, 1); // remove trading result of follower user type
+    }
+    return commonDialogData;
   }
 
   ngOnDestroy() {

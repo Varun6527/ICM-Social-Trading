@@ -149,9 +149,77 @@ export class TradingAccountUIModal {
 }
 
 export class TransactionHistoryUiModal {
-
-    constructor(transactObj: any) {
+    transactionObj: { id: any; state: string; reason: string; } = { id: null, state: '', reason: '' };
+    externalAccount: string = "";
+    platformId: any;
+    transactionAmountObj: { amount: any; type: string; direction: string; } = { amount: null, type: '', direction: '' };
+    processedAmountObj: { amount: any; type: string; direction: string; } = { amount: null, type: '', direction: '' };
+    tradeResultId: string = "";
+    senderObj: { reasonId:any; name: string; account: string; ownerType: string; providerId: any; subscriptionId: any; server: string; } = { reasonId: null, name: '', account: '', ownerType: '', providerId: null, subscriptionId: null, server: '' };
+    reciepentObj: {name: string; id: any; account: string; server: string; ownerType:string; } = {name: '', id: null, account: '', server: '', ownerType: ''};
+    processTime: string = "";
+    
+    constructor(transactObj: any, providerData: any) {
+        this.transactionObj.id = transactObj.id;
+        this.transactionObj.state = transactObj.state;
+        this.transactionObj.reason = transactObj.reason == "PerformanceFee" ? transactObj.reason.replace("Fee", " fee") : transactObj.reason;
         
+        this.externalAccount = transactObj.externalAccount;
+
+        this.platformId = transactObj.platformId;
+
+        this.transactionAmountObj.amount = new ConvertValueToCurrency(transactObj.amount, transactObj.currency, false).getConvertedValue();
+        this.transactionAmountObj.type = transactObj.type;
+        this.transactionAmountObj.direction = transactObj.direction;
+
+        this.processedAmountObj.amount = new ConvertValueToCurrency(transactObj.processedAmount, transactObj.processedCurrency, false).getConvertedValue();
+        this.processedAmountObj.type = transactObj.type;
+        this.processedAmountObj.direction = transactObj.direction;
+
+        this.tradeResultId = transactObj.reasonId;
+
+        this.senderObj = this.senderObjDetais(transactObj);
+
+        this.reciepentObj = this.recipentObjDetails(transactObj, providerData);
+        
+        this.processTime = this.transformDate(transactObj.processTime);
+    }
+
+    senderObjDetais(transactObj: any) {
+        let obj = { reasonId: null, name: '', account: '', ownerType: '', providerId: null, subscriptionId: null, server: '' };
+        if(transactObj.ownerType == "Provider") {
+            obj.name = transactObj.counterpartyType;
+            obj.account = transactObj.externalAccount;
+            obj.providerId = transactObj.ownerId;
+            obj.subscriptionId = transactObj.counterpartyId;
+            obj.server = transactObj.refs.server.name;
+        } else {
+            obj.name = transactObj.ownerType;
+            obj.account = transactObj.externalAccount;
+            obj.providerId = transactObj.counterpartyId;
+            obj.subscriptionId = transactObj.ownerId;
+            obj.server = transactObj.refs.counterpartyServer.name;
+        }
+        obj.ownerType = transactObj.ownerType;
+        obj.reasonId = transactObj.reasonId;
+        return obj;
+    }
+
+    recipentObjDetails(transactObj: any, providerData: any) {
+        let obj = {name: '', id: null, account: '', server: '', ownerType: ''};
+        if(transactObj.ownerType == "Provider") {
+            obj.name = providerData.nickname;
+            obj.id = transactObj.ownerId;
+            obj.account = transactObj.externalAccount;
+            obj.server = transactObj.refs.server.name;
+        } else {
+            obj.name = providerData.nickname;
+            obj.id = transactObj.counterpartyId;
+            obj.account = transactObj.counterpartyExternalAccount;
+            obj.server = transactObj.refs.counterpartyServer.name;
+        }
+        obj.ownerType = transactObj.ownerType;
+        return obj;
     }
 
     transformDate(value: string): string {

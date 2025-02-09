@@ -1,12 +1,12 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { NicknameRendererStandAloneComponent } from '../providers/cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WebService } from '../../service/web.service';
 import { ProviderMetricUIModal, ProviderDetailsUIModal, TradingAccountUIModal, FollowerMetricUIModal, FollowerDetailsUIModal } from '../../shared/ui-model/web.ui.model';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
-import { BeProviderDialogStandAloneComponent } from './dialogBox/beProviderDialog.standalone.component';
-import { BeFollowerDialogStandAloneComponent } from './dialogBox/beFollowerDialog.standalone.component';
+import { BeProviderDialogStandAloneComponent } from '../../shared/dialogBox/create-provider-dialog/beProviderDialog.standalone.component';
+import { BeFollowerDialogStandAloneComponent } from '../../shared/dialogBox/create-follower-dialog/beFollowerDialog.standalone.component';
 
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
-import { BeTradeAccDetailsStandAloneComponent } from './dialogBox/beTradeAccountDetailsDialog.standalone.component';
+import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 
 @Component({
@@ -38,13 +38,12 @@ export class HomeStandAloneComponent {
   selectAccountStatus: string = "Active";
   gridData: any = [];
   gridConfig!: AgGridConfig;
-  chartOptions: any;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
   readonly beProviderDialog = inject(MatDialog);
   readonly beFollowerDialog = inject(MatDialog);
-  readonly beTradeAccDetailDialog = inject(MatDialog);
+  readonly commonDialog = inject(MatDialog);
 
   constructor(private _webService: WebService, private _router: Router) {
     this.role['hasProvider'] = this._webService.isProviderAccount;
@@ -187,7 +186,7 @@ export class HomeStandAloneComponent {
 
   setupProviderGridConfig() {
     let colDefs = [
-      { field: "nickName", headerName: 'HOME.Nickname', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: NicknameRendererStandAloneComponent, type: 'providerProfileRedirection' },
+      { field: "nickName", headerName: 'HOME.Nickname', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "providerFees", headerName: 'HOME.Fees', resizable: false, width: 140, maxWidth: 140 },
       { field: "followers", headerName: 'HOME.Followers', resizable: true, width: 150, minWidth: 150, maxWidth: 250 },
       { field: "followersGrowth", headerName: 'HOME.Followers Growth', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
@@ -200,7 +199,7 @@ export class HomeStandAloneComponent {
 
   setupFollowerGridConfig() {
     let colDefs = [
-      { field: "providerName", headerName: 'HOME.Provider', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: NicknameRendererStandAloneComponent, type: 'followerProfileRedirection' },
+      { field: "providerName", headerName: 'HOME.Provider', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'followerProfileRedirection' },
       { field: "tradingProfit", headerName: 'HOME.Trading profit', resizable: false, width: 140, maxWidth: 140 },
       { field: "copiedPosition", headerName: 'HOME.Copied Position', resizable: true, minWidth: 150, maxWidth: 250 },
       { field: "paidFees", headerName: 'HOME.Paid Fees', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
@@ -212,7 +211,7 @@ export class HomeStandAloneComponent {
 
   setupAccountGridConfig() {
     let colDefs = [
-      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: NicknameRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, type: 'accountDetailsPopup' },
+      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, colId: 'accountDetailsPopup' },
       { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, resizable: false, width: 140, maxWidth: 140 },
       { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', resizable: false, width: 200, maxWidth: 250 },
       { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
@@ -257,11 +256,34 @@ export class HomeStandAloneComponent {
   }
 
   openBeTradingAccountPopup(data: any) {
-    this.beTradeAccDetailDialog.open(BeTradeAccDetailsStandAloneComponent, {
-      panelClass: 'beTradeAccDetails-dialog',
-      data: data
+    this.commonDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareTradingAccountData(data)
     });
-    this.beTradeAccDetailDialog.afterAllClosed.subscribe(()=>{});
+    this.commonDialog.afterAllClosed.subscribe(()=>{});
+  }
+
+  prepareTradingAccountData(tradingAccountDetails: any) {
+    let commonDialogData = {
+      mainTitle: 'HOME.TradingAccInfo',
+      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
+      labelDetails: [
+        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
+        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
+        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
+        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
+        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
+        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
+        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
+        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
+        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
+        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
+        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
+        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
+        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
+      ] 
+    }
+    return commonDialogData;
   }
 
   ngOnDestroy() {

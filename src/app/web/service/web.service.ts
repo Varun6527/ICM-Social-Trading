@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
-import { map, mergeMap, of, Subject, tap } from 'rxjs';
+import { map, mergeMap, of, Subject, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +93,35 @@ export class WebService extends BaseService {
   getTransactionHistoryData(data: any) {
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.transactionsHistory.get}`, data);
   }
+
+  getTransactionPageData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.transactionsHistory.get}`, data).pipe(
+      switchMap(transactHistory => {
+        let providerId = this.getProviderId(transactHistory);
+        if(providerId == "") {
+          return of({ transactHistory, secondResponse: null });
+        }
+        return this.http.get(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.brief}/${providerId}`).pipe(
+          map(providerData => ({
+            transactHistory: transactHistory,
+            providerData: providerData 
+          }))
+        )
+      })
+    );
+  }
+
+  getProviderId(transactHistoryArr: any) {
+    let transactObj = transactHistoryArr.items[0];
+    if(transactObj?.ownerType == "Provider") {
+      return transactObj.ownerId;
+    } else if(transactObj?.counterpartyType == "Provider") {
+      return transactObj.counterpartyId;
+    } else {
+      return "";
+    }
+  }
+
 }
 
 

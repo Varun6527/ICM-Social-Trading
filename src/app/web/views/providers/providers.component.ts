@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { NicknameRendererStandAloneComponent } from './cellRenderers/nickname-renderer/nickname-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from './cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -42,7 +42,7 @@ export class ProvidersComponent implements OnInit {
   // Initialize column definitions with translations
   initializeColDefs() {
     this.colDefs = [
-      { field: "nickname", headerName: this.translate.instant('PROVIDERS.Nickname'), resizable: false, suppressSizeToFit: true, cellRenderer: NicknameRendererStandAloneComponent },
+      { field: "nickname", headerName: this.translate.instant('PROVIDERS.Nickname'), resizable: false, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "tradingAccount", headerName: this.translate.instant('PROVIDERS.Trading Account'), resizable: false },
       { field: "strategyMode", headerName: this.translate.instant('PROVIDERS.Strategy Mode'), resizable: false },
       { field: "equity", headerName: this.translate.instant('PROVIDERS.Equity'), resizable: false },
