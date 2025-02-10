@@ -9,14 +9,46 @@
             </div>
             <div class="metrics-table">
                 <div class="header-buttons d-flex justify-space-between">
-                    <button class="secondary-btn">
-                        <img src="../../../../assets/icons/filterIcon.svg" />
-                        {{"COMMON.Filters"|translate}}
-                    </button>
-                    <button class="secondary-btn">
-                        <img src="../../../../assets/icons/rotateIcon.svg" />
-                        {{"COMMON.Refresh"|translate}}
-                    </button>
+                    <div class="d-flex g-20 justify-center align-center">
+                        <button class="secondary-btn" (click)="applyTransactFilter()">
+                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            {{"COMMON.Filters"|translate}}
+                        </button>
+                        <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
+                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            {{"COMMON.Clear"|translate}}
+                        </button>
+                    </div>
+                    <div class="d-flex g-20 common-dropdown align-center">
+                        @if (showFilters) {
+                            <mat-form-field>
+                                <mat-label>{{"COMMON.Id"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.id" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"TRANSACTIONS.Account"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.externalAccount" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"TRANSACTIONS.MT order"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.platformId" />
+                            </mat-form-field><mat-form-field>
+                                <mat-label>{{"TRANSACTIONS.Role"|translate}}</mat-label>
+                                <mat-select [(ngModel)]="selectedFilters.ownerType">
+                                    <mat-option [value]="'Provider'">{{"HOME.Provider"|translate}}</mat-option>
+                                    <mat-option [value]="'Subscription'">{{"TRANSACTIONS.Subscription"|translate}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        }
+                        <button class="refresh-btn" (click)="refreshTransactDataList()">
+                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                            @if (selectedFilters.ownerType || selectedFilters.platformId || selectedFilters.externalAccount || selectedFilters.id) {
+                                {{"PROVIDERS_LIST.Search"|translate}}
+                              } @else {
+                                {{"COMMON.Refresh"|translate}}
+                              }
+                        </button>
+                    </div>
                 </div>
                 <common-ag-grid [gridConfig]="gridConfig" 
                     [gridData]="transactionGridData" [showGridLoader]="showGridLoader">

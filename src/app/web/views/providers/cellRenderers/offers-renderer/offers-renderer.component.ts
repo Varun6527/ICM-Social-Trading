@@ -5,19 +5,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-offers-renderer',
   template: `
-    <a [href]="'/offers/'+params.data.Id" class="nickname-link">
-      {{ params.value }}
+    <a [href]="'/offers/'+params.data.Id" class="default-link">
+      <span>{{ params.value }}</span>
     </a>
-  `,
-  styles: [
-    `
-      .nickname-link {
-        text-decoration: none;
-        color: black;
-        cursor: pointer;
-      }
-    `
-  ]
+  `
 })
 export class OffersRendererComponent implements OnInit {
   params: any;

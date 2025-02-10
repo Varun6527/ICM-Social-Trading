@@ -1,11 +1,11 @@
 <a *ngIf="!params.colDef.colId"
-     (click)="onCellNameClicked()" href="javascript:void(0)" class="nickname-link">
-      {{ params.value }}
+     (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
+      <span>{{ params.value }}</span>
     </a>
 
     <div *ngIf="params.colDef.colId == 'transactionTitlePopup'" class="d-flex flex-column">
-      <a (click)="onCellNameClicked()" href="javascript:void(0)" class="nickname-link line-height-1-7">
-        {{ params.value.reason }}
+      <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
+        <span>{{ params.value.reason }}</span>
       </a>
       <div class="d-flex justify-left g-10 align-center">
         <div class="tag">
@@ -31,8 +31,8 @@
 
     <div *ngIf="params.colDef.colId == 'transactionsenderAction'" class="d-flex flex-column">
         <div class="d-flex justify-left g-5 align-center {{params.value.ownerType == 'Provider' ? 'line-height-2' : ''}}">
-          <a (click)="onCellNameClicked()" href="javascript:void(0)" class="nickname-link">
-              {{ params.value.name }}
+          <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
+              <span>{{ params.value.name }}</span>
           </a>
           <div>
           #{{ params.value.subscriptionId }}
@@ -41,14 +41,14 @@
         <div *ngIf="params.value.ownerType == 'Provider'" class="line-height-1">{{ params.value.account }}</div>
     </div>
     
-    <a *ngIf="params.colDef.colId == 'transactionRecipientAction'" 
-        (click)="onCellNameClicked()" href="javascript:void(0)" class="nickname-link">
-        {{ params.value.name }}
+    <a *ngIf="params.colDef.colId == 'transactionRecipientAction'" [ngClass]="{'cursor-default': params.value.ownerType != 'Provider'}"
+        (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
+        <span>{{ params.value.name }}</span>
     </a>
 
     <div *ngIf="params.colDef.colId == 'accountDetailsPopup'" class="d-flex flex-column">
-      <a (click)="onCellNameClicked()" href="javascript:void(0)" class="nickname-link line-height-1-7">
-        {{ params.value }}
+      <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
+        <span>{{ params.value }}</span>
       </a>
       <div class="d-flex justify-left g-5 align-center">
         <div class="tag">

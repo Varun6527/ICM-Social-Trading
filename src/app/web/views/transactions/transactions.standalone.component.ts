@@ -12,19 +12,22 @@ import { WebService } from '../../service/web.service';
 import { TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss',
   standalone: true,
-  imports: [CommonModule, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatSelectModule, FormsModule, CommonAgGridStandAloneComponent]
+  imports: [CommonModule, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatSelectModule, FormsModule, CommonAgGridStandAloneComponent, MatInputModule]
 })
 export class TransactionsStandAloneComponent {
   transactionGridData: any = [];
   showLoader: boolean = false;
   showGridLoader: boolean = false;
   gridConfig!: AgGridConfig;
+  showFilters!: boolean;
+  selectedFilters: any = { ownerType: "", platformId: "", externalAccount: "", id: "" };
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   readonly beTradeAccDetailDialog = inject(MatDialog);
@@ -39,9 +42,7 @@ export class TransactionsStandAloneComponent {
   
   getTransactionsData(loaderType: any) {
     this.toggleLoadingOverlay(loaderType, true);
-    let param = {
-      $count: true
-    }
+    let param: any = this.getParamsForTransactApi(); 
     this._webService.getTransactionPageData(param).subscribe({
       next: (response: any) => {
         this.transactionGridData = [];
@@ -78,7 +79,7 @@ export class TransactionsStandAloneComponent {
       { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction' },
       { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction' },
       { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, sortable : false, type: 'transactionDetailsPopup' }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -136,6 +137,52 @@ export class TransactionsStandAloneComponent {
       commonDialogData.labelDetails.splice(6, 1); // remove trading result of follower user type
     }
     return commonDialogData;
+  }
+
+  applyTransactFilter() {
+    if(this.showFilters)  {   
+      this.showFilters = false;
+      this.clearFilters();
+    } else {
+      this.showFilters = true;
+    }
+  }
+
+  clearFilters() {
+    this.resetFilter();
+    this.getTransactionsData('showGridLoader');
+  }
+
+  refreshTransactDataList() {
+    this.getTransactionsData('showGridLoader');
+  }
+
+  resetFilter() {
+    this.selectedFilters = { ownerType: "", platformId: "", externalAccount: "", id: "" };
+  }
+
+  getParamsForTransactApi() {
+    let param: any = {};
+    param['$count'] = true;
+    this.getFilterQuery() ? param['$filter'] = this.getFilterQuery() : "";
+    return param;
+  }
+
+  getFilterQuery() {
+    let filterQuery = "";
+    if(this.selectedFilters.ownerType) {
+      filterQuery += `ownerType eq '${this.selectedFilters.ownerType}' and `;
+    }
+    if(this.selectedFilters.platformId) {
+      filterQuery += `platformId eq ${this.selectedFilters.platformId} and `;
+    }
+    if(this.selectedFilters.externalAccount) {
+      filterQuery += `externalAccount eq ${this.selectedFilters.externalAccount} and `;
+    }
+    if(this.selectedFilters.id) {
+      filterQuery += `id eq ${this.selectedFilters.id} and `;
+    }
+    return filterQuery ? filterQuery.slice(0, -4) : "";
   }
 
   ngOnDestroy() {

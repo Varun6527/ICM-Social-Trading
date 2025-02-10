@@ -22,13 +22,15 @@
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase="'trading_reason'">
-                    <a class="nickname-link" [routerLink]="labelObj.redirectionUrl">{{labelObj.value}}</a>
+                    <a class="default-link" (click)="redirectToResultPage(labelObj)">
+                        <span>{{labelObj.value}}</span>
+                    </a>
                 </ng-container>
                 <ng-container *ngSwitchCase="'sender'">
                     <div class="d-flex flex-column">
                         <div class="d-flex justify-right g-5 align-center line-height-2">
-                          <a (click)="redirectToSubscription(labelObj.value)" href="javascript:void(0)" class="nickname-link">
-                              {{ labelObj.value.name }}
+                          <a (click)="redirectToSubscription(labelObj.value)" href="javascript:void(0)" class="default-link">
+                              <span>{{ labelObj.value.name }}</span>
                           </a>
                           <div>
                           #{{ labelObj.value.subscriptionId }}
@@ -38,8 +40,8 @@
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase="'recipent'">
-                    <a class="nickname-link" (click)="redirectToProvider(labelObj.value)">
-                        {{labelObj.value.name}}
+                    <a class="default-link" [ngClass]="{'cursor-default': labelObj.value.ownerType != 'Provider'}" (click)="redirectToProvider(labelObj.value)">
+                        <span>{{labelObj.value.name}}</span>
                     </a>
                 </ng-container>
                 <ng-container *ngSwitchDefault>

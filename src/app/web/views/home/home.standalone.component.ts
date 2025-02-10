@@ -192,7 +192,7 @@ export class HomeStandAloneComponent {
       { field: "followersGrowth", headerName: 'HOME.Followers Growth', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
       { field: "closedProfit", headerName: 'HOME.Closed Profit', resizable: true, width: 150, minWidth: 150, maxWidth: 250 },
       { field: "registerTime", headerName: 'HOME.Registered', resizable: false, width: 250, maxWidth: 250 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, type: 'providerProfileRedirection' }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'providerProfileRedirection' }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -204,7 +204,7 @@ export class HomeStandAloneComponent {
       { field: "copiedPosition", headerName: 'HOME.Copied Position', resizable: true, minWidth: 150, maxWidth: 250 },
       { field: "paidFees", headerName: 'HOME.Paid Fees', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
       { field: "registerTime", headerName: 'HOME.Registered', resizable: false, width: 250, maxWidth: 250 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, type: 'followerProfileRedirection' }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'followerProfileRedirection' }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -217,7 +217,7 @@ export class HomeStandAloneComponent {
       { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
       { field: "equity", headerName: 'ACCOUNTS.Equity', resizable: false, width: 150, maxWidth: 150 },
       { field: "connectTime", headerName: 'ACCOUNTS.Connected', resizable: false, width: 220, maxWidth: 220 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, type: 'accountDetailsPopup' }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'accountDetailsPopup', showPopupArraow: true }
     ];
     this.setupGridConfig(colDefs);
   }

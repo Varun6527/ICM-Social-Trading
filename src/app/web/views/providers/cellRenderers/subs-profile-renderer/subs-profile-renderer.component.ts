@@ -5,19 +5,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-subsProfile-renderer',
   template: `
-    <a [href]="'/subscriptions/'+params.data.Id" class="nickname-link">
-      {{ params.value }}
+    <a [href]="'/subscriptions/'+params.data.Id" class="default-link">
+      <span>{{ params.value }}</span>
     </a>
-  `,
-  styles: [
-    `
-      .nickname-link {
-        text-decoration: none;
-        color: black;
-        cursor: pointer;
-      }
-    `
-  ]
+  `
 })
 export class SubsProfileRendererComponent implements OnInit {
   params: any;

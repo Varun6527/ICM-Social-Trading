@@ -318,3 +318,22 @@ p{
 ::ng-deep div.mat-mdc-autocomplete-panel {
   background-color: white !important;
 }
+
+.default-link {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+
+  span {
+    border-bottom: 1px dotted;
+  }
+}
+
+a.cursor-default {
+  cursor: default;
+
+    span {
+      border-bottom: none;
+    }
+
+}

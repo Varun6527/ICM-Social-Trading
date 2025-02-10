@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { WebService } from '../../service/web.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-action-button',
   standalone: true,
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <button (click)="onActionClick()" class="tableActionBtn">
-      <img src=".././../../../assets/icons/arrowIcon.png"/>
+      <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
+
+      <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
     </button>
   `,
   styles: `
@@ -40,13 +43,13 @@ export class ActionButtonStanAloneComponent {
   }
 
   onActionClick() {
-    if(this.params.colDef.type == 'providerProfileRedirection') {
+    if(this.params.colDef.colId == 'providerProfileRedirection') {
       this.router.navigate([`${this.params.data.actionUrl}${this.params.data.providerId}`]);
-    } else if(this.params.colDef.type == 'followerProfileRedirection') {
+    } else if(this.params.colDef.colId == 'followerProfileRedirection') {
       this.router.navigate([`${this.params.data.actionUrl}${this.params.data.followerId}`]);
-    } else if(this.params.colDef.type == 'accountDetailsPopup') {
+    } else if(this.params.colDef.colId == 'accountDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
-    } else if(this.params.colDef.type == 'transactionDetailsPopup') {
+    } else if(this.params.colDef.colId == 'transactionDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_transact_details_popup', data: this.params.data });
     }
   }

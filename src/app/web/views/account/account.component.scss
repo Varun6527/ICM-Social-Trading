@@ -4,6 +4,10 @@
     @include common-dropdown(150px);
 }
 
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
 .refresh-btn {
-    @include common-secondry-btn(20px);
+    @include common-secondry-btn();
 }

@@ -43,11 +43,7 @@ import { Router, RouterModule } from '@angular/router';
                     font-size: 17px;
                     font-weight: 400;
              }
-             .nickname-link {
-                text-decoration: none;
-                color: black;
-                cursor: pointer;
-             }
+             
         }
       `
     ]
@@ -59,6 +55,11 @@ import { Router, RouterModule } from '@angular/router';
   
     closeCommonDialogPopup() {
       this.dialogRef.close();
+    }
+
+    redirectToResultPage(labelObj: any) {
+      this.closeCommonDialogPopup();
+      this.router.navigate([labelObj.redirectionUrl]);
     }
 
     redirectToSubscription(senderObj: any) {

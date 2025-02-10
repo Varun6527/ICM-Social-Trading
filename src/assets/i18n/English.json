@@ -225,7 +225,9 @@
         "Requested amount": "Requested amount",
         "Processed amount": "Processed amount",
         "Reason": "Reason",
-        "Trading result": "Trading result"
+        "Trading result": "Trading result",
+        "Role": "Role",
+        "Subscription": "Subscription"
     },
     "REPORTS":{
         "Reports":"Reports",
