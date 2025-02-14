@@ -1,5 +1,5 @@
 
-<div class="web-layout" *ngIf="!showLoader">
+<div class="web-layout">
    <div class="sidenav">
       <app-sidenav></app-sidenav>
    </div>
@@ -7,9 +7,3 @@
       <router-outlet></router-outlet>
    </div>
 </div>
-
-<div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
-   <img src="../../../../assets/logo/ICM Logo White 1.png" />
-</div>
-
-<show-error-message></show-error-message>

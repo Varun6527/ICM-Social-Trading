@@ -11,8 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { WebService } from '../../service/web.service';
 import { TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
-import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatInputModule } from '@angular/material/input';
+import { GridApi } from 'ag-grid-community';
 
 @Component({
   selector: 'app-transactions',
@@ -28,31 +29,100 @@ export class TransactionsStandAloneComponent {
   gridConfig!: AgGridConfig;
   showFilters!: boolean;
   selectedFilters: any = { ownerType: "", platformId: "", externalAccount: "", id: "" };
+  sortApiKey:any = {transactionTitlePopup: 'id', externalAccount: 'externalAccount', platformId: 'platformId', transactionAmountViewDisplay: 'amount', processTime: 'processTime'};
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   readonly beTradeAccDetailDialog = inject(MatDialog);
   hideAgGrid!: boolean;
+  gridApiObj!: GridApi;
 
   constructor(private _webService: WebService) {
     this._webService.subscribeOnWebDataChange('TransactionsStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
-    this.getTransactionsData('showPageLoader');
+    this.setupTransactionGridConfig();
   }
   
-  getTransactionsData(loaderType: any) {
-    this.toggleLoadingOverlay(loaderType, true);
-    let param: any = this.getParamsForTransactApi(); 
+  getTransactionsData(event?: any) {
+    let param: any = this.getParamsForTransactApi(event.params.request); 
     this._webService.getTransactionPageData(param).subscribe({
       next: (response: any) => {
         this.transactionGridData = [];
         response.transactHistory.items.forEach((obj: any) => this.transactionGridData.push(new TransactionHistoryUiModal(obj, response.providerData)));
-        this.toggleLoadingOverlay(loaderType, false);
+        this.sendDataToAgGrid(true, event, response.transactHistory.count, this.transactionGridData);
       },
       error: (errorObj) => {
+        this.sendDataToAgGrid(false, event, 0, []);
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
       }
     })
+  }
+
+  getParamsForTransactApi(requestParam: any) {
+    let param: any = {};
+    param['$count'] = true;
+    param['$top'] = requestParam.endRow;
+    param['$skip'] = requestParam.startRow;
+    this.getOrderByQuery(requestParam.sortModel) ? param['$orderby'] = this.getOrderByQuery(requestParam.sortModel) : "";
+    this.getFilterQuery() ? param['$filter'] = this.getFilterQuery() : "";
+    return param;
+  }
+
+  getFilterQuery() {
+    let filterQuery = "";
+    if(this.selectedFilters.ownerType) {
+      filterQuery += `ownerType eq '${this.selectedFilters.ownerType}' and `;
+    }
+    if(this.selectedFilters.platformId) {
+      filterQuery += `platformId eq ${this.selectedFilters.platformId} and `;
+    }
+    if(this.selectedFilters.externalAccount) {
+      filterQuery += `externalAccount eq ${this.selectedFilters.externalAccount} and `;
+    }
+    if(this.selectedFilters.id) {
+      filterQuery += `id eq ${this.selectedFilters.id} and `;
+    }
+    return filterQuery ? filterQuery.slice(0, -4) : "";
+  }
+
+  getOrderByQuery(sortModel: any) {
+    if(sortModel.length == 0) return; 
+    let sortQuery = "";
+    sortModel.forEach((obj: any) => {
+      sortQuery += `${this.sortApiKey[obj.colId]} ${obj.sort},`;
+    });
+    return sortQuery.slice(0, -1);
+  }
+
+  sendDataToAgGrid(status: boolean, event: any, count: number, transactionGridData: any) {
+    let serverResponse = {
+      status: status,
+      data: transactionGridData,
+      rowCount: count
+    }
+    event.callback(serverResponse)   
+  }
+
+  applyTransactFilter() {
+    if(this.showFilters)  {   
+      this.showFilters = false;
+      this.clearFilters();
+    } else {
+      this.showFilters = true;
+    }
+  }
+
+  clearFilters() {
+    this.resetFilter();
+    this.gridApiObj.refreshServerSide();
+  }
+
+  refreshTransactDataList() {
+    this.gridApiObj.refreshServerSide();
+  }
+
+  resetFilter() {
+    this.selectedFilters = { ownerType: "", platformId: "", externalAccount: "", id: "" };
   }
 
   toggleLoadingOverlay(loaderType: string, loadingFlag: boolean) {
@@ -72,14 +142,14 @@ export class TransactionsStandAloneComponent {
 
   setupTransactionGridConfig() {
     let colDefs = [
-      { field: "transactionObj", headerName: 'TRANSACTIONS.Transaction', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, maxWidth: 200, suppressSizeToFit: true, colId: 'transactionTitlePopup' },
-      { field: "externalAccount", headerName: 'TRANSACTIONS.Account', resizable: false, maxWidth: 200 },
-      { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, maxWidth: 200 },
-      { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, maxWidth: 200, colId: 'transactionAmountViewDisplay'  },
-      { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction' },
-      { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, maxWidth: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction' },
-      { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true }
+      { field: "transactionObj", headerName: 'TRANSACTIONS.Transaction', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, suppressSizeToFit: true, colId: 'transactionTitlePopup' },
+      { field: "externalAccount", headerName: 'TRANSACTIONS.Account', resizable: false, width: 150, suppressSizeToFit: true  },
+      { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, width: 150, suppressSizeToFit: true },
+      { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, colId: 'transactionAmountViewDisplay', suppressSizeToFit: true  },
+      { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction', suppressSizeToFit: true },
+      { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction', suppressSizeToFit: true },
+      { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200, suppressSizeToFit: true },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -94,17 +164,19 @@ export class TransactionsStandAloneComponent {
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
       enablePagination: true,
-      headerNameLangArr: colDefs.map((o: any) => o.headerName)
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'serverSide',
+      rowHeight: undefined
     }
-  }
-
-  refreshAccountDataList() {
-    this.getTransactionsData('showGridLoader');
   }
 
   recieveChildrenEmitter(event: any) {
     if(event['action'] == 'open_transact_details_popup') {
       this.openBeTransactDetailsPopup(event['data']);
+    } else if(event['action'] == 'get_server_side_data') {
+      this.getTransactionsData(event);
+    } else if(event['action'] == "set_grid_api_obj") {
+      this.gridApiObj = event['data'];
     }
   }
   
@@ -137,52 +209,6 @@ export class TransactionsStandAloneComponent {
       commonDialogData.labelDetails.splice(6, 1); // remove trading result of follower user type
     }
     return commonDialogData;
-  }
-
-  applyTransactFilter() {
-    if(this.showFilters)  {   
-      this.showFilters = false;
-      this.clearFilters();
-    } else {
-      this.showFilters = true;
-    }
-  }
-
-  clearFilters() {
-    this.resetFilter();
-    this.getTransactionsData('showGridLoader');
-  }
-
-  refreshTransactDataList() {
-    this.getTransactionsData('showGridLoader');
-  }
-
-  resetFilter() {
-    this.selectedFilters = { ownerType: "", platformId: "", externalAccount: "", id: "" };
-  }
-
-  getParamsForTransactApi() {
-    let param: any = {};
-    param['$count'] = true;
-    this.getFilterQuery() ? param['$filter'] = this.getFilterQuery() : "";
-    return param;
-  }
-
-  getFilterQuery() {
-    let filterQuery = "";
-    if(this.selectedFilters.ownerType) {
-      filterQuery += `ownerType eq '${this.selectedFilters.ownerType}' and `;
-    }
-    if(this.selectedFilters.platformId) {
-      filterQuery += `platformId eq ${this.selectedFilters.platformId} and `;
-    }
-    if(this.selectedFilters.externalAccount) {
-      filterQuery += `externalAccount eq ${this.selectedFilters.externalAccount} and `;
-    }
-    if(this.selectedFilters.id) {
-      filterQuery += `id eq ${this.selectedFilters.id} and `;
-    }
-    return filterQuery ? filterQuery.slice(0, -4) : "";
   }
 
   ngOnDestroy() {

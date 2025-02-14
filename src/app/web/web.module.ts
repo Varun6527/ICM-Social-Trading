@@ -10,7 +10,7 @@ import { ActionButtonStanAloneComponent } from './shared/action-button/action-bu
 import { TransactionsStandAloneComponent } from './views/transactions/transactions.standalone.component';
 import { TypeCellRendererStandAloneComponent } from './shared/type-cell-renderer/type-cell-renderer.standalone.component';
 import { ProviderProfileComponent } from './views/providers/provider-profile/provider-profile.component';
-import { CommonCellRendererStandAloneComponent } from './views/providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from './shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from './shared/status-btn-renderer/status-btn-renderer.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
@@ -22,7 +22,6 @@ import { SubsProfileRendererComponent } from './views/providers/cellRenderers/su
 import { OffersComponent } from './views/offers/offers.component';
 import { OffersRendererComponent } from './views/providers/cellRenderers/offers-renderer/offers-renderer.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
-import { ReportsComponent } from './views/reports/reports.component'
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -54,7 +53,6 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
     OffersComponent,
     OffersRendererComponent,
     ProvidersListComponent,
-    ReportsComponent,
     TypeIconComponent,
     StrategyCellRendererComponent,
     RiskCellRendererComponent,

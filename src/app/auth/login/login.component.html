@@ -64,7 +64,7 @@
                 </div>
                 <div class="login-form-button">
                     <a>
-                        <button mat-flat-button type="submit">{{"login.Log In"|translate}}</button>
+                        <button mat-flat-button type="submit" [IcmLoadingOverlay]="showLoader">{{"login.Log In"|translate}}</button>
                     </a>
                 </div>
             </form>

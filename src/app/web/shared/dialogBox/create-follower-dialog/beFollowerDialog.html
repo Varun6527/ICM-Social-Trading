@@ -50,7 +50,7 @@
             </mat-dialog-content>
             <div class="d-flex justify-center g-20">
                 <button mat-dialog-close class="secondary-btn" (click)="closeCreateFollowerForm()">{{'COMMON.Cancel' | translate}}</button>
-                <button class="primary-btn" type="submit" (click)="createFollowerUser()">{{'COMMON.Create' | translate}}</button>
+                <button class="primary-btn" type="submit" (click)="createFollowerUser()" [IcmLoadingOverlay]="showLoader">{{'COMMON.Create' | translate}}</button>
             </div>
         </form>
     </div>

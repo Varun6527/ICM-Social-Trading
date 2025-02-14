@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WebService } from '../../service/web.service';
 import { ProviderMetricUIModal, ProviderDetailsUIModal, TradingAccountUIModal, FollowerMetricUIModal, FollowerDetailsUIModal } from '../../shared/ui-model/web.ui.model';
@@ -186,7 +186,7 @@ export class HomeStandAloneComponent {
 
   setupProviderGridConfig() {
     let colDefs = [
-      { field: "nickName", headerName: 'HOME.Nickname', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "nickName", headerName: 'HOME.Nickname', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerProfileRedirection' },
       { field: "providerFees", headerName: 'HOME.Fees', resizable: false, width: 140, maxWidth: 140 },
       { field: "followers", headerName: 'HOME.Followers', resizable: true, width: 150, minWidth: 150, maxWidth: 250 },
       { field: "followersGrowth", headerName: 'HOME.Followers Growth', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
@@ -232,7 +232,9 @@ export class HomeStandAloneComponent {
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
       enablePagination: true,
-      headerNameLangArr: colDefs.map((o: any) => o.headerName)
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'clientSide',
+      rowHeight: undefined
     }
   }
 

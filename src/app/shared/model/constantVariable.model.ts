@@ -29,6 +29,14 @@ export class ConstantVariable {
         },
         transactionsHistory: {
             get: '/api/transactions'
+        },
+        reports: {
+            provider: '/api/reports/provider-earnings',
+            offers: '/api/reports/offer-earnings',
+            recieved_Fees: '/api/reports/payments?type=ReceivedFees',
+            published: '/api/reports/publishing',
+            paid_Fees: '/api/reports/payments?type=PaidFees',
+            copied_Position: '/api/reports/copying'
         }
     };
     errorMessageObj: any = {

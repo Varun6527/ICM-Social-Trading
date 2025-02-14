@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -8,12 +8,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { ConstantVariable } from '../../../../shared/model/constantVariable.model';
 import { TranslateModule } from '@ngx-translate/core';
+import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
 
 @Component({
     selector: 'beProvider-dialog',
     templateUrl: './beProviderDialog.html',
     standalone: true,
-    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, TranslateModule],
+    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [
       `
@@ -61,11 +62,12 @@ import { TranslateModule } from '@ngx-translate/core';
     createproviderForm: FormGroup;
     tradingIdArr?: any[];
     showError: boolean = false;
+    showLoader: boolean = false;
   
     @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
     IConstant: any;
   
-    constructor(public dialogRef: MatDialogRef<BeProviderDialogStandAloneComponent>, private fb: FormBuilder, private _webService: WebService) {
+    constructor(public dialogRef: MatDialogRef<BeProviderDialogStandAloneComponent>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
       //Setup ReactiveForm for Create Provider
       this.createproviderForm = this.fb.group({
         accountId: ['', [Validators.required]],
@@ -109,18 +111,21 @@ import { TranslateModule } from '@ngx-translate/core';
         this.showError = true;
         return;
       }
+      this.showLoader = true;
       this.showError = false;
       let param = {
         accountId: this.getControl['accountId'].value,
         nickname: this.getControl['nickname'].value
       }
-  
       this._webService.createProvider(param).subscribe({
         next: (response) => {
           this._webService.emitOnWebDataChange({ action: 'provider_created', data: response });
+          this.showLoader = false;
         },
         error: (errorObj) => {
+          this.showLoader = false;
           this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+          this.cdr.detectChanges();
         },
       })
     }

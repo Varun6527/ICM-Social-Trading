@@ -62,3 +62,23 @@ export class MyRatingsGaurd implements CanActivate {
         }
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+
+export class MyReportsGaurd implements CanActivate {
+
+    constructor(private _webService: WebService, private _router: Router) {
+    }
+
+    canActivate(): boolean {
+        let flag = this._webService.isProviderAccount || this._webService.isSubscriptionAccount;
+        if (!flag) {
+            this._router.navigate(['./portal']);
+            return false;
+        } else {
+            return true;
+        }
+    }
+}

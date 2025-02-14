@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { CommonCellRendererStandAloneComponent } from './cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';

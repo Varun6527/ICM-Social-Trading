@@ -8,9 +8,8 @@ import { ProviderProfileComponent } from './views/providers/provider-profile/pro
 import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
 import { OffersComponent } from './views/offers/offers.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
-import { ReportsComponent } from './views/reports/reports.component';
 import { ProviderListProfileComponent } from './views/providers-list/provider-list-profile/provider-list-profile.component';
-import { MyFollowerGaurd, MyProviderGaurd, MyRatingsGaurd } from './gaurd/web.gaurd';
+import { MyFollowerGaurd, MyProviderGaurd, MyRatingsGaurd, MyReportsGaurd } from './gaurd/web.gaurd';
 
 const WEB_ROUTES: Routes = [
   {
@@ -31,6 +30,12 @@ const WEB_ROUTES: Routes = [
         path: 'transactions',
         loadComponent: () => import('./views/transactions/transactions.standalone.component').then(s => s.TransactionsStandAloneComponent),
         title: "ICM | Transactions"
+      },
+      {
+        path: 'reports',
+        loadComponent: () => import('./views/reports/reports.standalone.component').then(s => s.ReportsStandAloneComponent),
+        title: "ICM | Reports",
+        canActivate: [MyReportsGaurd]
       },
       {
         path: 'providers',
@@ -73,12 +78,6 @@ const WEB_ROUTES: Routes = [
         component: ProviderListProfileComponent,
         title: "ICM | Providers List",
         canActivate: [MyRatingsGaurd]
-      },
-      {
-        path: 'reports',
-        component: ReportsComponent,
-        title: "ICM | Reports",
-        canActivate: [MyProviderGaurd, MyFollowerGaurd]
       },
     ]
   }

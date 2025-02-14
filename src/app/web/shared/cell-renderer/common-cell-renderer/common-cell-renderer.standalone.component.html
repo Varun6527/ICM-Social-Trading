@@ -1,6 +1,6 @@
-<a *ngIf="!params.colDef.colId"
-     (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
-      <span>{{ params.value }}</span>
+    <a *ngIf="params.colDef.colId == 'providerProfileRedirection' || params.colDef.colId == 'providerOfferRedirection'"
+        (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
+          <span>{{ params.value }}</span>
     </a>
 
     <div *ngIf="params.colDef.colId == 'transactionTitlePopup'" class="d-flex flex-column">
@@ -69,13 +69,21 @@
       </div>
     </div>
 
-    <div *ngIf="params.colDef.colId == 'subscriptionRedirection'" class="d-flex flex-column">
-      <div class="d-flex justify-left g-5 align-center {{params.value.ownerType == 'Provider' ? 'line-height-2' : ''}}">
-          <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
-              <span>{{ params.value.name }}</span>
-          </a>
-          <div>
-          #{{ params.value.subscriptionId }}
-          </div>
+    <div *ngIf="params.colDef.colId == 'subscriptionRedirection'">
+      <div class="d-flex justify-left g-5 align-center">
+        <a href="javascript:void(0)" class="default-link cursor-default">
+            <span>Subscription</span>
+        </a>
+        <div>
+          #{{ params.value }}
         </div>
+      </div>
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'providerFees'">
+      <div class="d-flex justify-left g-5 flex-column line-height-1-2">
+        <div>Performance fee: {{params.value.performanceFee}}</div>
+        <div>Management fee: {{params.value.managementFee}}</div>
+        <div>Registration fee: {{params.value.registrationFee}}</div>
+      </div>
     </div>

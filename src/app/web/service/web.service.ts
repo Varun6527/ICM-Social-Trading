@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
 import { map, mergeMap, of, Subject, switchMap, tap } from 'rxjs';
@@ -120,6 +120,10 @@ export class WebService extends BaseService {
     } else {
       return "";
     }
+  }
+
+  getCommonReportsData(url: any, param: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, param);
   }
 
 }

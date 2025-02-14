@@ -248,7 +248,9 @@
         "Title": "Tajuk",
         "Name": "Nama",
         "Fees": "Yuran",
-        "Count": "Bilangan"
+        "Count": "Bilangan",
+        "Earnings": "Earnings",
+        "Trading": "Trading"
     },
     "PROVIDERS_LIST": {
         "Providers": "Penyedia",

@@ -247,7 +247,9 @@
         "Title":"Title",
         "Name":"Name",
         "Fees":"Fees",
-        "Count":"Count"
+        "Count":"Count",
+        "Earnings": "Earnings",
+        "Trading": "Trading"
     },
     "PROVIDERS_LIST":{
         "Providers":"Providers",

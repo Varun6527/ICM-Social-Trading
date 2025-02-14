@@ -76,7 +76,6 @@ export class ProviderDetailsUIModal {
     registerTime: string = "";
     closedProfit: string = "";
     visibility: string = "";
-    actionUrl: any = '/portal/providers/';
 
     constructor(proDetailObj: any) {
         this.providerId = proDetailObj.providerId;
@@ -242,7 +241,6 @@ export class FollowerDetailsUIModal {
     copiedPosition: any;
     paidFees: string = "";
     registerTime: any;
-    actionUrl: any = '/portal/subscriptions/';
 
     constructor(followDetailObj: any) {
         this.followerId = followDetailObj.subscriptionId;
@@ -264,6 +262,56 @@ export class FollowerDetailsUIModal {
             hour12: true 
           }).replace(',', '');
       }
+}
+
+export class ProvidersEarningModal {
+    providerId: any;
+    nickName: string = "";
+    amount: string = "";
+    constructor(obj: any) {
+        this.providerId = obj.providerId;
+        this.nickName = obj.providerNickname;
+        this.amount = new ConvertValueToCurrency(obj.amount, 'USD', false).getConvertedValue();
+    }
+}
+
+export class ProvidersOffersModal {
+    offerId: any;
+    offerTitle: string = "";
+    nickName: string = "";
+    amount: string = "";
+    constructor(obj: any) {
+        this.offerId = obj.offerId;
+        this.offerTitle = obj.offerName;
+        this.nickName = obj.providerNickname;
+        this.amount = new ConvertValueToCurrency(obj.amount, 'USD', false).getConvertedValue();
+    }
+}
+
+export class ProvidersRecievedFeesModal {
+    followerId: any;
+    providerFeesObj: any;
+    amount: string = "";
+    constructor(obj: any) {
+        this.followerId = obj.subscriptionId;
+        this.providerFeesObj = {
+            performanceFee: new ConvertValueToCurrency(obj.totalPerformanceFee, 'USD', false).getConvertedValue(),
+            managementFee: new ConvertValueToCurrency(obj.totalManagementFee, 'USD', false).getConvertedValue(),
+            registrationFee: new ConvertValueToCurrency(obj.totalRegistrationFee, 'USD', false).getConvertedValue()
+        }
+        this.amount = new ConvertValueToCurrency(obj.totalAmount, 'USD', false).getConvertedValue();
+    }
+}
+
+export class PublishPostionModal {
+    providerId: any;
+    nickName: string = "";
+    count: string = "";
+    constructor(obj: any) {
+        this.providerId = obj.providerId;
+        this.nickName = obj.nickname;
+        this.count = obj.count;
+    }
 }
 
 export class ConvertValueToCurrency {

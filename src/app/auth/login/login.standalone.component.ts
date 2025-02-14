@@ -13,23 +13,26 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseLanguageTranslationComponent } from '../../shared/component/languagetranslation/base.language.translation.component';
+import { IcmLoadingOverlayDirective } from '../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent]
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent, IcmLoadingOverlayDirective]
 })
 export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
   loginForm: FormGroup;
   showLoginFormError: boolean = false;
   
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
+  redirectUrl: any;
+  showLoader!: boolean;
   
-  constructor(private router: Router, private translate: TranslateService, private fb: FormBuilder, private _authService: AuthService) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private translate: TranslateService, private fb: FormBuilder, private _authService: AuthService) {
     super(translate, _authService);
     //Setup ReactiveForm for Login
     this.loginForm = this.fb.group({
@@ -37,6 +40,9 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
       password: ['', [Validators.required]]
     });
     //End
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.redirectUrl = params['redirectUrl'];
+    });
   }
 
   get getControl() {
@@ -57,6 +63,7 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
       this.showLoginFormError = true;
       return;
     }
+    this.showLoader = true;
     let param = {
       username: this.getControl['username'].value,
       password: this.getControl['password'].value,
@@ -65,11 +72,12 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
     this._authService.loginUser(param).subscribe({
       next: (result)=> {
         this._authService.tokenObject = result;
-        this.router.navigate(['./portal']);
+        this.router.navigate([this.redirectUrl ? this.redirectUrl : './portal']);
       },
       error: (errorObj) => {
         console.error(errorObj?.error?.error_description);
         this.showErrorWarnMessage(errorObj?.error?.error_description);
+        this.showLoader = false;
       }
     });
   }

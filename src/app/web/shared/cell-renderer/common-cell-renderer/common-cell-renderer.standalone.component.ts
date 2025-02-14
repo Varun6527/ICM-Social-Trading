@@ -1,7 +1,7 @@
 // nickname-renderer.component.ts
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { WebService } from '../../../../service/web.service';
+import { WebService } from '../../../service/web.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -24,10 +24,10 @@ export class CommonCellRendererStandAloneComponent {
   }
 
   onCellNameClicked() {
-    if(!this.params.colDef.colId) {
-      this.router.navigate([`${this.params.data.actionUrl}${this.params.data.providerId}`]);
+    if(this.params.colDef.colId == 'providerProfileRedirection') {
+      this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);
     } else if(this.params.colDef.colId == 'followerProfileRedirection') {
-      this.router.navigate([`${this.params.data.actionUrl}${this.params.data.followerId}`]);
+      this.router.navigate([`/portal/subscriptions/${this.params.data.followerId}`]);
     } else if(this.params.colDef.colId == 'accountDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'transactionTitlePopup') {
@@ -42,6 +42,8 @@ export class CommonCellRendererStandAloneComponent {
       if(this.params.value.ownerType == "Provider") {
         this.router.navigate([`/portal/providers/${this.params.value.id}`]);
       }
+    } else if(this.params.colDef.colId == 'providerOfferRedirection') {
+      this.router.navigate([`/portal/offers/${this.params.data.offerId}`]);
     }
   }
 }

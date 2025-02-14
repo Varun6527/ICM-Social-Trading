@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
-import { CommonCellRendererStandAloneComponent } from '../providers/cellRenderers/common-cell-renderer/common-cell-renderer.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 
 @Component({
   selector: 'app-account',
@@ -97,7 +97,9 @@ export class AccountStandAloneComponent {
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
       enablePagination: true,
-      headerNameLangArr: colDefs.map((o: any) => o.headerName)
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'clientSide',
+      rowHeight: undefined
     }
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,12 +10,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, startWith } from 'rxjs';
 import { ConstantVariable } from '../../../../shared/model/constantVariable.model'
 import { TranslateModule } from '@ngx-translate/core';
+import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
 
 @Component({
     selector: 'beFollower-dialog',
     templateUrl: './beFollowerDialog.html',
     standalone: true,
-    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, AsyncPipe, MatAutocompleteModule, TranslateModule],
+    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, AsyncPipe, MatAutocompleteModule, TranslateModule, IcmLoadingOverlayDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [
       `
@@ -82,10 +83,11 @@ import { TranslateModule } from '@ngx-translate/core';
     showError: boolean = false;
     filteredOptions: Observable<any[]> | undefined;
     IConstant: any;
+    showLoader:boolean = false;
   
     @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   
-    constructor(private _webService: WebService, private fb: FormBuilder, public dialogRef: MatDialogRef<BeFollowerDialogStandAloneComponent>) {
+    constructor(private cdr: ChangeDetectorRef, private _webService: WebService, private fb: FormBuilder, public dialogRef: MatDialogRef<BeFollowerDialogStandAloneComponent>) {
       //Setup ReactiveForm for Create Provider
       this.createFollowerForm = this.fb.group({
         accountId: ['', [Validators.required]],
@@ -181,6 +183,7 @@ import { TranslateModule } from '@ngx-translate/core';
         this.showError = true;
         return;
       }
+      this.showLoader = true;
       this.showError = false;
       let param = {
         accountId: this.getControl['accountId'].value,
@@ -191,10 +194,13 @@ import { TranslateModule } from '@ngx-translate/core';
   
       this._webService.createFollower(param).subscribe({
         next: (response) => {
+          this.showLoader = false;
           this._webService.emitOnWebDataChange({ action: 'Follower_created', data: response });
         },
         error: (errorObj) => {
+          this.showLoader = false;
           this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+          this.cdr.detectChanges();
         },
       })
     }
