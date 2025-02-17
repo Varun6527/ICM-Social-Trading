@@ -13,23 +13,27 @@
                         <div class="reports-container" *ngFor="let report of tab.reportsArr">
                             <div class="header d-flex justify-space-between align-center pb-20">
                                 <div class="header-subtitle">
-                                    <h5>{{report.title|translate}}</h5>
-                                    <p>{{report.description|translate}}</p>
+                                    <h5>{{ report.title | translate }}</h5>
+                                    <p>{{ report.description | translate }}</p>
                                 </div>
                             </div>
                             <div class="header-buttons d-flex justify-space-between align-center">
-                                <app-icm-date-range-picker *ngIf="report.defaultDateRange" (emitToParent)="recieveChildrenEmitter($event, report)" [defaultDateRange]="report.defaultDateRange"></app-icm-date-range-picker>
+                                <app-icm-date-range-picker *ngIf="report.defaultDateRange" 
+                                                            (emitToParent)="recieveChildrenEmitter($event, report)" 
+                                                            [defaultDateRange]="report.defaultDateRange">
+                                </app-icm-date-range-picker>
                                 <div class="d-flex justify-space-between g-10">
                                     <div class="d-flex justify-center g-10 align-baseline">
                                         <button class="secondary-btn" (click)="refreshGrid(report)">
                                             <img src="../../../../assets/icons/rotateIcon.svg" />
-                                            {{"COMMON.Refresh"|translate}}
+                                            {{"COMMON.Refresh" | translate}}
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="pb-20">
-                                <common-ag-grid [gridConfig]="report.grid.config" [gridData]="report.grid.data"
+                                <common-ag-grid [gridConfig]="report.grid.config" 
+                                                [gridData]="report.grid.data"
                                                 [showGridLoader]="report.grid.showLoader">
                                 </common-ag-grid>
                             </div>

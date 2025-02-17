@@ -10,7 +10,7 @@ import { IcmDateRangePickerStandAloneComponent } from '../../shared/icm-date-ran
 import { WebService } from '../../service/web.service';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
-import { ProvidersEarningModal, ProvidersOffersModal, ProvidersRecievedFeesModal, PublishPostionModal } from '../../shared/ui-model/web.ui.model';
+import { ProvidersEarningModal, ProvidersOffersModal, FeesModal, PublishPostionModal, CopiedPostionModal } from '../../shared/ui-model/web.ui.model';
 
 @Component({
   selector: 'app-reports',
@@ -66,7 +66,7 @@ export class ReportsStandAloneComponent {
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
       rowModelType: 'clientSide',
-      rowHeight: reportType == 'recievedFees' ? 70 : undefined
+      rowHeight: reportType == 'fees' ? 70 : undefined
     };
     return gridConfig;
   }
@@ -89,6 +89,15 @@ export class ReportsStandAloneComponent {
     return arr;
   }
 
+  getFollowerReportsTabsConfig() {
+    let arr = [];
+    arr.push(
+      this.getFeesTabConfigObj(),
+      this.getCopiedPositionConfigObj()
+    );
+    return arr;
+  }
+
   getEarningsTabConfigObj() {
     return {
       label: 'REPORTS.Earnings',
@@ -103,9 +112,9 @@ export class ReportsStandAloneComponent {
   getFeesTabConfigObj() {
     return {
       label: 'REPORTS.Fees',
-      tabIndex: 1,
+      tabIndex: this.isProvider ? 1 : 0,
       reportsArr: [
-        this.getRecievedFeesReportsConfig()
+        this.getFeesReportsConfig()
       ]
     }
   }
@@ -116,6 +125,16 @@ export class ReportsStandAloneComponent {
       tabIndex: 2,
       reportsArr: [
         this.getPublishedPositionReportsConfig()
+      ]
+    }
+  }
+
+  getCopiedPositionConfigObj() {
+    return {
+      label: 'REPORTS.Trading',
+      tabIndex: 1,
+      reportsArr: [
+        this.getCopiedPositionReportsConfig()
       ]
     }
   }
@@ -158,21 +177,21 @@ export class ReportsStandAloneComponent {
     }
   }
 
-  getRecievedFeesReportsConfig() {
-    let feedColDef = this.getGridColDefs('recievedFees');
+  getFeesReportsConfig() {
+    let feesColDef = this.getGridColDefs('fees');
     return {
-      title: "REPORTS.Received fees",
-      description: "REPORTS.The list of fee payments received by your providers during the specified period",
+      title: `${this.isProvider ? 'REPORTS.Received fees' : 'HOME.Paid Fees'}`,
+      description: `${this.isProvider ?  "REPORTS.The list of fee payments received by your providers during the specified period" : 'REPORTS.FeesTitleForSubscriber'}`,
       showProviderFilter: false,
       defaultDateRange: "Last 7 days",
       grid: {
-        apiUrl: this.constantVariable.http_Api_Url.reports.recieved_Fees,
-        colDef: feedColDef,
-        config: this.getCommonGridConfig(feedColDef, 'recievedFees'),
+        apiUrl: `${this.isProvider ? this.constantVariable.http_Api_Url.reports.recieved_Fees : this.constantVariable.http_Api_Url.reports.paid_Fees }`,
+        colDef: feesColDef,
+        config: this.getCommonGridConfig(feesColDef, 'fees'),
         data: [],
         showLoader: false,
         filterData: { startDate: "", endDate: "" },
-        uiModel: ProvidersRecievedFeesModal
+        uiModel: FeesModal
       }
     }
   }
@@ -192,6 +211,25 @@ export class ReportsStandAloneComponent {
         showLoader: false,
         filterData: { startDate: "", endDate: "" },
         uiModel: PublishPostionModal
+      }
+    }
+  }
+
+  getCopiedPositionReportsConfig() {
+    let publishColDef = this.getGridColDefs('copied');
+    return {
+      title: "REPORTS.Copied Positions Report",
+      description: "REPORTS.DescriptionOfCopiedPostionReport",
+      showProviderFilter: false,
+      defaultDateRange: "Last 7 days",
+      grid: {
+        apiUrl: this.constantVariable.http_Api_Url.reports.copied_Position,
+        colDef: publishColDef,
+        config: this.getCommonGridConfig(publishColDef, 'copied'),
+        data: [],
+        showLoader: false,
+        filterData: { startDate: "", endDate: "" },
+        uiModel: CopiedPostionModal
       }
     }
   }
@@ -219,10 +257,6 @@ export class ReportsStandAloneComponent {
     })
   }
 
-  getFollowerReportsTabsConfig() {
-
-  }
-
   onTabChange(event: any) {
     let tabName = this.tabTypeEnum.provider[event.index];
     this.goToSelectedIndex(this.indexEnum.provider[tabName]);
@@ -240,15 +274,20 @@ export class ReportsStandAloneComponent {
         { field: "nickName" , headerName:'REPORTS.Nickname',resizable: false , suppressSizeToFit: true,flex:1},
         { field: "amount" ,headerName:'REPORTS.Amount',resizable: false,flex:1, suppressSizeToFit: true},
       ]
-    } else if(gridType == 'recievedFees') {
+    } else if(gridType == 'fees') {
       return [
-        { field: "followerId" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection'},
+        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection'},
         { field: "providerFeesObj" , headerName : 'REPORTS.Fees',resizable: false,flex:1, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerFees'},
         { field: "amount" ,headerName:'REPORTS.Amount',resizable: false,flex:1, suppressSizeToFit: true},
       ]
     } else if(gridType == 'publishing') {
       return [
         { field: "nickName" , headerName:'REPORTS.Nickname',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'providerProfileRedirection'},
+        { field: "count" , headerName :'REPORTS.Count',resizable: false,flex:1},
+      ]
+    } else if(gridType == 'copied') {
+      return [
+        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection'},
         { field: "count" , headerName :'REPORTS.Count',resizable: false,flex:1},
       ]
     }

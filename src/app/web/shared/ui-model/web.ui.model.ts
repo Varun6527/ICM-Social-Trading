@@ -288,10 +288,11 @@ export class ProvidersOffersModal {
     }
 }
 
-export class ProvidersRecievedFeesModal {
+export class FeesModal {
     followerId: any;
     providerFeesObj: any;
     amount: string = "";
+    name: string = "Subscription";
     constructor(obj: any) {
         this.followerId = obj.subscriptionId;
         this.providerFeesObj = {
@@ -310,6 +311,16 @@ export class PublishPostionModal {
     constructor(obj: any) {
         this.providerId = obj.providerId;
         this.nickName = obj.nickname;
+        this.count = obj.count;
+    }
+}
+
+export class CopiedPostionModal {
+    followerId: any;
+    name: string = "Subscription";
+    count: string = "";
+    constructor(obj: any) {
+        this.followerId = obj.subscriptionId;
         this.count = obj.count;
     }
 }

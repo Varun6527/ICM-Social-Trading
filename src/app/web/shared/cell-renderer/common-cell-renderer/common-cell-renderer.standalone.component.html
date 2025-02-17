@@ -62,7 +62,9 @@
     
     <div *ngIf="params.colDef.colId == 'followerProfileRedirection'" class="d-flex flex-column line-height-1-7 justify-left align-baseline" href="javascript:void(0)">
       <div>
-        {{ params.value }}
+        <a href="javascript:void(0)" class="default-link" (click)="onCellNameClicked()">
+          <span>{{ params.value }}</span>
+        </a>
       </div>
       <div class="tag">
         #{{params.data.followerId}}
@@ -71,11 +73,12 @@
 
     <div *ngIf="params.colDef.colId == 'subscriptionRedirection'">
       <div class="d-flex justify-left g-5 align-center">
-        <a href="javascript:void(0)" class="default-link cursor-default">
-            <span>Subscription</span>
+        <a href="javascript:void(0)" class="default-link" [ngClass]="{'cursor-default': isProvider}"
+        (click)="isProvider ? '' : onCellNameClicked()">
+            <span>{{ params.value }}</span>
         </a>
         <div>
-          #{{ params.value }}
+          #{{ params.data.followerId }}
         </div>
       </div>
     </div>

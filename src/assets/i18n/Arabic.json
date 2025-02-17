@@ -250,7 +250,10 @@
         "Fees":"Fees",
         "Count":"Count",
         "Earnings": "Earnings",
-        "Trading": "Trading"
+        "Trading": "Trading",
+        "FeesTitleForSubscriber": "The list of fee payments withdrawn from your subscriptions during the specified period",
+        "Copied Positions Report": "Copied Positions Report",
+        "DescriptionOfCopiedPostionReport": "Report on positions copied by followers"
     },
     "PROVIDERS_LIST":{
         "Providers":"Providers",

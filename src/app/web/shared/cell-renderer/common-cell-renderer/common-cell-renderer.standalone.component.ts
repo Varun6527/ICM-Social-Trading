@@ -13,9 +13,12 @@ import { CommonModule } from '@angular/common';
 })
 export class CommonCellRendererStandAloneComponent {
   params: any;
+  isProvider: boolean;
+  isFollower: boolean;
 
   constructor(private router:Router, private _webService: WebService) {
-
+    this.isProvider = this._webService.isProviderAccount;
+    this.isFollower = this._webService.isSubscriptionAccount;
   }
 
   // AG Grid passes the row data into this method
@@ -26,7 +29,7 @@ export class CommonCellRendererStandAloneComponent {
   onCellNameClicked() {
     if(this.params.colDef.colId == 'providerProfileRedirection') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);
-    } else if(this.params.colDef.colId == 'followerProfileRedirection') {
+    } else if(this.params.colDef.colId == 'followerProfileRedirection' || this.params.colDef.colId == 'subscriptionRedirection') {
       this.router.navigate([`/portal/subscriptions/${this.params.data.followerId}`]);
     } else if(this.params.colDef.colId == 'accountDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
