@@ -4,11 +4,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { WebService } from '../../../service/web.service';
 import { ShowErrorStandAloneComponent } from '../../../../shared/component/showerror/show.error.standalone.component';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ConstantVariable } from '../../../../shared/model/constantVariable.model';
 import { TranslateModule } from '@ngx-translate/core';
-import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
@@ -16,7 +15,7 @@ import { MatRadioModule } from '@angular/material/radio';
     templateUrl: './filter.dialog.html',
     styleUrls: ['./filter.dialog.scss'],
     standalone: true,
-    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective, MatRadioModule],
+    imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, TranslateModule, MatRadioModule],
     changeDetection: ChangeDetectionStrategy.OnPush
   })
   export class FilterDialogStandAloneComponent {
