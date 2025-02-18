@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
-import { map, mergeMap, of, Subject, switchMap, tap } from 'rxjs';
+import { map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +49,25 @@ export class WebService extends BaseService {
         error: (error: any) => {
             callback({status: false, errorObj: error});
         }
+    });
+  }
+
+  setOrRefreshUserProfileDataAsObserver() {
+    return new Observable((observer) => {
+      if (this.userPermissionConfig) {
+        observer.next(true);
+        observer.complete();
+      } else {
+        this.setOrRefreshUserProfileData((result: any) => {
+          if (result['status']) {
+            observer.next(true);
+            observer.complete();
+          } else {
+            observer.error(false);
+            observer.complete();
+          }
+        });
+      }
     });
   }
 
