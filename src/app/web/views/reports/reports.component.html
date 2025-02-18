@@ -18,10 +18,16 @@
                                 </div>
                             </div>
                             <div class="header-buttons d-flex justify-space-between align-center">
-                                <app-icm-date-range-picker *ngIf="report.defaultDateRange" 
-                                                            (emitToParent)="recieveChildrenEmitter($event, report)" 
-                                                            [defaultDateRange]="report.defaultDateRange">
-                                </app-icm-date-range-picker>
+                                <div class="d-flex g-10">
+                                    <app-icm-date-range-picker *ngIf="report.defaultDateRange" 
+                                                                (emitToParent)="recieveChildrenEmitter($event, report)" 
+                                                                [defaultDateRange]="report.defaultDateRange">
+                                    </app-icm-date-range-picker>
+                                    <button *ngIf="report.showProviderFilter" (click)="openProviderFilterPopup(report)" class="secondary-btn pos-relative">
+                                        {{"REPORTS.Set Filter" | translate}}
+                                        <div class="filter-badge" *ngIf="report.grid.filterData.filterType == 'Provider'">1</div>
+                                    </button>
+                                </div>
                                 <div class="d-flex justify-space-between g-10">
                                     <div class="d-flex justify-center g-10 align-baseline">
                                         <button class="secondary-btn" (click)="refreshGrid(report)">

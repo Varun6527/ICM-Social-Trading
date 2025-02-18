@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ColDef } from "ag-grid-community";
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,8 @@ import { WebService } from '../../service/web.service';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { ProvidersEarningModal, ProvidersOffersModal, FeesModal, PublishPostionModal, CopiedPostionModal } from '../../shared/ui-model/web.ui.model';
+import { MatDialog } from '@angular/material/dialog';
+import { FilterDialogStandAloneComponent } from '../../shared/dialogBox/filter-dialog/filter.dialog.standalone.component';
 
 @Component({
   selector: 'app-reports',
@@ -41,6 +43,7 @@ export class ReportsStandAloneComponent {
   }
   
   currentSelectedTabIndx!: number;
+  readonly filterDialog = inject(MatDialog);
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
   constructor(public translate: TranslateService, private _webService: WebService) {
@@ -48,6 +51,9 @@ export class ReportsStandAloneComponent {
     this.isFollower = this._webService.isSubscriptionAccount;
     this.setUpReportsTabs();
     this.goToSelectedIndex(this.indexEnum.provider['earning']);
+    this._webService.subscribeOnWebDataChange('ReportsStandAloneComponent', (event: any)=>{
+      this.recieveChildrenEmitter(event, {});
+    })
   }
 
   goToSelectedIndex(index: any) {
@@ -152,7 +158,7 @@ export class ReportsStandAloneComponent {
         config: this.getCommonGridConfig(providerColDef, 'provider'),
         data: [],
         showLoader: false,
-        filterData: { startDate: "", endDate: "" },
+        filterData: { startDate: "", endDate: "", filterType: 'All', filterValue: '' },
         uiModel: ProvidersEarningModal
       }
     }
@@ -163,7 +169,7 @@ export class ReportsStandAloneComponent {
     return {
       title: "REPORTS.Offers Report",
       description: "REPORTS.Report on earnings of providers per offer",
-      showProviderFilter: false,
+      showProviderFilter: true,
       defaultDateRange: "Last 7 days",
       grid: {
         apiUrl: this.constantVariable.http_Api_Url.reports.offers,
@@ -171,7 +177,7 @@ export class ReportsStandAloneComponent {
         config: this.getCommonGridConfig(offerColDef, 'offers'),
         data: [],
         showLoader: false,
-        filterData: { startDate: "", endDate: "" },
+        filterData: { startDate: "", endDate: "", filterType: 'All', filterValue: '' },
         uiModel: ProvidersOffersModal
       }
     }
@@ -182,7 +188,7 @@ export class ReportsStandAloneComponent {
     return {
       title: `${this.isProvider ? 'REPORTS.Received fees' : 'HOME.Paid Fees'}`,
       description: `${this.isProvider ?  "REPORTS.The list of fee payments received by your providers during the specified period" : 'REPORTS.FeesTitleForSubscriber'}`,
-      showProviderFilter: false,
+      showProviderFilter: `${this.isProvider ? true : false}`,
       defaultDateRange: "Last 7 days",
       grid: {
         apiUrl: `${this.isProvider ? this.constantVariable.http_Api_Url.reports.recieved_Fees : this.constantVariable.http_Api_Url.reports.paid_Fees }`,
@@ -190,7 +196,7 @@ export class ReportsStandAloneComponent {
         config: this.getCommonGridConfig(feesColDef, 'fees'),
         data: [],
         showLoader: false,
-        filterData: { startDate: "", endDate: "" },
+        filterData: { startDate: "", endDate: "", filterType: 'All', filterValue: '' },
         uiModel: FeesModal
       }
     }
@@ -209,7 +215,7 @@ export class ReportsStandAloneComponent {
         config: this.getCommonGridConfig(publishColDef, 'publishing'),
         data: [],
         showLoader: false,
-        filterData: { startDate: "", endDate: "" },
+        filterData: { startDate: "", endDate: "", filterType: 'All', filterValue: '' },
         uiModel: PublishPostionModal
       }
     }
@@ -228,7 +234,7 @@ export class ReportsStandAloneComponent {
         config: this.getCommonGridConfig(publishColDef, 'copied'),
         data: [],
         showLoader: false,
-        filterData: { startDate: "", endDate: "" },
+        filterData: { startDate: "", endDate: "", filterType: 'All', filterValue: '' },
         uiModel: CopiedPostionModal
       }
     }
@@ -237,13 +243,9 @@ export class ReportsStandAloneComponent {
   getGridData(reportConfigObj: any) {
     let reportConfig = reportConfigObj.grid
     reportConfig.showLoader = true;
-    let param = {
-      startDate: this.convertToGMTFormat(reportConfig.filterData['startDate'], false),
-      endDate: this.convertToGMTFormat(reportConfig.filterData['endDate'], true),
-      filterType: 'All',
-      needCount: true
-    }
+    let param: any = this.getCommonGridParam(reportConfig);
     this._webService.getCommonReportsData(reportConfig.apiUrl, param).subscribe({
+
       next: (response: any) => {
         let arr: any = [];
         response.items.forEach((obj: any) => arr.push(new reportConfig.uiModel(obj)));
@@ -255,6 +257,19 @@ export class ReportsStandAloneComponent {
         reportConfig.showLoader = false;
       }
     })
+  }
+
+  getCommonGridParam(reportConfig: any) {
+    let param: any = {
+      startDate: this.convertToGMTFormat(reportConfig.filterData['startDate'], false),
+      endDate: this.convertToGMTFormat(reportConfig.filterData['endDate'], true),
+      filterType: reportConfig.filterData['filterType'],
+      needCount: true
+    }
+    if(reportConfig.filterData['filterType'] == 'Provider') {
+      param['filterValue'] = reportConfig.filterData['filterValue'];
+    }
+    return param;
   }
 
   onTabChange(event: any) {
@@ -299,6 +314,8 @@ export class ReportsStandAloneComponent {
       reportObj.grid.filterData.startDate = event['startDate'];
       reportObj.grid.filterData.endDate = event['endDate'];
       this.getGridData(reportObj);
+    } else if(event['action'] == "set_filters") {
+      this.refreshGrid(event['reportObj']);
     }
   }
 
@@ -316,5 +333,18 @@ export class ReportsStandAloneComponent {
 
   refreshGrid(reportObj: any) {
     this.getGridData(reportObj);
+  }
+
+  openProviderFilterPopup(reportObj: any) {
+    this.filterDialog.open(FilterDialogStandAloneComponent, {
+      panelClass: 'filter-Dialog',
+      data: reportObj
+    });
+    this.filterDialog.afterAllClosed.subscribe((result) => { 
+    });
+  }
+
+  ngOnDestroy() {
+    this._webService.unSubscribeOnWebDataChange('ReportsStandAloneComponent');
   }
 }

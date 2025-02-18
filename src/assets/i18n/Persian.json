@@ -252,7 +252,14 @@
         "Trading": "Trading",
         "FeesTitleForSubscriber": "The list of fee payments withdrawn from your subscriptions during the specified period",
         "Copied Positions Report": "Copied Positions Report",
-        "DescriptionOfCopiedPostionReport": "Report on positions copied by followers"
+        "DescriptionOfCopiedPostionReport": "Report on positions copied by followers",
+        "Set Filter": "Set Filter",
+        "Filter": "Filter",
+        "FilterReportByCondition": "Filter the report data by specific conditions",
+        "Filter type": "Filter type",
+        "Specify the filtering type": "Specify the filtering type",
+        "Filter data by a provider": "Filter data by a provider",
+        "Apply": "Apply"
     },
     "PROVIDERS_LIST":{
         "Providers":"Providers",

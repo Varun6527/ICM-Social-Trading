@@ -1,0 +1,29 @@
+<h2 mat-dialog-title class="text-center">{{'REPORTS.Filter' | translate}}</h2>
+<p class="text-center">{{'REPORTS.FilterReportByCondition' | translate}}</p>
+<form [formGroup]="filterForm">
+    <mat-dialog-content class="mat-typography">
+        <div class="radio-container">
+            <mat-label>{{'REPORTS.Filter type' | translate}} *</mat-label>
+            <mat-radio-group formControlName="filterType" >
+                <mat-radio-button value="All">{{'PROVIDERS_LIST.All' | translate}}</mat-radio-button>
+                <mat-radio-button value="Provider">{{'HOME.Provider' | translate}}</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        @if(filterForm.controls['filterType'].value == 'Provider') {
+            <p class="pb-10" >{{'REPORTS.Specify the filtering type' | translate}}</p>
+            <mat-form-field class="commonInfo-provider">
+                <mat-label>{{'HOME.Provider' | translate}}</mat-label>
+                <mat-select formControlName="providerId" #selectElement>
+                    <mat-option *ngFor="let obj of providerArr" [value]="obj.id">{{obj.nickName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p class="pb-10" *ngIf="!showError || !filterForm.controls['providerId'].errors?.['required']">{{'REPORTS.Filter data by a provider' | translate}}</p>
+            <mat-error class="pb-10" *ngIf="showError && filterForm.controls['providerId'].errors?.['required']">{{'login.FieldRequired' | translate}}</mat-error>
+        }
+    </mat-dialog-content>
+    <div class="d-flex justify-center g-20">
+        <button class="secondary-btn" (click)="closeProviderFilterForm()">{{'COMMON.Cancel' | translate}}</button>
+        <button class="primary-btn" type="submit" (click)="applyFilters()">{{'REPORTS.Apply' | translate}}</button>
+    </div>
+</form>
+<show-error-message></show-error-message>

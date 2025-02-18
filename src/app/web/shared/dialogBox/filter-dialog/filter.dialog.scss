@@ -1,0 +1,32 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .filter-Dialog {
+    width: 600px !important;
+    border-radius: 10px !important;
+
+    .mat-mdc-dialog-title {
+        margin: unset !important;
+        padding-bottom: 10px !important;
+    }
+
+    .mat-mdc-dialog-surface {
+        border-radius: 10px !important;
+        background: white !important;
+        padding: 20px !important;
+    }
+
+    .commonInfo-provider {
+        width: 100% !important;
+
+        .mdc-text-field {
+            background-color: white;
+            border: 1px solid;
+            border-bottom: 0px;
+            margin-bottom: -1.25em
+        }
+    }
+
+    .radio-container {
+        @include radio-btn-container()
+    }
+}

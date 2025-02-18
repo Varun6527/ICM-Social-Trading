@@ -14,6 +14,33 @@
     }
 }
 
+@mixin radio-btn-container() {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .mat-mdc-radio-group {
+        display: flex;
+        flex-direction: column;
+        padding: 5px 0px;
+        border-radius: 5px 5px 0px 0px;
+        background-color: var(--mat-select-panel-background-color);
+        border: 1px solid;
+
+        .mdc-radio__inner-circle {
+            border-color: var(--secondaryBlue) !important;
+        }
+
+        .mdc-radio__outer-circle {
+            border-color: var(--secondaryBlue) !important;
+        }
+
+        .mdc-radio__background::before {
+            background-color: var(--secondaryBlue) !important;
+        }
+    }
+}
+
 @mixin common-secondry-btn($margin-bottom: 0px) {
     background: #ffffff;
     color: black;
