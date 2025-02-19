@@ -23,6 +23,12 @@ export class WebService extends BaseService {
     this.constantVar = new ConstantVariable();
   }
 
+  clearUserProfileData() {
+    this.userPermissionConfig = undefined;
+    this.isProviderAccount = false;
+    this.isSubscriptionAccount = false;
+  }
+
   subscribeOnWebDataChange(subscribeedFrom: string, callback: any) {
     this.webEmitterReference[subscribeedFrom] = this.webChangeEmitter.subscribe((data: any) => {
       callback && callback(data);
@@ -149,6 +155,13 @@ export class WebService extends BaseService {
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, param);
   }
 
+  getClientDetails() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.sideNav.clientDetails}`, "");
+  }
+
+  getFileServerUrl() {
+    return this.File_SERVER;
+  }
 }
 
 

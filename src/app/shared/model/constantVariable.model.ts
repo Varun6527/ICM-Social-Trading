@@ -25,6 +25,9 @@ export class ConstantVariable {
             },
             trading: {
                 account_Details: '/api/accounts',
+            },
+            sideNav: {
+                clientDetails: '/api/profile/client'
             }
         },
         transactionsHistory: {
@@ -73,4 +76,6 @@ export class ConstantVariable {
             { code: 'de', name: 'German', displayLabel: 'Deutsch', icon: 'German.png' }
         ];
     }
+    
+    providerAvatarPath: string = "/files/avatars/";
 }

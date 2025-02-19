@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
 import { Observable, Subject } from 'rxjs';
+import { WebService } from '../../web/service/web.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,9 @@ export class AuthService extends BaseService {
     return this.tokenObject.access_token;
   }
 
-  clearUserSession() {
+  clearUserDataAndToken() {
     this.tokenObject = {};
+    this.userConfig = undefined;
   }
 
   subscribeOnEducatorDataChange(subscribeedFrom: string, callback: any) {

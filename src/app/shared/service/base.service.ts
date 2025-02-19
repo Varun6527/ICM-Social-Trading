@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class BaseService {
   REST_API_SERVER = environment.REST_API_SERVER;
+  File_SERVER = environment.File_SERVER;
 
   constructor(private proHttp: HttpClient) {}
 

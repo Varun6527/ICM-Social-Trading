@@ -100,6 +100,11 @@
                     border-top: 1px solid var(--mat-select-panel-background-color);
                     margin-top: 20px;
                     padding-top: 15px;
+
+                    img {
+                        border-radius: 50%;
+                    }
+
                     p{
                         font-weight: 600;
                         margin-top: 10px;

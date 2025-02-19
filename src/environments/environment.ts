@@ -4,7 +4,8 @@
 
 export const environment = {
   production: true,
-  REST_API_SERVER:'https://socialtrading.icm.com'
+  REST_API_SERVER:'https://socialtrading.icm.com',
+  File_SERVER: 'https://socialtrading.icm.com'
  };
 
 
