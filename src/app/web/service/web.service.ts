@@ -159,6 +159,10 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.sideNav.clientDetails}`, "");
   }
 
+  saveClientDetails(data: any) {
+    return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.sideNav.clientDetails}`, data);
+  }
+
   getFileServerUrl() {
     return this.File_SERVER;
   }

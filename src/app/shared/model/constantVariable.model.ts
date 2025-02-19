@@ -48,6 +48,26 @@ export class ConstantVariable {
         ProviderDuplicated: 'Provider already exists in the system',
         AccountIsSubscriber: 'This account is used as a subscriber'
     }
+    providerLabelArr: any = [
+        { key: "Registered", value: "Registered" },
+        { key: "Archived", value: "Archived" },
+        { key: "FollowerSubscribed", value: "Follower subscribed" },
+        { key: "FollowerUnsubscribed", value: "Follower unsubscribed" }
+    ]
+    followerLabelArr: any = [
+        { key: "Registered", value: "Registered" },
+        { key: "Activated", value: "Activated" },
+        { key: "Suspended", value: "Suspended" },
+        { key: "Archived", value: "Archived" },
+        { key: "ManagementFeePaid", value: "Management fee paid" },
+        { key: "ManagementFeeDeclined", value: "Management fee declined" },
+        { key: "RiskManagementRuleReached", value: "Risk actions performed" },
+        { key: "ProviderProfileChanged", value: "Provider profile changed" },
+        { key: "OfferProfileChanged", value: "Offer profile changed" }
+    ]
+    
+    providerAvatarPath: string = "/files/avatars/";
+
 
     constructor() {
         this.setLanguageArr();
@@ -76,6 +96,4 @@ export class ConstantVariable {
             { code: 'de', name: 'German', displayLabel: 'Deutsch', icon: 'German.png' }
         ];
     }
-    
-    providerAvatarPath: string = "/files/avatars/";
 }

@@ -40,7 +40,6 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
                   background-color: white;
                   border: 1px solid;
                   border-bottom: 0px;
-                  margin-bottom: -1.25em
               }
           }
 
@@ -51,7 +50,6 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
                   background-color: white;
                   border: 1px solid;
                   border-bottom: 0px;
-                  margin-bottom: -1.25em
               }
           }
       }

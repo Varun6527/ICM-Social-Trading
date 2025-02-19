@@ -26,3 +26,7 @@
 ::ng-deep .providerProfile-tabGroup .mdc-tab{
     padding: 0 50px !important;
 }
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

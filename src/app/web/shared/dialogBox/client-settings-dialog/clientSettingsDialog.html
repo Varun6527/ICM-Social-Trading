@@ -1,0 +1,34 @@
+<h2 mat-dialog-title class="text-center">Common Information</h2>
+<p class="text-center">Common settings of the profile</p>
+<form [formGroup]="clientSettingsForm">
+    <mat-dialog-content class="mat-typography">
+        <mat-form-field class="commonInfo-select">
+            <mat-label>Preferred language</mat-label>
+            <mat-select formControlName="prefLang">
+                <mat-option *ngFor="let obj of notificationLangArr" [value]="obj.code">{{obj.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p class="pb-10">Preferred language of notifications</p>
+        
+        <mat-form-field class="commonInfo-Email">
+            <mat-label>Email</mat-label>
+            <input type="text" matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
+        <p class="pb-10">Email for receiving notifications</p>
+
+        @if(isProvider || isFollower) {
+            <mat-form-field class="commonInfo-select">
+                <mat-label>Provider Notifications</mat-label>
+                <mat-select formControlName="notificationLabels" multiple>
+                    <mat-option *ngFor="let obj of notificationLabelArr" [value]="obj.key">{{obj.value}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p class="pb-10">Alerts and updates from providers</p>
+        }
+    </mat-dialog-content>
+    <div class="d-flex justify-center g-20">
+        <button class="secondary-btn" (click)="closeClientSettingsForm()">{{'COMMON.Cancel' | translate}}</button>
+        <button class="primary-btn" type="submit" (click)="saveClientSettings()" [IcmLoadingOverlay]="showLoader">Save Changes</button>
+    </div>
+</form>
+<show-error-message></show-error-message>

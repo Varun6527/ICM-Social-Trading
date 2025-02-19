@@ -38,6 +38,14 @@ export class BaseService {
 
   };
 
+  protected sendHttpPatchAjaxRequest(url: string, params: any) {
+    return this.proHttp.patch(url, params, {         
+      headers: new HttpHeaders().set('Content-Type', 'application/json').set('Access-Control-Allow-Origin', '*').
+      set('X-Requested-With', 'XMLHttpRequest').set('Accept','application/json')
+    });
+
+  };
+
   protected sendHttpPostFormRequest(url: string, params: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {

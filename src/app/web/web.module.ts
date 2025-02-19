@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebRoutingModule } from './web-routing.module';
-import { SidenavComponent } from './shared/sidenav/sidenav.component';
+import { SidenavStanaloneComponent } from './shared/sidenav/sidenav.standalone.component';
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AgGridModule } from 'ag-grid-angular';
@@ -44,7 +44,6 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
 @NgModule({
   declarations: [
     WebLayoutComponent,
-    SidenavComponent,
     ProvidersComponent,
     ProviderProfileComponent,
     StatusBtnRendererComponent,
@@ -64,6 +63,7 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
   ],
   imports: [
     CommonModule,
+    SidenavStanaloneComponent,
     MatTabsModule,
     MatSidenavModule,
     WebRoutingModule,

@@ -1,24 +1,31 @@
-import { Component, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, ViewChild } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BaseLanguageTranslationComponent } from '../../../shared/component/languagetranslation/base.language.translation.component';
 import { WebService } from '../../service/web.service';
 import { AuthService } from '../../../auth/service/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
+import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { clientSettingsDialogStandAloneComponent } from '../dialogBox/client-settings-dialog/clientSettingsDialog.standalone.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.scss'
+  standalone: true,
+  styleUrl: './sidenav.component.scss',
+  imports: [CommonModule, RouterModule, TranslateModule, MatMenuModule, ShowErrorStandAloneComponent]
 })
-export class SidenavComponent extends BaseLanguageTranslationComponent {
+export class SidenavStanaloneComponent extends BaseLanguageTranslationComponent {
   showProvider: boolean = false;
   showSubscription: boolean = false;
   showRatingWidget: boolean = false;
   clientSettings: any = {};
   providerData: any = {};
   iConstant: ConstantVariable = new ConstantVariable();
+  readonly clientSettingsDialog = inject(MatDialog);
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
   constructor(private translate: TranslateService, private _webService: WebService, private _authService: AuthService, private _route: Router) {
@@ -69,6 +76,8 @@ export class SidenavComponent extends BaseLanguageTranslationComponent {
   recieveChildrenEvent(event: any) {
     if(event['action'] == "refresh_sidenav_menu_options") {
       this.setOrRefreshUserProfileConfig(event);
+    } else if(event['action'] == 'update_user_email') {
+      this.clientSettings.settings.email = event['email'];
     }
   }
 
@@ -87,6 +96,14 @@ export class SidenavComponent extends BaseLanguageTranslationComponent {
     this._authService.clearUserDataAndToken();
     this._webService.clearUserProfileData();
     this._route.navigate(['./portal/login']);
+  }
+
+  openSettingsPopup() {
+    this.clientSettingsDialog.open(clientSettingsDialogStandAloneComponent, {
+      panelClass: 'client-setting-Dialog'
+    });
+    this.clientSettingsDialog.afterAllClosed.subscribe((result) => {
+    });
   }
 
   ngOnDestroy() {
