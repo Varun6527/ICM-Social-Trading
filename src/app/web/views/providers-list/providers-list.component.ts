@@ -41,8 +41,97 @@ export type ChartOptions = {
   styleUrl: './providers-list.component.scss'
 })
 export class ProvidersListComponent {
-// viewmode = cards | table 
+  rowData = [
+    {
+      id: 1,
+      strategy: "Catalog",
+      investors: 1,
+      invested: "$500",
+      ownFunds: "$2200",
+      drawdown: "54.5%",
+      fee: "50%",
+      risk: "High",
+      chart: "Bar",
+      strategyIcon:'../../../../assets/icons/providerIcon.jpeg'
+    },
+    {
+      id: 2,
+      strategy: "Growth Fund",
+      investors: 25,
+      invested: "$10,000",
+      ownFunds: "$5,000",
+      drawdown: "12.3%",
+      fee: "1.2%",
+      risk: "Medium",
+      chart: "Line",
+      strategyIcon:'../../../../assets/icons/providerIcon1.png'
+
+    },
+    {
+      id: 3,
+      strategy: "Value Fund",
+      investors: 12,
+      invested: "$2,500",
+      ownFunds: "$1,000",
+      drawdown: "8.7%",
+      fee: "0.8%",
+      risk: "Low",
+      chart: "Bar",
+      strategyIcon:'../../../../assets/icons/providerIcon2.png'
+
+    },
+    {
+      id: 4,
+      strategy: "High Risk Hedge",
+      investors: 50,
+      invested: "$50,000",
+      ownFunds: "$15,000",
+      drawdown: "70.0%",
+      fee: "20%",
+      risk: "High",
+      chart: "Pie",
+      strategyIcon:'../../../../assets/icons/providerIcon3.png'
+
+    },
+    {
+      id: 5,
+      strategy: "Quotient",
+      investors: 100,
+      invested: "$75,000",
+      ownFunds: "$50,000",
+      drawdown: "5.4%",
+      fee: "0.5%",
+      risk: "Low",
+      chart: "Area",
+      strategyIcon:'../../../../assets/icons/providerIcon4.png'
+    },
+    {
+      id: 6,
+      strategy: "Layers",
+      investors: 100,
+      invested: "$75,000",
+      ownFunds: "$50,000",
+      drawdown: "5.4%",
+      fee: "0.5%",
+      risk: "Low",
+      chart: "Area",
+      strategyIcon:'../../../../assets/icons/providerIcon5.png'
+    },
+    {
+      id: 7,
+      strategy: "Stable Growth",
+      investors: 100,
+      invested: "$75,000",
+      ownFunds: "$50,000",
+      drawdown: "5.4%",
+      fee: "0.5%",
+      risk: "Low",
+      chart: "Area",
+      strategyIcon:'../../../../assets/icons/providerIcon6.png'
+    },
+  ];
   public viewMode: any = 'cards'
+  selectedTabIndex: number = 0;
 
   @ViewChild("chart") chart !: ChartComponent;
   public chartOptions!: Partial<ChartOptions> | any;
@@ -166,6 +255,10 @@ export class ProvidersListComponent {
     };
   }
 
+  onTabChange(event: any) {
+    this.selectedTabIndex = event.index;
+  }
+
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -212,97 +305,6 @@ export class ProvidersListComponent {
       { name: 'all', label: this.translate.instant('PROVIDERS_LIST.All') },
     ];
   }
-  
-
-  rowData = [
-    {
-      id: 1,
-      strategy: "Catalog",
-      investors: 1,
-      invested: "$500",
-      ownFunds: "$2200",
-      drawdown: "54.5%",
-      fee: "50%",
-      risk: "High",
-      chart: "Bar",
-      strategyIcon:'../../../../assets/icons/providerIcon.jpeg'
-    },
-    {
-      id: 2,
-      strategy: "Growth Fund",
-      investors: 25,
-      invested: "$10,000",
-      ownFunds: "$5,000",
-      drawdown: "12.3%",
-      fee: "1.2%",
-      risk: "Medium",
-      chart: "Line",
-      strategyIcon:'../../../../assets/icons/providerIcon1.png'
-
-    },
-    {
-      id: 3,
-      strategy: "Value Fund",
-      investors: 12,
-      invested: "$2,500",
-      ownFunds: "$1,000",
-      drawdown: "8.7%",
-      fee: "0.8%",
-      risk: "Low",
-      chart: "Bar",
-      strategyIcon:'../../../../assets/icons/providerIcon2.png'
-
-    },
-    {
-      id: 4,
-      strategy: "High Risk Hedge",
-      investors: 50,
-      invested: "$50,000",
-      ownFunds: "$15,000",
-      drawdown: "70.0%",
-      fee: "20%",
-      risk: "High",
-      chart: "Pie",
-      strategyIcon:'../../../../assets/icons/providerIcon3.png'
-
-    },
-    {
-      id: 5,
-      strategy: "Quotient",
-      investors: 100,
-      invested: "$75,000",
-      ownFunds: "$50,000",
-      drawdown: "5.4%",
-      fee: "0.5%",
-      risk: "Low",
-      chart: "Area",
-      strategyIcon:'../../../../assets/icons/providerIcon4.png'
-    },
-    {
-      id: 6,
-      strategy: "Layers",
-      investors: 100,
-      invested: "$75,000",
-      ownFunds: "$50,000",
-      drawdown: "5.4%",
-      fee: "0.5%",
-      risk: "Low",
-      chart: "Area",
-      strategyIcon:'../../../../assets/icons/providerIcon5.png'
-    },
-    {
-      id: 7,
-      strategy: "Stable Growth",
-      investors: 100,
-      invested: "$75,000",
-      ownFunds: "$50,000",
-      drawdown: "5.4%",
-      fee: "0.5%",
-      risk: "Low",
-      chart: "Area",
-      strategyIcon:'../../../../assets/icons/providerIcon6.png'
-    },
-  ];
 
   displayFn(user: User): string {
     return user && user.name ? user.name : '';

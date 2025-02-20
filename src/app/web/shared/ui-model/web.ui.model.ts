@@ -4,6 +4,7 @@ export class ProviderMetricUIModal {
     followerGrowth?: number;
     closedProfit?: string;
     closedProfitClass?: string;
+    currencyType: string;
 
     constructor(proMetObj: any) {
         this.closedProfitClass = this.getClosedProfitCssClass(proMetObj);
@@ -11,6 +12,7 @@ export class ProviderMetricUIModal {
         this.followers = proMetObj.followers;
         this.followerGrowth = proMetObj.followersGrowth;
         this.closedProfit = new ConvertValueToCurrency(proMetObj.closedPnL, proMetObj.currency, false).getConvertedValue(); 
+        this.currencyType = proMetObj.currency;
     }
 
     getClosedProfitCssClass(proMetObj: any) {
@@ -39,12 +41,14 @@ export class FollowerMetricUIModal {
     copiedPos?: number;
     paidFees?: string;
     tradeProfitClass?: string;
+    currencyType: any;
     constructor(folObj: any) {
         this.tradeProfitClass = this.getTradeProfitCssClass(folObj);
         this.monthlyTradeArr = this.getMonthTradeProfitArr(folObj.profitHistory, folObj.currency);
         this.tradeProfit = new ConvertValueToCurrency(folObj.totalProfit, folObj.currency, false).getConvertedValue(); 
         this.copiedPos = folObj.copiedPositions;
-        this.paidFees = new ConvertValueToCurrency(folObj.paidFees, folObj.currency, false).getConvertedValue(); 
+        this.paidFees = new ConvertValueToCurrency(folObj.paidFees, folObj.currency, false).getConvertedValue();
+        this.currencyType = folObj.currency; 
     }
 
     getTradeProfitCssClass(folObj: any) {

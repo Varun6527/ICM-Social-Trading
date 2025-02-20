@@ -20,9 +20,10 @@
                     </form> -->
                 </div>
             </div>
-            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
-                <mat-tab *ngFor="let tab of tabLabels" [label]="tab.label">
-                    <div class="providersList-header-buttons d-flex justify-space-between align-center pb-20">
+            <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup" preserveContent="true">
+                <mat-tab *ngFor="let tab of tabLabels;let indx = index" [label]="tab.label">
+                @if(indx == selectedTabIndex) {
+                    <div class="providersList-header-buttons d-flex justify-space-between align-center pb-20 abccc">
                         <div class="d-flex justify-space-between g-10 align-center">
                             <div class="d-flex justify-space-between providerProfile-tabFilters g-10 align-center">
                                 <h5 class="active"> {{"PROVIDERS_LIST.Any"|translate}} </h5>
@@ -63,7 +64,7 @@
                     </div>
                     <div class="providersList-section">
                         <div class="providersList-cards" *ngIf="viewMode == 'cards'">
-                            <mat-card *ngFor="let card of cards" appearance="outlined" class="providersList-card">
+                            <mat-card *ngFor="let card of cards; let indx = index" appearance="outlined" class="providersList-card">
                                 <mat-card-content>
                                     <div class="header d-flex align-center justify-space-between">
                                         <div class="title d-flex align-start g-10">
@@ -87,8 +88,8 @@
                                                 <img class="saveIcon" src="../../../../assets/icons/arrow-up.png" /> 198.42%
                                             </p>
                                         </div>
-                                        <div id="chart" class="providersList-chart">
-                                            <apx-chart
+                                        <div id="chart" *ngIf="chartOptions" class="providersList-chart">
+                                            <apx-chart 
                                               [series]="chartOptions.series"
                                               [chart]="chartOptions.chart"
                                               [xaxis]="chartOptions.xaxis"
@@ -153,6 +154,7 @@
                         </ag-grid-angular>
                         </div>
                     </div>
+                }
                 </mat-tab>
             </mat-tab-group>
             

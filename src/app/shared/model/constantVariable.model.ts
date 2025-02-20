@@ -68,6 +68,119 @@ export class ConstantVariable {
     
     providerAvatarPath: string = "/files/avatars/";
 
+    homePageMonthlyChartConfig: any = {
+        series: [
+          {
+            name: 'Fees',
+            data: [] // Sample counts for each category
+          }
+        ],
+        chart: {
+          type: "area",
+          height: '100%',
+          width: '100%',
+          padding: 0,
+          toolbar: {
+            show: false,
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          curve: "smooth",
+          width: 3,
+        },
+        colors: ['#146BB2'],
+        xaxis: {
+          labels: {
+            show: true, // Hide x-axis labels
+          },
+          axisTicks: {
+            show: false // Hide x-axis ticks
+          },
+          axisBorder: {
+            show: false // Hide x-axis border line
+          },
+          categories: [] // Sample month labels
+        },
+        yaxis: {
+          labels: {
+            show: false, // Hide y-axis labels
+            // offsetY: 190 
+          },
+          axisBorder: {
+            show: false // Hide y-axis border line
+          },
+          axisTicks: {
+            show: false // Hide y-axis ticks
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'light',
+            type: 'vertical',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#ECFDF3'],
+            inverseColors: false,
+            opacityFrom: 0.85,
+            opacityTo: 0.35,
+            stops: [0, 100]
+          }
+        },
+        grid: {
+          show: false, // Hide background grid lines
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        },
+        tooltip: {
+          enabled: true,
+          y: {}
+        },
+        responsive: [
+          {
+            breakpoint: 600,
+            options: {
+              chart: {
+                height: 120
+              },
+              stroke: {
+                width: 2
+              },
+              grid: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top:0,
+                  bottom: 0
+                }
+              }
+            }
+          },
+          {
+            breakpoint: 768,
+            options: {
+              chart: {
+                height: 130
+              },
+              grid: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top:0,
+                  bottom: 0
+                }
+              }
+            }
+          }
+        ]
+      };
 
     constructor() {
         this.setLanguageArr();
@@ -95,5 +208,20 @@ export class ConstantVariable {
             { code: 'id', name: 'Indonesia', displayLabel: 'Indonesia', icon: 'Indonesia.png' },
             { code: 'de', name: 'German', displayLabel: 'Deutsch', icon: 'German.png' }
         ];
+    }
+
+    getHomePageChartConfig(valuesArr: number[], labelsArr: string[], currencyType: string, chartName: string) {
+      if(valuesArr.length == 1) valuesArr.push(...valuesArr);
+      if(labelsArr.length == 1) labelsArr.push(...labelsArr);
+      this.homePageMonthlyChartConfig.series[0].data = valuesArr;
+      this.homePageMonthlyChartConfig.series[0].name = chartName;
+      this.homePageMonthlyChartConfig.xaxis.categories  = labelsArr;
+      this.homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currencyType
+        }).format(val);
+      }
+      return this.homePageMonthlyChartConfig;
     }
 }

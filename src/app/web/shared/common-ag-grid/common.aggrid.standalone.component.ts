@@ -84,7 +84,7 @@ export class CommonAgGridStandAloneComponent {
         obj.headerName = this.translate.instant(lngKey);
       });
       this.gridApi.setGridOption("columnDefs", this.gridConfig.columnDefination);
-    }, 0);
+    }, 100);
   }
 
   onGridReady(params: GridReadyEvent) {

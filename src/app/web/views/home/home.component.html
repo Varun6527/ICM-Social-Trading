@@ -17,7 +17,7 @@
                     </button>
                 </div>
             </div>
-            <div class="stats d-flex justify-space-between align-center g-20" *ngIf="role['hasProvider'] || role['hasFollower']">
+            <div class="stats d-flex justify-space-between g-20" *ngIf="role['hasProvider'] || role['hasFollower']">
                 <div class="stats-card" [ngClass]="{'justify-center': (providerMetric?.monthlyFeesArr.length === 0) || (followerMetric?.monthlyTradeArr.length === 0) }">
                     <h6>
                         <ng-container *ngIf="role['hasProvider'] && providerMetric?.monthlyFeesArr.length > 0">
@@ -27,30 +27,13 @@
                             {{'HOME.Monthly Trading' | translate}}
                         </ng-container>
                     </h6>
-                    <ng-container *ngIf="role['hasProvider']">
-                        <div class="d-flex justify-space-between">
-                            @for (fees of providerMetric?.monthlyFeesArr; track fees.month) {
-                                <div class="d-flex align-center justify-end flex-column">
-                                    <h3>{{fees.feesValue}}</h3>
-                                    <p>{{fees.month | date:'MMM'}}</p><!-- <p>{{'COMMON.September' | translate}}</p> -->
-                                </div>
-                            } @empty {
-                                <h6>{{'HOME.NoTradingHistory' | translate}}</h6>
-                            }
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="role['hasFollower']">
-                        <div class="d-flex justify-space-between">
-                            @for (fees of followerMetric?.monthlyTradeArr; track fees.month) {
-                                <div class="d-flex align-center justify-end flex-column">
-                                    <h3>{{fees.monthTradeProfit}}</h3>
-                                    <p>{{fees.month | date:'MMM'}}</p><!-- <p>{{'COMMON.September' | translate}}</p> -->
-                                </div>
-                              } @empty {
-                                <h6>{{'HOME.NoTradingHistory' | translate}}</h6>
-                              }
-                        </div>
-                    </ng-container>
+                    <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                            [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [yaxis]="chartOptions.yaxis"
+                            [grid]="chartOptions.grid" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                            [colors]="chartOptions.colors" [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"
+                            [legend]="chartOptions.legend"></apx-chart>
+
+                    <h6 *ngIf="!chartOptions">{{'HOME.NoTradingHistory' | translate}}</h6>
                 </div>
                 <div class="stats-card">
                     <h6>
