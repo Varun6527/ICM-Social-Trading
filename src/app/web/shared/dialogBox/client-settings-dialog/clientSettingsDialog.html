@@ -1,29 +1,32 @@
-<h2 mat-dialog-title class="text-center">Common Information</h2>
-<p class="text-center">Common settings of the profile</p>
+<h2 mat-dialog-title class="text-center">{{'PROVIDERS_PROFILE.Common Information' | translate}}</h2>
+<p class="text-center">{{'HOME.CommonSettingsProfile' | translate}}</p>
 <form [formGroup]="clientSettingsForm">
     <mat-dialog-content class="mat-typography">
         <mat-form-field class="commonInfo-select">
-            <mat-label>Preferred language</mat-label>
+            <mat-label>{{'HOME.Preferred language' | translate}}</mat-label>
             <mat-select formControlName="prefLang">
                 <mat-option *ngFor="let obj of notificationLangArr" [value]="obj.code">{{obj.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <p class="pb-10">Preferred language of notifications</p>
+        <p class="pb-10">{{'HOME.PreferredLanguageNotifications' | translate}}</p>
         
         <mat-form-field class="commonInfo-Email">
-            <mat-label>Email</mat-label>
-            <input type="text" matInput placeholder="Email" formControlName="email">
+            <mat-label>{{'HOME.Email' | translate}}</mat-label>
+            <input type="text" matInput placeholder="{{'HOME.Email' | translate}}" formControlName="email">
         </mat-form-field>
-        <p class="pb-10">Email for receiving notifications</p>
-
+        <p class="pb-10" *ngIf="!showError || !clientSettingsForm.controls['email'].errors?.['email']">
+            {{'HOME.EmailReceivingNotifications' | translate}}</p>
+        <mat-error class="pb-10" *ngIf="showError && clientSettingsForm.controls['email'].errors?.['email']">
+            {{'HOME.NotValidEmailAddress' | translate}}
+        </mat-error>
         @if(isProvider || isFollower) {
             <mat-form-field class="commonInfo-select">
-                <mat-label>Provider Notifications</mat-label>
+                <mat-label>{{'HOME.Provider Notifications' | translate}}</mat-label>
                 <mat-select formControlName="notificationLabels" multiple>
                     <mat-option *ngFor="let obj of notificationLabelArr" [value]="obj.key">{{obj.value}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <p class="pb-10">Alerts and updates from providers</p>
+            <p class="pb-10">{{'HOME.Alerts and updates from providers' | translate}}</p>
         }
     </mat-dialog-content>
     <div class="d-flex justify-center g-20">

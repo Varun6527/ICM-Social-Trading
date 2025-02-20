@@ -1,10 +1,11 @@
 .web-layout{
     display: flex;
-    width: 100%;
+    gap: 15px;
     .sidenav{
-        width: 22%;
+        width: 300px;
     }
     .pages{
-        width: 77%;
+        flex: 1;
+        padding-right: 10px;
     }
 }

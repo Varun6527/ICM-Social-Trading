@@ -78,7 +78,7 @@ import { AuthService } from '../../../../auth/service/auth.service';
       //Setup ReactiveForm for Create Provider
       this.clientSettingsForm = this.fb.group({
         prefLang: ['', [Validators.required]],
-        email: [''],
+        email: ['', [Validators.email]],
         notificationLabels: [[]]
       });
       //End
@@ -175,8 +175,10 @@ import { AuthService } from '../../../../auth/service/auth.service';
   
     saveClientSettings() {
       if (this.clientSettingsForm.invalid) {
+        this.showError = true;
         return;
       }
+      this.showError = false;
       this.showLoader = true;
       let param = this.getClientSettingsParam();
       this._webService.saveClientDetails(param).subscribe({

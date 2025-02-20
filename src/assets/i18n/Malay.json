@@ -68,7 +68,15 @@
         "New Provider": "New Provider",
         "New Subscription": "New Subscription",
         "TradingAccInfo": "Trading Account Info",
-        "NoTradingHistory": "There is no trading history"
+        "NoTradingHistory": "There is no trading history",
+        "CommonSettingsProfile": "Common settings of the profile",
+        "Preferred language": "Preferred language",
+        "PreferredLanguageNotifications": "Preferred language of notifications",
+        "Email": "Email",
+        "EmailReceivingNotifications": "Email for receiving notifications",
+        "NotValidEmailAddress": "Not a valid email address",
+        "Provider Notifications": "Provider Notifications",
+        "Alerts and updates from providers": "Alerts and updates from providers"
     },
     "PROVIDERS": {
         "Providers": "Penyedia",
