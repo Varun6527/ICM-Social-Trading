@@ -2,7 +2,7 @@
 <p class="text-center">{{'COMMON.CreateNewProvider' | translate}}</p>
 <form [formGroup]="createproviderForm">
     <mat-dialog-content class="mat-typography">
-        <mat-form-field class="commonInfo-Scope">
+        <mat-form-field class="common-field">
             <mat-label>{{'SUBSCRIPTION.Trading account' | translate}}</mat-label>
             <mat-select formControlName="accountId">
                 <mat-option *ngFor="let obj of tradingIdArr" [value]="obj.accountId">{{obj.tradingIdAndName}}</mat-option>
@@ -11,7 +11,7 @@
         <p class="pb-10" *ngIf="!showError || !createproviderForm.controls['accountId'].errors?.['required']">{{"COMMON.SelectAvailTradeAccountForNewProvider" | translate}}</p>
         <mat-error class="pb-10" *ngIf="showError && createproviderForm.controls['accountId'].errors?.['required']">{{'login.FieldRequired' | translate}}</mat-error>
         
-        <mat-form-field class="commonInfo-Email">
+        <mat-form-field class="common-field">
             <mat-label>{{'OFFERS.Nickname' | translate}}</mat-label>
             <input type="text" matInput placeholder="Provider 1" formControlName="nickname">
         </mat-form-field>

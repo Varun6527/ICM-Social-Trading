@@ -4,7 +4,7 @@
         <p class="text-center">{{'SUBSCRIPTION.CreateSubscription' | translate}}</p>
         <form [formGroup]="createFollowerForm">
             <mat-dialog-content class="mat-typography">
-                <mat-form-field class="commonInfo-Scope">
+                <mat-form-field class="common-field">
                     <mat-label>{{'SUBSCRIPTION.Trading account' | translate}}</mat-label>
                     <mat-select formControlName="accountId">
                         <mat-option *ngFor="let obj of tradingIdArr"
@@ -17,7 +17,7 @@
                     *ngIf="showError && createFollowerForm.controls['accountId'].errors?.['required']">
                     {{'login.FieldRequired' | translate}}</mat-error>
 
-                <mat-form-field class="commonInfo-Email">
+                <mat-form-field class="common-field">
                     <mat-label>{{'HOME.Provider' | translate}}</mat-label>
                     <input type="text" formControlName="providerObj" matInput placeholder="Provider 1" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getOffersOfProvider()">
@@ -33,7 +33,7 @@
                     {{'login.FieldRequired' | translate}}
                 </mat-error>
 
-                <mat-form-field class="commonInfo-Scope">
+                <mat-form-field class="common-field">
                     <mat-label>{{'PROVIDERS_PROFILE.Offer' | translate}}</mat-label>
                     <mat-select formControlName="offerObj">
                         <mat-option *ngFor="let obj of offersArr"

@@ -1,0 +1,19 @@
+@import '../../../../../_mixins.scss';
+::ng-deep .beFollower-dialog {
+    @include common-popup-design(850px);
+    max-width: 850px !important;
+
+    .parent-div {
+        width: 100%;
+
+        .child-div-left {
+            width: 60%;
+            border-right: 1px solid #EAECF0;
+        }
+
+        .child-div-right {
+            width: 40%;
+            padding-left: 10px;
+        }
+    }
+}

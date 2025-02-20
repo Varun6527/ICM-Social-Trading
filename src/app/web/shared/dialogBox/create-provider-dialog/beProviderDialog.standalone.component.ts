@@ -16,45 +16,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
     standalone: true,
     imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styles: [
-      `
-      ::ng-deep .beProvider-dialog {
-          width: 600px !important;
-          border-radius: 10px !important;
-
-          .mat-mdc-dialog-title {
-              margin: unset !important;
-              padding-bottom: 10px !important;
-          }
-
-          .mat-mdc-dialog-surface {
-              border-radius: 10px !important;
-              background: white !important;
-              padding: 20px !important;
-          }
-
-          .commonInfo-Email {
-              width: 100% !important;
-
-              .mdc-text-field {
-                  background-color: white;
-                  border: 1px solid;
-                  border-bottom: 0px;
-              }
-          }
-
-          .commonInfo-Scope {
-              width: 100% !important;
-
-              .mdc-text-field {
-                  background-color: white;
-                  border: 1px solid;
-                  border-bottom: 0px;
-              }
-          }
-      }
-      `
-    ]
+    styleUrls: ['./beProviderDialog.scss']
   })
   export class BeProviderDialogStandAloneComponent {
     createproviderForm: FormGroup;

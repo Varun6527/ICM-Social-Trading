@@ -11,7 +11,7 @@
         </div>
         @if(filterForm.controls['filterType'].value == 'Provider') {
             <p class="pb-10" >{{'REPORTS.Specify the filtering type' | translate}}</p>
-            <mat-form-field class="commonInfo-provider">
+            <mat-form-field class="common-field">
                 <mat-label>{{'HOME.Provider' | translate}}</mat-label>
                 <mat-select formControlName="providerId" #selectElement>
                     <mat-option *ngFor="let obj of providerArr" [value]="obj.id">{{obj.nickName}}</mat-option>

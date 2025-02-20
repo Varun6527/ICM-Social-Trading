@@ -18,60 +18,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
     standalone: true,
     imports: [MatDialogModule, MatInputModule, MatSelectModule, CommonModule, ReactiveFormsModule, ShowErrorStandAloneComponent, AsyncPipe, MatAutocompleteModule, TranslateModule, IcmLoadingOverlayDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styles: [
-      `
-        ::ng-deep .beFollower-dialog {
-            width: 850px !important;
-            border-radius: 10px !important;
-            max-width: 850px !important;
-
-            .parent-div {
-                width: 100%;
-
-                .child-div-left {
-                    width: 60%;
-                    border-right: 1px solid #EAECF0;
-                }
-
-                .child-div-right {
-                    width: 40%;
-                    padding-left: 10px;
-                }
-            }
-
-            .mat-mdc-dialog-title {
-                margin: unset !important;
-                padding-bottom: 10px !important;
-            }
-
-            .mat-mdc-dialog-surface {
-                border-radius: 10px !important;
-                background: white !important;
-                padding: 20px !important;
-            }
-
-            .commonInfo-Email {
-                width: 100% !important;
-
-                .mdc-text-field {
-                    background-color: white;
-                    border: 1px solid;
-                    border-bottom: 0px;
-                }
-            }
-
-            .commonInfo-Scope {
-                width: 100% !important;
-
-                .mdc-text-field {
-                    background-color: white;
-                    border: 1px solid;
-                    border-bottom: 0px;
-                }
-            }
-        }
-      `
-    ]
+    styleUrls: ['./beFollowerDialog.scss']
   })
   export class BeFollowerDialogStandAloneComponent {
     createFollowerForm: FormGroup;
