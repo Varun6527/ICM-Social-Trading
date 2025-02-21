@@ -115,7 +115,7 @@
                         <h5>{{'ACCOUNTS.Accounts' | translate}}</h5>
                         <p>{{'ACCOUNTS.AccountsAddFromMetaTrade' | translate}}</p>
                     </div>
-                    <div class="d-flex g-20 common-dropdown" *ngIf="!role['hasProvider'] && !role['hasFollower']">
+                    <div class="d-flex g-20 common-dropdown align-start" *ngIf="!role['hasProvider'] && !role['hasFollower']">
                           <mat-form-field>
                             <mat-label>{{'PROVIDERS_PROFILE.Scope' | translate}}</mat-label>
                             <mat-select [(ngModel)]="selectAccountStatus" (selectionChange)="refreshTradeAccountList()">

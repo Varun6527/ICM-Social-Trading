@@ -20,6 +20,12 @@ export interface ErrorSnackBarConfig {
         --mdc-snackbar-supporting-text-color: var(--primaryWhite);
         width: 350px;
     }
+    ::ng-deep .mat-mdc-snack-bar-container.default-success-style {
+        --mat-snack-bar-button-color: var(--primaryWhite);
+        --mdc-snackbar-container-color: var(--primary-positive-color);
+        --mdc-snackbar-supporting-text-color: var(--primaryWhite);
+        width: 350px;
+    }
   `,
   standalone: true,
   imports : [MatSnackBarModule]

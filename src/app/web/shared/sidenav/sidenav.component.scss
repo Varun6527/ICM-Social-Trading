@@ -125,6 +125,10 @@
                     margin-top: 20px;
                     padding-top: 15px;
 
+                    .user-name {
+                        width:140px;
+                    }
+
                     img {
                         border-radius: 50%;
                     }
@@ -136,6 +140,7 @@
                     span{
                         font-weight: 200;
                         font-size: 15px;
+                        overflow-wrap: break-word;
                     }
                     a{
                         cursor: pointer;

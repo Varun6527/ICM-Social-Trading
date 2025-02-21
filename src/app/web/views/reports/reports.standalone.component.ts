@@ -188,7 +188,7 @@ export class ReportsStandAloneComponent {
     return {
       title: `${this.isProvider ? 'REPORTS.Received fees' : 'HOME.Paid Fees'}`,
       description: `${this.isProvider ?  "REPORTS.The list of fee payments received by your providers during the specified period" : 'REPORTS.FeesTitleForSubscriber'}`,
-      showProviderFilter: `${this.isProvider ? true : false}`,
+      showProviderFilter: this.isProvider ? true : false,
       defaultDateRange: "Last 7 days",
       grid: {
         apiUrl: `${this.isProvider ? this.constantVariable.http_Api_Url.reports.recieved_Fees : this.constantVariable.http_Api_Url.reports.paid_Fees }`,

@@ -79,6 +79,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
       }
       this._webService.createProvider(param).subscribe({
         next: (response) => {
+          this.showSuccessPopupMsg("Provider has been added");
           this._webService.emitOnWebDataChange({ action: 'provider_created', data: response });
           this.showLoader = false;
         },
@@ -88,6 +89,13 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
           this.cdr.detectChanges();
         },
       })
+    }
+
+    showSuccessPopupMsg(msg: string) {
+      const errorConfigObj = this.errorComponent?.config;
+        errorConfigObj.customStyle = 'default-success-style';
+        errorConfigObj.message = msg ? msg : errorConfigObj.message;
+        this.errorComponent?.openErrorSnackbar();
     }
   }
   

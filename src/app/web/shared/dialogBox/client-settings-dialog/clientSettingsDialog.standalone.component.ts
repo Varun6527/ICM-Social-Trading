@@ -186,6 +186,7 @@ import { AuthService } from '../../../../auth/service/auth.service';
           this.showLoader = false;
           //Send the data in parent component
           this._webService.emitOnWebDataChange({action:'update_user_email', email: param.settings.email })
+          this.showSuccessPopupMsg("Client has been updated");
           this.closeClientSettingsForm();
         },
         error: (errorObj) => {
@@ -193,6 +194,13 @@ import { AuthService } from '../../../../auth/service/auth.service';
           this.showLoader = false;
         }
       })
+    }
+
+    showSuccessPopupMsg(msg: string) {
+      const errorConfigObj = this.errorComponent?.config;
+        errorConfigObj.customStyle = 'default-success-style';
+        errorConfigObj.message = msg ? msg : errorConfigObj.message;
+        this.errorComponent?.openErrorSnackbar();
     }
 
     formatLanguageCode(code: any) {

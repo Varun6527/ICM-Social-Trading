@@ -140,6 +140,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
       this._webService.createFollower(param).subscribe({
         next: (response) => {
           this.showLoader = false;
+          this.showSuccessPopupMsg("Subscription has been added");
           this._webService.emitOnWebDataChange({ action: 'Follower_created', data: response });
         },
         error: (errorObj) => {
@@ -154,5 +155,12 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
       const errorConfigObj = this.errorComponent?.config;
       errorConfigObj.message = msg ? msg : errorConfigObj.message;
       this.errorComponent?.openErrorSnackbar();
+    }
+
+    showSuccessPopupMsg(msg: string) {
+      const errorConfigObj = this.errorComponent?.config;
+        errorConfigObj.customStyle = 'default-success-style';
+        errorConfigObj.message = msg ? msg : errorConfigObj.message;
+        this.errorComponent?.openErrorSnackbar();
     }
   }

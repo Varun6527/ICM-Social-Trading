@@ -355,7 +355,7 @@ export class ConvertValueToCurrency {
     getConvertedValue() {
         if (typeof Intl !== "undefined" && typeof Intl.NumberFormat === "function") {
             if(this.val == 0 && this.skipifZeroFound) return "";
-            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: this.currency }).format(this.val);
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: this.currency ? this.currency : 'USD' }).format(this.val);
         } else {
             const currencySign = this.tradingCurrency.filter(obj => obj.currency == this.currency).map(o => o.sign);
             if (this.val < 0) {
