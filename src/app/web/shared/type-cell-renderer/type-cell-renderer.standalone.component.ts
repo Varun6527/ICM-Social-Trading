@@ -18,7 +18,8 @@ import { ICellRendererParams } from 'ag-grid-community';
     justify-content: center;
     align-items: center;
     width: 50%;
-    background: #8080804a;
+    background: var(--primary-light-positive-color);
+    color: var(--primary-positive-color);
     font-size:13px;
     font-weight: 400;
   }

@@ -39,7 +39,8 @@ import { Router, RouterModule } from '@angular/router';
                     display: inline-block;
                     line-height: 2;
                     padding: 0px 10px;
-                    background: rgba(128, 128, 128, 0.2901960784);
+                    background: var(--primary-light-positive-color);
+                    color: var(--primary-positive-color);
                     font-size: 17px;
                     font-weight: 400;
              }
