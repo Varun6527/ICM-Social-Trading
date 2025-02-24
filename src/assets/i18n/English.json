@@ -76,7 +76,9 @@
         "EmailReceivingNotifications": "Email for receiving notifications",
         "NotValidEmailAddress": "Not a valid email address",
         "Provider Notifications": "Provider Notifications",
-        "Alerts and updates from providers": "Alerts and updates from providers"
+        "Alerts and updates from providers": "Alerts and updates from providers",
+        "Follower Notifications": "Follower Notifications",
+        "Alerts and updates from follower": "Alerts and updates from follower"
     },
     "PROVIDERS": {
         "Providers": "Providers",

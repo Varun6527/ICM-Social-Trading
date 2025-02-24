@@ -258,11 +258,6 @@ export class HomeStandAloneComponent {
     }
   }
 
-  getCopiedColDef(colDefs: any) {
-    let colD = JSON.parse(JSON.stringify(colDefs));
-
-  }
-
   openBeProviderDialog() {
     this.beProviderDialog.open(BeProviderDialogStandAloneComponent, {
       panelClass: 'beProvider-dialog'

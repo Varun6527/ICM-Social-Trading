@@ -21,12 +21,14 @@
         </mat-error>
         @if(isProvider || isFollower) {
             <mat-form-field class="commonInfo-select">
-                <mat-label>{{'HOME.Provider Notifications' | translate}}</mat-label>
+                <mat-label *ngIf="isProvider">{{'HOME.Provider Notifications' | translate}}</mat-label>
+                <mat-label *ngIf="isFollower">{{'HOME.Follower Notifications' | translate}}</mat-label>
                 <mat-select formControlName="notificationLabels" multiple>
                     <mat-option *ngFor="let obj of notificationLabelArr" [value]="obj.key">{{obj.value}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <p class="pb-10">{{'HOME.Alerts and updates from providers' | translate}}</p>
+            <p class="pb-10" *ngIf="isProvider">{{'HOME.Alerts and updates from providers' | translate}}</p>
+            <p class="pb-10" *ngIf="isFollower">{{'HOME.Alerts and updates from follower' | translate}}</p>
         }
     </mat-dialog-content>
     <div class="d-flex justify-center g-20">
