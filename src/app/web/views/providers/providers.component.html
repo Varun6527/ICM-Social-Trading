@@ -1,5 +1,5 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
@@ -7,110 +7,139 @@
                     <p>{{ 'PROVIDERS.List of Providers' | translate }}</p>
                 </div>
             </div>
-            <div class="stats d-flex justify-space-between align-center g-20">
+            <div class="stats d-flex justify-space-between g-20">
                 <div class="stats-card">
                     <h6>{{ 'COMMON.Status' | translate }}</h6>
                     <div class="stats-info">
                         <h5>{{ 'COMMON.Active' | translate }}</h5>
-                        <h5>15</h5>
+                        <h5>{{providersDashBoardData?.activeCount}}</h5>
                     </div>
                     <div class="stats-info">
                         <h5>{{ 'COMMON.Inactive' | translate }}</h5>
-                        <h5>03</h5>
+                        <h5>{{providersDashBoardData?.inActiveCount}}</h5>
                     </div>
-                    <div class="stats-subline d-flex align-center">
-                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
-                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
-                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
                 </div>
                 <div class="stats-card">
                     <h6>{{ 'PROVIDERS.Popular Providers' | translate }}</h6>
-                    <h3>15</h3>
-                    <div class="stats-subline d-flex align-center">
-                        <p class="d-flex align-center g-10"> <span class="d-flex align-center negative"><img
-                                    src="../../../../assets/icons/arrow-down.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    <div class="d-flex justify-space-between flex-column" *ngFor="let provider of providersDashBoardData.popularProvidersArr">
+                        <p>{{provider.name}}</p>
+                        <h3>{{provider.count}}</h3>
                     </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> 
+                            <span class="d-flex align-center negative">
+                                <img src="../../../../assets/icons/arrow-down.png" /> 
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
                 </div>
                 <div class="stats-card">
                     <h6>{{ 'PROVIDERS.Profitable Providers' | translate }}</h6>
-                    <h3>21</h3>
-                    <div class="stats-subline d-flex align-center">
-                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
-                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
+                    <div class="d-flex justify-space-between flex-column" *ngFor="let provider of providersDashBoardData.profitableProvidersArr">
+                        <p>{{provider.name}}</p>
+                        <h3>{{provider.value}}</h3>
                     </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
                 </div>
                 <div class="stats-card">
                     <h6>{{ 'PROVIDERS.Performance Fee' | translate }}</h6>
                     <div class="stats-info">
                         <h5>{{ 'PROVIDERS.This month' | translate }}</h5>
-                        <h5>$5.00</h5>
+                        <h5>{{providersDashBoardData?.currentMonthPerformanceFee}}</h5>
                     </div>
                     <div class="stats-info">
                         <h5>{{ 'PROVIDERS.Previous month' | translate }}</h5>
-                        <h5>$14.00</h5>
+                        <h5>{{providersDashBoardData?.previousMonthPerformanceFee}}</h5>
                     </div>
-                    <div class="stats-subline d-flex align-center">
-                        <p class="d-flex align-center g-10"> <span class="d-flex align-center positive"><img
-                                    src="../../../../assets/icons/arrow-up.png" /> 100%</span> {{ 'vs last month' | translate }}</p>
-                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
                 </div>
             </div>
 
             <div class="metrics-table">
-                <div class="header">
-                    <div class="header-title">
-                        <h5>{{ 'PROVIDERS.Provider Metrics' | translate }}</h5>
-                        <p>{{ 'PROVIDERS.Metrics of individual providers' | translate }}</p>
+                <div class="header-buttons d-flex justify-space-between">
+                    <div class="d-flex g-20 justify-center align-center">
+                        <button class="secondary-btn" (click)="applyProvidersFilter()">
+                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            {{"COMMON.Filters"|translate}}
+                        </button>
+                        <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
+                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            {{"COMMON.Clear"|translate}}
+                        </button>
                     </div>
-                    <div class="header-buttons d-flex justify-space-between align-center g-20 pb-10">
-                        <div class="d-flex justify-space-between align-center g-10">
-                            <button class="secondary-btn" (click)="toggleFilter()">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{ 'COMMON.Filter' | translate }}
-                            </button>
-                            <button class="secondary-btn" *ngIf="filterEnabled">
-                                {{ 'COMMON.Clear' | translate }}
-                            </button>
-                        </div>
-                        <div class="d-flex justify-space-between align-center g-10">
-                            <div class="filters d-flex justify-space-between align-center g-20" *ngIf="filterEnabled">
-                                <mat-form-field class="filter-opts" appearance="outline">
-                                    <mat-label>{{ 'COMMON.Id' | translate }}</mat-label>
-                                    <input type="number" matInput placeholder="{{ 'Agent' | translate }}">
-                                </mat-form-field>
-                                <mat-form-field class="filter-opts" appearance="outline">
-                                    <mat-label>{{ 'COMMON.Key' | translate }}</mat-label>
-                                    <input type="text" matInput placeholder="{{ 'Key' | translate }}">
-                                </mat-form-field>
-                                <mat-form-field class="filter-opts" appearance="outline">
-                                    <mat-label>{{ 'COMMON.Agent' | translate }}</mat-label>
-                                    <input type="number" matInput placeholder="{{ 'Agent' | translate }}">
-                                </mat-form-field>
-                                <mat-form-field class="filter-opts" appearance="outline">
-                                    <mat-label>{{ 'COMMON.Status' | translate }}</mat-label>
-                                    <mat-select>
-                                        <mat-option value="active">{{ 'COMMON.Active' | translate }}</mat-option>
-                                        <mat-option value="all">{{ 'COMMON.All' | translate }}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <button class="secondary-btn">
+                    <div class="d-flex g-20 common-dropdown align-center">
+                        @if (showFilters) {
+                            <mat-form-field>
+                                <mat-label>{{"COMMON.Id"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.id" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"PROVIDERS.Trading Account"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.externalAccount" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"PROVIDERS.Nickname"|translate}}</mat-label>
+                                <input matInput type="text" [(ngModel)]="selectedFilters.nickName" />
+                            </mat-form-field><mat-form-field>
+                                <mat-label>{{"PROVIDERS_PROFILE.Scope"|translate}}</mat-label>
+                                <mat-select [(ngModel)]="selectedFilters.status" (selectionChange)="refreshProviderDataList()">
+                                    <mat-option [value]="'Active'">{{"COMMON.Active"|translate}}</mat-option>
+                                    <mat-option [value]="'All'">{{"COMMON.All"|translate}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        }
+                        <button class="refresh-btn" (click)="refreshProviderDataList()">
+                            @if (selectedFilters.nickName || selectedFilters.externalAccount || selectedFilters.id) {
+                                <img src="../../../../assets/icons/searchIcon.svg" />
+                                {{"PROVIDERS_LIST.Search"|translate}}
+                            } @else {
                                 <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{ 'COMMON.Refresh' | translate }}
-                            </button>
-                            <button class="primary-btn" (click)="openNewProviderDialog()">
-                                <img src="../../../../assets/icons/plusIcon.png" />
-                                {{ 'COMMON.Create' | translate }}
-                            </button>
-                        </div>
+                                {{"COMMON.Refresh"|translate}}
+                            }
+                        </button>
+                        <button class="primary-btn" (click)="openNewProviderDialog()">
+                            <img src="../../../../assets/icons/plusIcon.png" />
+                            {{ 'COMMON.Create' | translate }}
+                        </button>
                     </div>
                 </div>
-                <div class="table">
-                    <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="rowData"
-                        [columnDefs]="colDefs" [suppressRowHoverHighlight]="true">
-                    </ag-grid-angular>
-                </div>
+                <common-ag-grid [gridConfig]="gridConfig" [gridData]="providersTableData"
+                    [showGridLoader]="showGridLoader">
+                </common-ag-grid>
             </div>
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader"
+        class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+
+<show-error-message></show-error-message>

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import { AgGridAngular } from "ag-grid-angular";
+import { AgGridAngular, AgGridModule } from "ag-grid-angular";
 import { ColDef } from "ag-grid-community";
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -7,13 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
 import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
+import { ProviderCommonInfoDialog } from '../../shared/dialogBox/provider-common-info-dialog/providerCommonInfoDialog.standalone.component';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
-  styleUrl: './offers.component.scss'
+  styleUrl: './offers.component.scss', 
+  standalone: true,
+  imports: [CommonModule, AgGridModule, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
 })
-export class OffersComponent {
+export class OffersStandALoneComponent {
 
   readonly commonInfoDialog = inject(MatDialog);
 
@@ -40,7 +48,7 @@ export class OffersComponent {
   ];
 
   openCommonInfoDialog(){
-    const dialogRef = this.commonInfoDialog.open(DialogContentExampleDialog,{
+    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
       panelClass: 'providerProfile-commonInfo'
     });
 
@@ -50,12 +58,3 @@ export class OffersComponent {
   }
 
 }
-
-@Component({
-  selector: 'commongInfo-dialog',
-  templateUrl: './dialogBoxes/commonInfoDialog.html',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatInputModule,MatSelectModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogContentExampleDialog {}

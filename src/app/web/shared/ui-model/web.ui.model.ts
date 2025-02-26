@@ -35,6 +35,34 @@ export class ProviderMetricUIModal {
     }
 }
 
+export class ProviderDashboardUIModal {
+    activeCount?: any;
+    inActiveCount? : any;
+    popularProvidersArr?: any[] = [];
+    profitableProvidersArr?: any[] = [];
+    currentMonthPerformanceFee?: string = "";
+    previousMonthPerformanceFee?: string = "";
+    currencyType: string = "USD";
+
+    constructor(proDashObj: any) {
+        this.activeCount = proDashObj.activeCount;
+        this.inActiveCount = proDashObj.inActiveCount;
+        this.popularProvidersArr = proDashObj.popularProviders;
+        this.profitableProvidersArr = this.getProfitableProvidersArr(proDashObj.profitableProviders, this.currencyType);
+        this.currentMonthPerformanceFee = new ConvertValueToCurrency(proDashObj.thisMonthPerformanceFee, this.currencyType, false).getConvertedValue();
+        this.previousMonthPerformanceFee = new ConvertValueToCurrency(proDashObj.previousMonthPerformanceFee, this.currencyType, false).getConvertedValue();
+    }
+
+    getProfitableProvidersArr(arr: any, currency: any) {
+        let array: any = [];
+        arr.forEach((obj: any) => {
+            const value = new ConvertValueToCurrency(obj.value, currency, false).getConvertedValue();
+            array.push({value: value, name: obj.name});
+        });
+        return array;
+    }
+}
+
 export class FollowerMetricUIModal {
     monthlyTradeArr?: any[] = [];
     tradeProfit?: string;
@@ -90,6 +118,40 @@ export class ProviderDetailsUIModal {
         this.closedProfit = new ConvertValueToCurrency(proDetailObj.closedPnL, proDetailObj.currency, false).getConvertedValue();
         this.registerTime = this.transformDate(proDetailObj.registerTime);
         this.visibility = proDetailObj.visibility;
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', { 
+            year: '2-digit', 
+            month: 'numeric', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: true 
+          }).replace(',', '');
+      }
+}
+
+export class ProviderTableUIModal {
+    nickName: string = "";
+    providerId: any;
+    state: string = "";
+    tradingAccount: any;
+    externalName: string = "";
+    strategyMode: string = "";
+    equity: string = "";
+    registerTime: string = "";
+
+    constructor(proTabObj: any) {
+        this.nickName = proTabObj.nickname;
+        this.providerId = proTabObj.id;
+        this.state = proTabObj.state;
+        this.tradingAccount = proTabObj.externalAccount;
+        this.externalName = proTabObj.externalName;
+        this.strategyMode = proTabObj.strategy.mode == "OutOnly" ? "Out only" : "All";
+        this.equity = new ConvertValueToCurrency(proTabObj.equity, proTabObj.currency, false).getConvertedValue();
+        this.registerTime = this.transformDate(proTabObj.registerTime);
     }
 
     transformDate(value: string): string {

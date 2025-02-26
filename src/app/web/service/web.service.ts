@@ -163,6 +163,10 @@ export class WebService extends BaseService {
     return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.sideNav.clientDetails}`, data);
   }
 
+  getProviderDashboardDetails() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.providers_View}`, "");
+  }
+
   getFileServerUrl() {
     return this.File_SERVER;
   }

@@ -46,14 +46,17 @@
         <span>{{ params.value.name }}</span>
     </a>
 
-    <div *ngIf="params.colDef.colId == 'accountDetailsPopup'" class="d-flex flex-column">
+    <div *ngIf="params.colDef.colId == 'accountDetailsPopup' || params.colDef.colId == 'providerNameCell'" class="d-flex flex-column">
       <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
         <span>{{ params.value }}</span>
       </a>
       <div class="d-flex justify-left g-5 align-center">
-        <div class="tag">
+        <div class="tag" *ngIf="params.colDef.colId == 'accountDetailsPopup'">
         #{{params.data.clientId}}
         </div>
+        <div class="tag" *ngIf="params.colDef.colId == 'providerNameCell'">
+          #{{params.data.providerId}}
+          </div>
         <div class="tag">
           {{params.data.state}}
         </div>
@@ -89,4 +92,17 @@
         <div>Management fee: {{params.value.managementFee}}</div>
         <div>Registration fee: {{params.value.registrationFee}}</div>
       </div>
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'providerTradingAccountCell'" class="d-flex flex-column line-height-1-7 justify-left align-baseline" href="javascript:void(0)">
+      <div>
+        {{ params.value }}
+      </div>
+      <div>
+        {{params.data.externalName}}
+      </div>
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'tagCell'">
+      <div class="tag">{{ params.value }}</div>
     </div>

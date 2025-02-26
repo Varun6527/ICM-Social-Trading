@@ -27,7 +27,7 @@ export class CommonCellRendererStandAloneComponent {
   }
 
   onCellNameClicked() {
-    if(this.params.colDef.colId == 'providerProfileRedirection') {
+    if(this.params.colDef.colId == 'providerProfileRedirection' || this.params.colDef.colId == 'providerNameCell') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);
     } else if(this.params.colDef.colId == 'followerProfileRedirection' || this.params.colDef.colId == 'subscriptionRedirection') {
       this.router.navigate([`/portal/subscriptions/${this.params.data.followerId}`]);

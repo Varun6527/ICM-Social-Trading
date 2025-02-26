@@ -1,23 +1,28 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import { AgGridAngular } from "ag-grid-angular";
+import { AgGridAngular, AgGridModule } from "ag-grid-angular";
 import { ColDef } from "ag-grid-community";
-import { ActionButtonStanAloneComponent } from '../../../shared/action-button/action-button.standalone.component';
-import { TypeCellRendererStandAloneComponent } from '../../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
-import { StatusBtnRendererComponent } from '../../../shared/status-btn-renderer/status-btn-renderer.component';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
+import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
+import {MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { SubsProfileRendererComponent } from '../cellRenderers/subs-profile-renderer/subs-profile-renderer.component';
-import { OffersRendererComponent } from '../cellRenderers/offers-renderer/offers-renderer.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
+import { ProviderCommonInfoDialog } from '../../shared/dialogBox/provider-common-info-dialog/providerCommonInfoDialog.standalone.component';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
-  selector: 'app-provider-profile',
-  templateUrl: './provider-profile.component.html',
-  styleUrl: './provider-profile.component.scss'
+  selector: 'app-position',
+  templateUrl: './positions.component.html',
+  styleUrl: './positions.component.scss',
+  standalone: true,
+  imports: [CommonModule, AgGridModule, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
 })
-export class ProviderProfileComponent {
+export class PositionsStandAloneComponent {
 
   readonly commonInfoDialog = inject(MatDialog);
   SubsCols: ColDef[] = []
@@ -35,10 +40,13 @@ export class ProviderProfileComponent {
     this.initializeColDefs(); // Initialize on component load
   }
 
+  goBack(): void {
+    window.history.back();
+  }
 
   initializeColDefs() {
     this.SubsCols = [
-      { field: "name", headerName: this.translate.instant('PROVIDERS_PROFILE.Nickname'), resizable: false, suppressSizeToFit: true, width: 180, cellRenderer: SubsProfileRendererComponent },
+      { field: "name", headerName: this.translate.instant('PROVIDERS_PROFILE.Nickname'), resizable: false, suppressSizeToFit: true, width: 180, cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "status", headerName: this.translate.instant('COMMON.Status'), width: 100, resizable: false, cellRenderer: StatusBtnRendererComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, headerClass: 'subs-status-header' },
       { field: "volumeScaling", headerName: this.translate.instant('PROVIDERS_PROFILE.Volume Scaling'), resizable: false, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
       { field: "offer", headerName: this.translate.instant('PROVIDERS_PROFILE.Offer'), resizable: false, width: 150 },
@@ -82,7 +90,7 @@ export class ProviderProfileComponent {
     ];
   
     this.OffersCols = [
-      { field: "title", headerName: this.translate.instant('PROVIDERS_PROFILE.Offer'), resizable: false, width: 200, cellRenderer: OffersRendererComponent },
+      { field: "title", headerName: this.translate.instant('PROVIDERS_PROFILE.Offer'), resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "visibility", headerName: this.translate.instant('PROVIDERS_PROFILE.Visibility'), resizable: false, width: 200, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
       { field: "subscriptions", headerName: this.translate.instant('PROVIDERS_PROFILE.Subscriptions'), resizable: false, width: 200 },
       { field: "joinLinks", headerName: this.translate.instant('PROVIDERS_PROFILE.Join Links'), resizable: false, width: 150 },
@@ -134,22 +142,11 @@ export class ProviderProfileComponent {
   ]
 
   openCommonInfoDialog(){
-    const dialogRef = this.commonInfoDialog.open(DialogContentExampleDialog,{
+    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
       panelClass: 'providerProfile-commonInfo'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
 }
-
-@Component({
-  selector: 'commongInfo-dialog',
-  templateUrl: './dialogBoxes/commonInfoDialog.html',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatInputModule,MatSelectModule,TranslateModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DialogContentExampleDialog {}

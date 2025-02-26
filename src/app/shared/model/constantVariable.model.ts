@@ -16,7 +16,8 @@ export class ConstantVariable {
                 details: '/api/metrics/providers/details',
                 create: '/api/providers',
                 brief: '/api/brief/providers',
-                brief_Offers: '/api/brief/providers/:providerId/offers'
+                brief_Offers: '/api/brief/providers/:providerId/offers',
+                providers_View: '/api/dashboards/providers/user-view'
             },
             follower: {
                 subscriptions_Metric: '/api/metrics/subscriptions',
@@ -180,7 +181,7 @@ export class ConstantVariable {
             }
           }
         ]
-      };
+    };
 
     constructor() {
         this.setLanguageArr();

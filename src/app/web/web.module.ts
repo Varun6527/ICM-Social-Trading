@@ -5,11 +5,9 @@ import { SidenavStanaloneComponent } from './shared/sidenav/sidenav.standalone.c
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AgGridModule } from 'ag-grid-angular';
-import { ProvidersComponent } from './views/providers/providers.component';
 import { ActionButtonStanAloneComponent } from './shared/action-button/action-button.standalone.component';
 import { TransactionsStandAloneComponent } from './views/transactions/transactions.standalone.component';
 import { TypeCellRendererStandAloneComponent } from './shared/type-cell-renderer/type-cell-renderer.standalone.component';
-import { ProviderProfileComponent } from './views/providers/provider-profile/provider-profile.component';
 import { CommonCellRendererStandAloneComponent } from './shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from './shared/status-btn-renderer/status-btn-renderer.component';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -18,9 +16,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatMenuModule} from '@angular/material/menu';
 import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
-import { SubsProfileRendererComponent } from './views/providers/cellRenderers/subs-profile-renderer/subs-profile-renderer.component';
-import { OffersComponent } from './views/offers/offers.component';
-import { OffersRendererComponent } from './views/providers/cellRenderers/offers-renderer/offers-renderer.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
@@ -44,13 +39,8 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
 @NgModule({
   declarations: [
     WebLayoutComponent,
-    ProvidersComponent,
-    ProviderProfileComponent,
     StatusBtnRendererComponent,
     SubscriptionsComponent,
-    SubsProfileRendererComponent,
-    OffersComponent,
-    OffersRendererComponent,
     ProvidersListComponent,
     TypeIconComponent,
     StrategyCellRendererComponent,

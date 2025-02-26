@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
-import { ProvidersComponent } from './views/providers/providers.component';
 import { PortfolioComponent } from './views/portfolio/portfolio.component';
-import { ProviderProfileComponent } from './views/providers/provider-profile/provider-profile.component';
 import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
-import { OffersComponent } from './views/offers/offers.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { ProviderListProfileComponent } from './views/providers-list/provider-list-profile/provider-list-profile.component';
 import { MyFollowerGaurd, MyProviderGaurd, MyRatingsGaurd, MyReportsGaurd } from './gaurd/web.gaurd';
@@ -37,12 +34,46 @@ const WEB_ROUTES: Routes = [
         title: "ICM | Reports",
         canActivate: [AuthGuard, MyReportsGaurd]
       },
+
+
       {
         path: 'providers',
-        component: ProvidersComponent,
+        loadComponent: () => import('./views/providers/providers.standalone.component').then(s => s.ProvidersStandAloneComponent),
         title: "ICM | Providers",
         canActivate: [AuthGuard, MyProviderGaurd]
       },
+      {
+        path: 'providers/:providerId',
+        loadComponent: () => import('./views/provider-profile/provider-profile.standalone.component').then(s => s.ProviderProfileStandAloneComponent),
+        title: "ICM | Providers",
+        canActivate: [AuthGuard, MyProviderGaurd]
+      },
+      {
+        path: 'offers/:offerId',
+        loadComponent: () => import('./views/offers/offers.standalone.component').then(s => s.OffersStandALoneComponent),
+        title: "ICM | Offers",
+        canActivate: [AuthGuard, MyProviderGaurd]
+      },
+      {
+        path: 'providers/:providerId/subscriptions/:subscriptionId/results/:resultId',
+        loadComponent: () => import('./views/result/result.standalone.component').then(s => s.ResultStandAloneComponent),
+        title: "ICM | Result",
+        canActivate: [AuthGuard, MyProviderGaurd]
+      },
+      {
+        path: 'providers/:providerId/subscriptions/:subscriptionId',
+        loadComponent: () => import('./views/provider-subscription/provider-subscription.standalone.component').then(s => s.ProviderSubscriptionStandAloneComponent),
+        title: "ICM | Providers-Subscriptions",
+        canActivate: [AuthGuard, MyProviderGaurd]
+      },
+      {
+        path: 'providers/:providerId/positions/:positionsId',
+        loadComponent: () => import('./views/positions/positions.standalone.component').then(s => s.PositionsStandAloneComponent),
+        title: "ICM | Positions",
+        canActivate: [AuthGuard, MyProviderGaurd]
+      },
+
+
       {
         path: 'subscriptions',
         component: PortfolioComponent,
@@ -50,23 +81,20 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyFollowerGaurd]
       },
       {
-        path: 'providers/:providerId',
-        component: ProviderProfileComponent,
-        title: "ICM | Providers",
-        canActivate: [AuthGuard, MyProviderGaurd]
-      },
-      {
-        path: 'subscriptions/:profileId',
+        path: 'subscriptions/:subscriptionId',
         component: SubscriptionsComponent,
         title: "ICM | Subscriptions",
         canActivate: [AuthGuard, MyFollowerGaurd]
       },
       {
-        path: 'offers/:offerId',
-        component: OffersComponent,
-        title: "ICM | Offers",
-        canActivate: [AuthGuard, MyProviderGaurd]
+        path: 'subscriptions/:subscriptionId/positions/:positionsId',
+        loadComponent: () => import('./views/positions/positions.standalone.component').then(s => s.PositionsStandAloneComponent),
+        title: "ICM | Positions",
+        canActivate: [AuthGuard, MyFollowerGaurd]
       },
+
+
+
       {
         path: 'ratings',
         component: ProvidersListComponent,
