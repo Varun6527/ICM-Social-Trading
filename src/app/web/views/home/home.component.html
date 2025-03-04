@@ -70,7 +70,7 @@
                             {{'HOME.Copied Position' | translate}}
                         </ng-container>
                     </h6>
-                    <h3 [ngClass]="{'green-color': providerMetric?.followerGrowth > 0}">
+                    <h3 [ngClass]="{'green-color': providerMetric?.followerGrowth > 0, 'red-color': providerMetric?.followerGrowth < 0 }">
                         <ng-container *ngIf="role['hasProvider']">
                             {{providerMetric?.followerGrowth}}
                         </ng-container>
