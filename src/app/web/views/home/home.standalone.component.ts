@@ -17,15 +17,14 @@ import { FormsModule } from '@angular/forms';
 import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
-import { ConstantVariable } from '../../../shared/model/constantVariable.model';
-import { NgApexchartsModule } from 'ng-apexcharts';
+import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/provider-follower-header-cards/provider.follower.header.cards.standalone.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatSelectModule, FormsModule, CommonAgGridStandAloneComponent, NgApexchartsModule]
+  imports: [CommonModule, ProviderFollowerHeaderCardsStandaloneComponent, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatSelectModule, FormsModule, CommonAgGridStandAloneComponent]
 })
 export class HomeStandAloneComponent {
   showLoader: boolean = false;
@@ -35,13 +34,10 @@ export class HomeStandAloneComponent {
   providerDetails: any = [];
   followerDetails: any = [];
   tradingAccountDetails: any = [];
-  currentDate: Date = new Date();
   role: any = {};
   selectAccountStatus: string = "Active";
   gridData: any = [];
   gridConfig!: AgGridConfig;
-  IConstant: ConstantVariable = new ConstantVariable();
-  chartOptions: any;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
@@ -86,30 +82,22 @@ export class HomeStandAloneComponent {
 
   getHomePageData() {
     if (this.role['hasProvider']) {
-      this.getProviderHomePageData();
+      this.getProviderTableData();
     } else if (this.role['hasFollower']) {
-      this.getFollowersHomePageData();
+      this.getFollowersTableData();
     } else {
       this.getTradingAccountData("showPageLoader");
     }
   }
 
-  getProviderHomePageData() {
+  getProviderTableData() {
     this.showLoader = true;
-    this._webService.getHomePageProviderData().subscribe({
-      next: (result: any) => {
-        if (result.source == 'provider_Metric') {
-          this.providerMetric = new ProviderMetricUIModal(result.response);
-          this.setChartData("provider");
-        }
-        if (result.source == 'provider_Details') {
-          this.providerDetails = [];
-          result.response.items.forEach((obj: any) => this.providerDetails.push(new ProviderDetailsUIModal(obj)));
-        }
-        if (this.providerMetric && this.providerDetails) {
-          this.setUpAgGridOfHomePage();
-          this.showLoader = false;
-        }
+    this._webService.getProviderTableData().subscribe({
+      next: (response: any) => {
+        this.providerDetails = [];
+        response.items.forEach((obj: any) => this.providerDetails.push(new ProviderDetailsUIModal(obj)));
+        this.setUpAgGridOfHomePage();
+        this.showLoader = false;
       },
       error: (errorObj) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
@@ -117,36 +105,14 @@ export class HomeStandAloneComponent {
     })
   }
 
-  setChartData(chartType: any) {
-    if(chartType == 'provider') {
-      if(this.providerMetric.monthlyFeesArr?.length == 0) return;
-      let valueArr = this.providerMetric.monthlyFeesArr.map((num: any) => Number(num.feesValue.replace(/[^0-9.-]+/g, '')));
-      let labelArr = this.providerMetric.monthlyFeesArr.map((num: any) => new Date(num.month).toLocaleString('en-US', { month: 'short' }));
-      this.chartOptions = this.IConstant.getHomePageChartConfig(valueArr, labelArr, this.providerMetric.currencyType, 'Fees');
-    } else if(chartType == 'follower') {
-      if(this.followerMetric.monthlyTradeArr.length == 0) return;
-      let valueArr = this.followerMetric.monthlyTradeArr.map((num: any) => Number(num.monthTradeProfit.replace(/[^0-9.-]+/g, '')));
-      let labelArr = this.followerMetric.monthlyTradeArr.map((num: any) => new Date(num.month).toLocaleString('en-US', { month: 'short' }));
-      this.chartOptions = this.IConstant.getHomePageChartConfig(valueArr, labelArr, this.followerMetric.currencyType, 'Profit');
-    }
-  }
-
-  getFollowersHomePageData() {
+  getFollowersTableData() {
     this.showLoader = true;
-    this._webService.getHomePageFollowerData().subscribe({
-      next: (result: any) => {
-        if (result.source == 'follower_Metric') {
-          this.followerMetric = new FollowerMetricUIModal(result.response);
-          this.setChartData("follower");
-        }
-        if (result.source == 'follower_Details') {
-          this.followerDetails = [];
-          result.response.items.forEach((obj: any) => this.followerDetails.push(new FollowerDetailsUIModal(obj)));
-        }
-        if (this.followerMetric && this.followerDetails) {
-          this.setUpAgGridOfHomePage();
-          this.showLoader = false;
-        }
+    this._webService.getFollowerTableData().subscribe({
+      next: (response: any) => {
+        this.followerDetails = [];
+        response.items.forEach((obj: any) => this.followerDetails.push(new FollowerDetailsUIModal(obj)));
+        this.setUpAgGridOfHomePage();
+        this.showLoader = false;
       },
       error: (errorObj) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);

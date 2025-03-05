@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, ViewChild} from '@angular/core';
 import { AgGridAngular, AgGridModule } from "ag-grid-angular";
 import { ColDef } from "ag-grid-community";
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
@@ -14,15 +14,34 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/provider-follower-header-cards/provider.follower.header.cards.standalone.component';
+import { ActivatedRoute } from '@angular/router';
+import { WebService } from '../../service/web.service';
+import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
+import { OfferDetailsUIModel, TradingAccountUIModal } from '../../shared/ui-model/web.ui.model';
+import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
+import { FormsModule } from '@angular/forms';
+import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 
 @Component({
   selector: 'app-provider-profile',
   templateUrl: './provider-profile.component.html',
   styleUrl: './provider-profile.component.scss',
   standalone: true,
-  imports: [CommonModule, AgGridModule, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
+  imports: [CommonModule, CommonAgGridStandAloneComponent, FormsModule, ShowErrorStandAloneComponent, ProviderFollowerHeaderCardsStandaloneComponent, AgGridModule, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
 })
 export class ProviderProfileStandAloneComponent {
+  providersData: any;
+  tradeAccountData: any;
+  providerId: any;
+  showPageLoader: boolean = false;
+  selectedOfferState: string = "Active";
+  showGridLoder: any = { offers: true };
+  gridConfig: any = { offers: {} };
+  gridData: any = { offers: [] };
+
+  readonly commonDialog = inject(MatDialog);
+  @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
   readonly commonInfoDialog = inject(MatDialog);
   SubsCols: ColDef[] = []
@@ -31,17 +50,118 @@ export class ProviderProfileStandAloneComponent {
   FeesCols: ColDef[] = []
   OffersCols:ColDef[]=[]
 
-  constructor(public translate: TranslateService) {}
-
-  ngOnInit() {
-    this.translate.onLangChange.subscribe(() => {
-      this.initializeColDefs();
+  constructor(public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
+    this.route.paramMap.subscribe(params => {
+      this.providerId = params.get('providerId')!;
+      this.getProviderProfileData();
+      this.getOffersData();
     });
-    this.initializeColDefs(); // Initialize on component load
+    this.setupOffersGridConfig();
   }
 
-  goBack(): void {
-    window.history.back();
+  setupOffersGridConfig() {
+    let colDefs = [
+      { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
+      { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell'},
+      { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false },
+      { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', resizable: false },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'offerRedirection' },
+    ];
+    this.setupGridConfig(colDefs, 'offers');
+  }
+
+  setupGridConfig(colDefs: any, key: string) {
+    this.gridConfig[key] = {
+      maxHeight: '400px',
+      noDataWarnMessage: 'There are no offers data',
+      gridOptions: {},
+      agGridTheme: 'ag-theme-alpine',
+      pageSizeDropdownArr: [25, 50, 100],
+      initialSelectedPageSize: 25,
+      columnDefination: colDefs,
+      enablePagination: true,
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'clientSide',
+      rowHeight: undefined
+    }
+  }
+
+  getProviderProfileData() {
+    this.showPageLoader = true;
+    let param = { providerId: this.providerId };
+    this._webService.getProviderProfilePageData(param).subscribe({
+      next: (result)=> {
+        this.providersData = result.providerData;
+        this.tradeAccountData = new TradingAccountUIModal(result.tradeAccountData);
+        this.showPageLoader = false;
+      },
+      error: (errorObj)=> {
+        this.showPageLoader = false;
+        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+      }
+    })
+  }
+
+  showErrorWarnMessage(msg: any) {
+    const errorConfigObj = this.errorComponent?.config;
+    errorConfigObj.message = msg ? msg : errorConfigObj.message;
+    this.errorComponent?.openErrorSnackbar();
+  }
+
+  openBeTradingAccountPopup() {
+    this.commonDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareTradingAccountData()
+    });
+    this.commonDialog.afterAllClosed.subscribe((result) => { });
+  }
+
+  prepareTradingAccountData() {
+    let tradingAccountDetails = this.tradeAccountData;
+    let commonDialogData = {
+      mainTitle: 'HOME.TradingAccInfo',
+      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
+      labelDetails: [
+        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
+        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
+        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
+        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
+        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
+        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
+        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
+        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
+        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
+        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
+        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
+        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
+        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
+      ] 
+    }
+    return commonDialogData;
+  }
+
+  getOffersData() {
+    this.showGridLoder.offers = true;
+    let param = {
+      providerId: this.providerId,
+      $count: true,
+      scope: this.selectedOfferState
+    }
+    this._webService.getOffersDetails(param).subscribe({
+      next: (response: any)=> {
+        this.gridData.offers = [];
+        response.items.forEach((obj: any) => this.gridData.offers.push(new OfferDetailsUIModel(obj)));
+        this.showGridLoder.offers = false;
+      },
+      error: (errorObj)=> {
+        this.showGridLoder.offers = false;
+        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+      }
+    })
+  }
+
+  refreshOffersList() {
+    this.getOffersData();
   }
 
   initializeColDefs() {
@@ -88,14 +208,6 @@ export class ProviderProfileStandAloneComponent {
       { field: "closeTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Close Time'), resizable: false, width: 200 },
       { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent },
     ];
-  
-    this.OffersCols = [
-      { field: "title", headerName: this.translate.instant('PROVIDERS_PROFILE.Offer'), resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent },
-      { field: "visibility", headerName: this.translate.instant('PROVIDERS_PROFILE.Visibility'), resizable: false, width: 200, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
-      { field: "subscriptions", headerName: this.translate.instant('PROVIDERS_PROFILE.Subscriptions'), resizable: false, width: 200 },
-      { field: "joinLinks", headerName: this.translate.instant('PROVIDERS_PROFILE.Join Links'), resizable: false, width: 150 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1 },
-    ];
   }
   
 
@@ -137,15 +249,10 @@ export class ProviderProfileStandAloneComponent {
     { position: "Sell", status: "Inactive", symbol: "NFLX", openTime: "10/09/24, 3:15 PM", volume: "22", profit: "$610", closeTime: "10/09/24, 7:45 PM" }
   ];
 
-  OffersRows =   [
-    { Id:1, title: "Test Offer", visibility: "Public", subscriptions: 'Count: 1', joinLinks: "Count: 1" },
-  ]
-
-  openCommonInfoDialog(){
+  openCommonInfoDialog() {
     const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
       panelClass: 'providerProfile-commonInfo'
     });
-
     dialogRef.afterClosed().subscribe(result => {});
   }
 

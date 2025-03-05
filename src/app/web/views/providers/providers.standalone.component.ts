@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { WebService } from '../../service/web.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { ProviderDashboardUIModal, ProviderTableUIModal } from '../../shared/ui-model/web.ui.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-providers',
@@ -37,7 +38,7 @@ export class ProvidersStandAloneComponent {
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   showFilters: boolean = false;
 
-  constructor(private _webService: WebService) {
+  constructor(private _webService: WebService, private _router: Router) {
     this._webService.subscribeOnWebDataChange('ProvidersStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
@@ -154,6 +155,8 @@ export class ProvidersStandAloneComponent {
   recieveChildrenEmitter(event: any) {
     if (event['action'] == 'provider_created') {
       this.getProvidersTableData();
+      // let providerData = event.data;
+      // this._router.navigate([`/portal/providers/${response.id}`]);
       this.beProviderDialog.closeAll();
     }
   }

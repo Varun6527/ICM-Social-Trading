@@ -41,6 +41,9 @@ export class ConstantVariable {
             published: '/api/reports/publishing',
             paid_Fees: '/api/reports/payments?type=PaidFees',
             copied_Position: '/api/reports/copying'
+        },
+        offers: {
+          offers_details: '/api/providers/:providerId/offers'
         }
     };
     errorMessageObj: any = {

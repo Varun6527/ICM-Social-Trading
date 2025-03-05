@@ -1,9 +1,9 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
-                    <h5>Amit Test</h5>
+                    <h5>{{providersData?.nickname}}</h5>
                     <p>{{"PROVIDERS_PROFILE.Provider's profile and sharing settings" | translate}}</p>
                 </div>
                 <button class="primary-btn action-btn" [matMenuTriggerFor]="actions">
@@ -11,33 +11,12 @@
                     {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item ><img src="../../../../assets/icons/cameraIcon.png" style="width: 20px;height: 20px;"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
-                    <button mat-menu-item><img src="../../../../assets/icons/trashIcon.png"  style="width: 20px;height: 20px;"/> {{"COMMON.Archive" | translate}}</button>
+                    <button mat-menu-item ><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
+                    <button mat-menu-item><img src="../../../../assets/icons/add-icon.png"  width="20" height="20"/> Create shared link</button>
+                    <button mat-menu-item><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
-            <div class="stats d-flex justify-space-between align-center g-20">
-                <div class="stats-card">
-                    <h6>{{"PROVIDERS_PROFILE.Monthly Fees" | translate}}</h6>
-                    <h3>$ 120.00</h3>
-                    <p>{{"COMMON.September" | translate}}</p>
-                </div>
-                <div class="stats-card">
-                    <h6>{{"PROVIDERS_PROFILE.Followers"|translate}}</h6>
-                    <h3>10</h3>
-                    <p>{{"COMMON.Active"|translate}}</p>
-                </div>
-                <div class="stats-card">
-                    <h6>{{"PROVIDERS_PROFILE.Follower Growth"|translate}}</h6>
-                    <h3>0</h3>
-                    <p>{{"COMMON.September"|translate}}</p>
-                </div>
-                <div class="stats-card">
-                    <h6>{{"PROVIDERS_PROFILE.Closed Profit (Own)"| translate}}</h6>
-                    <h3>$ 450.00</h3>
-                    <p>{{"COMMON.September"|translate}}</p>
-                </div>
-            </div>
-
+            <provider-follower-header-cards></provider-follower-header-cards>
             <div class="info-section d-flex justify-space-between">
                 <div class="info-section-left">
                     <div class="d-flex justify-space-between w-100">
@@ -50,13 +29,13 @@
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Nickname"|translate}}</h6>
-                                    <p>Amit Test</p>
+                                    <p>{{providersData?.nickname}}</p>
                                 </div>
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Show account name"|translate}}</h6>
-                                    <p>False</p>
+                                    <p>{{providersData?.additional?.showAccountName}}</p>
                                 </div>
                             </mat-card>
                         </div>
@@ -71,13 +50,13 @@
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Summary"|translate}}</h6>
-                                    <p>No summary</p>
+                                    <p>{{providersData?.additional?.summary}}</p>
                                 </div>
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Notes"|translate}}</h6>
-                                    <p>No notes</p>
+                                    <p>{{providersData?.additional?.notes}}</p>
                                 </div>
                             </mat-card>
                         </div>
@@ -92,13 +71,13 @@
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Hide stops"|translate}}</h6>
-                                    <p>False</p>
+                                    <p>{{providersData?.strategy?.hideStops}}</p>
                                 </div>
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Strategy Mode"|translate}}</h6>
-                                    <p>All</p>
+                                    <p>{{providersData?.strategy?.mode == 'OutOnly'? 'Out only': 'All'}}</p>
                                 </div>
                             </mat-card>
                         </div>
@@ -113,9 +92,9 @@
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Fee receiver account"|translate}}</h6>
-                                    <p>Test IB</p>
+                                    <p>{{providersData?.externalName}}</p>
                                 </div>
                             </mat-card>
                         </div>
@@ -127,21 +106,18 @@
                         </div>
                         <div class="info-section-left-items">
                             <div class="d-flex justify-space-between g-10">
-                                <div>
-                                    <!-- <button class="secondary-btn">
-                                        Scope
-                                    </button> -->
-                                    <mat-form-field class="subs-scopeSelect">
+                                <div class="d-flex g-20 common-dropdown align-center">
+                                    <mat-form-field>
                                         <mat-label>{{"PROVIDERS_PROFILE.Scope" | translate}}</mat-label>
-                                        <mat-select>
-                                          <mat-option value="active">{{"COMMON.Active"|translate}}</mat-option>
+                                        <mat-select [(ngModel)]="selectedOfferState" (selectionChange)="refreshOffersList()">
+                                          <mat-option value="Active">{{"COMMON.Active"|translate}}</mat-option>
                                           <mat-option value="all">{{"COMMON.All"| translate}}</mat-option>
                                         </mat-select>
                                       </mat-form-field>
                                 </div>
                                 <div><h4 class="divider">|</h4></div>
-                                <div class="d-flex justify-center g-10 align-baseline">
-                                    <button class="secondary-btn">
+                                <div class="d-flex justify-center g-10 align-stretch">
+                                    <button class="secondary-btn" (click)="refreshOffersList()">
                                         <img src="../../../../assets/icons/rotateIcon.svg" />
                                         {{"COMMON.Refresh"|translate}}
                                     </button>
@@ -155,9 +131,9 @@
                     </div>
                     <div>
                         <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 150px" [rowData]="OffersRows"
-                                [columnDefs]="OffersCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
+                            <common-ag-grid [gridConfig]="gridConfig.offers"
+                            [gridData]="gridData.offers" [showGridLoader]="showGridLoder.offers">
+                            </common-ag-grid>
                         </div>
                     </div>
                 </div>
@@ -178,7 +154,7 @@
                                         <h6>{{"COMMON.State"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">● {{"COMMON.Active"|translate}}</h6>
+                                        <h6 class="status-badge">● {{providersData?.state}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -186,21 +162,23 @@
                                         <h6>{{"PROVIDERS_PROFILE.Registered" | translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>5/16/23, 9:43:29 AM</h6>
+                                        <h6>{{providersData?.registerTime | date:'M/d/yy, h:mm:ss a'}}</h6>
                                     </div>
                                 </div>
                             </div>
                             <div class="items">
                                 <div class="header d-flex justify-space-between align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Trading Account"|translate}}</h6>
-                                    <img src="../../../../assets/icons/rightIcon.png" />
+                                    <a (click)="openBeTradingAccountPopup()" href="javascript:void(0)" class="default-link">
+                                        <img src="../../../../assets/icons/arrow-single.png" />
+                                    </a>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
                                         <h6>{{"PROVIDERS_PROFILE.MT name"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>Test IB</h6>
+                                        <h6>{{tradeAccountData?.tradingAccName}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -208,7 +186,7 @@
                                         <h6>{{"PROVIDERS_PROFILE.MT login"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>2009208646</h6>
+                                        <h6>{{tradeAccountData?.tradingAccountNo}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -216,7 +194,7 @@
                                         <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">● {{"COMMON.Active"|translate}}</h6>
+                                        <h6 class="status-badge">● {{tradeAccountData?.state}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -224,7 +202,7 @@
                                         <h6>{{"PROVIDERS_PROFILE.Created (UTC)"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>September 16, 2024 at 6:02:20 AM</h6>
+                                        <h6>{{providersData?.createdUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -232,7 +210,7 @@
                                         <h6>{{"PROVIDERS_PROFILE.Updated (UTC)"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>October 14, 2024 at 1:05:51 PM</h6>
+                                        <h6>{{providersData?.updatedUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -317,4 +295,8 @@
             </div>
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+<show-error-message></show-error-message>

@@ -3,16 +3,28 @@
           <span>{{ params.value }}</span>
     </a>
 
-    <div *ngIf="params.colDef.colId == 'transactionTitlePopup'" class="d-flex flex-column">
+    <div *ngIf="params.colDef.colId == 'transactionTitlePopup' || params.colDef.colId == 'offerCell'" class="d-flex flex-column">
       <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
-        <span>{{ params.value.reason }}</span>
+        @if(params.colDef.colId == 'transactionTitlePopup') {
+          <span>{{ params.value.reason }}</span>
+        } @else if (params.colDef.colId == 'offerCell') {
+          <span>{{ params.value }}</span>
+        }
       </a>
       <div class="d-flex justify-left g-10 align-center">
         <div class="tag">
-          #{{params.value.id}}
+          @if(params.colDef.colId == 'transactionTitlePopup') {
+            #{{params.value.id}}
+          } @else if (params.colDef.colId == 'offerCell') {
+            #{{params.data.offerId}}
+          }
         </div>
         <div class="tag">
-          {{params.value.state}}
+          @if(params.colDef.colId == 'transactionTitlePopup') {
+            {{params.value.state}}
+          } @else if (params.colDef.colId == 'offerCell') {
+            {{params.data.offerState}}
+          }
         </div>
       </div>
     </div>

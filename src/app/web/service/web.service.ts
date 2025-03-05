@@ -77,12 +77,20 @@ export class WebService extends BaseService {
     });
   }
 
-  getHomePageProviderData() {
-    const providerHomePageMetric = this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.metric}`, '').pipe(map(response => ({ source: 'provider_Metric', response })));
-    const providerHomePageDetais = this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.details}`, '').pipe(map(response => ({ source: 'provider_Details', response })));
-    
-    return of(providerHomePageMetric, providerHomePageDetais).pipe(
-        mergeMap((request: any) => request));
+  getProviderMetric() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.metric}`, '');
+  }
+
+  getFollowerMetric() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscriptions_Metric}`, '');
+  }
+
+  getProviderTableData() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.details}`, '');
+  }
+
+  getFollowerTableData() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscriptions_Details}`, '');
   }
 
   getHomePageFollowerData() {
@@ -169,6 +177,27 @@ export class WebService extends BaseService {
 
   getFileServerUrl() {
     return this.File_SERVER;
+  }
+
+  getProviderProfilePageData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.create}/${data.providerId}`, '').pipe(
+      switchMap((providerData: any) => {
+        let accountId = providerData.accountId;
+        return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.trading.account_Details}/${accountId}`, '').pipe(
+          map(tradeAccountData => ({
+            providerData: providerData,
+            tradeAccountData: tradeAccountData 
+          }))
+        )
+      })
+    );
+  }
+
+  getOffersDetails(data: any) {
+    let url = this.constantVar?.http_Api_Url.offers.offers_details;
+    url = url.replace(':providerId', data.providerId);
+    delete data['providerId'];
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, data);
   }
 }
 

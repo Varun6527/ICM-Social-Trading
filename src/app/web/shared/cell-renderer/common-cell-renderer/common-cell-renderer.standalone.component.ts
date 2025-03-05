@@ -45,7 +45,7 @@ export class CommonCellRendererStandAloneComponent {
       if(this.params.value.ownerType == "Provider") {
         this.router.navigate([`/portal/providers/${this.params.value.id}`]);
       }
-    } else if(this.params.colDef.colId == 'providerOfferRedirection') {
+    } else if(this.params.colDef.colId == 'providerOfferRedirection' || this.params.colDef.colId == 'offerCell') {
       this.router.navigate([`/portal/offers/${this.params.data.offerId}`]);
     }
   }

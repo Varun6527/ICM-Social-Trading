@@ -391,6 +391,23 @@ export class CopiedPostionModal {
     }
 }
 
+export class OfferDetailsUIModel {
+    offerTitle: string = "";
+    visibility: string = "";
+    subscriptionCount: string = "";
+    joinLinksCount: string = "";
+    offerId: any;
+    offerState: string = "";
+    constructor(offerObj: any) {
+        this.offerTitle = offerObj.name;
+        this.offerId = offerObj.id;
+        this.offerState = offerObj.state;
+        this.visibility = offerObj.visibility;
+        this.subscriptionCount = `Count: ${offerObj.followers.count}`;
+        this.joinLinksCount = `Count: ${offerObj.registration.links.length}`;
+    }
+}
+
 export class ConvertValueToCurrency {
     tradingCurrency: any[] = [
         { currency: 'USD', sign: '$' },

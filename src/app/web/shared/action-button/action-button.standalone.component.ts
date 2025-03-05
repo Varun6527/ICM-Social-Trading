@@ -51,6 +51,8 @@ export class ActionButtonStanAloneComponent {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'transactionDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_transact_details_popup', data: this.params.data });
+    } else if(this.params.colDef.colId == 'offerRedirection') {
+      this.router.navigate([`/portal/offers/${this.params.data.offerId}`]);
     }
   }
 }
