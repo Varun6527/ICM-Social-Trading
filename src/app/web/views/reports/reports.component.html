@@ -7,9 +7,9 @@
                     <p>{{"REPORTS.Different kinds of reports"|translate}}</p>
                 </div>
             </div>
-            <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
                 <mat-tab label="{{ tab.label | translate }}" *ngFor="let tab of tabArrConfig">
-                    @if (tab.tabIndex == currentSelectedTabIndx) {
+                    <ng-template matTabContent>
                         <div class="reports-container" *ngFor="let report of tab.reportsArr">
                             <div class="header d-flex justify-space-between align-center pb-20">
                                 <div class="header-subtitle">
@@ -19,11 +19,12 @@
                             </div>
                             <div class="header-buttons d-flex justify-space-between align-center">
                                 <div class="d-flex g-10">
-                                    <app-icm-date-range-picker *ngIf="report.defaultDateRange" 
-                                                                (emitToParent)="recieveChildrenEmitter($event, report)" 
-                                                                [defaultDateRange]="report.defaultDateRange">
+                                    <app-icm-date-range-picker *ngIf="report.defaultDateRange"
+                                        (emitToParent)="recieveChildrenEmitter($event, report)"
+                                        [defaultDateRange]="report.defaultDateRange">
                                     </app-icm-date-range-picker>
-                                    <button *ngIf="report.showProviderFilter" (click)="openProviderFilterPopup(report)" class="secondary-btn pos-relative">
+                                    <button *ngIf="report.showProviderFilter" (click)="openProviderFilterPopup(report)"
+                                        class="secondary-btn pos-relative">
                                         {{"REPORTS.Set Filter" | translate}}
                                         <div class="filter-badge" *ngIf="report.grid.filterData.filterType == 'Provider'">1</div>
                                     </button>
@@ -38,14 +39,13 @@
                                 </div>
                             </div>
                             <div class="pb-20">
-                                <common-ag-grid [gridConfig]="report.grid.config" 
-                                                [gridData]="report.grid.data"
-                                                [showGridLoader]="report.grid.showLoader">
+                                <common-ag-grid [gridConfig]="report.grid.config" [gridData]="report.grid.data"
+                                    [showGridLoader]="report.grid.showLoader">
                                 </common-ag-grid>
                             </div>
                         </div>
-                    }
-                </mat-tab>
+                    </ng-template>
+                    </mat-tab>
             </mat-tab-group>
         </div>
     </mat-card-content>

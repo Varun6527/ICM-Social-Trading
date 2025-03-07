@@ -254,7 +254,7 @@ export class TransactionHistoryUiModal {
         let obj = { reasonId: null, name: '', account: '', ownerType: '', providerId: null, subscriptionId: null, server: '' };
         if(transactObj.ownerType == "Provider") {
             obj.name = transactObj.counterpartyType;
-            obj.account = transactObj.externalAccount;
+            obj.account = transactObj.counterpartyExternalAccount;
             obj.providerId = transactObj.ownerId;
             obj.subscriptionId = transactObj.counterpartyId;
             obj.server = transactObj.refs.server.name;
@@ -446,5 +446,122 @@ export class ConvertValueToCurrency {
                 return `${currencySign}${parseFloat(this.val).toFixed(2)}`;
             }
         }
+    }
+}
+
+export class SubscriptionUiModal {
+    subscriptionId: any; 
+    state: string = "";
+    isActivated: boolean = false;
+    volume: string = "";
+    offerTitle: string = "";
+    offerId: any;
+    externalName: string = "";
+    tradingAccountNo: any;
+    equity: string = "";
+    registerTime: string = "";
+    providerId: any;
+    constructor(obj: any, offerData: any) {
+        this.providerId = obj.providerId;
+        this.subscriptionId = obj.id;
+        this.state = obj.state;
+        this.isActivated = obj.isActivated;
+        this.volume = obj.strategy.type;
+        this.offerTitle = offerData.filter((o: any) => o.offerId == obj.offerId)[0]?.offerTitle;
+        this.offerId = obj.offerId;
+        this.externalName = obj.externalName;
+        this.tradingAccountNo = obj.externalAccount;
+        this.equity = new ConvertValueToCurrency(obj.equity, obj.currency, false).getConvertedValue();
+        this.registerTime = this.transformDate(obj.registerTime);
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', { 
+            year: '2-digit', 
+            month: 'numeric', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: true 
+          }).replace(',', '');
+      }
+}
+
+export class PositionUiModal {
+    position: any;
+    positionId: any;
+    state: string = "";
+    status: string = "";
+    symbol: string = "";
+    openTime: string = "";
+    volume: any;
+    openDirection: string = "";
+    profit: string = "";
+    closeTime: string = "";
+    providerId: any;
+    constructor(obj: any) {
+        this.position = obj.position;
+        this.providerId = obj.providerId;
+        this.positionId = obj.id;
+        this.state = obj.state;
+        this.status = obj.status;
+        this.symbol = obj.symbol;
+        this.openTime = this.transformDate(obj.openTime);
+        this.volume = obj.openVolume;
+        this.openDirection = obj.openDirection;
+        this.profit =  new ConvertValueToCurrency(obj.profit, 'USD', false).getConvertedValue();
+        this.closeTime = this.transformDate(obj.closeTime);
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', { 
+            year: '2-digit', 
+            month: 'numeric', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: true 
+          }).replace(',', '');
+      }
+}
+
+export class DealsUiModal {
+    dealKey: string = "";
+    id: any;
+    state: string = "";
+    entry: string = "";
+    position: any;
+    symbol: string = "";
+    volume: any;
+    direction: string = "";
+    price: any;
+    time: string = "";
+    entryType: string = "";
+    constructor(obj: any) {
+        this.dealKey = obj.dealKey;
+        this.id = obj.id;
+        this.state = obj.state;
+        this.entry = obj.entry;
+        this.position = obj.position;
+        this.symbol = obj.symbol;
+        this.volume = obj.volume;
+        this.direction = obj.direction;
+        this.price = new ConvertValueToCurrency(obj.price, 'USD', false).getConvertedValue();
+        this.time = this.transformDate(obj.time);
+        this.entryType = obj.entryType;
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', {
+            year: '2-digit',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        }).replace(',', '');
     }
 }

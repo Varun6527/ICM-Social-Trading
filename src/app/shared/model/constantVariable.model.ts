@@ -44,6 +44,11 @@ export class ConstantVariable {
         },
         offers: {
           offers_details: '/api/providers/:providerId/offers'
+        },
+        provider_profile: {
+          subscriptions: "/api/providers/:providerId/subscriptions",
+          position: "/api/providers/:providerId/positions",
+          deals: "/api/providers/:providerId/deals"
         }
     };
     errorMessageObj: any = {

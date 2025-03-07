@@ -8,14 +8,9 @@ import { ICellRendererParams } from 'ag-grid-community';
   styleUrl: './status-btn-renderer.component.scss'
 })
 export class StatusBtnRendererComponent {
-  public value: string = '';
+  public params: any;
 
   agInit(params: ICellRendererParams): void {
-    this.value = params.value;
-  }
-
-  refresh(params: ICellRendererParams): boolean {
-    this.value = params.value;
-    return true;
+    this.params = params;
   }
 }

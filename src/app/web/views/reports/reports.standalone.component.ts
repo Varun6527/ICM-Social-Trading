@@ -26,21 +26,6 @@ export class ReportsStandAloneComponent {
   isFollower: boolean = false;
   tabArrConfig: any = [];
   constantVariable: any = new ConstantVariable();
-  indexEnum: any = {
-    provider: {
-      'earning': 0,
-      'fees': 1,
-      'trading': 2
-    }
-  }
-
-  tabTypeEnum: any = {
-    provider: {
-      '0': 'earning',
-      '1': 'fees',
-      '2': 'trading'
-    }
-  }
   
   currentSelectedTabIndx!: number;
   readonly filterDialog = inject(MatDialog);
@@ -50,14 +35,9 @@ export class ReportsStandAloneComponent {
     this.isProvider = this._webService.isProviderAccount;
     this.isFollower = this._webService.isSubscriptionAccount;
     this.setUpReportsTabs();
-    this.goToSelectedIndex(this.indexEnum.provider['earning']);
     this._webService.subscribeOnWebDataChange('ReportsStandAloneComponent', (event: any)=>{
       this.recieveChildrenEmitter(event, {});
     })
-  }
-
-  goToSelectedIndex(index: any) {
-    this.currentSelectedTabIndx = index;
   }
 
   getCommonGridConfig(colDefs: any, reportType: any) {
@@ -107,7 +87,6 @@ export class ReportsStandAloneComponent {
   getEarningsTabConfigObj() {
     return {
       label: 'REPORTS.Earnings',
-      tabIndex: 0,
       reportsArr: [
         this.getProviderEarningReportsConfig(),
         this.getOfferReportConfig()
@@ -118,7 +97,6 @@ export class ReportsStandAloneComponent {
   getFeesTabConfigObj() {
     return {
       label: 'REPORTS.Fees',
-      tabIndex: this.isProvider ? 1 : 0,
       reportsArr: [
         this.getFeesReportsConfig()
       ]
@@ -128,7 +106,6 @@ export class ReportsStandAloneComponent {
   getTradingTabConfigObj() {
     return {
       label: 'REPORTS.Trading',
-      tabIndex: 2,
       reportsArr: [
         this.getPublishedPositionReportsConfig()
       ]
@@ -138,7 +115,6 @@ export class ReportsStandAloneComponent {
   getCopiedPositionConfigObj() {
     return {
       label: 'REPORTS.Trading',
-      tabIndex: 1,
       reportsArr: [
         this.getCopiedPositionReportsConfig()
       ]
@@ -244,7 +220,7 @@ export class ReportsStandAloneComponent {
     let reportConfig = reportConfigObj.grid
     reportConfig.showLoader = true;
     let param: any = this.getCommonGridParam(reportConfig);
-    this._webService.getCommonReportsData(reportConfig.apiUrl, param).subscribe({
+    this._webService.getCommonGridData(reportConfig.apiUrl, param).subscribe({
 
       next: (response: any) => {
         let arr: any = [];
@@ -270,11 +246,6 @@ export class ReportsStandAloneComponent {
       param['filterValue'] = reportConfig.filterData['filterValue'];
     }
     return param;
-  }
-
-  onTabChange(event: any) {
-    let tabName = this.tabTypeEnum.provider[event.index];
-    this.goToSelectedIndex(this.indexEnum.provider[tabName]);
   }
 
   getGridColDefs(gridType: string) {

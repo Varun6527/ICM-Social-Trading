@@ -23,7 +23,7 @@
                 </ng-container>
                 <ng-container *ngSwitchCase="'trading_reason'">
                     <a class="default-link" (click)="redirectToResultPage(labelObj)">
-                        <span>{{labelObj.value}}</span>
+                        <span>#{{labelObj.value}}</span>
                     </a>
                 </ng-container>
                 <ng-container *ngSwitchCase="'sender'">
@@ -36,13 +36,23 @@
                           #{{ labelObj.value.subscriptionId }}
                           </div>
                         </div>
-                        <div class="line-height-1">{{ labelObj.value.account }}/{{labelObj.value.server}}</div>
+                        <div class="line-height-1">#{{ labelObj.value.account }}/{{labelObj.value.server}}</div>
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase="'recipent'">
-                    <a class="default-link" [ngClass]="{'cursor-default': labelObj.value.ownerType != 'Provider'}" (click)="redirectToProvider(labelObj.value)">
+                    @if(labelObj.value.ownerType != 'Provider') {
+                    <a class="default-link cursor-default">
                         <span>{{labelObj.value.name}}</span>
                     </a>
+                    }
+                    @if(labelObj.value.ownerType == 'Provider') {
+                    <div class="d-flex justify-right g-5 align-center line-height-2 flex-column align-end">
+                        <a class="default-link" (click)="redirectToProvider(labelObj.value)">
+                            <span>{{labelObj.value.name}}</span>
+                        </a>
+                        <div class="line-height-1">#{{ labelObj.value.account }}/{{labelObj.value.server}}</div>
+                    </div>
+                    }
                 </ng-container>
                 <ng-container *ngSwitchDefault>
                     <div>{{labelObj.value}}</div>

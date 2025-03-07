@@ -12,7 +12,7 @@
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
                     <button mat-menu-item ><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
-                    <button mat-menu-item><img src="../../../../assets/icons/add-icon.png"  width="20" height="20"/> Create shared link</button>
+                    <button mat-menu-item><img src="../../../../assets/icons/add-icon.png"  width="20" height="20"/> {{"PROVIDERS_PROFILE.Create shared link" | translate}}</button>
                     <button mat-menu-item><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
@@ -131,8 +131,8 @@
                     </div>
                     <div>
                         <div class="table">
-                            <common-ag-grid [gridConfig]="gridConfig.offers"
-                            [gridData]="gridData.offers" [showGridLoader]="showGridLoder.offers">
+                            <common-ag-grid [gridConfig]="offerGridConfig"
+                            [gridData]="offerGridData" [showGridLoader]="showOfferGridLoder">
                             </common-ag-grid>
                         </div>
                     </div>
@@ -221,77 +221,121 @@
             </div>
 
             <div class="metrics-table">
-
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
-                    <mat-tab label="Subscriptions">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="SubsRows"
-                                [columnDefs]="SubsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
+                <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
+                    class="providerProfile-tabGroup">
+                    <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
+                        <ng-template matTabContent>
+                            <div class="header-buttons d-flex justify-space-between pb-20 g-20">
+                                <div class="d-flex g-20 justify-center align-center">
+                                    <button class="secondary-btn" (click)="applyFilters(tab)">
+                                        <img src="../../../../assets/icons/filterIcon.svg" />
+                                        {{"COMMON.Filters"|translate}}
+                                    </button>
+                                    <button class="secondary-btn" *ngIf="tab.filters.show" (click)="clearFilters(tab)">
+                                        <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                                        {{"COMMON.Clear"|translate}}
+                                    </button>
+                                </div>
+                                <div class="d-flex g-20 common-dropdown align-center flex-wrap justify-end">
+                                    @if (tab.filters.show) {
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('id')">
+                                            <mat-label>{{"COMMON.Id"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.id" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('offerId')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Offer"|translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.offerId">
+                                                <ng-container *ngFor="let offer of offerGridData">
+                                                    <mat-option [value]="offer.offerId">{{offer.offerTitle}}</mat-option>
+                                                </ng-container>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('activationStatus')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Activation Status"|translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.activationStatus">
+                                                <mat-option [value]="'needsactivation'">{{"PROVIDERS_PROFILE.Needs Activation"|translate}}</mat-option>
+                                                <mat-option [value]="'activated'">{{"PROVIDERS_PROFILE.Activated"|translate}}</mat-option>
+                                                <mat-option [value]="'suspended'">{{"PROVIDERS_PROFILE.Suspended"|translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('externalAccount')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Trading Account"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.externalAccount" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('agent')">
+                                            <mat-label>{{"COMMON.Agent"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.agent" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('scope')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.Scope' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.scope">
+                                                <mat-option [value]="'Active'">{{'COMMON.Active' | translate}}</mat-option>
+                                                <mat-option [value]="'All'">{{'COMMON.All' | translate}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('position')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Position"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.position" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('posState')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.State' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.posState">
+                                                <mat-option [value]="'Tracking'">{{'PROVIDERS_PROFILE.Tracking' | translate}}</mat-option>
+                                                <mat-option [value]="'Processed'">{{'TRANSACTIONS.Processed' | translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('dealKey')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Deal"|translate}}</mat-label>
+                                            <input matInput type="text" [(ngModel)]="tab.filters.type.dealKey" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('dealState')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.State' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.dealState">
+                                                <mat-option [value]="'Pending'">{{'PROVIDERS_PROFILE.Pending' | translate}}</mat-option>
+                                                <mat-option [value]="'Processing'">{{'PROVIDERS_PROFILE.Processing' | translate}}</mat-option>
+                                                <mat-option [value]="'Processed'">{{'TRANSACTIONS.Processed' | translate}}</mat-option>
+                                                <mat-option [value]="'Error'">{{'PROVIDERS_PROFILE.Error' | translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('entry')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.Entry' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.entry">
+                                                <mat-option [value]="'In'">{{'PROVIDERS_PROFILE.In' | translate}}</mat-option>
+                                                <mat-option [value]="'Out'">{{'PROVIDERS_PROFILE.Out' | translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('symbol')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Symbol"|translate}}</mat-label>
+                                            <input matInput type="text" [(ngModel)]="tab.filters.type.symbol" />
+                                        </mat-form-field>
+                                        
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('platformId')">
+                                            <mat-label>{{"TRANSACTIONS.MT order"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.platformId" />
+                                        </mat-form-field>
+                                    }
+                                    <button class="secondary-btn" (click)="refreshDataList(tab)">
+                                        @if (true) {
+                                            <img src="../../../../assets/icons/searchIcon.svg" />
+                                            {{"PROVIDERS_LIST.Search"|translate}}
+                                        } @else {
+                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            {{"COMMON.Refresh"|translate}}
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                            <common-ag-grid [gridConfig]="tab.grid.config" [gridData]="tab.grid.data"
+                                [showGridLoader]="tab.grid.showLoader">
+                            </common-ag-grid>
+                        </ng-template>
                     </mat-tab>
-                    <mat-tab label="Positions">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="PositionsRows"
-                                [columnDefs]="PositionsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Deals">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="DealsRows"
-                                [columnDefs]="DealsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Fees">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="FeesRows"
-                                [columnDefs]="FeesCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
-                    </mat-tab>
-                  </mat-tab-group>
+                </mat-tab-group>
             </div>
         </div>
     </mat-card-content>

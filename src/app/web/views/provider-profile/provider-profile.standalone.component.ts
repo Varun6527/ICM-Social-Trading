@@ -18,10 +18,11 @@ import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/pro
 import { ActivatedRoute } from '@angular/router';
 import { WebService } from '../../service/web.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
-import { OfferDetailsUIModel, TradingAccountUIModal } from '../../shared/ui-model/web.ui.model';
+import { DealsUiModal, OfferDetailsUIModel, PositionUiModal, SubscriptionUiModal, TradingAccountUIModal, TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { FormsModule } from '@angular/forms';
-import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
+import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
+import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 
 @Component({
   selector: 'app-provider-profile',
@@ -36,57 +37,211 @@ export class ProviderProfileStandAloneComponent {
   providerId: any;
   showPageLoader: boolean = false;
   selectedOfferState: string = "Active";
-  showGridLoder: any = { offers: true };
-  gridConfig: any = { offers: {} };
-  gridData: any = { offers: [] };
+  showOfferGridLoder: any = false;
+  offerGridConfig: any = {};
+  offerGridData: any = [];
+  tabArrConfig: any = [];
+  constantVariable: ConstantVariable = new ConstantVariable();
+  currentSelectedTabIndx: number = 0;
 
-  readonly commonDialog = inject(MatDialog);
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
-
+  readonly tradingDialog = inject(MatDialog);
   readonly commonInfoDialog = inject(MatDialog);
-  SubsCols: ColDef[] = []
-  PositionsCols: ColDef[] = []
-  DealsCols: ColDef[] = []
-  FeesCols: ColDef[] = []
-  OffersCols:ColDef[]=[]
+  readonly beFeesDetailDialog = inject(MatDialog);
+  readonly beDealsDialog = inject(MatDialog);
 
   constructor(public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.providerId = params.get('providerId')!;
-      this.getProviderProfileData();
-      this.getOffersData();
+      this.getProviderProfileData(() => {
+        this.setupOffersGridConfig();
+        this.getOffersData(() => {
+          this.setUpTabsConfig();
+          this.getGridData(this.tabArrConfig[0]);
+        });
+      });
     });
-    this.setupOffersGridConfig();
+    this._webService.subscribeOnWebDataChange('ProviderProfileStandAloneComponent', (event: any) => {
+      this.recieveChildrenEmitter(event);
+    });
   }
 
-  setupOffersGridConfig() {
-    let colDefs = [
-      { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
-      { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell'},
-      { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false },
-      { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', resizable: false },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'offerRedirection' },
-    ];
-    this.setupGridConfig(colDefs, 'offers');
+  setUpTabsConfig() {
+    this.tabArrConfig = this.getProviderProfileTabsConfig();
   }
 
-  setupGridConfig(colDefs: any, key: string) {
-    this.gridConfig[key] = {
-      maxHeight: '400px',
-      noDataWarnMessage: 'There are no offers data',
-      gridOptions: {},
-      agGridTheme: 'ag-theme-alpine',
-      pageSizeDropdownArr: [25, 50, 100],
-      initialSelectedPageSize: 25,
-      columnDefination: colDefs,
-      enablePagination: true,
-      headerNameLangArr: colDefs.map((o: any) => o.headerName),
-      rowModelType: 'clientSide',
-      rowHeight: undefined
+  getProviderProfileTabsConfig() {
+    let arr = [];
+    arr.push(
+      this.getSubscriptionTabConfigObj(),
+      this.getPositionTabConfigObj(),
+      this.getDealsTabConfigObj(),
+      this.getFeesTabConfig()
+    );
+    return arr;
+  }
+
+  getSubscriptionTabConfigObj() {
+    let apiUrl = this.constantVariable?.http_Api_Url.provider_profile.subscriptions.replace(':providerId', this.providerId);
+    return {
+      label: 'PROVIDERS_PROFILE.Subscriptions',
+      filters: {
+        show: false,
+        type: { id: "", offerId: "", activationStatus: "", externalAccount: "", agent: "", scope: "Active" },
+        clear: function() {
+          this.type = { id: "", offerId: "", activationStatus: "", externalAccount: "", agent: "", scope: "Active" };
+        },
+        getApiParams: function () {
+          let param: any = {};
+          let getFilterParam = () => {
+            let filterQuery = "";
+            if (this.type.id) {
+              filterQuery += `id eq ${this.type.id} and `;
+            }
+            if (this.type.offerId) {
+              filterQuery += `offerId eq ${this.type.offerId} and `;
+            }
+            if (this.type.agent) {
+              filterQuery += `agent eq ${this.type.agent} and `;
+            }
+            if (this.type.externalAccount) {
+              filterQuery += `externalAccount eq ${this.type.externalAccount} and `;
+            }
+            if (this.type.activationStatus) {
+              let isActivated = this.type.activationStatus == 'needsactivation' ? false : true;
+              let activationStatus = this.type.activationStatus == 'activated' ? true : false;
+              filterQuery += `(isActivated eq ${isActivated} and activationStatus eq ${activationStatus}) and `;
+            }
+            return filterQuery;
+          }
+          param['$count'] = true;
+          param['scope'] = this.type.scope;
+          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          return param;
+        }
+      },
+      grid: this.getCommonGridDetails('subscription', 'There are no subscription', SubscriptionUiModal, apiUrl, this.offerGridData)
     }
   }
 
-  getProviderProfileData() {
+  getPositionTabConfigObj() {
+    let apiUrl = this.constantVariable?.http_Api_Url.provider_profile.position.replace(':providerId', this.providerId);
+    return {
+      label: 'PROVIDERS_PROFILE.Positions',
+      filters: {
+        show: false,
+        type: { position: "", posState: "", symbol: "" },
+        clear: function() {
+          this.type = { position: "", posState: "", symbol: "" };
+        },
+        getApiParams: function () {
+          let param: any = {};
+          let getFilterParam = () => {
+            let filterQuery = "";
+            if (this.type.posState) {
+              filterQuery += `state eq '${this.type.posState}' and `;
+            }
+            if (this.type.symbol) {
+              filterQuery += `contains(tolower(symbol), '${this.type.symbol}') and `;
+            }
+            if (this.type.position) {
+              filterQuery += `position eq ${this.type.position} and `;
+            }
+            return filterQuery;
+          }
+          param['$count'] = true;
+          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          return param;
+        }
+      },
+      grid: this.getCommonGridDetails('position', 'There are no position', PositionUiModal, apiUrl)
+    }
+  }
+
+  getDealsTabConfigObj() {
+    let apiUrl = this.constantVariable?.http_Api_Url.provider_profile.deals.replace(':providerId', this.providerId)
+    return {
+      label: 'PROVIDERS_PROFILE.Deals',
+      filters: {
+        show: false,
+        type: { dealKey: "", dealState: "", entry: "", symbol: "" },
+        clear: function() {
+          this.type = { dealKey: "", dealState: "", entry: "", symbol: "" };
+        },
+        getApiParams: function () {
+          let param: any = {};
+          let getFilterParam = () => {
+            let filterQuery = "";
+            if (this.type.dealKey) {
+              filterQuery += `dealKey eq '${this.type.dealKey}' and `;
+            }
+            if (this.type.entry) {
+              filterQuery += `entry eq '${this.type.entry}' and `;
+            }
+            if (this.type.dealState) {
+              filterQuery += `state eq '${this.type.dealState}' and `;
+            }
+            if (this.type.symbol) {
+              filterQuery += `symbol eq '${this.type.symbol}' and `;
+            }
+            return filterQuery;
+          }
+          param['$count'] = true;
+          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          return param;
+        }
+      },
+      grid: this.getCommonGridDetails('deals', 'There are no deals', DealsUiModal, apiUrl)
+    }
+  }
+
+
+  getFeesTabConfig() {
+    return {
+      label: 'PROVIDERS_PROFILE.Fees',
+      filters: {
+        show: false,
+        type: { id: "", platformId: "" },
+        clear: function() {
+          this.type = { id: "", platformId: "" };
+        },
+        providerId: this.providerId,
+        getApiParams: function () {
+          let param: any = {};
+          let getFilterParam = () => {
+            let filterQuery = "";
+            if (this.type.id) {
+              filterQuery += `id eq ${this.type.id} and `;
+            }
+            if (this.type.platformId) {
+              filterQuery += `platformId eq ${this.type.platformId} and `;
+            }
+            filterQuery += `ownerId eq ${this.providerId} and ownerType eq 'Provider' and `
+            return filterQuery;
+          }
+          param['$count'] = true;
+          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          return param;
+        }
+      },
+      grid: this.getCommonGridDetails('fees', 'There are no fees', TransactionHistoryUiModal, this.constantVariable?.http_Api_Url.transactionsHistory.get, this.providersData)
+    }
+  }
+
+  getCommonGridDetails(gridType: string, warnMessage: string, uiModel: any, apiUrl: string, secondryModelData?: any) {
+    let commonColDef = this.getGridColDefs(gridType);
+    return {
+      apiUrl: apiUrl,
+      colDef: commonColDef,
+      config: this.getCommonGridConfig(commonColDef, warnMessage),
+      data: [],
+      showLoader: false,
+      uiModel: uiModel,
+      uiModelSecondParamData: secondryModelData
+    }
+  }
+
+  getProviderProfileData(callback?: any) {
     this.showPageLoader = true;
     let param = { providerId: this.providerId };
     this._webService.getProviderProfilePageData(param).subscribe({
@@ -94,10 +249,12 @@ export class ProviderProfileStandAloneComponent {
         this.providersData = result.providerData;
         this.tradeAccountData = new TradingAccountUIModal(result.tradeAccountData);
         this.showPageLoader = false;
+        callback();
       },
       error: (errorObj)=> {
         this.showPageLoader = false;
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+        callback();
       }
     })
   }
@@ -108,12 +265,173 @@ export class ProviderProfileStandAloneComponent {
     this.errorComponent?.openErrorSnackbar();
   }
 
+  setupOffersGridConfig() {
+    let colDefs = this.getGridColDefs('offers');
+    this.offerGridConfig = this.getCommonGridConfig(colDefs, 'There are no offers data');
+  }
+
+  getOffersData(callback?: any) {
+    this.showOfferGridLoder = true;
+    let param = {
+      providerId: this.providerId,
+      $count: true,
+      scope: this.selectedOfferState
+    }
+    this._webService.getOffersDetails(param).subscribe({
+      next: (response: any)=> {
+        this.offerGridData = [];
+        response.items.forEach((obj: any) => this.offerGridData.push(new OfferDetailsUIModel(obj)));
+        this.showOfferGridLoder = false;
+        callback();
+      },
+      error: (errorObj)=> {
+        this.showOfferGridLoder = false;
+        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+        callback();
+      },
+      complete: ()=>{
+        callback();
+      }
+    })
+  }
+
+  
+
+  getGridData(tab: any) {
+    let gridConfig = tab.grid
+    gridConfig.showLoader = true;
+    let param: any = tab.filters.getApiParams();
+    this._webService.getCommonGridData(gridConfig.apiUrl, param).subscribe({
+
+      next: (response: any) => {
+        let arr: any = [];
+        response.items.forEach((obj: any) => arr.push(new gridConfig.uiModel(obj, gridConfig.uiModelSecondParamData)));
+        gridConfig.data = arr;
+        gridConfig.showLoader = false;
+      },
+      error: (errorObj: any) => {
+        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+        gridConfig.showLoader = false;
+      }
+    })
+  }
+
+  getCommonGridParam(filters: any) {
+    console.log(filters);
+  }
+
+  refreshOffersList() {
+    this.getOffersData();
+  }
+
+  openCommonInfoDialog() {
+    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
+      panelClass: 'providerProfile-commonInfo'
+    });
+    dialogRef.afterClosed().subscribe(result => {});
+  }
+
+  onTabChange(event: any) {
+    this.currentSelectedTabIndx = event.index;
+    this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
+  }
+
+  applyFilters(tab: any) { 
+    if(tab.filters.show)  {   
+      tab.filters.show = false;
+      this.clearFilters(tab);
+    } else {
+      tab.filters.show = true;
+    }
+  }
+
+  clearFilters(tab: any) {
+    tab.filters.clear();
+    this.getGridData(tab);
+  }
+
+  refreshDataList(tab: any) {
+    this.getGridData(tab);
+  }
+
+  getGridColDefs(gridType: string) {
+    if(gridType == 'offers') {
+      return [
+        { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
+        { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell'},
+        { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false },
+        { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', resizable: false },
+        { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerRedirection', resizable: false },
+      ];
+    } else if(gridType == 'subscription') {
+      return [
+        { field: "subscriptionId", headerName: 'REPORTS.Name',  resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerSubscriptionNameCell' },
+        { field: "isActivated", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererComponent },
+        { field: "volume", sortable: false, headerName: 'PROVIDERS_PROFILE.Volume Scaling', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell'},
+        { field: "offerTitle", sortable: false, headerName: 'PROVIDERS_PROFILE.Offer', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'offerTitleCell' },
+        { field: "tradingAccountNo", sortable: false, headerName: 'PROVIDERS_PROFILE.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell'},
+        { field: "equity", sortable: false, headerName: 'PROVIDERS_PROFILE.Equity', resizable: false },
+        { field: "registerTime", headerName: 'PROVIDERS_PROFILE.Registered', sort: 'desc', resizable: false },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'providerSubscriptionRedirection', resizable: false },
+      ];
+    } else if(gridType == 'position') {
+      return [
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionNameCell' },
+        { field: "status", headerName: 'COMMON.Status', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
+        { field: "openTime", headerName: 'PROVIDERS_PROFILE.Open Time', sort: 'desc', resizable: false },
+        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionVolumeCell' },
+        { field: "profit", headerName: 'PROVIDERS_PROFILE.Profit', resizable: false },
+        { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, resizable: false, colId: 'positionRedirection' },
+      ]
+    } else if(gridType == 'deals') {
+      return [
+        { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
+        { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false },
+        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
+        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
+        { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },
+        { field: "time", headerName: 'PROVIDERS_PROFILE.Time', sort: 'desc', resizable: false },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, showPopupArraow: true, colId: 'dealsPopup'},
+      ]
+    } else if(gridType == 'fees') {
+      return [
+        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, suppressSizeToFit: true, colId: 'transactionTitlePopup' },
+        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, width: 150, suppressSizeToFit: true },
+        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, colId: 'transactionAmountViewDisplay', suppressSizeToFit: true  },
+        { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction', suppressSizeToFit: true },
+        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200, suppressSizeToFit: true },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false, flex: 1 }
+      ]
+    }
+    return;
+  }
+
+  getCommonGridConfig(colDefs: any, warnMessage: string) {
+    let gridConfig: AgGridConfig = {
+      maxHeight: '400px',
+      noDataWarnMessage: warnMessage,
+      gridOptions: {},
+      agGridTheme: 'ag-theme-alpine',
+      pageSizeDropdownArr: [5, 10, 15],
+      initialSelectedPageSize: 5,
+      columnDefination: colDefs,
+      enablePagination: true,
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'clientSide',
+      rowHeight: undefined
+    };
+    return gridConfig;
+  }
+
   openBeTradingAccountPopup() {
-    this.commonDialog.open(CommonDialogStandAloneComponent, {
+    this.tradingDialog.open(CommonDialogStandAloneComponent, {
       panelClass: 'common-dialog',
       data: this.prepareTradingAccountData()
     });
-    this.commonDialog.afterAllClosed.subscribe((result) => { });
+    this.tradingDialog.afterAllClosed.subscribe((result) => { });
   }
 
   prepareTradingAccountData() {
@@ -140,120 +458,71 @@ export class ProviderProfileStandAloneComponent {
     return commonDialogData;
   }
 
-  getOffersData() {
-    this.showGridLoder.offers = true;
-    let param = {
-      providerId: this.providerId,
-      $count: true,
-      scope: this.selectedOfferState
+  recieveChildrenEmitter(event: any) {
+    if(event['action'] == 'open_transact_details_popup') {
+      this.openBeFeesDetailsPopup(event['data']);
+    } else if(event['action'] == 'open_deals_popup') {
+      this.openDealsPopup(event['data']);
     }
-    this._webService.getOffersDetails(param).subscribe({
-      next: (response: any)=> {
-        this.gridData.offers = [];
-        response.items.forEach((obj: any) => this.gridData.offers.push(new OfferDetailsUIModel(obj)));
-        this.showGridLoder.offers = false;
-      },
-      error: (errorObj)=> {
-        this.showGridLoder.offers = false;
-        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-      }
-    })
   }
 
-  refreshOffersList() {
-    this.getOffersData();
-  }
-
-  initializeColDefs() {
-    this.SubsCols = [
-      { field: "name", headerName: this.translate.instant('PROVIDERS_PROFILE.Nickname'), resizable: false, suppressSizeToFit: true, width: 180, cellRenderer: CommonCellRendererStandAloneComponent },
-      { field: "status", headerName: this.translate.instant('COMMON.Status'), width: 100, resizable: false, cellRenderer: StatusBtnRendererComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, headerClass: 'subs-status-header' },
-      { field: "volumeScaling", headerName: this.translate.instant('PROVIDERS_PROFILE.Volume Scaling'), resizable: false, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
-      { field: "offer", headerName: this.translate.instant('PROVIDERS_PROFILE.Offer'), resizable: false, width: 150 },
-      { field: "tradingAccount", headerName: this.translate.instant('PROVIDERS_PROFILE.Trading Account'), resizable: false },
-      { field: "equity", headerName: this.translate.instant('PROVIDERS_PROFILE.Equity'), resizable: false, width: 120 },
-      { field: "registered", headerName: this.translate.instant('PROVIDERS_PROFILE.Registered'), resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent },
-    ];
-  
-    this.PositionsCols = [
-      { field: "position", headerName: this.translate.instant('PROVIDERS_PROFILE.Position'), resizable: false, suppressSizeToFit: true, width: 180 },
-      { field: "status", headerName: this.translate.instant('COMMON.Status'), width: 100, resizable: false, cellRenderer: StatusBtnRendererComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, headerClass: 'subs-status-header' },
-      { field: "symbol", headerName: this.translate.instant('PROVIDERS_PROFILE.Symbol'), width: 150, resizable: false, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
-      { field: "openTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Open Time'), resizable: false, width: 180 },
-      { field: "volume", headerName: this.translate.instant('PROVIDERS_PROFILE.Volume'), resizable: false },
-      { field: "profit", headerName: this.translate.instant('PROVIDERS_PROFILE.Profit'), resizable: false, width: 120 },
-      { field: "closeTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Close Time'), resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent },
-    ];
-  
-    this.DealsCols = [
-      { field: "position", headerName: this.translate.instant('PROVIDERS_PROFILE.Position'), resizable: false, suppressSizeToFit: true, width: 180 },
-      { field: "status", headerName: this.translate.instant('COMMON.Status'), width: 100, resizable: false, cellRenderer: StatusBtnRendererComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, headerClass: 'subs-status-header' },
-      { field: "symbol", headerName: this.translate.instant('PROVIDERS_PROFILE.Symbol'), width: 150, resizable: false, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
-      { field: "openTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Open Time'), resizable: false, width: 180 },
-      { field: "volume", headerName: this.translate.instant('PROVIDERS_PROFILE.Volume'), resizable: false },
-      { field: "profit", headerName: this.translate.instant('PROVIDERS_PROFILE.Profit'), resizable: false, width: 120 },
-      { field: "closeTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Close Time'), resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent },
-    ];
-  
-    this.FeesCols = [
-      { field: "position", headerName: this.translate.instant('PROVIDERS_PROFILE.Position'), resizable: false, suppressSizeToFit: true, width: 180 },
-      { field: "status", headerName: this.translate.instant('COMMON.Status'), width: 100, resizable: false, cellRenderer: StatusBtnRendererComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'align-items': 'center' }, headerClass: 'subs-status-header' },
-      { field: "symbol", headerName: this.translate.instant('PROVIDERS_PROFILE.Symbol'), width: 150, resizable: false, cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column' } },
-      { field: "openTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Open Time'), resizable: false, width: 180 },
-      { field: "volume", headerName: this.translate.instant('PROVIDERS_PROFILE.Volume'), resizable: false },
-      { field: "profit", headerName: this.translate.instant('PROVIDERS_PROFILE.Profit'), resizable: false, width: 120 },
-      { field: "closeTime", headerName: this.translate.instant('PROVIDERS_PROFILE.Close Time'), resizable: false, width: 200 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent },
-    ];
-  }
-  
-
-
-  SubsRows = [
-    { Id:1, name: "Amit Test", status: "Active", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456789", equity: "$56.7", registered: "9/16/24, 7:02:20 AM"},
-    { Id:2,name: "John Doe", status: "Active", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456712", equity: "$34.5", registered: "9/18/24, 10:12:40 AM" },
-    { Id:3,name: "Alice Smith", status: "Inactive", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456713", equity: "$78.9", registered: "9/20/24, 2:23:18 PM" },
-    { Id:4,name: "Bob Johnson", status: "Active", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456714", equity: "$23.6", registered: "9/21/24, 9:45:50 AM"},
-    { Id:5,name: "Charlie Brown", status: "Active", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456715", equity: "$92.3", registered: "9/23/24, 11:34:12 AM" },
-    { Id:6,name: "Diana Lee", status: "Inactive", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456716", equity: "$67.8", registered: "9/25/24, 5:50:22 PM"},
-    { Id:7,name: "Evan Thomas", status: "Active", volumeScaling: "Multiply", offer: "Test Offer", tradingAccount: "11003456717", equity: "$48.1", registered: "9/26/24, 8:16:35 AM"}
-  ];
-
-  PositionsRows = [
-    { position: "Buy", status: "Active", symbol: "AAPL", openTime: "9/16/24, 9:00 AM", volume: "10", profit: "$500", closeTime: "9/17/24, 4:00 PM" },
-    { position: "Sell", status: "Inactive", symbol: "GOOGL", openTime: "9/18/24, 10:00 AM", volume: "5", profit: "$350", closeTime: "9/18/24, 4:30 PM" },
-    { position: "Buy", status: "Active", symbol: "TSLA", openTime: "9/20/24, 11:00 AM", volume: "8", profit: "$120", closeTime: "9/21/24, 5:00 PM" },
-    { position: "Sell", status: "Inactive", symbol: "AMZN", openTime: "9/21/24, 12:00 PM", volume: "15", profit: "$700", closeTime: "9/21/24, 6:00 PM" },
-    { position: "Buy", status: "Active", symbol: "MSFT", openTime: "9/23/24, 2:00 PM", volume: "12", profit: "$420", closeTime: "9/24/24, 3:30 PM" },
-    { position: "Sell", status: "Inactive", symbol: "NFLX", openTime: "9/25/24, 4:00 PM", volume: "20", profit: "$600", closeTime: "9/26/24, 7:00 PM" }
-  ];
-
-  DealsRows = [
-    { position: "Buy", status: "Active", symbol: "AAPL", openTime: "10/10/24, 9:15 AM", volume: "15", profit: "$650", closeTime: "10/11/24, 4:00 PM" },
-    { position: "Sell", status: "Inactive", symbol: "GOOGL", openTime: "10/12/24, 10:30 AM", volume: "8", profit: "$280", closeTime: "10/12/24, 3:00 PM" },
-    { position: "Buy", status: "Active", symbol: "TSLA", openTime: "10/13/24, 11:45 AM", volume: "10", profit: "$750", closeTime: "10/14/24, 5:00 PM" },
-    { position: "Sell", status: "Inactive", symbol: "AMZN", openTime: "10/14/24, 1:00 PM", volume: "20", profit: "$900", closeTime: "10/14/24, 6:00 PM" },
-    { position: "Buy", status: "Active", symbol: "MSFT", openTime: "10/15/24, 2:30 PM", volume: "25", profit: "$1100", closeTime: "10/16/24, 3:45 PM" },
-    { position: "Sell", status: "Inactive", symbol: "NFLX", openTime: "10/16/24, 3:50 PM", volume: "12", profit: "$500", closeTime: "10/16/24, 7:00 PM" }
-  ];
-
-  FeesRows = [
-    { position: "Buy", status: "Active", symbol: "AAPL", openTime: "10/01/24, 9:30 AM", volume: "12", profit: "$450", closeTime: "10/02/24, 4:30 PM" },
-    { position: "Sell", status: "Inactive", symbol: "GOOGL", openTime: "10/03/24, 10:00 AM", volume: "7", profit: "$380", closeTime: "10/03/24, 3:45 PM" },
-    { position: "Buy", status: "Active", symbol: "TSLA", openTime: "10/04/24, 11:30 AM", volume: "9", profit: "$560", closeTime: "10/05/24, 5:15 PM" },
-    { position: "Sell", status: "Inactive", symbol: "AMZN", openTime: "10/06/24, 1:45 PM", volume: "16", profit: "$800", closeTime: "10/06/24, 6:30 PM" },
-    { position: "Buy", status: "Active", symbol: "MSFT", openTime: "10/07/24, 2:00 PM", volume: "18", profit: "$930", closeTime: "10/08/24, 4:00 PM" },
-    { position: "Sell", status: "Inactive", symbol: "NFLX", openTime: "10/09/24, 3:15 PM", volume: "22", profit: "$610", closeTime: "10/09/24, 7:45 PM" }
-  ];
-
-  openCommonInfoDialog() {
-    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
-      panelClass: 'providerProfile-commonInfo'
+  openDealsPopup(data: any) {
+    this.beDealsDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareDealsData(data)
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    this.beDealsDialog.afterAllClosed.subscribe((result)=>{});
+  }
+
+  openBeFeesDetailsPopup(data: any) {
+    this.beFeesDetailDialog.open(CommonDialogStandAloneComponent, {
+      panelClass: 'common-dialog',
+      data: this.prepareFeesData(data)
+    });
+    this.beFeesDetailDialog.afterAllClosed.subscribe((result)=>{});
+  }
+
+  prepareFeesData(transactionHistoryDetails: any) {
+    let commonDialogData = {
+      mainTitle: 'TRANSACTIONS.Transaction',
+      secondryTitle: 'TRANSACTIONS.InfoAboutTransact',
+      labelDetails: [
+        { title: 'COMMON.State', value: transactionHistoryDetails.transactionObj.state },
+        { title: 'SUBSCRIPTION.Trading account', value: transactionHistoryDetails.externalAccount },
+        { title: 'TRANSACTIONS.MT order', value: transactionHistoryDetails.platformId },
+        { title: 'TRANSACTIONS.Requested amount', value: transactionHistoryDetails.transactionAmountObj, type: 'transaction_amount' },
+        { title: 'TRANSACTIONS.Processed amount', value: transactionHistoryDetails.processedAmountObj, type: 'transaction_amount' },
+        { title: 'TRANSACTIONS.Reason', value: transactionHistoryDetails.transactionObj.reason },
+        { title: 'TRANSACTIONS.Sender', value: transactionHistoryDetails.senderObj, type: 'sender' },
+        { title: 'TRANSACTIONS.Recipient', value: transactionHistoryDetails.reciepentObj, type: 'recipent' },
+        { title: 'TRANSACTIONS.Processed', value: transactionHistoryDetails.processTime },
+      ] 
+    };
+    return commonDialogData;
+  }
+
+  prepareDealsData(dealsData: any) {
+    let commonDialogData = {
+      mainTitle: 'Info',
+      secondryTitle: "Information about the provider's deal",
+      labelDetails: [
+        { title: 'PROVIDERS_PROFILE.Deal', value: dealsData.dealKey },
+        { title: 'PROVIDERS_PROFILE.Position', value: dealsData.position },
+        { title: 'PROVIDERS_PROFILE.State', value: dealsData.state },
+        { title: 'PROVIDERS_PROFILE.Symbol', value: dealsData.symbol},
+        { title: 'PROVIDERS_PROFILE.Entry', value: dealsData.entry },
+        { title: 'PROVIDERS_PROFILE.Entry type', value: dealsData.entryType },
+        { title: 'PROVIDERS_PROFILE.Direction', value: dealsData.direction },
+        { title: 'PROVIDERS_PROFILE.Volume', value: dealsData.volume },
+        { title: 'PROVIDERS_PROFILE.Price', value: dealsData.price },
+        { title: 'PROVIDERS_PROFILE.Time', value: dealsData.time }
+      ]
+    };
+    return commonDialogData;
+  }
+
+  ngOnDestroy() {
+    this._webService.unSubscribeOnWebDataChange('ProviderProfileStandAloneComponent');
   }
 
 }

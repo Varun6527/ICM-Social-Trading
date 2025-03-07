@@ -159,7 +159,7 @@ export class WebService extends BaseService {
     }
   }
 
-  getCommonReportsData(url: any, param: any) {
+  getCommonGridData(url: any, param: any) {
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, param);
   }
 
@@ -195,6 +195,13 @@ export class WebService extends BaseService {
 
   getOffersDetails(data: any) {
     let url = this.constantVar?.http_Api_Url.offers.offers_details;
+    url = url.replace(':providerId', data.providerId);
+    delete data['providerId'];
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, data);
+  }
+
+  getProviderSubscriptionDetails(data: any) {
+    let url = this.constantVar?.http_Api_Url.provider_profile.subscriptions;
     url = url.replace(':providerId', data.providerId);
     delete data['providerId'];
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, data);

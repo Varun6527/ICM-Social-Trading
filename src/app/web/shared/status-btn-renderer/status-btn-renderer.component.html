@@ -1,4 +1,4 @@
-<div class="status">
-    <img class="activeIcon" *ngIf="value == 'Active'" src="../../../../assets/icons/Check icon.png" />
-    <img class="inactiveIcon" *ngIf="value == 'Inactive'" src="../../../../assets/icons/cancelIcon.png" />
+<div>
+    <img height="25" width="25" *ngIf="params.value" src="../../../../assets/icons/Check icon.png" />
+    <img height="25" width="25" *ngIf="!params.value" src="../../../../assets/icons/cancelIcon.png" />
 </div>

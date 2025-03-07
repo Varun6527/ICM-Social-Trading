@@ -53,7 +53,13 @@ export class ActionButtonStanAloneComponent {
       this._webService.emitOnWebDataChange({action: 'open_transact_details_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'offerRedirection') {
       this.router.navigate([`/portal/offers/${this.params.data.offerId}`]);
-    }
+    }else if(this.params.colDef.colId == 'providerSubscriptionRedirection') {
+      this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}`]);
+    } else if(this.params.colDef.colId == 'positionRedirection') {
+      this.router.navigate([`/portal/providers/${this.params.data.providerId}/positions/${this.params.data.positionId}`]);
+    } else if(this.params.colDef.colId == 'dealsPopup') {
+      this._webService.emitOnWebDataChange({action: 'open_deals_popup', data: this.params.data });
+    } 
   }
 }
 

@@ -45,8 +45,14 @@ export class CommonCellRendererStandAloneComponent {
       if(this.params.value.ownerType == "Provider") {
         this.router.navigate([`/portal/providers/${this.params.value.id}`]);
       }
-    } else if(this.params.colDef.colId == 'providerOfferRedirection' || this.params.colDef.colId == 'offerCell') {
+    } else if(this.params.colDef.colId == 'providerOfferRedirection' || this.params.colDef.colId == 'offerCell' || this.params.colDef.colId == 'offerTitleCell') {
       this.router.navigate([`/portal/offers/${this.params.data.offerId}`]);
+    } else if(this.params.colDef.colId == 'providerSubscriptionNameCell') {
+      this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}`]);
+    } else if(this.params.colDef.colId == 'positionNameCell') {
+      this.router.navigate([`/portal/providers/${this.params.data.providerId}/positions/${this.params.data.positionId}`]);
+    } else if(this.params.colDef.colId == 'dealsTitleCell') {
+      this._webService.emitOnWebDataChange({action: 'open_deals_popup', data: this.params.data });
     }
   }
 }
