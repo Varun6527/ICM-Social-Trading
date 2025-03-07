@@ -167,7 +167,15 @@
         "In": "In",
         "Out": "Out",
         "Entry type": "Entry type",
-        "Direction": "Direction"
+        "Direction": "Direction",
+        "Results": "Results",
+        "Result": "Result",
+        "Start time": "Start time",
+        "End Time": "End Time",
+        "Fee Amount": "Fee Amount",
+        "Description of strategy": "Description of strategy",
+        "Description of Offers": "Description of Offers",
+        "Description of Trading account platform": "Description of Trading account platform"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

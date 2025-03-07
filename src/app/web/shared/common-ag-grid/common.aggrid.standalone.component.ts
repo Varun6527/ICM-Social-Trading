@@ -34,8 +34,7 @@ export interface AgGridConfig {
       [loading]="showGridLoader" [defaultColDef]="{suppressHeaderMenuButton: true}"
       [rowModelType]="gridConfig.rowModelType" [cacheBlockSize]="gridConfig.rowModelType == 'clientSide' ? undefined : gridConfig.initialSelectedPageSize"
       [style.height]="calculatedGridFixedHeight" [style.maxHeight]="gridConfig.maxHeight" 
-      [rowHeight]="gridConfig.rowHeight" (gridReady)="onGridReady($event)"
-      (firstDataRendered)="setDaynamicallyGridLayout()">
+      [rowHeight]="gridConfig.rowHeight" (gridReady)="onGridReady($event)" (firstDataRendered)="setDaynamicallyGridLayout()"> 
       </ag-grid-angular>
   </div>
   `,
@@ -92,6 +91,7 @@ export class CommonAgGridStandAloneComponent {
     const { api } = params;
     this.gridApi = api;
     this.checkIfServerSideDataNeeded();
+    this.setDaynamicallyGridLayout();
     this.setTranslatedGridHeaderText();
     this.emitToParent.emit({action: 'set_grid_api_obj', data: this.gridApi});
   }

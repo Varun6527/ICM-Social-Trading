@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component, inject, ViewChild} from '@angular/core';
-import { AgGridAngular, AgGridModule } from "ag-grid-angular";
-import { ColDef } from "ag-grid-community";
+import {Component, inject, ViewChild} from '@angular/core';
+import { AgGridModule } from "ag-grid-angular";
+
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
 import {MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -53,17 +52,21 @@ export class ProviderProfileStandAloneComponent {
   constructor(public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.providerId = params.get('providerId')!;
-      this.getProviderProfileData(() => {
-        this.setupOffersGridConfig();
-        this.getOffersData(() => {
-          this.setUpTabsConfig();
-          this.getGridData(this.tabArrConfig[0]);
-        });
-      });
+      this.getAllProviderProfilePageData();
     });
     this._webService.subscribeOnWebDataChange('ProviderProfileStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
+  }
+
+  async getAllProviderProfilePageData() {
+    this.showPageLoader = true;
+    let result1 = await this.getProviderProfileData();
+    this.setupOffersGridConfig();
+    let result2 = await this.getOffersData();
+    this.setUpTabsConfig();
+    this.getGridData(this.tabArrConfig[0]);
+    this.showPageLoader = false;
   }
 
   setUpTabsConfig() {
@@ -241,21 +244,20 @@ export class ProviderProfileStandAloneComponent {
     }
   }
 
-  getProviderProfileData(callback?: any) {
-    this.showPageLoader = true;
-    let param = { providerId: this.providerId };
-    this._webService.getProviderProfilePageData(param).subscribe({
-      next: (result)=> {
-        this.providersData = result.providerData;
-        this.tradeAccountData = new TradingAccountUIModal(result.tradeAccountData);
-        this.showPageLoader = false;
-        callback();
-      },
-      error: (errorObj)=> {
-        this.showPageLoader = false;
-        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-        callback();
-      }
+  getProviderProfileData() {
+    return new Promise<void>((resolve) => {
+      let param = { providerId: this.providerId };
+      this._webService.getProviderProfilePageData(param).subscribe({
+        next: (result) => {
+          this.providersData = result.providerData;
+          this.tradeAccountData = new TradingAccountUIModal(result.tradeAccountData);
+          resolve();
+        },
+        error: (errorObj) => {
+          this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+          resolve();
+        }
+      })
     })
   }
 
@@ -270,28 +272,30 @@ export class ProviderProfileStandAloneComponent {
     this.offerGridConfig = this.getCommonGridConfig(colDefs, 'There are no offers data');
   }
 
-  getOffersData(callback?: any) {
-    this.showOfferGridLoder = true;
-    let param = {
-      providerId: this.providerId,
-      $count: true,
-      scope: this.selectedOfferState
-    }
-    this._webService.getOffersDetails(param).subscribe({
-      next: (response: any)=> {
-        this.offerGridData = [];
-        response.items.forEach((obj: any) => this.offerGridData.push(new OfferDetailsUIModel(obj)));
-        this.showOfferGridLoder = false;
-        callback();
-      },
-      error: (errorObj)=> {
-        this.showOfferGridLoder = false;
-        this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-        callback();
-      },
-      complete: ()=>{
-        callback();
+  getOffersData() {
+    return new Promise<void>((resolve) => {
+      this.showOfferGridLoder = true;
+      let param = {
+        providerId: this.providerId,
+        $count: true,
+        scope: this.selectedOfferState
       }
+      this._webService.getOffersDetails(param).subscribe({
+        next: (response: any) => {
+          this.offerGridData = [];
+          response.items.forEach((obj: any) => this.offerGridData.push(new OfferDetailsUIModel(obj)));
+          this.showOfferGridLoder = false;
+          resolve();
+        },
+        error: (errorObj) => {
+          this.showOfferGridLoder = false;
+          this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+          resolve();
+        },
+        complete: () => {
+          resolve();
+        }
+      })
     })
   }
 
@@ -320,8 +324,8 @@ export class ProviderProfileStandAloneComponent {
     console.log(filters);
   }
 
-  refreshOffersList() {
-    this.getOffersData();
+  async refreshOffersList() {
+    let result = await this.getOffersData();
   }
 
   openCommonInfoDialog() {
@@ -389,7 +393,7 @@ export class ProviderProfileStandAloneComponent {
       return [
         { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
         { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealPositionCell' },
         { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
         { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
         { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },
@@ -398,12 +402,12 @@ export class ProviderProfileStandAloneComponent {
       ]
     } else if(gridType == 'fees') {
       return [
-        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, suppressSizeToFit: true, colId: 'transactionTitlePopup' },
-        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, width: 150, suppressSizeToFit: true },
-        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, colId: 'transactionAmountViewDisplay', suppressSizeToFit: true  },
-        { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction', suppressSizeToFit: true },
-        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200, suppressSizeToFit: true },
-        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false, flex: 1 }
+        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionTitlePopup' },
+        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, suppressSizeToFit: true },
+        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionAmountViewDisplay'  },
+        { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction'},
+        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
       ]
     }
     return;

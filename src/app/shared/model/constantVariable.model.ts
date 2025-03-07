@@ -22,7 +22,8 @@ export class ConstantVariable {
             follower: {
                 subscriptions_Metric: '/api/metrics/subscriptions',
                 subscriptions_Details: '/api/metrics/subscriptions/details',
-                create: '/api/subscriptions'
+                create: '/api/subscriptions',
+                result: '/api/followers/:subscriptionId/results'
             },
             trading: {
                 account_Details: '/api/accounts',
@@ -43,7 +44,9 @@ export class ConstantVariable {
             copied_Position: '/api/reports/copying'
         },
         offers: {
-          offers_details: '/api/providers/:providerId/offers'
+          offers_details: '/api/providers/:providerId/offers',
+          get_single_offer : '/api/offers/:offerId'
+
         },
         provider_profile: {
           subscriptions: "/api/providers/:providerId/subscriptions",

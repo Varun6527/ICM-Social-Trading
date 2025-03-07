@@ -539,6 +539,7 @@ export class DealsUiModal {
     price: any;
     time: string = "";
     entryType: string = "";
+    providerId: any;
     constructor(obj: any) {
         this.dealKey = obj.dealKey;
         this.id = obj.id;
@@ -551,6 +552,43 @@ export class DealsUiModal {
         this.price = new ConvertValueToCurrency(obj.price, 'USD', false).getConvertedValue();
         this.time = this.transformDate(obj.time);
         this.entryType = obj.entryType;
+        this.providerId = obj.providerId;
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', {
+            year: '2-digit',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        }).replace(',', '');
+    }
+}
+
+export class TradingResultUiModal {
+    resultId: any;
+    state: string = "";
+    offerTitle: string = "";
+    offerId: any;
+    startTime: string = "";
+    endTime: string = "";
+    amount: string = "";
+    subscriptionId: any;
+    providerId: any;
+
+    constructor(obj: any, offerData: any) {
+        this.subscriptionId = obj.subscriptionId;
+        this.resultId = obj.id;
+        this.state = obj.state;
+        this.offerTitle = offerData.name;
+        this.offerId = offerData.id;
+        this.providerId = offerData.providerId;
+        this.startTime = this.transformDate(obj.startTime);
+        this.endTime = this.transformDate(obj.endTime);
+        this.amount = new ConvertValueToCurrency(obj.amount, obj.currency, false).getConvertedValue();;
     }
 
     transformDate(value: string): string {

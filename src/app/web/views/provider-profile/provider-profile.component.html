@@ -52,11 +52,11 @@
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Summary"|translate}}</h6>
-                                    <p>{{providersData?.additional?.summary}}</p>
+                                    <p>{{providersData?.additional?.summary ? providersData?.additional?.summary : 'No summary' }}</p>
                                 </div>
                                 <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Notes"|translate}}</h6>
-                                    <p>{{providersData?.additional?.notes}}</p>
+                                    <p>{{providersData?.additional?.notes ? providersData?.additional?.notes : 'No notes'}}</p>
                                 </div>
                             </mat-card>
                         </div>

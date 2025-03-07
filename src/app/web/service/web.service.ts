@@ -193,6 +193,10 @@ export class WebService extends BaseService {
     );
   }
 
+  getSingleProviderData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.create}/${data.providerId}`, '')
+  }
+
   getOffersDetails(data: any) {
     let url = this.constantVar?.http_Api_Url.offers.offers_details;
     url = url.replace(':providerId', data.providerId);
@@ -200,11 +204,32 @@ export class WebService extends BaseService {
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, data);
   }
 
-  getProviderSubscriptionDetails(data: any) {
-    let url = this.constantVar?.http_Api_Url.provider_profile.subscriptions;
+  getPositionDetails(data: any) {
+    let url = this.constantVar?.http_Api_Url.provider_profile.position;
     url = url.replace(':providerId', data.providerId);
     delete data['providerId'];
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, data);
+  }
+
+  getSingleOfferData(data: any) {
+    let url = this.constantVar?.http_Api_Url.offers.get_single_offer;
+    url = url.replace(':offerId', data.offerId);
+    delete data['offerId'];
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
+  getSubscriptionData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.provider_profile.subscriptions}/${data.subscriptionId}`;
+    url = url.replace(':providerId', data.providerId);
+    delete data['providerId'];
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
+  getResultData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.result}`;
+    url = url.replace(':subscriptionId', data.subscriptionId);
+    delete data['subscriptionId'];
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
 }
 
