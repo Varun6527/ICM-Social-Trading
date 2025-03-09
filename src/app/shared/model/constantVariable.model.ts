@@ -23,7 +23,9 @@ export class ConstantVariable {
                 subscriptions_Metric: '/api/metrics/subscriptions',
                 subscriptions_Details: '/api/metrics/subscriptions/details',
                 create: '/api/subscriptions',
-                result: '/api/followers/:subscriptionId/results'
+                result: '/api/followers/:subscriptionId/results',
+                single_result: '/api/followers/results',
+                profits: '/api/followers/results/:resultId/profits'
             },
             trading: {
                 account_Details: '/api/accounts',

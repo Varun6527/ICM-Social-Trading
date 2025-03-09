@@ -231,6 +231,11 @@ export class WebService extends BaseService {
     delete data['subscriptionId'];
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
+
+  getSingleResultData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.single_result}/${data.resultId}`;
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
 }
 
 

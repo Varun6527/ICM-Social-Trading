@@ -152,3 +152,10 @@
         (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
         <span>{{ params.value }}</span>
     </a>
+    <div *ngIf="params.colDef.colId == 'profitPositionCell'">
+      <div class="d-flex justify-left g-5 flex-column line-height-1-7">
+        <div>#{{ params.value }}</div>
+        <div class="tag">#{{ params.data.positionId }}</div>
+      </div>
+    </div>
+    <div *ngIf="params.colDef.colId == 'profitId'">#{{ params.value }}</div>

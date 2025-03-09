@@ -603,3 +603,33 @@ export class TradingResultUiModal {
         }).replace(',', '');
     }
 }
+
+export class ProfitsUiModal {
+    id: any;
+    finalProfit: string;
+    origin: any;
+    positionId: any;
+    position: any;
+    processTime: any;
+
+    constructor(obj: any) {
+        this.id = obj.id;
+        this.finalProfit = new ConvertValueToCurrency(obj.finalProfit, obj.currency, false).getConvertedValue();
+        this.origin = obj.origin;
+        this.positionId = obj.positionId;
+        this.position = obj.uniqueId;
+        this.processTime = this.transformDate(obj.updatedUtc);
+    }
+
+    transformDate(value: string): string {
+        return new Date(value).toLocaleString('en-US', {
+            year: '2-digit',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        }).replace(',', '');
+    }
+}
