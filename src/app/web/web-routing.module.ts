@@ -67,7 +67,7 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyProviderGaurd]
       },
       {
-        path: 'providers/:providerId/positions/:positionsId',
+        path: 'providers/:providerId/positions/:positionId',
         loadComponent: () => import('./views/positions/positions.standalone.component').then(s => s.PositionsStandAloneComponent),
         title: "ICM | Positions",
         canActivate: [AuthGuard, MyProviderGaurd]
@@ -87,7 +87,7 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyFollowerGaurd]
       },
       {
-        path: 'subscriptions/:subscriptionId/positions/:positionsId',
+        path: 'subscriptions/:subscriptionId/positions/:positionId',
         loadComponent: () => import('./views/positions/positions.standalone.component').then(s => s.PositionsStandAloneComponent),
         title: "ICM | Positions",
         canActivate: [AuthGuard, MyFollowerGaurd]

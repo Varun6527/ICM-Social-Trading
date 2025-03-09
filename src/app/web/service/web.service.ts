@@ -236,6 +236,22 @@ export class WebService extends BaseService {
     let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.single_result}/${data.resultId}`;
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
+
+  getSinglePosotionData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.provider_profile.single_position}/${data.positionId}`;
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
+  getSingleTradingAccountData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.trading.account_Details}/${data.accountId}`, '')
+  }
+
+  getStatsData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.provider_profile.stats}`;
+    url = url.replace(':providerId', data.providerId);
+    url = url.replace(':positionId', data.positionId);
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, '');
+  }
 }
 
 
