@@ -8,7 +8,7 @@
         @if(params.colDef.colId == 'transactionTitlePopup') {
           <span>{{ params.value.reason }}</span>
         } @else if (params.colDef.colId == 'offerCell') {
-          <span>{{ params.value }}</span>
+          <span>{{params.data.offerTitle}}</span>
         } @else if(params.colDef.colId == 'providerSubscriptionNameCell') {
           <a href="javascript:void(0)" class="default-link">
             <span>Subscription #{{ params.value }}</span>
@@ -27,9 +27,7 @@
         <div class="tag">
           @if(params.colDef.colId == 'transactionTitlePopup') {
             #{{params.value.id}}
-          } @else if (params.colDef.colId == 'offerCell') {
-            #{{params.data.offerId}}
-          } @else if (params.colDef.colId == 'providerSubscriptionNameCell' || params.colDef.colId == 'resultIdCell') {
+          } @else if (params.colDef.colId == 'providerSubscriptionNameCell' || params.colDef.colId == 'resultIdCell' || params.colDef.colId == 'offerCell') {
             #{{ params.value }}
           } @else if (params.colDef.colId == 'positionNameCell') {
             #{{ params.data.positionId }}

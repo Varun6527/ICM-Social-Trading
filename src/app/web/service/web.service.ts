@@ -258,6 +258,10 @@ export class WebService extends BaseService {
     delete data['providerId'];
     return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
   }
+
+  createOffersDetails(data: any) {
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.offers.create}`, data);
+  }
 }
 
 

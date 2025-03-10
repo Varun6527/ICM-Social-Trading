@@ -1,0 +1,78 @@
+<h2 mat-dialog-title class="text-center">
+  {{"PROVIDERS_PROFILE.New Offer"|translate}}
+</h2>
+<p class="text-center">
+  {{"PROVIDERS_PROFILE.Create a new offer"|translate}}
+</p>
+<form [formGroup]="createOfferForm">
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Title"|translate}}</mat-label>
+      <input type="text" matInput placeholder="Offer 1" formControlName="name">
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!createOfferForm.controls['name'].errors?.['required'] && !createOfferForm.controls['name'].errors?.['minlength'])">
+      {{"PROVIDERS_PROFILE.The offer's title"|translate}}</p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createOfferForm.controls['name'].errors?.['required']">{{'login.FieldRequired' |
+      translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && createOfferForm.controls['name'].errors?.['minlength']">{{'COMMON.Warn6CharMsg' |
+      translate}}</mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Visibility"|translate}}</mat-label>
+      <mat-select formControlName="visibility">
+        <mat-option [value]="'Public'">{{"PROVIDERS_PROFILE.Public"|translate}}</mat-option>
+        <mat-option [value]="'Private'">{{"PROVIDERS_PROFILE.Private"|translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || !createOfferForm.controls['visibility'].errors?.['required']" 
+    [innerHTML]="'PROVIDERS_PROFILE.OfferVisibility' | translate">
+     </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createOfferForm.controls['visibility'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"OFFERS.Performance fee"|translate}}</mat-label>
+      <input type="number" min="0" max="100" matInput placeholder="1" formControlName="fee">
+      <span matTextSuffix>%</span>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || (!createOfferForm.controls['fee'].errors?.['required'] && !(createOfferForm.controls['fee'].errors?.['min'] || createOfferForm.controls['fee'].errors?.['max']))">
+      {{"PROVIDERS_PROFILE.OfferPerformanceFeeHint"|translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createOfferForm.controls['fee'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && (createOfferForm.controls['fee'].errors?.['min'] || createOfferForm.controls['fee'].errors?.['max'])">
+      {{"PROVIDERS_PROFILE.Should have between 0 to 100 value"|translate}}
+    </mat-error>
+
+    @if(createOfferForm.controls['fee'].value > 0) {
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Interval"|translate}}</mat-label>
+        <mat-select formControlName="interval">
+          <mat-option [value]="interval.value" *ngFor="let interval of intervalArr">{{interval.viewValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="pb-10" *ngIf="!showError || (!createOfferForm.controls['interval'].errors?.['required'])">
+        {{"PROVIDERS_PROFILE.The periodicity of performance fee payments by followers" | translate}}
+      </p>
+      <mat-error class="pb-10" *ngIf="showError && createOfferForm.controls['interval'].errors?.['required']">
+        {{'login.FieldRequired' | translate}}
+      </mat-error>
+    }
+    
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeProviderInfoForm()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="createOfferForProvider()"
+      [IcmLoadingOverlay]="showLoader">{{"COMMON.Create"|translate}}</button>
+  </div>
+</form>
+<show-error-message></show-error-message>

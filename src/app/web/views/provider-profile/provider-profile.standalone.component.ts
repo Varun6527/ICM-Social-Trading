@@ -14,7 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/provider-follower-header-cards/provider.follower.header.cards.standalone.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WebService } from '../../service/web.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { DealsUiModal, OfferDetailsUIModel, PositionUiModal, SubscriptionUiModal, TradingAccountUIModal, TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
@@ -22,6 +22,7 @@ import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-d
 import { FormsModule } from '@angular/forms';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
+import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
 
 @Component({
   selector: 'app-provider-profile',
@@ -48,8 +49,9 @@ export class ProviderProfileStandAloneComponent {
   readonly commonInfoDialog = inject(MatDialog);
   readonly beFeesDetailDialog = inject(MatDialog);
   readonly beDealsDialog = inject(MatDialog);
+  readonly createOfferDialog = inject(MatDialog);
 
-  constructor(public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
+  constructor(private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.providerId = params.get('providerId')!;
       this.getAllProviderProfilePageData();
@@ -328,16 +330,6 @@ export class ProviderProfileStandAloneComponent {
     let result = await this.getOffersData();
   }
 
-  openCommonInfoDialog(modelType: string) {
-    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
-      panelClass: 'providerProfile-commonInfo',
-      data: { providerData: this.providersData, modelType: modelType }
-    });
-    dialogRef.afterClosed().subscribe(event => {
-      this.recieveChildrenEmitter(event);
-    });
-  }
-
   onTabChange(event: any) {
     this.currentSelectedTabIndx = event.index;
     this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
@@ -364,7 +356,7 @@ export class ProviderProfileStandAloneComponent {
   getGridColDefs(gridType: string) {
     if(gridType == 'offers') {
       return [
-        { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
+        { field: "offerId", sort: 'desc', headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
         { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell'},
         { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false },
         { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', resizable: false },
@@ -472,6 +464,8 @@ export class ProviderProfileStandAloneComponent {
       this.openDealsPopup(event['data']);
     } else if(event['action'] == 'refresh_provider_data') {
       this.refreshProviderData();
+    } else if(event['action'] == 'redirect_to_offer_page') {
+      this.router.navigate([`/portal/offers/${event.offerId}`]);
     }
   }
 
@@ -493,6 +487,26 @@ export class ProviderProfileStandAloneComponent {
       data: this.prepareFeesData(data)
     });
     this.beFeesDetailDialog.afterAllClosed.subscribe((result)=>{});
+  }
+
+  openCommonInfoDialog(modelType: string) {
+    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
+      panelClass: 'providerProfile-commonInfo',
+      data: { providerData: this.providersData, modelType: modelType }
+    });
+    dialogRef.afterClosed().subscribe(event => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openCreateOfferModal() {
+    const dialogRef = this.createOfferDialog.open(CreateOfferDialog, {
+      panelClass: 'createinfo-dialog',
+      data: this.providerId
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
   }
 
   prepareFeesData(transactionHistoryDetails: any) {

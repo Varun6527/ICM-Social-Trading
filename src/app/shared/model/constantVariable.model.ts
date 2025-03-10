@@ -47,8 +47,8 @@ export class ConstantVariable {
         },
         offers: {
           offers_details: '/api/providers/:providerId/offers',
-          get_single_offer : '/api/offers/:offerId'
-
+          get_single_offer : '/api/offers/:offerId',
+          create: '/api/offers'
         },
         provider_profile: {
           subscriptions: "/api/providers/:providerId/subscriptions",
@@ -62,7 +62,9 @@ export class ConstantVariable {
         AccountIsProvider: 'This account is used as a provider',
         ClientSameOne: 'The account and provider belong to the same client',
         ProviderDuplicated: 'Provider already exists in the system',
-        AccountIsSubscriber: 'This account is used as a subscriber'
+        AccountIsSubscriber: 'This account is used as a subscriber',
+        OfferPerformanceFeeConfigurationLimit: 'Performance fee percentage exceeds the allowed limit',
+        OfferNameDuplicated: "Offer with this title already exists"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

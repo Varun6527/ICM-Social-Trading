@@ -230,7 +230,16 @@
         "Restriction of publishing deals depending on entering the market": "Restriction of publishing deals depending on entering the market",
         "Summary preview": "Summary preview",
         "Provider's description (verbose) visible publicly": "Provider's description (verbose) visible publicly",
-        "Notes preview": "Notes preview"
+        "Notes preview": "Notes preview",
+        "New Offer": "New Offer",
+        "Create a new offer": "Create a new offer",
+        "The offer's title": "The offer's title",
+        "Public": "Public",
+        "Private": "Private",
+        "OfferVisibility": "Offer's visibility for clients.<br> Public offers are shown in the list of available offers for followers while they register a subscription. <br> Private offers are hidden from this list and available only via join links.",
+        "OfferPerformanceFeeHint": "The specified percent of the followers' profit is paid to the provider by the end of the selected interval.",
+        "Should have between 0 to 100 value": "Should have between 0 to 100 value",
+        "The periodicity of performance fee payments by followers": "The periodicity of performance fee payments by followers"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

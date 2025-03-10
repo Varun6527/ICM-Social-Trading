@@ -1,0 +1,5 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .createinfo-dialog {
+    @include common-popup-design();
+}
