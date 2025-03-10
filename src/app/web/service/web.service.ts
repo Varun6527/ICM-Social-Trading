@@ -225,6 +225,13 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
 
+  getAllSubscriptionData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.provider_profile.subscriptions}`;
+    url = url.replace(':providerId', data.providerId);
+    delete data['providerId'];
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
   getResultData(data: any) {
     let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.result}`;
     url = url.replace(':subscriptionId', data.subscriptionId);
@@ -261,6 +268,11 @@ export class WebService extends BaseService {
 
   createOffersDetails(data: any) {
     return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.offers.create}`, data);
+  }
+
+  deleteOrArchiveProvider(data: any) {
+    let url = `${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.create}/${data.providerId}`;
+    return this.sendHttpDeleteAjaxRequest(url, '');
   }
 }
 

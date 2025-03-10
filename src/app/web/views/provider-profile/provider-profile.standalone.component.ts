@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
+import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
 
 @Component({
   selector: 'app-provider-profile',
@@ -50,6 +51,8 @@ export class ProviderProfileStandAloneComponent {
   readonly beFeesDetailDialog = inject(MatDialog);
   readonly beDealsDialog = inject(MatDialog);
   readonly createOfferDialog = inject(MatDialog);
+  readonly providerArchiveDialog = inject(MatDialog);
+  
 
   constructor(private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
@@ -466,6 +469,8 @@ export class ProviderProfileStandAloneComponent {
       this.refreshProviderData();
     } else if(event['action'] == 'redirect_to_offer_page') {
       this.router.navigate([`/portal/offers/${event.offerId}`]);
+    } else if(event['action'] == 'redirect_to_provider_page') {
+      this.router.navigate(['/portal/providers']);
     }
   }
 
@@ -503,6 +508,16 @@ export class ProviderProfileStandAloneComponent {
     const dialogRef = this.createOfferDialog.open(CreateOfferDialog, {
       panelClass: 'createinfo-dialog',
       data: this.providerId
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openProviderArchiveModal() {
+    const dialogRef = this.providerArchiveDialog.open(ProviderArchiveDialog, {
+      panelClass: 'provider-archive-dialog',
+      data: this.providersData
     });
     dialogRef.afterClosed().subscribe((event) => {
       this.recieveChildrenEmitter(event);

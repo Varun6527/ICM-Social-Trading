@@ -154,9 +154,8 @@ export class ProvidersStandAloneComponent {
 
   recieveChildrenEmitter(event: any) {
     if (event['action'] == 'provider_created') {
-      this.getProvidersTableData();
-       let providerData = event.data;
-       /* this._router.navigate([`/portal/providers/${response.id}`]); */
+      let providerData = event.data;
+      this._router.navigate([`/portal/providers/${providerData.id}`]);
       this.beProviderDialog.closeAll();
     }
   }

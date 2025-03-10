@@ -46,6 +46,10 @@ export class BaseService {
 
   };
 
+  protected sendHttpDeleteAjaxRequest(url: string, params: any) {
+    return this.proHttp.delete(url, params);
+  };
+
   protected sendHttpPostFormRequest(url: string, params: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {

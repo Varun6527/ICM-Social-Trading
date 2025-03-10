@@ -13,7 +13,7 @@
                 <mat-menu #actions="matMenu" class="actions-menu">
                     <button mat-menu-item ><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
                     <button mat-menu-item><img src="../../../../assets/icons/add-icon.png"  width="20" height="20"/> {{"PROVIDERS_PROFILE.Create shared link" | translate}}</button>
-                    <button mat-menu-item><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
+                    <button mat-menu-item (click)="openProviderArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
             <provider-follower-header-cards></provider-follower-header-cards>

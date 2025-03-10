@@ -1,0 +1,41 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .provider-archive-dialog {
+    @include common-popup-design();
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.archive-details-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 30px;
+    font-size: 20px;
+    
+    .tag {
+        border-radius: 8px;
+        display: inline-block;
+        line-height: 2;
+        padding: 0px 10px;
+        background: var(--primary-light-positive-color);
+        color: var(--primary-positive-color);
+        font-size: 17px;
+        font-weight: 400;
+ }
+}
+
+::ng-deep .mat-mdc-checkbox {
+
+    .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+        background-color: var(--secondaryBlue) !important;
+        border-color: var(--secondaryBlue) !important;
+      }
+
+    .mdc-label {
+        
+    }
+} 
