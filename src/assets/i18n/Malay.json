@@ -222,7 +222,15 @@
         "Position's copy data": "Position's copy data",
         "Copied volume": "Copied volume",
         "Copied count": "Copied count",
-        "Closed count": "Closed count"
+        "Closed count": "Closed count",
+        "Hide": "Hide",
+        "Share": "Share",
+        "Allow copying stop-levels of provider's trades into follower's trades": "Allow copying stop-levels of provider's trades into follower's trades",
+        "Out only": "Out only",
+        "Restriction of publishing deals depending on entering the market": "Restriction of publishing deals depending on entering the market",
+        "Summary preview": "Summary preview",
+        "Provider's description (verbose) visible publicly": "Provider's description (verbose) visible publicly",
+        "Notes preview": "Notes preview"
     },
     "OFFERS": {
         "General information about the offer": "Maklumat umum mengenai tawaran",

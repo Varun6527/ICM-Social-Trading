@@ -328,11 +328,14 @@ export class ProviderProfileStandAloneComponent {
     let result = await this.getOffersData();
   }
 
-  openCommonInfoDialog() {
+  openCommonInfoDialog(modelType: string) {
     const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog,{
-      panelClass: 'providerProfile-commonInfo'
+      panelClass: 'providerProfile-commonInfo',
+      data: { providerData: this.providersData, modelType: modelType }
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(event => {
+      this.recieveChildrenEmitter(event);
+    });
   }
 
   onTabChange(event: any) {
@@ -467,7 +470,13 @@ export class ProviderProfileStandAloneComponent {
       this.openBeFeesDetailsPopup(event['data']);
     } else if(event['action'] == 'open_deals_popup') {
       this.openDealsPopup(event['data']);
+    } else if(event['action'] == 'refresh_provider_data') {
+      this.refreshProviderData();
     }
+  }
+
+  async refreshProviderData() {
+    let result = await this.getProviderProfileData();
   }
 
   openDealsPopup(data: any) {

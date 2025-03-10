@@ -1,25 +1,102 @@
-<h2 mat-dialog-title class="text-center">{{"PROVIDERS_PROFILE.Common Information" | translate}}</h2>
-<p class="text-center">{{"PROVIDERS_PROFILE.Provider's common settings"|translate}}</p>
-<mat-dialog-content class="mat-typography">
-  <mat-form-field class="common-field">
-    <mat-label>{{"PROVIDERS_PROFILE.Nickname" | translate}}</mat-label>
-    <input type="text" matInput placeholder="Provider 1">
-  </mat-form-field>
-  <p class="pb-10">{{"PROVIDERS_PROFILE.Provider's name to be displayed for followers" | translate}}
-  </p>
-  <mat-form-field class="common-field">
-    <mat-label>{{"PROVIDERS_PROFILE.Show account name"|translate}}</mat-label>
-    <mat-select>
-      <mat-option value="active">{{"COMMON.Disabled"|translate}}</mat-option>
-      <mat-option value="all">{{"COMMON.Enabled"|translate}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <p class="pb-10">{{"PROVIDERS_PROFILE.Show account name in the provider profile in the ratings"|translate}}
-  </p>
-</mat-dialog-content>
-<div class="d-flex justify-center g-20">
-  <button mat-dialog-close class="secondary-btn">{{"COMMON.Cancel"|translate}}</button>
-  <button class="primary-btn">{{"COMMON.Save Changes"|translate}}</button>
-</div>
+<h2 mat-dialog-title class="text-center">
+  @if(this.modelType == 'common_info') {
+    {{"PROVIDERS_PROFILE.Common Information" | translate}}
+  }
+  @if(this.modelType == 'strategy_details') {
+    {{"PROVIDERS_PROFILE.Strategy" | translate}}
+  }
+  @if(this.modelType == 'personal_details') {
+    {{"PROVIDERS_PROFILE.Personal details of account" | translate}}
+  }
+</h2>
+<p class="text-center">
+  @if(this.modelType == 'common_info') {
+    {{"PROVIDERS_PROFILE.Provider's common settings"|translate}}
+  }
+  @if(this.modelType == 'strategy_details') {
+    {{"PROVIDERS_PROFILE.Provider's settings of publishing deals" | translate}}
+  }
+  @if(this.modelType == 'personal_details') {
+    {{"PROVIDERS_PROFILE.Description of trading strategy by its owner" | translate}}
+  }
+</p>
+<form [formGroup]="providerCommonInfoForm">
+  <mat-dialog-content class="mat-typography">
+    @if(this.modelType == 'common_info') {
+      <mat-form-field class="common-field">
+        <mat-label>{{'OFFERS.Nickname' | translate}} *</mat-label>
+        <input type="text" matInput placeholder="Provider 1" formControlName="nickname">
+      </mat-form-field>
+      <p class="pb-10"
+        *ngIf="!showError || (!providerCommonInfoForm.controls['nickname'].errors?.['required'] && !providerCommonInfoForm.controls['nickname'].errors?.['minlength'])">
+        {{"PROVIDERS_PROFILE.Provider's name to be displayed for followers" | translate}}</p>
+      <mat-error class="pb-10"
+        *ngIf="showError && providerCommonInfoForm.controls['nickname'].errors?.['required']">{{'login.FieldRequired' |
+        translate}}</mat-error>
+      <mat-error class="pb-10"
+        *ngIf="showError && providerCommonInfoForm.controls['nickname'].errors?.['minlength']">{{'COMMON.Warn6CharMsg' |
+        translate}}</mat-error>
+
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Show account name"|translate}} *</mat-label>
+        <mat-select formControlName="showAccountName">
+          <mat-option [value]="true">{{"COMMON.Enabled"|translate}}</mat-option>
+          <mat-option [value]="false">{{"COMMON.Disabled"|translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Show account name in the provider profile in the ratings" | translate}}</p>
+    } 
+    @if(this.modelType == 'strategy_details') {
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Hide stops" | translate}} *</mat-label>
+        <mat-select formControlName="hideStops">
+          <mat-option [value]="true">{{"PROVIDERS_PROFILE.Hide" | translate}}</mat-option>
+          <mat-option [value]="false">{{"PROVIDERS_PROFILE.Share" | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Allow copying stop-levels of provider's trades into follower's trades" | translate}}</p>
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Strategy Mode" | translate}} *</mat-label>
+        <mat-select formControlName="mode">
+          <mat-option [value]="'OutOnly'">{{"PROVIDERS_PROFILE.Out only" | translate}}</mat-option>
+          <mat-option [value]="'All'">{{"COMMON.All" | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Restriction of publishing deals depending on entering the market" | translate}}</p>
+    }
+    @if(this.modelType == 'personal_details') {
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Summary" | translate}}</mat-label>
+        <input type="text" matInput placeholder="Summary" formControlName="summary">
+      </mat-form-field>
+      <p class="pb-10">Provider's brief description visible publicly</p>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{"PROVIDERS_PROFILE.Summary preview" | translate}} </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{this.providerCommonInfoForm.controls['summary'].value}}</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Notes" | translate}}</mat-label>
+        <textarea matInput formControlName="notes" rows="3" resi></textarea>
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Provider's description (verbose) visible publicly" | translate}}</p>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{"PROVIDERS_PROFILE.Notes preview" | translate}} </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{this.providerCommonInfoForm.controls['notes'].value}}</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+    }
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeProviderInfoForm()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="updateProviderDetails()" [IcmLoadingOverlay]="showLoader">{{"COMMON.Save Changes"|translate}}</button>
+  </div>
+</form>
 
 <show-error-message></show-error-message>

@@ -81,6 +81,10 @@
             background-color: white;
             border: 1px solid;
             border-bottom: 0px;
+
+            textarea {
+                resize: none;
+            }
         }
     }
 }

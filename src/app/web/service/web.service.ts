@@ -252,6 +252,12 @@ export class WebService extends BaseService {
     url = url.replace(':positionId', data.positionId);
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${url}`, '');
   }
+
+  updateProviderData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.webHomePage.provider.create}/${data.providerId}`
+    delete data['providerId'];
+    return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
+  }
 }
 
 

@@ -23,7 +23,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Common Information"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's common settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog()">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('common_info')">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Personal details of account"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of trading strategy by its owner"|translate}}</p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('personal_details')">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -65,7 +65,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Strategy"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's settings of publishing deals"|translate}}</p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy_details')">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
