@@ -1,0 +1,16 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .shared-link-dialog {
+    @include common-popup-design();
+
+    .mat-mdc-card {
+            font-size: 15px;
+            padding: 15px 10px;
+            background: white;
+            border-top: 2px dotted;
+            border-bottom: 2px dotted;
+            border-radius: initial;
+            border-left: 5px solid;
+            border-right: 5px solid;
+        }
+}

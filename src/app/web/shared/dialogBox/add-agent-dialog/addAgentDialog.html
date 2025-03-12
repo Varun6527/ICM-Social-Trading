@@ -1,0 +1,74 @@
+<h2 mat-dialog-title class="text-center">
+  @if(!isUpdate) {
+    {{"COMMON.Add" | translate}}
+  } @else {
+    {{"PROVIDERS_PROFILE.Update" | translate}}
+  }
+  {{"OFFERS.Additional Agent" | translate}}
+  
+</h2>
+<p class="text-center">
+  @if(!isUpdate) {
+    {{"COMMON.Add" | translate}}
+  } @else {
+    {{"PROVIDERS_PROFILE.Update" | translate}} 
+  } 
+  {{"PROVIDERS_PROFILE.an additional agent" | translate}}
+</p>
+<form [formGroup]="createAgentForm">
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field class="common-field">
+      <mat-label>{{"COMMON.Agent" | translate}}</mat-label>
+      <input type="number" matInput placeholder="1000" formControlName="externalAccount">
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!createAgentForm.controls['externalAccount'].errors?.['required'] && !createAgentForm.controls['externalAccount'].errors?.['min'] && !createAgentForm.controls['externalAccount'].errors?.['agentAccountDuplicate'])">
+      {{"PROVIDERS_PROFILE.Agent trading account's ID" | translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createAgentForm.controls['externalAccount'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && createAgentForm.controls['externalAccount'].errors?.['min']">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && createAgentForm.controls['externalAccount'].errors?.['agentAccountDuplicate']">
+      {{"PROVIDERS_PROFILE.Value must be unique" | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Share" | translate}}</mat-label>
+      <input type="number" matInput placeholder="10" formControlName="share">
+      <span matTextSuffix>%</span>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || (!createAgentForm.controls['share'].errors?.['required'] && !(createAgentForm.controls['share'].errors?.['min'] || createAgentForm.controls['share'].errors?.['totalFeeExceeds']))">
+      {{"PROVIDERS_PROFILE.Agent fee paid as a percent of all fees to be received by provider" | translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createAgentForm.controls['share'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && (createAgentForm.controls['share'].errors?.['min'])">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && (createAgentForm.controls['share'].errors?.['totalFeeExceeds'])">
+      {{"PROVIDERS_PROFILE.Total agent fee must not exceed 100%" | translate}}
+    </mat-error>
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeDialog()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="createOrUpdateAgent()"
+      [IcmLoadingOverlay]="showLoader">
+      @if(!isUpdate) {
+        {{"COMMON.Create"|translate}}
+      } @else {
+        {{"COMMON.Save Changes"|translate}}
+      }
+    </button>
+  </div>
+</form>
+<show-error-message></show-error-message>

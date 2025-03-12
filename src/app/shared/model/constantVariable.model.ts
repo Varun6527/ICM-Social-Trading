@@ -56,6 +56,9 @@ export class ConstantVariable {
           deals: "/api/providers/:providerId/deals",
           single_position: "/api/providers/positions",
           stats: "/api/providers/:providerId/positions/:positionId/stats"
+        },
+        shared_link: {
+          create_or_delete: "/api/providers/:providerId/link"
         }
     };
     errorMessageObj: any = {
@@ -64,7 +67,8 @@ export class ConstantVariable {
         ProviderDuplicated: 'Provider already exists in the system',
         AccountIsSubscriber: 'This account is used as a subscriber',
         OfferPerformanceFeeConfigurationLimit: 'Performance fee percentage exceeds the allowed limit',
-        OfferNameDuplicated: "Offer with this title already exists"
+        OfferNameDuplicated: "Offer with this title already exists",
+        AgentIsInvalid: "Agent account is invalid"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

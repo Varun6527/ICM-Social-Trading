@@ -2,29 +2,69 @@
   {{'COMMON.Archive' | translate}}
 </h2>
 <p class="text-center">
-  {{'PROVIDERS_PROFILE.Archive all information about the provider' | translate}}
+  @if(modelType == "provider") {
+    {{'PROVIDERS_PROFILE.Archive all information about the provider' | translate}}
+  } @else if(modelType == "offer") {
+    {{'PROVIDERS_PROFILE.Archive all information about the offer' | translate}}
+  }
 </p>
 <mat-dialog-content class="mat-typography">
   <div class="archive-details-container">
+    @if(modelType == "offer") {
+    <div class="d-flex justify-space-between align-center">
+      <div>{{'PROVIDERS_PROFILE.Title' | translate}}</div>
+      <div>{{offerData.name}}</div>
+    </div>
+    }
+
+    @if(modelType == "offer") {
+    <div class="d-flex justify-space-between align-center">
+      <div>{{'PROVIDERS_PROFILE.Summary' | translate}}</div>
+      <div>{{offerData.additional.summary ? offerData.additional.summary : '-'}}</div>
+    </div>
+    }
+
     <div class="d-flex justify-space-between align-center">
       <div>{{'PROVIDERS_PROFILE.State' | translate}}</div>
-      <div class="tag">{{providerData.state}}</div>
+      <div class="tag">
+        @if(modelType == "provider") {
+        {{providerData.state}}
+        } @else if(modelType == "offer") {
+        {{offerData.state}}
+        }
+      </div>
     </div>
+
+    @if(modelType == "offer") {
+    <div class="d-flex justify-space-between align-center">
+      <div>{{'PROVIDERS_PROFILE.Subscriptions count' | translate}}</div>
+      <div>{{offerData.followers.count}}</div>
+    </div>
+    }
+    @if(modelType == "provider") {
     <div class="d-flex justify-space-between align-center">
       <div>{{'PROVIDERS_PROFILE.Nickname' | translate}}</div>
       <div>{{providerData.nickname}}</div>
     </div>
+    }
+    @if(modelType == "provider") {
     <div class="d-flex justify-space-between align-center">
       <div>{{'PROVIDERS_PROFILE.Active Subscriptions' | translate}}</div>
       <div>{{subscriptionCount}}</div>
     </div>
-    <mat-checkbox [(ngModel)]="this.isProviderArchiveConfirm">{{'PROVIDERS_PROFILE.Archive Confirmation' | translate}}</mat-checkbox>
+    }
+    @if(modelType == "provider") {
+    <mat-checkbox 
+    [(ngModel)]="this.isProviderArchiveConfirm">{{'PROVIDERS_PROFILE.Archive Confirmation' |
+      translate}}</mat-checkbox>
+    }
   </div>
 
 </mat-dialog-content>
 <div class="d-flex justify-center g-20">
   <button class="secondary-btn" (click)="closeProviderInfoForm()">{{'COMMON.Cancel' | translate}}</button>
-  <button class="primary-btn" type="submit" [ngClass]="{'disabled': !isProviderArchiveConfirm}" (click)="archiveProvider()"
+  <button class="primary-btn" type="submit"
+    [ngClass]="{'disabled': (!isProviderArchiveConfirm && modelType == 'provider')}" (click)="archive()"
     [IcmLoadingOverlay]="showLoader">{{"COMMON.Archive"|translate}}</button>
 </div>
 <show-error-message></show-error-message>

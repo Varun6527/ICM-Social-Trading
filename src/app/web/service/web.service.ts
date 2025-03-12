@@ -218,6 +218,21 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
 
+  updateOfferData(data: any) {
+    let url = this.constantVar?.http_Api_Url.offers.get_single_offer;
+    url = url.replace(':offerId', data.offerId);
+    delete data['offerId'];
+    return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
+  }
+  
+
+  deleteorArchiveOfferData(data: any) {
+    let url = this.constantVar?.http_Api_Url.offers.get_single_offer;
+    url = url.replace(':offerId', data.offerId);
+    delete data['offerId'];
+    return this.sendHttpDeleteAjaxRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
   getSubscriptionData(data: any) {
     let url = `${this.constantVar?.http_Api_Url.provider_profile.subscriptions}/${data.subscriptionId}`;
     url = url.replace(':providerId', data.providerId);
@@ -273,6 +288,18 @@ export class WebService extends BaseService {
   deleteOrArchiveProvider(data: any) {
     let url = `${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.create}/${data.providerId}`;
     return this.sendHttpDeleteAjaxRequest(url, '');
+  }
+
+  createSharedLink(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.shared_link.create_or_delete}`;
+    url = url.replace(':providerId', data.providerId);
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
+  deleteSharedLink(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.shared_link.create_or_delete}`;
+    url = url.replace(':providerId', data.providerId);
+    return this.sendHttpDeleteAjaxRequest(`${this.REST_API_SERVER}${url}`, '');
   }
 }
 

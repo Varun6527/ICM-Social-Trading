@@ -1,4 +1,4 @@
-    <a *ngIf="params.colDef.colId == 'providerProfileRedirection' || params.colDef.colId == 'providerOfferRedirection'"
+    <a *ngIf="params.colDef.colId == 'providerProfileRedirection' || params.colDef.colId == 'providerOfferRedirection' || params.colDef.colId == 'offerKeyCell'" 
         (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link">
           <span>{{ params.value }}</span>
     </a>
@@ -157,3 +157,4 @@
       </div>
     </div>
     <div *ngIf="params.colDef.colId == 'profitId'">#{{ params.value }}</div>
+    <div *ngIf="params.colDef.colId == 'dateCell'">{{ params.value | date:'M/d/yy' }}</div>

@@ -2,17 +2,39 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-action-button',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatMenuModule, TranslateModule],
   template: `
-    <button (click)="onActionClick()" class="tableActionBtn">
+    <button (click)="onActionClick()" class="tableActionBtn" *ngIf="params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell'">
       <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
 
       <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
     </button>
+    <button class="tableActionBtn"  *ngIf="params.colDef.colId == 'offerJoinActionCell' || params.colDef.colId == 'agentActionCell' " [matMenuTriggerFor]="actionMenu">
+      <img src=".././../../../assets/icons/three-dots.png" width="20" />
+    </button>
+    <mat-menu #actionMenu="matMenu" class="actionMenu">
+      @if(params.colDef.colId == 'offerJoinActionCell') {
+        <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src=".././../../../assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
+        <button mat-menu-item><img width="20" src=".././../../../assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
+        <button mat-menu-item><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
+      }
+      @if(params.colDef.colId == 'agentActionCell') {
+        <button mat-menu-item (click)="onActionBtnClick('edit')"> 
+          <img width="20" src=".././../../../assets/icons/pencil.png"/>
+          {{"COMMON.Edit"|translate}}
+        </button>
+        <button mat-menu-item>
+        <img width="20" src=".././../../../assets/icons/trashIcon.png"/>
+        {{"PROVIDERS_PROFILE.Delete"|translate}}
+        </button>
+      }
+    </mat-menu>
   `,
   styles: `
       .tableActionBtn {
@@ -28,6 +50,25 @@ import { CommonModule } from '@angular/common';
           background-color: #e3e3e396;
           border-radius: 6px;
       }
+      ::ng-deep .actionMenu .mat-mdc-menu-panel{
+        background-color: var(--mat-select-panel-background-color);
+      }
+      ::ng-deep .actionMenu .mat-mdc-menu-content {
+        min-height: 100px;
+        max-height: 250px;
+        background-color: var(--mat-select-panel-background-color);
+      }
+      ::ng-deep .actionMenu .mat-mdc-menu-item{
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: var(--mat-select-panel-background-color);
+        .mat-mdc-menu-item-text{
+            font-size: 17px !important;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+      }
   `
 })
 export class ActionButtonStanAloneComponent {
@@ -40,6 +81,14 @@ export class ActionButtonStanAloneComponent {
   // AG Grid passes the row data into this method
   agInit(params: any): void {
     this.params = params;
+  }
+
+  onActionBtnClick(type: string) {
+    if(type == "copy" && this.params.colDef.colId == 'offerJoinActionCell') {
+      this._webService.emitOnWebDataChange({action: 'copy_offer_join_link', data: this.params.data });
+    } else if(type == "edit" && this.params.colDef.colId == 'agentActionCell') {
+      this._webService.emitOnWebDataChange({action: 'update_agent_data', data: this.params.data });
+    }
   }
 
   onActionClick() {

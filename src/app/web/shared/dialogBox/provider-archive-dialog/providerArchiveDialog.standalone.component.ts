@@ -24,12 +24,21 @@ export class ProviderArchiveDialog {
   intervalArr: any[] = [];
   isProviderArchiveConfirm: boolean = false;
   subscriptionCount: any;
+  providerData: any = {};
+  offerData: any = {};
+  modelType: string = "";
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   IConstant: ConstantVariable = new ConstantVariable();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public providerData: any, private dialogRef: MatDialogRef<ProviderArchiveDialog>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
-    this.getAllSubscriptionData();
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ProviderArchiveDialog>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
+    this.modelType = this.data.modelType;
+    if(this.modelType == "provider") {
+      this.providerData = this.data.providerData;
+      this.getAllSubscriptionData();
+    } else if(this.modelType == "offer") {
+      this.offerData = this.data.offerData;
+    }
   }
 
   getAllSubscriptionData() {
@@ -44,24 +53,43 @@ export class ProviderArchiveDialog {
     })
   }
 
-  archiveProvider() {
-    if(!this.isProviderArchiveConfirm) return;
+  archive() {
     this.showLoader = true;
-    let param = {
-      providerId: this.providerData.id
-    };
-    this._webService.deleteOrArchiveProvider(param).subscribe({
+    let param = this.getParamOfArchive();
+    let apiObseverableUrl: any;
+    if(this.modelType == "provider") {
+      apiObseverableUrl = this._webService.deleteOrArchiveProvider(param);
+    } else if(this.modelType == "offer") {
+      apiObseverableUrl = this._webService.deleteorArchiveOfferData(param);
+    }
+    apiObseverableUrl.subscribe({
       next: (response: any) => {
-        this.showSuccessPopupMsg("Provider has been archived");
+        let msg = "";
+        if(this.modelType == "provider") {
+          msg = "Provider has been archived";
+        } else if(this.modelType == "offer") {
+          msg = "Offer has been archived";
+        }
+        this.showSuccessPopupMsg(msg);
         this.dialogRef.close({action: "redirect_to_provider_page"});
         this.showLoader = false;
       },
-      error: (errorObj) => {
+      error: (errorObj: any) => {
         this.showLoader = false;
         this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
         this.cdr.detectChanges();
       }
     })
+  }
+
+  getParamOfArchive() {
+    let param: any = {};
+    if(this.modelType == "provider") {
+      param['providerId'] = this.providerData.id
+    } else if(this.modelType == "offer") {
+      param['offerId'] = this.offerData.id
+    }
+    return param;
   }
   
   showErrorWarnMessage(msg: any) {

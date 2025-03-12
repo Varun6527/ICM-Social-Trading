@@ -1,17 +1,17 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
-                    <h5>Test Offer</h5>
-                    <p>General information about the offer</p>
+                    <h5>{{offerData.name}}</h5>
+                    <p>{{"OFFERS.General information about the offer" | translate}}</p>
                 </div>
                 <button class="primary-btn action-btn" [matMenuTriggerFor]="actions">
                     <img src="../../../../assets/icons/actions.png" />
-                    Actions
+                    {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item><img src="../../../../assets/icons/trashIcon.png"  style="width: 20px;height: 20px;"/> Archive</button>
+                    <button mat-menu-item (click)="openofferArchiveModal()"><img src="../../../../assets/icons/trashIcon.png" width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
 
@@ -19,203 +19,224 @@
                 <div class="info-section-left">
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>Common Information</h4>
-                            <p>Offer's settings</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog()">
-                                Edit
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>Title</h6>
-                                    <p>Test Offer</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>Visibility</h6>
-                                    <p>Public</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>Summary</h6>
-                                    <p>-</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>Fees</h4>
-                            <p>Setting up fees for the offer</p>
+                            <h4>{{"OFFERS.Common Information" | translate}}</h4>
+                            <p>{{"OFFERS.Offer's settings" | translate}}</p>
                             <button class="edit-btn info-section-btn">
-                                Edit
+                                {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between align-center">
-                                    <h6>Performance fee</h6>
-                                    <p>10% (Per trade)</p>
+                                    <h6>{{"OFFERS.Title" | translate}}</h6>
+                                    <p>{{offerData.name ? offerData.name : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between align-center">
+                                    <h6>{{"OFFERS.Visibility" | translate}}</h6>
+                                    <p class="status-badge">{{offerData.visibility ? offerData.visibility : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between align-center">
+                                    <h6>{{"OFFERS.Summary" | translate}}</h6>
+                                    <p>{{offerData.additional.summary ? offerData.additional.summary : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Notes" | translate}}</h6>
+                                    <p>{{offerData.additional.notes ? offerData.additional.notes : '-'}}</p>
                                 </div>
                             </mat-card>
                         </div>
                     </div>
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>Filters</h4>
-                            <p>Setting up limitations for followers </p>
+                            <h4>{{"OFFERS.Fees" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up fees for the offer" | translate}}</p>
                             <button class="edit-btn info-section-btn">
-                                Edit
+                                {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between align-center">
-                                    <h6>Minimum balance</h6>
-                                    <p>-</p>
+                                    <h6>{{"OFFERS.Performance fee" | translate}}</h6>
+                                    <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
                                 </div>
                             </mat-card>
                         </div>
                     </div>
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>Public Agents</h4>
-                            <p>Setting up limitations for followers </p>
+                            <h4>{{"COMMON.Filters" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
                             <button class="edit-btn info-section-btn">
-                                Edit
+                                {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between align-center">
-                                    <h6>Public agent fee</h6>
-                                    <p>-</p>
+                                    <h6>{{"OFFERS.Minimum balance" | translate}}</h6>
+                                    <p>{{offerData.filters.minBalance ? (offerData.filters.minBalance | currency: 'USD':'symbol') : '-'}}</p>
                                 </div>
                             </mat-card>
                         </div>
                     </div>
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>Additional Agents</h4>
-                            <p>Setting up additional agents </p>
+                            <h4>{{"OFFERS.Public Agents" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
+                            <button class="edit-btn info-section-btn">
+                                {{"COMMON.Edit" | translate}}
+                            </button>
                         </div>
-                    </div>
-                    <div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 150px" [rowData]="agentsRows"
-                                [columnDefs]="agentsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100 pb-20">
-                        <div class="info-section-left-items">
-                            <h4>Offer's Join Links</h4>
-                        </div>
-                        <div class="info-section-left-items">
-                            <div class="d-flex justify-space-between g-10">
-                                <div class="d-flex justify-space-between g-10">
-                                    <!-- <button class="secondary-btn">
-                                        Scope
-                                    </button> -->
-                                    <mat-form-field class="offers-keyField">
-                                        <mat-label>Key</mat-label>
-                                        <input type="text" matInput placeholder="Key">
-                                      </mat-form-field>
-                                      <mat-form-field class="offers-agentField">
-                                        <mat-label>Agent</mat-label>
-                                        <input type="number" matInput placeholder="Agent">
-                                      </mat-form-field>
-                                    <mat-form-field class="offers-statusSelect">
-                                        <mat-label>Status</mat-label>
-                                        <mat-select>
-                                          <mat-option value="active">Active</mat-option>
-                                          <mat-option value="all">All</mat-option>
-                                        </mat-select>
-                                      </mat-form-field>
+                        <div class="info-section-left-items info-section-left-items-card">
+                            <mat-card appearance="outlined">
+                                <div class="d-flex justify-space-between align-center">
+                                    <h6>{{"OFFERS.Public agent fee" | translate}}</h6>
+                                    <p>{{offerData.publicAgents.fee ? (offerData.publicAgents.fee + '%') : '-'}}</p>
                                 </div>
-                                <div><h4 class="divider">|</h4></div>
-                                <div class="d-flex justify-center g-10 align-baseline">
-                                    <button class="primary-btn">
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-space-between w-100">
+                        <div class="info-section-left-items">
+                            <h4>{{"OFFERS.Additional Agents" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up additional agents" | translate}}</p>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="d-flex justify-right g-10">
+                                <div class="d-flex justify-center g-10 align-stretch">
+                                    <button class="primary-btn" (click)="openAddOrUpdateAgentModal(false)">
                                         <img src="../../../../assets/icons/plusIcon.png" />
-                                        Add
+                                        {{"COMMON.Add" | translate}}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- <div>
-                        <p>Setting up the offer's join links. Join link is the only way to follow a private provider</p>
-                    </div> -->
                     <div>
                         <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 150px" [rowData]="OffersRows"
-                                [columnDefs]="OffersCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
+                            <common-ag-grid [gridConfig]="agentGridConfig"
+                            [gridData]="agentGridData" [showGridLoader]="showAgentGridLoder">
+                            </common-ag-grid>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="info-section-right">
                     <div class="info-section-right-header">
-                        <h4>Offer's Join Links</h4>
-                        <p>Setting up the offer's join links. Join link is the only way to follow a private provider.</p>
+                        <h4>{{"OFFERS.Offer's Join Links" | translate}}</h4>
+                        <p>{{"OFFERS.Setting up the offer's join links. Join link is the only way to follow a private provider" | translate}}
+                        </p>
                     </div>
                     <hr />
                     <div class="info-section-right-card">
                         <mat-card appearance="outlined">
                             <div class="items">
                                 <div class="header d-flex justify-space-between align-center">
-                                    <h6>Info</h6>
+                                    <h6>{{"COMMON.Info" | translate}}</h6>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>State</h6>
+                                        <h6>{{"COMMON.State" | translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">● Active</h6>
+                                        <h6 class="status-badge">● {{offerData.state}}</h6>
                                     </div>
                                 </div>
                             </div>
                             <div class="items">
                                 <div class="header d-flex justify-space-between align-center">
-                                    <h6>Provider</h6>
+                                    <h6>{{"HOME.Provider" | translate}}</h6>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>Nickname</h6>
+                                        <h6>{{"HOME.Nickname" | translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>Amit Test</h6>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-center items-main">
-                                    <div class="items-left">
-                                        <h6>State</h6>
-                                    </div>
-                                    <div class="items-right">
-                                        <h6 class="status-badge">● Active</h6>
+                                        <h6>
+                                            <a [routerLink]="['/portal/providers', providerData.id]" class="default-link">
+                                                <span>{{providerData.nickname}}</span>
+                                            </a>
+                                        </h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>Created (UTC)</h6>
+                                        <h6>{{"COMMON.State" | translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>September 16, 2024 at 6:02:20 AM</h6>
+                                        <h6 class="status-badge">● {{providerData.state}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>Updated (UTC)</h6>
+                                        <h6>{{"OFFERS.Created (UTC)" | translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>October 14, 2024 at 1:05:51 PM</h6>
+                                        <h6>{{offerData.createdUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"OFFERS.Updated (UTC)" | translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{offerData.updatedUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
                                     </div>
                                 </div>
                             </div>
-
                         </mat-card>
                     </div>
                 </div>
             </div>
+            <div class="d-flex justify-space-between w-100 pb-20">
+                <div class="info-section-left-items padding-0">
+                    <h4>{{"OFFERS.Offer's Join Links" | translate}}</h4>
+                    <p>{{"OFFERS.Setting up the offer's join links. Join link is the only way to follow a private provider" |
+                        translate}}
+                    </p>
+                </div>
+                <div class="info-section-left-items padding-0">
+                    <div class="d-flex justify-right g-10">
+                        <div class="d-flex justify-space-between g-10 common-dropdown">
+                            <mat-form-field class="offers-keyField">
+                                <mat-label>{{"COMMON.Key" | translate}}</mat-label>
+                                <input type="text" matInput placeholder="Key" [(ngModel)]="filters.key" (ngModelChange)="filterJoinLinks('key')">
+                              </mat-form-field>
+                            <mat-form-field class="offers-agentField">
+                                <mat-label>{{"COMMON.Agent" | translate}}</mat-label>
+                                <input type="number" matInput placeholder="Agent" [(ngModel)]="filters.agent" (ngModelChange)="filterJoinLinks('agent')">
+                            </mat-form-field>
+                            <mat-form-field class="offers-statusSelect">
+                                <mat-label>{{"COMMON.Status" | translate}}</mat-label>
+                                <mat-select [(ngModel)]="filters.status" (selectionChange)="filterJoinLinks('status')">
+                                  <mat-option value="active">{{"COMMON.Active" | translate}}</mat-option>
+                                  <mat-option value="expired">{{"COMMON.Expired" | translate}}</mat-option>
+                                  <mat-option value="-">-</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </div>
+                        <div><h4 class="divider">|</h4></div>
+                        <div class="d-flex justify-center g-10 align-stretch">
+                            <button class="primary-btn">
+                                <img src="../../../../assets/icons/plusIcon.png" />
+                                {{"COMMON.Add" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="table">
+                    <common-ag-grid [gridConfig]="offerJoinGridConfig"
+                    [gridData]="offerJoinGridData" [showGridLoader]="showOfferJoinGridLoder">
+                    </common-ag-grid>
+                </div>
+            </div>
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+<show-error-message></show-error-message>

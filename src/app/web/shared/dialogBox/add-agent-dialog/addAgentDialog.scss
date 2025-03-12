@@ -1,0 +1,5 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .add-agent-dialog {
+    @include common-popup-design();
+}

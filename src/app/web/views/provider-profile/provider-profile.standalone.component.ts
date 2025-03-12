@@ -1,6 +1,4 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import { AgGridModule } from "ag-grid-angular";
-
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
 import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
 import {MatDialog } from '@angular/material/dialog';
@@ -24,13 +22,14 @@ import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/comm
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
 import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
+import { SharedLinkDialog } from '../../shared/dialogBox/shared-link-dialog/sharedLinkDialog.standalone.component';
 
 @Component({
   selector: 'app-provider-profile',
   templateUrl: './provider-profile.component.html',
   styleUrl: './provider-profile.component.scss',
   standalone: true,
-  imports: [CommonModule, CommonAgGridStandAloneComponent, FormsModule, ShowErrorStandAloneComponent, ProviderFollowerHeaderCardsStandaloneComponent, AgGridModule, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
+  imports: [CommonModule, CommonAgGridStandAloneComponent, FormsModule, ShowErrorStandAloneComponent, ProviderFollowerHeaderCardsStandaloneComponent, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
 })
 export class ProviderProfileStandAloneComponent {
   providersData: any;
@@ -52,6 +51,7 @@ export class ProviderProfileStandAloneComponent {
   readonly beDealsDialog = inject(MatDialog);
   readonly createOfferDialog = inject(MatDialog);
   readonly providerArchiveDialog = inject(MatDialog);
+  readonly sharedLinkDialog = inject(MatDialog);
   
 
   constructor(private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
@@ -517,6 +517,16 @@ export class ProviderProfileStandAloneComponent {
   openProviderArchiveModal() {
     const dialogRef = this.providerArchiveDialog.open(ProviderArchiveDialog, {
       panelClass: 'provider-archive-dialog',
+      data: { providerData: this.providersData, modelType: 'provider' } 
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openSharedLinkModal() {
+    const dialogRef = this.sharedLinkDialog.open(SharedLinkDialog, {
+      panelClass: 'shared-link-dialog',
       data: this.providersData
     });
     dialogRef.afterClosed().subscribe((event) => {
