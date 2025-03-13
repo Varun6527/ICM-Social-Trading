@@ -211,14 +211,14 @@
                                 <mat-label>{{"COMMON.Status" | translate}}</mat-label>
                                 <mat-select [(ngModel)]="filters.status" (selectionChange)="filterJoinLinks('status')">
                                   <mat-option value="active">{{"COMMON.Active" | translate}}</mat-option>
-                                  <mat-option value="expired">{{"COMMON.Expired" | translate}}</mat-option>
+                                  <mat-option value="expired">{{"PROVIDERS_PROFILE.Expired" | translate}}</mat-option>
                                   <mat-option value="-">-</mat-option>
                                 </mat-select>
                               </mat-form-field>
                         </div>
                         <div><h4 class="divider">|</h4></div>
                         <div class="d-flex justify-center g-10 align-stretch">
-                            <button class="primary-btn">
+                            <button (click)="openAddOrUpdateJoinLinkModal(false)" class="primary-btn">
                                 <img src="../../../../assets/icons/plusIcon.png" />
                                 {{"COMMON.Add" | translate}}
                             </button>

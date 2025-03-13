@@ -58,7 +58,7 @@ export class CommonCellRendererStandAloneComponent {
     } else if(this.params.colDef.colId == 'resultIdCell') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}/results/${this.params.data.resultId}`]);
     } else if(this.params.colDef.colId == 'offerKeyCell') {
-      this._webService.emitOnWebDataChange({action: 'open_update_join_link_popup', data: this.params.data });
+      this._webService.emitOnWebDataChange({action: 'edit_offer_join_link', data: this.params.data });
     } 
   }
 

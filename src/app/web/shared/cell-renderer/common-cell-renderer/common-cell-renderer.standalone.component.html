@@ -157,4 +157,10 @@
       </div>
     </div>
     <div *ngIf="params.colDef.colId == 'profitId'">#{{ params.value }}</div>
-    <div *ngIf="params.colDef.colId == 'dateCell'">{{ params.value | date:'M/d/yy' }}</div>
+    <div *ngIf="params.colDef.colId == 'dateCell'">
+      @if(params.value) {
+        {{ params.value | date:'M/d/yy' }}
+      } @else {
+        -
+      }
+    </div>

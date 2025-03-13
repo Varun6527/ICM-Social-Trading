@@ -261,7 +261,16 @@
         "Subscriptions count": "Subscriptions count",
         "Join Link":"Join Link",
         "Delete the additional agent": "Delete the additional agent",
-        "Delete the offer's join link": "Delete the offer's join link"
+        "Delete the offer's join link": "Delete the offer's join link",
+        "Expired": "Expired",
+        "Add Join Link": "Add Join Link",
+        "Update Join Link": "Update Join Link",
+        "Add an offer's join link": "Add an offer's join link",
+        "Update the offer's join link": "Update the offer's join link",
+        "Key Hint": "A custom key appended to the Social Trading's URL by following which follower join the offer",
+        "This key is already in use": "This key is already in use",
+        "Expiration date of the join link": "Expiration date of the join link",
+        "Agent Join Link Hint": "Agent's MetaTrader login. Subscriptions registered by this join link will be assigned this agent."
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

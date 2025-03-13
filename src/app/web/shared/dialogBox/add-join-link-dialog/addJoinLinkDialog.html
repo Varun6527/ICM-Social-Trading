@@ -1,0 +1,76 @@
+<h2 mat-dialog-title class="text-center">
+  @if(!isUpdate) {
+    {{"PROVIDERS_PROFILE.Add Join Link" | translate}}
+  } @else {
+    {{"PROVIDERS_PROFILE.Update Join Link" | translate}}
+  }
+</h2>
+<p class="text-center">
+  @if(!isUpdate) {
+    {{"PROVIDERS_PROFILE.Add an offer's join link" | translate}}
+  } @else {
+    {{"PROVIDERS_PROFILE.Update the offer's join link" | translate}}
+  }
+</p>
+<form [formGroup]="createJoinLinkForm">
+  <mat-dialog-content class="mat-typography">
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"COMMON.Key" | translate}}</mat-label>
+      <input type="text" matInput placeholder="ABCD1234" formControlName="key">
+      <span matTextSuffix (click)="copyJoinLink()"><img width="20" src="../.././../../../assets/icons/copy.png"/></span>
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!createJoinLinkForm.controls['key'].errors?.['required'] && !createJoinLinkForm.controls['key'].errors?.['min'] && !createJoinLinkForm.controls['key'].errors?.['duplicateKeyMatch'])">
+      {{"PROVIDERS_PROFILE.Key Hint" | translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createJoinLinkForm.controls['key'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && createJoinLinkForm.controls['key'].errors?.['duplicateKeyMatch']">
+      {{"PROVIDERS_PROFILE.This key is already in use" | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field datepicker-filter">
+      <mat-label>{{"OFFERS.Expiration" | translate}}</mat-label>
+      <input matInput [min]="minDate" [matDatepicker]="picker" readonly formControlName="expiration" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <p class="pb-10">
+      {{"PROVIDERS_PROFILE.Expiration date of the join link" | translate}}
+    </p>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"COMMON.Agent" | translate}}</mat-label>
+      <input type="number" matInput placeholder="1" formControlName="agent">
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!createJoinLinkForm.controls['agent'].errors?.['min'] && !createJoinLinkForm.controls['agent'].errors?.['agentAccountDuplicate'])">
+      {{"PROVIDERS_PROFILE.Agent Join Link Hint" | translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && createJoinLinkForm.controls['agent'].errors?.['min']">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && createJoinLinkForm.controls['agent'].errors?.['agentAccountDuplicate']">
+      {{"PROVIDERS_PROFILE.Value must be unique" | translate}}
+    </mat-error>
+
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeDialog()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="createOrUpdateJoinLink()"
+      [IcmLoadingOverlay]="showLoader">
+      @if(!isUpdate) {
+        {{"COMMON.Create"|translate}}
+      } @else {
+        {{"COMMON.Save Changes"|translate}}
+      }
+    </button>
+  </div>
+</form>
+<show-error-message></show-error-message>

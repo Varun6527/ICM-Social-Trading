@@ -1,0 +1,10 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .add-join-link-dialog {
+    @include common-popup-design();
+}
+
+::ng-deep .mat-datepicker-content-container {
+    background: white;
+    border: 1px solid #D0D5DD;
+}

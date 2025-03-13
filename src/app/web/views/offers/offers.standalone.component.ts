@@ -17,6 +17,7 @@ import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-d
 import { MatDialog } from '@angular/material/dialog';
 import { AddAgentDialog } from '../../shared/dialogBox/add-agent-dialog/addAgentDialog.standalone.component';
 import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
+import { AddJoinLInkDialog } from '../../shared/dialogBox/add-join-link-dialog/addJoinLinkDialog.standalone.component';
 
 @Component({
   selector: 'app-offers',
@@ -155,7 +156,7 @@ export class OffersStandALoneComponent {
         { field: "key", headerName: 'COMMON.Key', resizable: false, colId: 'offerKeyCell', cellRenderer: CommonCellRendererStandAloneComponent },
         { field: "expiration", headerName: 'OFFERS.Expiration', resizable: false, colId: 'dateCell', cellRenderer: CommonCellRendererStandAloneComponent },
         { field: "status", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererComponent },
-        { field: "agent", headerName: 'COMMON.Agent', resizable: false },
+        { field: "agent", headerName: 'COMMON.Agent', resizable: false, valueFormatter: (params: any) => `${params.value ? params.value : '-'}` },
         { field: "actions", headerName: "", sortable: false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerJoinActionCell', resizable: false },
       ];
     }
@@ -190,6 +191,8 @@ export class OffersStandALoneComponent {
       this.openDeleteOfferDataModal('agent', event.data);
     } else if(event['action'] == 'delete_offer_join_link') {
       this.openDeleteOfferDataModal('joinLink', event.data);
+    } else if(event['action'] == 'edit_offer_join_link') {
+      this.openAddOrUpdateJoinLinkModal(true, event.data);
     }
   }
 
@@ -227,6 +230,16 @@ export class OffersStandALoneComponent {
     const dialogRef = this.addAgentDialog.open(AddAgentDialog, {
       panelClass: 'add-agent-dialog',
       data: { offerData: this.offerData, isUpdate: isUpdate, offerFormData: offerFormData }
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openAddOrUpdateJoinLinkModal(isUpdate: boolean, offerJoinLinkData?: any) {
+    const dialogRef = this.addAgentDialog.open(AddJoinLInkDialog, {
+      panelClass: 'add-join-link-dialog',
+      data: { offerData: this.offerData, isUpdate: isUpdate, offerJoinLinkData: offerJoinLinkData }
     });
     dialogRef.afterClosed().subscribe((event) => {
       this.recieveChildrenEmitter(event);
