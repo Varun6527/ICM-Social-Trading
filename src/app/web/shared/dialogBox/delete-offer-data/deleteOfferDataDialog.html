@@ -1,0 +1,46 @@
+<h2 mat-dialog-title class="text-center">
+  @if(modelType == "agent") {
+    {{"PROVIDERS_PROFILE.Delete"|translate}} {{"PROVIDERS_PROFILE.Additional Agent"|translate}}
+  } @else if(modelType == "joinLink") {
+    {{"PROVIDERS_PROFILE.Delete"|translate}} {{"PROVIDERS_PROFILE.Join Link"|translate}}
+  }
+</h2>
+<p class="text-center">
+  @if(modelType == "agent") {
+    {{"PROVIDERS_PROFILE.Delete the additional agent"|translate}}
+  } @else if(modelType == "joinLink") {
+    {{"PROVIDERS_PROFILE.Delete the offer's join link"|translate}}
+  }
+</p>
+<mat-dialog-content class="mat-typography">
+  <div class="archive-details-container">
+    @if(modelType == "agent") {
+    <div class="d-flex justify-space-between align-center">
+      <div>{{"COMMON.Agent"|translate}}</div>
+      <div>{{modelData.externalAccount}}</div>
+    </div>
+    <div class="d-flex justify-space-between align-center">
+      <div>{{"PROVIDERS_PROFILE.Share"|translate}}</div>
+      <div>{{modelData.share}}</div>
+    </div>
+    }
+
+    @if(modelType == "joinLink") {
+    <div class="d-flex justify-space-between align-center">
+      <div>{{"COMMON.Key"|translate}}</div>
+      <div>{{modelData.key}}</div>
+    </div>
+    <div class="d-flex justify-space-between align-center">
+      <div>{{"OFFERS.Expiration"|translate}}</div>
+      <div>{{modelData.expiration | date:'M/d/yy' }}</div>
+    </div>
+    }
+  </div>
+
+</mat-dialog-content>
+<div class="d-flex justify-center g-20">
+  <button class="secondary-btn" (click)="closeDeleteInfoForm()">{{'COMMON.Cancel' | translate}}</button>
+  <button class="primary-btn" type="submit" (click)="deleteOfferData()"
+    [IcmLoadingOverlay]="showLoader">{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
+</div>
+<show-error-message></show-error-message>

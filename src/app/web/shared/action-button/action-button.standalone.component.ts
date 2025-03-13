@@ -22,14 +22,14 @@ import { TranslateModule } from '@ngx-translate/core';
       @if(params.colDef.colId == 'offerJoinActionCell') {
         <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src=".././../../../assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
         <button mat-menu-item><img width="20" src=".././../../../assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
-        <button mat-menu-item><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
+        <button mat-menu-item (click)="onActionBtnClick('delete')"><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
       }
       @if(params.colDef.colId == 'agentActionCell') {
         <button mat-menu-item (click)="onActionBtnClick('edit')"> 
           <img width="20" src=".././../../../assets/icons/pencil.png"/>
           {{"COMMON.Edit"|translate}}
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="onActionBtnClick('delete')">
         <img width="20" src=".././../../../assets/icons/trashIcon.png"/>
         {{"PROVIDERS_PROFILE.Delete"|translate}}
         </button>
@@ -88,6 +88,10 @@ export class ActionButtonStanAloneComponent {
       this._webService.emitOnWebDataChange({action: 'copy_offer_join_link', data: this.params.data });
     } else if(type == "edit" && this.params.colDef.colId == 'agentActionCell') {
       this._webService.emitOnWebDataChange({action: 'update_agent_data', data: this.params.data });
+    } else if(type == "delete" && this.params.colDef.colId == 'agentActionCell') {
+      this._webService.emitOnWebDataChange({action: 'delete_agent_data', data: this.params.data });
+    } else if(type == "delete" && this.params.colDef.colId == 'offerJoinActionCell') {
+      this._webService.emitOnWebDataChange({action: 'delete_offer_join_link', data: this.params.data });
     }
   }
 

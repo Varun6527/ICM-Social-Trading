@@ -1,0 +1,13 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .delete-offer-dialog {
+    @include common-popup-design();
+}
+
+.archive-details-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 30px;
+    font-size: 20px;
+}

@@ -16,6 +16,7 @@ import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/sta
 import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAgentDialog } from '../../shared/dialogBox/add-agent-dialog/addAgentDialog.standalone.component';
+import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
 
 @Component({
   selector: 'app-offers',
@@ -183,8 +184,12 @@ export class OffersStandALoneComponent {
       this.copyOfferJoinLink(event.data);
     } else if(event['action'] == 'refresh_offer_data') {
       this.getOfferData();
-    }else if(event['action'] == 'update_agent_data') {
+    } else if(event['action'] == 'update_agent_data') {
       this.openAddOrUpdateAgentModal(true, event.data);
+    } else if(event['action'] == 'delete_agent_data') {
+      this.openDeleteOfferDataModal('agent', event.data);
+    } else if(event['action'] == 'delete_offer_join_link') {
+      this.openDeleteOfferDataModal('joinLink', event.data);
     }
   }
 
@@ -222,6 +227,16 @@ export class OffersStandALoneComponent {
     const dialogRef = this.addAgentDialog.open(AddAgentDialog, {
       panelClass: 'add-agent-dialog',
       data: { offerData: this.offerData, isUpdate: isUpdate, offerFormData: offerFormData }
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openDeleteOfferDataModal(modelType: string, modelData: any) {
+    const dialogRef = this.addAgentDialog.open(DeleteOfferDataDialog, {
+      panelClass: 'delete-offer-dialog',
+      data: { offerData: this.offerData, modelType: modelType, modelData: modelData }
     });
     dialogRef.afterClosed().subscribe((event) => {
       this.recieveChildrenEmitter(event);

@@ -257,7 +257,11 @@
         "Value must be unique": "Value must be unique",
         "Agent fee paid as a percent of all fees to be received by provider":"Agent fee paid as a percent of all fees to be received by provider",
         "Total agent fee must not exceed 100%": "Total agent fee must not exceed 100%",
-        "Additional Agent":"Additional Agent"
+        "Additional Agent":"Additional Agent", 
+        "Subscriptions count": "Subscriptions count",
+        "Join Link":"Join Link",
+        "Delete the additional agent": "Delete the additional agent",
+        "Delete the offer's join link": "Delete the offer's join link"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",
