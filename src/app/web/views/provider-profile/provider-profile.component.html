@@ -11,7 +11,7 @@
                     {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item ><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
+                    <button mat-menu-item (click)="openUploadAvatarModal()"><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
                     <button mat-menu-item (click)="openSharedLinkModal()"><img src="../../../../assets/icons/{{providersData.sharedProfile.sharedKey ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
                         @if(providersData.sharedProfile.sharedKey) {
                             {{"PROVIDERS_PROFILE.Delete shared link" | translate}}

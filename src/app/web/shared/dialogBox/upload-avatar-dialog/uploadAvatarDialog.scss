@@ -1,0 +1,16 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .upload-avatar-dialog {
+    @include common-popup-design(700px);
+}
+
+.secondary-btn.warn {
+    background-color: var(--error-message--container-color);
+    color: var(--primaryWhite);
+    border: none;
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

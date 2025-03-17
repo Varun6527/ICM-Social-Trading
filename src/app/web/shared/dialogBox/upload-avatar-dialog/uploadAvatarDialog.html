@@ -1,0 +1,32 @@
+<h2 mat-dialog-title class="text-center">{{'PROVIDERS_PROFILE.Avatar' | translate}}</h2>
+<p class="text-center">{{'PROVIDERS_PROFILE.Avatar settings' | translate}}</p>
+<mat-dialog-content class="mat-typography">
+  <div class="d-flex justify-center align-center pb-20" *ngIf="!avatarPath && !fileObject">
+    <img src="../../../../../assets/icons/default-big-user-profile.png" width="250"/>
+  </div>
+
+  <div *ngIf="fileObject" class="d-flex justify-center align-center pb-20">
+    <img [src]="tempPathUrl" style="max-width: 100%;"/>
+  </div>
+
+  <div *ngIf="avatarPath" class="d-flex justify-center align-center pb-20 g-20 flex-column">
+    <img [src]="avatarPath" style="max-width: 100%;"/>
+    <button class="secondary-btn warn" [IcmLoadingOverlay]="showLoader" (click)="deleteAvatar()">{{'PROVIDERS_PROFILE.Delete' | translate}}</button>
+  </div>
+
+  <mat-form-field class="common-field" (click)="fileInput.click()">
+    <mat-label>{{fileObject ? fileObject.name : 'PROVIDERS_PROFILE.File' | translate}}</mat-label>
+    <input type="text" readonly matInput disabled="true"  />
+    <span matTextSuffix>
+      <img src="../../../../../assets/icons/upload-icon.png" width="30" height="30" />
+    </span>
+  </mat-form-field>
+
+</mat-dialog-content>
+<div class="d-flex justify-center g-20">
+  <button class="secondary-btn" (click)="closeUploadAvatarForm()">{{'COMMON.Cancel' | translate}}</button>
+  <button class="primary-btn" type="submit" [ngClass]="{'disabled': !fileObject }" (click)="uploadAvatar()"
+    [IcmLoadingOverlay]="showLoader">{{'PROVIDERS_PROFILE.Upload' | translate}}</button>
+</div>
+<input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*">
+<show-error-message></show-error-message>

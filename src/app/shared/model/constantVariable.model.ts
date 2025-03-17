@@ -59,6 +59,9 @@ export class ConstantVariable {
         },
         shared_link: {
           create_or_delete: "/api/providers/:providerId/link"
+        },
+        avatar: {
+          upload: '/api/providers/:providerId/avatar'
         }
     };
     errorMessageObj: any = {

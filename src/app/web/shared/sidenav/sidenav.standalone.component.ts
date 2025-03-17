@@ -78,6 +78,8 @@ export class SidenavStanaloneComponent extends BaseLanguageTranslationComponent 
       this.setOrRefreshUserProfileConfig(event);
     } else if(event['action'] == 'update_user_email') {
       this.clientSettings.settings.email = event['email'];
+    } else if(event['action'] == 'refresh_provider_image') {
+      this.getIntialDataForProvider();
     }
   }
 

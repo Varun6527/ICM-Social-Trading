@@ -277,7 +277,11 @@
         "Offer's brief description visible publicly": "Offer's brief description visible publicly",
         "Offer's description (verbose) visible publicly": "Offer's description (verbose) visible publicly",
         "A minimum balance a follower must have in order to join the provider by this offer": "A minimum balance a follower must have in order to join the provider by this offer",
-        "Public Agents fee": "Public Agents fee"
+        "Public Agents fee": "Public Agents fee",
+        "Avatar": "Avatar",
+        "Avatar settings": "Avatar settings",
+        "Upload": "Upload",
+        "File": "File"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

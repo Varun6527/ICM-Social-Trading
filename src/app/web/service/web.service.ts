@@ -301,6 +301,14 @@ export class WebService extends BaseService {
     url = url.replace(':providerId', data.providerId);
     return this.sendHttpDeleteAjaxRequest(`${this.REST_API_SERVER}${url}`, '');
   }
+
+  uploadAvatar(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.avatar.upload}`;
+    url = url.replace(':providerId', data.providerId);
+    const formData = new FormData();
+    formData.append('file', data.file, data.file.name);
+    return this.http.post(`${this.REST_API_SERVER}${url}`, formData);
+  }
 }
 
 

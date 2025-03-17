@@ -23,6 +23,7 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
 import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
 import { SharedLinkDialog } from '../../shared/dialogBox/shared-link-dialog/sharedLinkDialog.standalone.component';
+import { UploadAvatarDialog } from '../../shared/dialogBox/upload-avatar-dialog/uploadAvatarDialog.standalone.component';
 
 @Component({
   selector: 'app-provider-profile',
@@ -528,6 +529,16 @@ export class ProviderProfileStandAloneComponent {
     const dialogRef = this.sharedLinkDialog.open(SharedLinkDialog, {
       panelClass: 'shared-link-dialog',
       data: this.providersData
+    });
+    dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openUploadAvatarModal() {
+    const dialogRef = this.sharedLinkDialog.open(UploadAvatarDialog, {
+      panelClass: 'upload-avatar-dialog',
+      data: { providerData: this.providersData }
     });
     dialogRef.afterClosed().subscribe((event) => {
       this.recieveChildrenEmitter(event);
