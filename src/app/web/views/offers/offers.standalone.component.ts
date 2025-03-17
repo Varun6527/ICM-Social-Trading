@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddAgentDialog } from '../../shared/dialogBox/add-agent-dialog/addAgentDialog.standalone.component';
 import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
 import { AddJoinLInkDialog } from '../../shared/dialogBox/add-join-link-dialog/addJoinLinkDialog.standalone.component';
+import { OfferCommonInfoDialog } from '../../shared/dialogBox/offer-common-info-dialog/offerCommonInfoDialog.standalone.component';
 
 @Component({
   selector: 'app-offers',
@@ -44,6 +45,7 @@ export class OffersStandALoneComponent {
 
   readonly offerArchiveDialog = inject(MatDialog);
   readonly addAgentDialog = inject(MatDialog);
+  readonly offerCommonInfoDialog = inject(MatDialog);
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
@@ -250,6 +252,16 @@ export class OffersStandALoneComponent {
       data: { offerData: this.offerData, modelType: modelType, modelData: modelData }
     });
     dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+  
+  openOfferCommonInfoDialog(modelType: string) {
+    const dialogRef = this.offerCommonInfoDialog.open(OfferCommonInfoDialog,{
+      panelClass: 'offer-commonInfo',
+      data: { offerData: this.offerData, modelType: modelType }
+    });
+    dialogRef.afterClosed().subscribe(event => {
       this.recieveChildrenEmitter(event);
     });
   }

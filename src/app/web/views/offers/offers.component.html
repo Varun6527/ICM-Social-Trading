@@ -21,7 +21,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"OFFERS.Common Information" | translate}}</h4>
                             <p>{{"OFFERS.Offer's settings" | translate}}</p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" (click)="openOfferCommonInfoDialog('common_info')">
                                 {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
@@ -50,15 +50,19 @@
                         <div class="info-section-left-items">
                             <h4>{{"OFFERS.Fees" | translate}}</h4>
                             <p>{{"OFFERS.Setting up fees for the offer" | translate}}</p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" (click)="openOfferCommonInfoDialog('performance_fees')">
                                 {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Performance fee" | translate}}</h6>
-                                    <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
+                                    @if(offerData.performance.fee > 0) {
+                                        <h6>{{"OFFERS.Performance fee" | translate}}</h6>
+                                        <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
+                                    } @else {
+                                        <h6>{{"PROVIDERS_PROFILE.There are no fees" | translate}}</h6>
+                                    }
                                 </div>
                             </mat-card>
                         </div>
@@ -67,7 +71,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"COMMON.Filters" | translate}}</h4>
                             <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" (click)="openOfferCommonInfoDialog('filters')">
                                 {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
@@ -83,8 +87,8 @@
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
                             <h4>{{"OFFERS.Public Agents" | translate}}</h4>
-                            <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
-                            <button class="edit-btn info-section-btn">
+                            <p>{{"PROVIDERS_PROFILE.Setting up public agents fee" | translate}} </p>
+                            <button class="edit-btn info-section-btn" (click)="openOfferCommonInfoDialog('public_agents')">
                                 {{"COMMON.Edit" | translate}}
                             </button>
                         </div>

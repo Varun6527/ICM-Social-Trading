@@ -1,0 +1,5 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .offer-commonInfo {
+    @include common-popup-design();
+}

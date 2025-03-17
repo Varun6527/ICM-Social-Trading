@@ -271,7 +271,13 @@
         "Key Hint": "A custom key appended to the Social Trading's URL by following which follower join the offer",
         "This key is already in use": "This key is already in use",
         "Expiration date of the join link": "Expiration date of the join link",
-        "Agent Join Link Hint": "Agent's MetaTrader login. Subscriptions registered by this join link will be assigned this agent."
+        "Agent Join Link Hint": "Agent's MetaTrader login. Subscriptions registered by this join link will be assigned this agent.",
+        "Setting up public agents fee": "Setting up public agents fee",
+        "There are no fees": "There are no fees",
+        "Offer's brief description visible publicly": "Offer's brief description visible publicly",
+        "Offer's description (verbose) visible publicly": "Offer's description (verbose) visible publicly",
+        "A minimum balance a follower must have in order to join the provider by this offer": "A minimum balance a follower must have in order to join the provider by this offer",
+        "Public Agents fee": "Public Agents fee"
     },
     "OFFERS":{
         "General information about the offer":"Información general sobre la oferta",

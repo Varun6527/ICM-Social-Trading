@@ -34,11 +34,11 @@ export class AddAgentDialog {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<AddAgentDialog>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
     this.offerData = data.offerData;
     this.isUpdate = data.isUpdate;
+    this.currentTotalAgentFee = this.getTotalAgentFee();
     this.createAgentForm = this.fb.group({
       externalAccount: ['', [Validators.required, Validators.min(1), this.uniqueAccountValidator(this.offerData.additionalAgents.chain, this.isUpdate, this.data?.offerFormData?.externalAccount)]],
       share: ['', [Validators.required, Validators.min(1), this.totalFeeValidator(this.currentTotalAgentFee)]]
     });
-    this.currentTotalAgentFee = this.getTotalAgentFee();
     this.setAgentFormData();
   }
 

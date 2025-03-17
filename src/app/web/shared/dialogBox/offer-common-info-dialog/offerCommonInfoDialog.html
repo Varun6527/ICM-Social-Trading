@@ -1,0 +1,139 @@
+<h2 mat-dialog-title class="text-center">
+  @if(this.modelType == 'common_info') {
+    {{"PROVIDERS_PROFILE.Common Information" | translate}}
+  }
+  @if(this.modelType == 'filters') {
+    {{"COMMON.Filters" | translate}}
+  }
+  @if(this.modelType == 'public_agents') {
+    {{"OFFERS.Public Agents" | translate}}
+  }
+  @if(this.modelType == 'performance_fees') {
+    {{"OFFERS.Fees" | translate}}
+  }
+</h2>
+<p class="text-center">
+  @if(this.modelType == 'common_info') {
+    {{"OFFERS.Offer's settings"|translate}}
+  }
+  @if(this.modelType == 'filters') {
+    {{"OFFERS.Setting up limitations for followers" | translate}}
+  }
+  @if(this.modelType == 'public_agents') {
+    {{"PROVIDERS_PROFILE.Setting up public agents fee" | translate}}
+  }
+  @if(this.modelType == 'performance_fees') {
+    {{"OFFERS.Setting up fees for the offer" | translate}}
+  }
+</p>
+<form [formGroup]="offerCommonInfoForm">
+  <mat-dialog-content class="mat-typography">
+    @if(this.modelType == 'common_info') {
+      <mat-form-field class="common-field">
+        <mat-label>{{"OFFERS.Title" | translate}}</mat-label>
+        <input type="text" matInput placeholder="Offer 1" formControlName="name">
+      </mat-form-field>
+      <p class="pb-10"
+        *ngIf="!showError || (!offerCommonInfoForm.controls['name'].errors?.['required'] && !offerCommonInfoForm.controls['name'].errors?.['minlength'])">
+        {{"PROVIDERS_PROFILE.The offer's title" | translate}}
+      </p>
+      <mat-error class="pb-10"
+        *ngIf="showError && offerCommonInfoForm.controls['name'].errors?.['required']">{{'login.FieldRequired' |
+        translate}}</mat-error>
+      <mat-error class="pb-10"
+        *ngIf="showError && offerCommonInfoForm.controls['name'].errors?.['minlength']">{{'COMMON.Warn6CharMsg' |
+        translate}}</mat-error>
+
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Visibility" | translate}} *</mat-label>
+        <mat-select formControlName="visibility">
+          <mat-option [value]="'Public'">{{"PROVIDERS_PROFILE.Public"|translate}}</mat-option>
+          <mat-option [value]="'Private'">{{"PROVIDERS_PROFILE.Private"|translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="pb-10"[innerHTML]="'PROVIDERS_PROFILE.OfferVisibility' | translate">
+      </p>
+
+      <mat-form-field class="common-field">
+        <mat-label>{{"OFFERS.Summary" | translate}}</mat-label>
+        <input type="text" matInput formControlName="summary">
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Offer's brief description visible publicly" | translate}}</p>
+
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Notes" | translate}}</mat-label>
+        <textarea matInput formControlName="notes" rows="3" resi></textarea>
+      </mat-form-field>
+      <p class="pb-10">{{"PROVIDERS_PROFILE.Offer's description (verbose) visible publicly" | translate}}</p>
+    } 
+    @if(this.modelType == 'filters') {
+    <mat-form-field class="common-field">
+      <mat-label>{{"OFFERS.Minimum balance" | translate}}</mat-label>
+      <input type="number" min="1" matInput placeholder="10000" formControlName="minBalance">
+      <span matTextSuffix>%</span>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || (!(offerCommonInfoForm.controls['minBalance'].errors?.['min']))">
+      {{"PROVIDERS_PROFILE.A minimum balance a follower must have in order to join the provider by this offer" | translate}}
+    </p>
+    <mat-error class="pb-10" *ngIf="showError && offerCommonInfoForm.controls['minBalance'].errors?.['min']">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+    }
+    @if(this.modelType == 'public_agents') {
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Public Agents fee" | translate}}</mat-label>
+      <input type="number" min="1" matInput placeholder="10000" formControlName="fee">
+      <span matTextSuffix>%</span>
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!(offerCommonInfoForm.controls['fee'].errors?.['min'] || offerCommonInfoForm.controls['fee'].errors?.['totalFeeExceeds']))">
+      {{"PROVIDERS_PROFILE.Agent fee paid as a percent of all fees to be received by provider" | translate}}
+    </p>
+    <mat-error class="pb-10" *ngIf="showError && offerCommonInfoForm.controls['fee'].errors?.['min']">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+    <mat-error class="pb-10" *ngIf="showError && (offerCommonInfoForm.controls['fee'].errors?.['totalFeeExceeds'])">
+      {{"PROVIDERS_PROFILE.Total agent fee must not exceed 100%" | translate}}
+    </mat-error>
+    }
+    @if(this.modelType == 'performance_fees') {
+      <mat-form-field class="common-field">
+        <mat-label>{{"OFFERS.Performance fee"|translate}}</mat-label>
+        <input type="number" min="0" max="100" matInput placeholder="1" formControlName="performance_fee">
+        <span matTextSuffix>%</span>
+      </mat-form-field>
+      <p class="pb-10" *ngIf="!showError || (!offerCommonInfoForm.controls['performance_fee'].errors?.['required'] && !(offerCommonInfoForm.controls['performance_fee'].errors?.['min'] || offerCommonInfoForm.controls['performance_fee'].errors?.['max']))">
+        {{"PROVIDERS_PROFILE.OfferPerformanceFeeHint"|translate}}
+      </p>
+      <mat-error class="pb-10"
+        *ngIf="showError && offerCommonInfoForm.controls['performance_fee'].errors?.['required']">
+        {{'login.FieldRequired' | translate}}
+      </mat-error>
+      <mat-error class="pb-10"
+        *ngIf="showError && (offerCommonInfoForm.controls['performance_fee'].errors?.['min'] || offerCommonInfoForm.controls['performance_fee'].errors?.['max'])">
+        {{"PROVIDERS_PROFILE.Should have between 0 to 100 value"|translate}}
+      </mat-error>
+  
+      @if(offerCommonInfoForm.controls['performance_fee'].value > 0) {
+        <mat-form-field class="common-field">
+          <mat-label>{{"PROVIDERS_PROFILE.Interval"|translate}}</mat-label>
+          <mat-select formControlName="interval">
+            <mat-option [value]="interval.value" *ngFor="let interval of intervalArr">{{interval.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <p class="pb-10" *ngIf="!showError || (!offerCommonInfoForm.controls['interval'].errors?.['required'])">
+          {{"PROVIDERS_PROFILE.The periodicity of performance fee payments by followers" | translate}}
+        </p>
+        <mat-error class="pb-10" *ngIf="showError && offerCommonInfoForm.controls['interval'].errors?.['required']">
+          {{'login.FieldRequired' | translate}}
+        </mat-error>
+      }
+    }
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeOfferInfoForm()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="updateOfferDetails()" [IcmLoadingOverlay]="showLoader">{{"COMMON.Save Changes"|translate}}</button>
+  </div>
+</form>
+
+<show-error-message></show-error-message>
