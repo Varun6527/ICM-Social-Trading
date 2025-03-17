@@ -68,7 +68,8 @@ export class ConstantVariable {
         AccountIsSubscriber: 'This account is used as a subscriber',
         OfferPerformanceFeeConfigurationLimit: 'Performance fee percentage exceeds the allowed limit',
         OfferNameDuplicated: "Offer with this title already exists",
-        AgentIsInvalid: "Agent account is invalid"
+        AgentIsInvalid: "Agent account is invalid",
+        OfferJoinLinkDuplicated: "Join link key duplicated"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

@@ -177,9 +177,7 @@ export class OffersStandALoneComponent {
   }
 
   recieveChildrenEmitter(event: any) {
-    if (event['action'] == 'open_update_join_link_popup') {
-      console.log(event.data);
-    } else if(event['action'] == 'redirect_to_provider_page') {
+    if(event['action'] == 'redirect_to_provider_page') {
       this.router.navigate([`/portal/providers/${this.offerData.providerId}`]);
     } else if(event['action'] == 'copy_offer_join_link') {
       this.copyOfferJoinLink(event.data);
