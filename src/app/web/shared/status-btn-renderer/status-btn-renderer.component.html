@@ -1,9 +1,9 @@
 <div>
     
     @if(params.colDef.colId == 'activityCell') {
-        <img height="25" width="25" *ngIf="params.value == 'Active' && params.data.activationStatus" src="../../../../assets/icons/Check icon.png" />
-        <img height="25" width="25" *ngIf="params.value == 'Active' && !params.data.activationStatus" src="../../../../assets/icons/pause-button.png" />
-        <img height="25" width="25" *ngIf="params.value == 'Archived'" src="../../../../assets/icons/cancelIcon.png" />
+        <img height="25" width="25" *ngIf="params.data.state == 'Active' && params.value" src="../../../../assets/icons/Check icon.png" />
+        <img height="25" width="25" *ngIf="params.data.state == 'Active' && !params.value" src="../../../../assets/icons/pause-button.png" />
+        <img height="25" width="25" *ngIf="params.data.state == 'Archived'" src="../../../../assets/icons/cancelIcon.png" />
     } @else {
         <img height="25" width="25" *ngIf="params.value == true || params.value == 'Active'" src="../../../../assets/icons/Check icon.png" />
         <img height="25" width="25" *ngIf="params.value == false || params.value == 'Expired'" src="../../../../assets/icons/cancelIcon.png" />

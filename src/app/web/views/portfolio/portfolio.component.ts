@@ -50,7 +50,7 @@ export class PortfolioStandAloneComponent {
   setupFollowerTableConfig() {
     let colDefs = [
       { field: "refs.provider.name", headerName: 'HOME.Provider', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'followerProfileCell' },
-      { field: "state", headerName: 'PROVIDERS_PROFILE.Activity', resizable: false, cellRenderer: StatusBtnRendererComponent, colId : 'activityCell' },
+      { field: "activationStatus", headerName: 'PROVIDERS_PROFILE.Activity', resizable: false, cellRenderer: StatusBtnRendererComponent, colId : 'activityCell' },
       { field: "externalAccount", headerName: 'SUBSCRIPTION.Trading account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'providerTradingAccountCell' },
       { field: "performance.fee", headerName: 'OFFERS.Performance fee', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'performanceFeeCell' },
       { field: "registerTime", headerName: 'PROVIDERS.Registered', sort:'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'dateTimeCell' },
