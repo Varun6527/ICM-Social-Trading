@@ -29,8 +29,8 @@ export class CommonCellRendererStandAloneComponent {
   onCellNameClicked() {
     if(this.params.colDef.colId == 'providerProfileRedirection' || this.params.colDef.colId == 'providerNameCell') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);
-    } else if(this.params.colDef.colId == 'followerProfileRedirection' || this.params.colDef.colId == 'subscriptionRedirection') {
-      this.router.navigate([`/portal/subscriptions/${this.params.data.followerId}`]);
+    } else if(this.params.colDef.colId == 'followerProfileRedirection' || this.params.colDef.colId == 'subscriptionRedirection' || this.params.colDef.colId == 'followerProfileCell') {
+      this.router.navigate([`/portal/subscriptions/${this.params.data.followerId ? this.params.data.followerId : this.params.data.id}`]);
     } else if(this.params.colDef.colId == 'accountDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'transactionTitlePopup') {

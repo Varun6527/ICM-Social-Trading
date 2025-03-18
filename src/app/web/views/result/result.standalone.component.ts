@@ -255,7 +255,7 @@ export class ResultStandAloneComponent {
       ]
     } else if (gridType == 'profits') {
       return [
-        { field: "id", headerName: 'COMMON.Id', sort: 'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitId' },
+        { field: "id", headerName: 'COMMON.Id', sort: 'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitId', valueFormatter: (params: any) => `#${params.value}` },
         { field: "finalProfit", headerName: 'PROVIDERS_PROFILE.Final Profit', resizable: false },
         { field: "origin", headerName: 'PROVIDERS_PROFILE.Origin', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
         { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitPositionCell' },

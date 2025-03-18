@@ -280,7 +280,11 @@
         "Avatar": "Avatar",
         "Avatar settings": "Avatar settings",
         "Upload": "Upload",
-        "File": "File"
+        "File": "File",
+        "Activity": "Activity",
+        "List of subscriptions": "List of subscriptions",
+        "Subscriptions' Activity": "Subscriptions' Activity",
+        "Profitable Subscriptions": "Profitable Subscriptions"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

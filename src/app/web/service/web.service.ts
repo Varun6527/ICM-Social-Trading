@@ -309,6 +309,14 @@ export class WebService extends BaseService {
     formData.append('file', data.file, data.file.name);
     return this.http.post(`${this.REST_API_SERVER}${url}`, formData);
   }
+
+  getFollowerData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.create}`, data);
+  }
+
+  getFollowerDashboardDetails() {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscription_View}`, "");
+  }
 }
 
 

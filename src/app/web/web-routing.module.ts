@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
-import { PortfolioComponent } from './views/portfolio/portfolio.component';
 import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { ProviderListProfileComponent } from './views/providers-list/provider-list-profile/provider-list-profile.component';
@@ -73,10 +72,11 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyProviderGaurd]
       },
 
+      
 
       {
         path: 'subscriptions',
-        component: PortfolioComponent,
+        loadComponent: () => import('./views/portfolio/portfolio.component').then(s => s.PortfolioStandAloneComponent),
         title: "ICM | Portfolio",
         canActivate: [AuthGuard, MyFollowerGaurd]
       },

@@ -1,1 +1,146 @@
-<h1>Portfolio Component</h1>
+<mat-card appearance="outlined" class="section-card">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
+        <div class="home-card">
+            <div class="header d-flex justify-space-between align-center">
+                <div class="header-title">
+                    <h5>{{"SIDEBAR.My Portfolio"|translate}}</h5>
+                    <p>{{"PROVIDERS_PROFILE.List of subscriptions"|translate}}</p>
+                </div>
+            </div>
+            <div class="stats d-flex justify-space-between g-20">
+                <div class="stats-card">
+                    <h6>{{"PROVIDERS_PROFILE.Subscriptions' Activity"|translate}}</h6>
+                    <div class="stats-info">
+                        <h5>{{"COMMON.Active"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.activeCount}}</h5>
+                    </div>
+                    <div class="stats-info">
+                        <h5>{{"COMMON.Inactive"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.inActiveCount}}</h5>
+                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
+                </div>
+                <div class="stats-card">
+                    <h6>{{"PROVIDERS_PROFILE.Profit"|translate}}</h6>
+                    <div class="stats-info">
+                        <h5>{{"PROVIDERS.This month"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.thisMonthProfit | currency: 'USD':'symbol'}}</h5>
+                    </div>
+                    <div class="stats-info">
+                        <h5>{{"PROVIDERS.Previous month"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.previousMonthProfit | currency: 'USD':'symbol'}}</h5>
+                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10"> 
+                            <span class="d-flex align-center negative">
+                                <img src="../../../../assets/icons/arrow-down.png" /> 
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
+                </div>
+                <div class="stats-card">
+                    <h6>{{"PROVIDERS.Performance Fee"|translate}}</h6>
+                    <div class="stats-info">
+                        <h5>{{"PROVIDERS.This month"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.thisMonthPaidFees | currency: 'USD':'symbol'}}</h5>
+                    </div>
+                    <div class="stats-info">
+                        <h5>{{"PROVIDERS.Previous month"|translate}}</h5>
+                        <h5>{{followerDashBoardData?.previousMonthPaidFees | currency: 'USD':'symbol'}}</h5>
+                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
+                </div>
+                <div class="stats-card">
+                    <h6>{{"PROVIDERS_PROFILE.Profitable Subscriptions"|translate}}</h6>
+                    <div class="d-flex justify-space-between flex-column" *ngFor="let subs of followerDashBoardData.subscriptionsRating">
+                        <p>{{"TRANSACTIONS.Subscription"|translate}} #{{subs.id}}</p>
+                        <h3>{{subs.value | currency: 'USD':'symbol'}}</h3>
+                    </div>
+                    <!-- <div class="stats-subline d-flex align-center">
+                        <p class="d-flex align-center g-10">
+                            <span class="d-flex align-center positive">
+                                <img src="../../../../assets/icons/arrow-up.png" />
+                                100%
+                            </span>
+                            {{ 'vs last month' | translate }}
+                        </p>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="metrics-table">
+                <div class="header-buttons d-flex justify-space-between">
+                    <div class="d-flex g-20 justify-center align-center">
+                        <button class="secondary-btn" (click)="applyFollowerFilter()">
+                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            {{"COMMON.Filters"|translate}}
+                        </button>
+                        <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
+                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            {{"COMMON.Clear"|translate}}
+                        </button>
+                    </div>
+                    <div class="d-flex g-20 common-dropdown align-center">
+                        @if (showFilters) {
+                            <mat-form-field>
+                                <mat-label>{{"COMMON.Id"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.id" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"TRANSACTIONS.Account"|translate}}</mat-label>
+                                <input matInput type="number" [(ngModel)]="selectedFilters.externalAccount" />
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>{{"PROVIDERS_PROFILE.Scope"|translate}}</mat-label>
+                                <mat-select [(ngModel)]="selectedFilters.status" (selectionChange)="refreshFollowerDataList()">
+                                    <mat-option [value]="'Active'">{{"COMMON.Active"|translate}}</mat-option>
+                                    <mat-option [value]="'All'">{{"COMMON.All"|translate}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        }
+                        <button class="refresh-btn" (click)="refreshFollowerDataList()">
+                            @if (selectedFilters.externalAccount || selectedFilters.id) {
+                                <img src="../../../../assets/icons/searchIcon.svg" />
+                                {{"PROVIDERS_LIST.Search"|translate}}
+                            } @else {
+                                <img src="../../../../assets/icons/rotateIcon.svg" />
+                                {{"COMMON.Refresh"|translate}}
+                            }
+                        </button>
+                        <button class="primary-btn" (click)="openNewFollowerDialog()">
+                            <img src="../../../../assets/icons/plusIcon.png" />
+                            {{ 'COMMON.Create' | translate }}
+                        </button>
+                    </div>
+                </div>
+                <common-ag-grid [gridConfig]="gridConfig" [gridData]="followerTableData"
+                    [showGridLoader]="showGridLoader">
+                </common-ag-grid>
+            </div>
+        </div>
+    </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader"
+        class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
+</mat-card>
+
+<show-error-message></show-error-message>

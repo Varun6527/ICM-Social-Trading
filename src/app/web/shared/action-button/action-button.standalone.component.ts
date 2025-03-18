@@ -105,7 +105,7 @@ export class ActionButtonStanAloneComponent {
     if(this.params.colDef.colId == 'providerProfileRedirection') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);
     } else if(this.params.colDef.colId == 'followerProfileRedirection') {
-      this.router.navigate([`/portal/subscriptions/${this.params.data.followerId}`]);
+      this.router.navigate([`/portal/subscriptions/${this.params.data.followerId ? this.params.data.followerId : this.params.data.id }`]);
     } else if(this.params.colDef.colId == 'accountDetailsPopup') {
       this._webService.emitOnWebDataChange({action: 'open_account_details_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'transactionDetailsPopup') {

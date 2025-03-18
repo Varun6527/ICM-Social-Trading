@@ -25,7 +25,8 @@ export class ConstantVariable {
                 create: '/api/subscriptions',
                 result: '/api/followers/:subscriptionId/results',
                 single_result: '/api/followers/results',
-                profits: '/api/followers/results/:resultId/profits'
+                profits: '/api/followers/results/:resultId/profits',
+                subscription_View: '/api/dashboards/subscriptions/user-view'
             },
             trading: {
                 account_Details: '/api/accounts',
@@ -72,7 +73,8 @@ export class ConstantVariable {
         OfferPerformanceFeeConfigurationLimit: 'Performance fee percentage exceeds the allowed limit',
         OfferNameDuplicated: "Offer with this title already exists",
         AgentIsInvalid: "Agent account is invalid",
-        OfferJoinLinkDuplicated: "Join link key duplicated"
+        OfferJoinLinkDuplicated: "Join link key duplicated",
+        SubscriptionDuplicated: "This subscription already exists in the system"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },
