@@ -58,7 +58,7 @@ export class HomeStandAloneComponent {
     if (event['action'] == 'provider_created') {
       this.refreshUserProfileAndRedirectToProviderOrFollowerProfile(event.data, true);
       this.beProviderDialog.closeAll();
-    } else if (event['action'] == 'Follower_created') {
+    } else if (event['action'] == 'follower_created') {
       this.refreshUserProfileAndRedirectToProviderOrFollowerProfile(event.data, false);
       this.beFollowerDialog.closeAll();
     } else if(event['action'] == 'open_account_details_popup') {

@@ -13,13 +13,13 @@
   }
 </p>
 <mat-dialog-content class="mat-typography">
-  <mat-card appearance="outlined">
+  <p class="warn-title">
     @if(isCreateSharedLink) {
       {{"PROVIDERS_PROFILE.Do you really want to create a new shared link?" |translate}}
     } @else {
       {{"PROVIDERS_PROFILE.Delete Shared Link Main Description" |translate}}
     }
-  </mat-card>
+  </p>
 </mat-dialog-content>
 <div class="d-flex justify-center g-20">
   <button class="secondary-btn" (click)="closeProviderInfoForm()">{{'COMMON.Cancel' | translate}}</button>

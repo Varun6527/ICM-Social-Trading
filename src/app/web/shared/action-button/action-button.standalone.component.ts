@@ -10,31 +10,34 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, RouterModule, MatMenuModule, TranslateModule],
   template: `
-    <button (click)="onActionClick()" class="tableActionBtn" *ngIf="params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell'">
-      <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
+    @if(params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell' && params.colDef.colId !== 'riskCell') {
+      <button (click)="onActionClick()" class="tableActionBtn">
+        <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
 
-      <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
-    </button>
-    <button class="tableActionBtn"  *ngIf="params.colDef.colId == 'offerJoinActionCell' || params.colDef.colId == 'agentActionCell' " [matMenuTriggerFor]="actionMenu">
-      <img src=".././../../../assets/icons/three-dots.png" width="20" />
-    </button>
-    <mat-menu #actionMenu="matMenu" class="actionMenu">
-      @if(params.colDef.colId == 'offerJoinActionCell') {
-        <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src=".././../../../assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
-        <button mat-menu-item (click)="onActionBtnClick('edit')"><img width="20" src=".././../../../assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
-        <button mat-menu-item (click)="onActionBtnClick('delete')"><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
-      }
-      @if(params.colDef.colId == 'agentActionCell') {
-        <button mat-menu-item (click)="onActionBtnClick('edit')"> 
-          <img width="20" src=".././../../../assets/icons/pencil.png"/>
-          {{"COMMON.Edit"|translate}}
-        </button>
-        <button mat-menu-item (click)="onActionBtnClick('delete')">
-        <img width="20" src=".././../../../assets/icons/trashIcon.png"/>
-        {{"PROVIDERS_PROFILE.Delete"|translate}}
-        </button>
-      }
-    </mat-menu>
+        <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
+      </button>
+    } @else {
+      <button class="tableActionBtn" [matMenuTriggerFor]="actionMenu">
+        <img src=".././../../../assets/icons/three-dots.png" width="20" />
+      </button>
+      <mat-menu #actionMenu="matMenu" class="actionMenu">
+        @if(params.colDef.colId == 'offerJoinActionCell') {
+          <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src=".././../../../assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
+          <button mat-menu-item (click)="onActionBtnClick('edit')"><img width="20" src=".././../../../assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
+          <button mat-menu-item (click)="onActionBtnClick('delete')"><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
+        }
+        @if(params.colDef.colId == 'agentActionCell' || params.colDef.colId == 'riskCell') {
+          <button mat-menu-item (click)="onActionBtnClick('edit')"> 
+            <img width="20" src=".././../../../assets/icons/pencil.png"/>
+            {{"COMMON.Edit"|translate}}
+          </button>
+          <button mat-menu-item (click)="onActionBtnClick('delete')">
+          <img width="20" src=".././../../../assets/icons/trashIcon.png"/>
+          {{"PROVIDERS_PROFILE.Delete"|translate}}
+          </button>
+        }
+      </mat-menu>
+    }
   `,
   styles: `
       .tableActionBtn {
@@ -92,7 +95,7 @@ export class ActionButtonStanAloneComponent {
       } else if(type == "delete") {
         this._webService.emitOnWebDataChange({action: 'delete_offer_join_link', data: this.params.data });
       }
-    } else if(type == "edit" && this.params.colDef.colId == 'agentActionCell') {
+    } else if(this.params.colDef.colId == 'agentActionCell') {
       if(type == "edit") {
         this._webService.emitOnWebDataChange({action: 'update_agent_data', data: this.params.data });
       } else if(type == "delete") {

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
-import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { ProviderListProfileComponent } from './views/providers-list/provider-list-profile/provider-list-profile.component';
 import { MyFollowerGaurd, MyProviderGaurd, MyRatingsGaurd, MyReportsGaurd } from './gaurd/web.gaurd';
@@ -72,7 +71,7 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyProviderGaurd]
       },
 
-      
+
 
       {
         path: 'subscriptions',
@@ -82,7 +81,7 @@ const WEB_ROUTES: Routes = [
       },
       {
         path: 'subscriptions/:subscriptionId',
-        component: SubscriptionsComponent,
+        loadComponent: () => import('./views/subscriptions/subscriptions.component').then(s => s.SubscriptionsStandAloneComponent),
         title: "ICM | Subscriptions",
         canActivate: [AuthGuard, MyFollowerGaurd]
       },

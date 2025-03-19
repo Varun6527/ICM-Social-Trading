@@ -49,7 +49,8 @@ export class ConstantVariable {
         offers: {
           offers_details: '/api/providers/:providerId/offers',
           get_single_offer : '/api/offers/:offerId',
-          create: '/api/offers'
+          create: '/api/offers',
+          brief: '/api/brief/offers'
         },
         provider_profile: {
           subscriptions: "/api/providers/:providerId/subscriptions",
@@ -57,6 +58,11 @@ export class ConstantVariable {
           deals: "/api/providers/:providerId/deals",
           single_position: "/api/providers/positions",
           stats: "/api/providers/:providerId/positions/:positionId/stats"
+        },
+        subscription_profile: {
+          position: "/api/followers/:subscriptionId/positions",
+          deals: "/api/followers/:subscriptionId/deals",
+          risk: "/api/subscriptions/:subscriptionId/risks"
         },
         shared_link: {
           create_or_delete: "/api/providers/:providerId/link"

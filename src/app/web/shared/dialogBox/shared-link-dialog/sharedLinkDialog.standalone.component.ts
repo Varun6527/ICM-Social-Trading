@@ -6,14 +6,13 @@ import { CommonModule } from '@angular/common';
 import { ConstantVariable } from '../../../../shared/model/constantVariable.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'shared-link-dialog',
   templateUrl: './sharedLinkDialog.html',
   styleUrls: ['./sharedLinkDialog.scss'],
   standalone: true,
-  imports: [MatDialogModule, MatCardModule, CommonModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective],
+  imports: [MatDialogModule, CommonModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedLinkDialog {

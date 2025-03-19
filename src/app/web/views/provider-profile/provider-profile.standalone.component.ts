@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
-import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
+import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { SharedLinkDialog } from '../../shared/dialogBox/shared-link-dialog/sharedLinkDialog.standalone.component';
 import { UploadAvatarDialog } from '../../shared/dialogBox/upload-avatar-dialog/uploadAvatarDialog.standalone.component';
 
@@ -516,8 +516,8 @@ export class ProviderProfileStandAloneComponent {
   }
 
   openProviderArchiveModal() {
-    const dialogRef = this.providerArchiveDialog.open(ProviderArchiveDialog, {
-      panelClass: 'provider-archive-dialog',
+    const dialogRef = this.providerArchiveDialog.open(ArchiveDialog, {
+      panelClass: 'archive-dialog',
       data: { providerData: this.providersData, modelType: 'provider' } 
     });
     dialogRef.afterClosed().subscribe((event) => {
@@ -566,8 +566,8 @@ export class ProviderProfileStandAloneComponent {
 
   prepareDealsData(dealsData: any) {
     let commonDialogData = {
-      mainTitle: 'Info',
-      secondryTitle: "Information about the provider's deal",
+      mainTitle: 'COMMON.Info',
+      secondryTitle: "PROVIDERS_PROFILE.Information about the provider's deal",
       labelDetails: [
         { title: 'PROVIDERS_PROFILE.Deal', value: dealsData.dealKey },
         { title: 'PROVIDERS_PROFILE.Position', value: dealsData.position },

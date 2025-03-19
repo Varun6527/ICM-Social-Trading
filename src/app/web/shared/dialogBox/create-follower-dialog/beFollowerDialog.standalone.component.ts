@@ -141,7 +141,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
         next: (response) => {
           this.showLoader = false;
           this.showSuccessPopupMsg("Subscription has been added");
-          this._webService.emitOnWebDataChange({ action: 'Follower_created', data: response });
+          this._webService.emitOnWebDataChange({ action: 'follower_created', data: response });
         },
         error: (errorObj) => {
           this.showLoader = false;

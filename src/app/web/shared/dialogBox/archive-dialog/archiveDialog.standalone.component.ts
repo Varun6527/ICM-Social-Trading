@@ -12,14 +12,14 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @Component({
-  selector: 'provider-archive-dialog',
-  templateUrl: './providerArchiveDialog.html',
-  styleUrls: ['./providerArchiveDialog.scss'],
+  selector: 'archive-dialog',
+  templateUrl: './archiveDialog.html',
+  styleUrls: ['./archiveDialog.scss'],
   standalone: true,
   imports: [MatDialogModule, MatCheckboxModule, FormsModule, CommonModule, ShowErrorStandAloneComponent, TranslateModule, IcmLoadingOverlayDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProviderArchiveDialog {
+export class ArchiveDialog {
   showLoader: boolean = false;
   intervalArr: any[] = [];
   isProviderArchiveConfirm: boolean = false;
@@ -31,7 +31,7 @@ export class ProviderArchiveDialog {
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   IConstant: ConstantVariable = new ConstantVariable();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ProviderArchiveDialog>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ArchiveDialog>, private fb: FormBuilder, private _webService: WebService, private cdr: ChangeDetectorRef) {
     this.modelType = this.data.modelType;
     if(this.modelType == "provider") {
       this.providerData = this.data.providerData;

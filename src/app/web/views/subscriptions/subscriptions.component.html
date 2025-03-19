@@ -1,100 +1,284 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
-                    <h5>{{"SUBSCRIPTION.Subscription Profile"|translate}} #{{subsId}}</h5>
+                    <h5>{{"SUBSCRIPTION.Subscription Profile"|translate}} #{{subscriptionData?.id}}</h5>
                     <p>{{"SUBSCRIPTION.General information about the subscription"|translate}}</p>
                 </div>
+                <button class="primary-btn action-btn" [matMenuTriggerFor]="actions">
+                    <img src="../../../../assets/icons/actions.png" />
+                    {{"COMMON.Actions" | translate}}
+                </button>
+                <mat-menu #actions="matMenu" class="actions-menu">
+                    <button mat-menu-item><img src="../../../../assets/icons/{{subscriptionData.activationStatus ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
+                        @if(subscriptionData.activationStatus) {
+                            {{"PROVIDERS_PROFILE.Suspend"|translate}}
+                        } @else {
+                            {{"PROVIDERS_PROFILE.Activate"|translate}}
+                        }
+                    </button>
+                    <button mat-menu-item (click)="openSubscriberArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"PROVIDERS_PROFILE.Unsubscribe"|translate}}</button>
+                </mat-menu>
+            </div>
+            <provider-follower-header-cards></provider-follower-header-cards>
+
+            <div *ngIf="subscriptionData.isActivated && !subscriptionData.activationStatus" class="d-flex flex-column email-not-exist-container">
+                <p>{{"PROVIDERS_PROFILE.Suspended since"|translate}}: {{subscriptionData.suspension.timeUtc | date:'M/d/yy'}}</p>
+                <p>{{"PROVIDERS_PROFILE.Suspension reason: Subscription was suspended by the"|translate}} {{subscriptionData.suspension.reason | lowercase}}.</p>
             </div>
 
             <div class="info-section d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100 pb-10">
+                    <div class="d-flex justify-space-between w-100">
+                        <div class="info-section-left-items">
+                            <h4>{{"PROVIDERS_PROFILE.Provider Filters"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Setting up initial filters for provider's original trades"|translate}}</p>
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('filters')">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items info-section-left-items-card">
+                            <mat-card appearance="outlined">
+                                <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Direction"|translate}}</h6>
+                                    <p>{{subscriptionData?.filters.direction ? subscriptionData?.filters.direction : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Minimum lots"|translate}}</h6>
+                                    <p>{{subscriptionData?.filters?.minimumLot ? subscriptionData?.filters?.minimumLot : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Maximum lots"|translate}}</h6>
+                                    <p>{{subscriptionData?.filters?.maximumLot ? subscriptionData?.filters?.maximumLot : '-'}}</p>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
                             <h4>{{"SUBSCRIPTION.Subscription Strategy"|translate}}</h4>
-                            <p>{{"SUBSCRIPTION.Follower's copying preferences"|translate}}</p>
+                            <p>{{"PROVIDERS_PROFILE.Setting up the difference between source and copied trades"|translate}}</p>
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy')">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"SUBSCRIPTION.Volume scaling"|translate}}</h6>
-                                    <p>Multiply</p>
+                                    <p>{{subscriptionData?.strategy.type ? subscriptionData?.strategy.type : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{subscriptionData?.strategy.type == 'Fixed' ? ("PROVIDERS_PROFILE.Copies' volumes"|translate) : ("PROVIDERS_PROFILE.Volume multiplier"|translate)}}</h6>
+                                    <p>{{subscriptionData?.strategy?.riskRatio ? subscriptionData?.strategy?.riskRatio : '-'}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between g-20 align-center" *ngIf="subscriptionData?.strategy.type == 'Multiply'">
+                                    <h6>{{"PROVIDERS_PROFILE.Minimum Volume Handling"|translate}}</h6>
+                                    <p>{{subscriptionData?.strategy?.minVolumeHandling ? subscriptionData?.strategy?.minVolumeHandling : '-'}}</p>
                                 </div>
                             </mat-card>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100 pb-10">
+                    <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>{{"SUBSCRIPTION.Offer"|translate}}</h4>
-                            <p>Conditions of copying for the follower</p>
+                            <h4>{{"PROVIDERS_PROFILE.Correction"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Final processing of copies' parameters"|translate}}</p>
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('correction')">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Title"|translate}}</h6>
-                                    <a [routerLink]="'/offers/1'"><p>Test Offer</p></a>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Performance fee"|translate}}</h6>
-                                    <p>10% (Per trade)</p>
+                                <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Excess volume processing"|translate}}</h6>
+                                    <p>
+                                        @if(subscriptionData?.correction.riskFactor) {
+                                            {{subscriptionData?.correction.action}} {{subscriptionData?.correction.action == 'Scale down' ? 'from' : 'to' }} {{subscriptionData?.correction.riskFactor}} lot(s)
+                                        } @else {
+                                            -
+                                        }
+                                    </p>
                                 </div>
                             </mat-card>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100 pb-10">
+                    <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>{{"SUBSCRIPTION.Trading account"|translate}}</h4>
-                            <p>Follower’s account on the trading platform</p>
+                            <h4>{{"PROVIDERS_PROFILE.Risk Management"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Setting up the subscription's acceptable risks"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.MT name"|translate}}</h6>
-                                    <p>Christina Nathan Test</p>
+                        <div class="info-section-left-items">
+                            <div class="d-flex justify-right g-10">
+                                <div class="d-flex justify-center g-10 align-stretch">
+                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal('create')">
+                                        <img src="../../../../assets/icons/plusIcon.png" />
+                                        {{"COMMON.Create"|translate}}
+                                    </button>
                                 </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.MT login"|translate}}</h6>
-                                    <p>2009215308</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Equity"|translate}}</h6>
-                                    <p>$5,020.30</p>
-                                </div>
-                            </mat-card>
+                            </div>
                         </div>
                     </div>
+                    <div>
+                        <div class="table">
+                            <common-ag-grid [gridConfig]="riskGridConfig"
+                            [gridData]="riskGridData" [showGridLoader]="showRiskGridLoder">
+                            </common-ag-grid>
+                        </div>
+                    </div>
+                    <p class="email-not-exist-container" *ngIf="!isEmailExist">
+                        {{"PROVIDERS_PROFILE.Email Not Exist Warn Msg"|translate}}
+                    </p>
                 </div>
                 <div class="info-section-right">
                     <div class="info-section-right-header">
-                        <h4>{{"COMMON.Info"|translate}}</h4>
+                        <h4>{{"PROVIDERS_PROFILE.Personal Info"|translate}}</h4>
+                        <p>{{"PROVIDERS_PROFILE.Update your personal details here"|translate}}</p>
                     </div>
                     <hr />
                     <div class="info-section-right-card">
                         <mat-card appearance="outlined">
                             <div class="items">
+                                <div class="header d-flex justify-space-between align-center">
+                                    <h6>{{"COMMON.Status"|translate}}</h6>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.Copy new positions"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>
+                                            <img height="25" width="25" *ngIf="subscriptionData.activationStatus" src="../../../../assets/icons/Check icon.png" />
+                                            <img height="25" width="25" *ngIf="!subscriptionData.activationStatus" src="../../../../assets/icons/cancelIcon.png" />
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <p class="activated-container" *ngIf="subscriptionData.activationStatus">{{"PROVIDERS_PROFILE.SuspendActiveMsg"|translate}}</p>
+                                    <p class="not-activated-container" *ngIf="!subscriptionData.activationStatus">{{"PROVIDERS_PROFILE.SuspendDeActiveMsg"|translate}}</p>
+                                </div>
+                            </div>
+
+                            <div class="items">
+                                <div class="header d-flex justify-space-between align-center">
+                                    <h6>{{"COMMON.Info"|translate}}</h6>
+                                </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
                                         <h6>{{"COMMON.State"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">● {{"COMMON.Active"|translate}}</h6>
+                                        <h6 class="status-badge">● {{subscriptionData?.state}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>{{"COMMON.Status"|translate}}</h6>
+                                        <h6>{{"HOME.Registered"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">● {{"COMMON.Active"|translate}}</h6>
+                                        <h6>{{subscriptionData?.registerTime | date: 'M/d/yy, h:mm:ss a'}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
-                                        <h6>{{"SUBSCRIPTION.Registered"|translate}}</h6>
+                                        <h6>{{"PROVIDERS_PROFILE.Activated"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>5/16/23, 9:43:29 AM</h6>
+                                        <h6>
+                                            @if(subscriptionData?.activation?.timeUtc) {
+                                                {{subscriptionData?.activation?.timeUtc | date: 'M/d/yy, h:mm:ss a'}}
+                                            }@else {
+                                                -
+                                            }
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="items">
+                                <div class="header d-flex justify-space-between align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Offer"|translate}}</h6>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.Title"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{offerData?.name}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"OFFERS.Performance fee"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{subscriptionData?.performance.fee}}% ({{subscriptionData?.performance.interval}})</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="items">
+                                <div class="header d-flex justify-space-between align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Trading Account"|translate}}</h6>
+                                    <a (click)="openBeTradingAccountPopup()" href="javascript:void(0)" class="default-link">
+                                        <img src="../../../../assets/icons/arrow-single.png" />
+                                    </a>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.MT name"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{tradeAccountData?.tradingAccName}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.MT login"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{tradeAccountData?.tradingAccountNo}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6 class="status-badge">● {{tradeAccountData?.state}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="items">
+                                <div class="header d-flex justify-space-between align-center">
+                                    <h6>{{"HOME.Provider"|translate}}</h6>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"HOME.Nickname"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{providerData?.nickname}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="items">
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.Created (UTC)"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{subscriptionData?.createdUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.Updated (UTC)"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>{{subscriptionData?.updatedUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -104,44 +288,83 @@
             </div>
 
             <div class="metrics-table">
-
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup">
-                    <mat-tab label="Fees">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="SubsRows"
-                                [columnDefs]="SubsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
+                <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
+                    class="providerProfile-tabGroup">
+                    <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
+                        <ng-template matTabContent>
+                            <div class="header-buttons d-flex justify-space-between pb-20 g-20">
+                                <div class="d-flex g-20 justify-center align-center">
+                                    <button class="secondary-btn" (click)="applyFilters(tab)">
+                                        <img src="../../../../assets/icons/filterIcon.svg" />
+                                        {{"COMMON.Filters"|translate}}
+                                    </button>
+                                    <button class="secondary-btn" *ngIf="tab.filters.show" (click)="clearFilters(tab)">
+                                        <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                                        {{"COMMON.Clear"|translate}}
+                                    </button>
+                                </div>
+                                <div class="d-flex g-20 common-dropdown align-center flex-wrap justify-end">
+                                    @if (tab.filters.show) {
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('id')">
+                                            <mat-label>{{"COMMON.Id"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.id" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('position')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Position"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.position" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('posState')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.State' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.posState">
+                                                <mat-option [value]="'Tracking'">{{'PROVIDERS_PROFILE.Tracking' | translate}}</mat-option>
+                                                <mat-option [value]="'Processed'">{{'TRANSACTIONS.Processed' | translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('dealKey')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Deal"|translate}}</mat-label>
+                                            <input matInput type="text" [(ngModel)]="tab.filters.type.dealKey" />
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('entry')">
+                                            <mat-label>{{'PROVIDERS_PROFILE.Entry' | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="tab.filters.type.entry">
+                                                <mat-option [value]="'In'">{{'PROVIDERS_PROFILE.In' | translate}}</mat-option>
+                                                <mat-option [value]="'Out'">{{'PROVIDERS_PROFILE.Out' | translate}}</mat-option>
+                                                <mat-option [value]="undefined">-</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('symbol')">
+                                            <mat-label>{{"PROVIDERS_PROFILE.Symbol"|translate}}</mat-label>
+                                            <input matInput type="text" [(ngModel)]="tab.filters.type.symbol" />
+                                        </mat-form-field>
+                                        
+                                        <mat-form-field *ngIf="tab.filters.type.hasOwnProperty('platformId')">
+                                            <mat-label>{{"TRANSACTIONS.MT order"|translate}}</mat-label>
+                                            <input matInput type="number" [(ngModel)]="tab.filters.type.platformId" />
+                                        </mat-form-field>
+                                    }
+                                    <button class="secondary-btn" (click)="refreshDataList(tab)">
+                                        @if (true) {
+                                            <img src="../../../../assets/icons/searchIcon.svg" />
+                                            {{"PROVIDERS_LIST.Search"|translate}}
+                                        } @else {
+                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            {{"COMMON.Refresh"|translate}}
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                            <common-ag-grid [gridConfig]="tab.grid.config" [gridData]="tab.grid.data"
+                                [showGridLoader]="tab.grid.showLoader">
+                            </common-ag-grid>
+                        </ng-template>
                     </mat-tab>
-                    <mat-tab label="Trading Results">
-                        <div class="header-buttons d-flex justify-space-between pb-20">
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
-                                {{"COMMON.Filters"|translate}}
-                            </button>
-                            <button class="secondary-btn">
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
-                                {{"COMMON.Refresh"|translate}}
-                            </button>
-                        </div>
-                        <div class="table">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 400px" [rowData]="PositionsRows"
-                                [columnDefs]="PositionsCols" [suppressRowHoverHighlight]="true">
-                            </ag-grid-angular>
-                        </div>
-                    </mat-tab>
-                  </mat-tab-group>
+                </mat-tab-group>
             </div>
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+<show-error-message></show-error-message>

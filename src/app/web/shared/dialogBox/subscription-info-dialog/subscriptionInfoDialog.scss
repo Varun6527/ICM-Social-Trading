@@ -1,0 +1,11 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .info-dialog {
+    .warn-title {
+        @include common-warn-msg-css(var(--warn-color));
+        ol {
+            padding-block: 20px;
+            padding-left: 15px;
+        }
+    }
+}

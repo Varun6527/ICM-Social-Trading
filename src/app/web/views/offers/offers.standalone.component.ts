@@ -13,7 +13,7 @@ import { WebService } from '../../service/web.service';
 import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
-import { ProviderArchiveDialog } from '../../shared/dialogBox/provider-archive-dialog/providerArchiveDialog.standalone.component';
+import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAgentDialog } from '../../shared/dialogBox/add-agent-dialog/addAgentDialog.standalone.component';
 import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
@@ -217,8 +217,8 @@ export class OffersStandALoneComponent {
   }
 
   openofferArchiveModal() {
-    const dialogRef = this.offerArchiveDialog.open(ProviderArchiveDialog, {
-      panelClass: 'provider-archive-dialog',
+    const dialogRef = this.offerArchiveDialog.open(ArchiveDialog, {
+      panelClass: 'archive-dialog',
       data: { offerData: this.offerData, modelType: 'offer' }
     });
     dialogRef.afterClosed().subscribe((event) => {

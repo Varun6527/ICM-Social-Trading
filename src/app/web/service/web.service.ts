@@ -317,6 +317,25 @@ export class WebService extends BaseService {
   getFollowerDashboardDetails() {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscription_View}`, "");
   }
+
+  getFollowerDataById(data: any) {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.create}/${data.subscriptionId}`, '');
+  }
+
+  getProviderDataById(data: any) {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.brief}/${data.providerId}`, "");
+  }
+
+  getBriefOfferDataById(data: any) {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.offers.brief}/${data.offerId}`, "");
+  }
+
+  getAllRiskData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.subscription_profile.risk}`;
+    url = url.replace(':subscriptionId', data.subscriptionId);
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, "");
+  }
+
 }
 
 

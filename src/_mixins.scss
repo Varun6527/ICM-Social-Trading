@@ -92,3 +92,13 @@
         }
     }
 }
+
+@mixin common-warn-msg-css($border-color: var(--primaryBlack)) {
+        font-size: 15px;
+        padding: 15px 10px;
+        background: var(--primaryWhite);
+        border-radius: initial;
+        border-width: 2px 5px;
+        border-style: dotted solid;
+        border-color: $border-color;
+}

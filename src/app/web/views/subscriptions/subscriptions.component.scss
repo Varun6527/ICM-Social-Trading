@@ -1,3 +1,4 @@
+@import "../../../../mixins";
 .stats-info {
     display: flex;
     justify-content: space-between;
@@ -101,6 +102,14 @@
                     width: 100%;
                     padding-block: 10px;
 
+                    .activated-container {
+                        @include common-warn-msg-css(var(--primary-positive-color));
+                    }
+
+                    .not-activated-container {
+                        @include common-warn-msg-css(var(--error-message--container-color));
+                    }
+
                     .items-left {
                         padding: 8px 10px;
                         width: 50%;
@@ -109,6 +118,8 @@
                         border-bottom-left-radius: 6px;
                         color: #667085;
                         font-weight: 400;
+                        display: flex;
+                        align-items: center;
                     }
 
                     .items-right {
@@ -117,12 +128,14 @@
                         border: 1px solid #D0D5DD;
                         border-top-right-radius: 6px;
                         border-bottom-right-radius: 6px;
+                        display: flex;
+                        align-items: center;
 
                         .status-badge {
                             background: #ECFDF3;
-                            width: 40%;
+                            width: fit-content;
                             padding: 0px 10px;
-                            border-radius: 16px;
+                            border-radius: 6px;
                             color: #027A48;
                         }
 
@@ -135,15 +148,6 @@
         }
     }
 }
-
-::ng-deep .subs-status-header .ag-header-cell-comp-wrapper .ag-header-cell-label{
-    display: flex;
-    justify-content: center;
-  }
-  ::ng-deep .subs-volScaling-header .ag-header-cell-comp-wrapper .ag-header-cell-label{
-    display: flex;
-    justify-content: center;
-  }
 ::ng-deep .providerProfile-tabGroup .mdc-tab__text-label{
     font-size: 20px !important;
     font-weight: 400;
@@ -152,12 +156,6 @@
 ::ng-deep .providerProfile-tabGroup .mdc-tab{
     padding: 0 50px !important;
 }
-
-::ng-deep .subs-scopeSelect .mdc-text-field {
-    background-color: white !important;
-    border: 1px solid;
-    border-bottom: 0px solid;
-  }
 
   ::ng-deep .actions-menu .mat-mdc-menu-panel{
     background-color: white !important;
@@ -176,36 +174,16 @@
     }
   }
 
- ::ng-deep .providerProfile-commonInfo{
-    width: 600px !important;
-    border-radius: 10px !important;
-    .mat-mdc-dialog-title{
-        margin: unset !important;
-        padding-bottom: 10px !important;
-    }
-    .mat-mdc-dialog-surface{
-        border-radius: 10px !important;
-        background: white !important;
-        padding: 20px !important;
-    }
-    .commonInfo-Email{
-        width: 100% !important;
-        .mdc-text-field{
-            background-color: white;
-            border: 1px solid;
-            border-bottom: 0px;
-            margin-bottom: -1.25em
-        }
-    }
-    .commonInfo-Scope{
-        width: 100% !important;
-        .mdc-text-field{
-            background-color: white;
-            border: 1px solid;
-            border-bottom: 0px;
-            margin-bottom: -1.25em
-        }
-    }
+  ::ng-deep .common-dropdown .mdc-text-field {
+      @include common-dropdown(150px);
   }
 
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+  }
+
+.email-not-exist-container {
+    margin-top: 50px !important;
+    @include common-warn-msg-css(var(--error-message--container-color));
+}
 

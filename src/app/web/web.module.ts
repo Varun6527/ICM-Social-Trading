@@ -15,7 +15,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatMenuModule} from '@angular/material/menu';
-import { SubscriptionsComponent } from './views/subscriptions/subscriptions.component';
 import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
@@ -40,7 +39,6 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
   declarations: [
     WebLayoutComponent,
     StatusBtnRendererComponent,
-    SubscriptionsComponent,
     ProvidersListComponent,
     TypeIconComponent,
     StrategyCellRendererComponent,

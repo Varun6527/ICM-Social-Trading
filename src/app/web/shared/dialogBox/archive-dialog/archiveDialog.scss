@@ -1,6 +1,6 @@
 @import '../../../../../_mixins.scss';
 
-::ng-deep .provider-archive-dialog {
+::ng-deep .archive-dialog {
     @include common-popup-design();
 }
 
