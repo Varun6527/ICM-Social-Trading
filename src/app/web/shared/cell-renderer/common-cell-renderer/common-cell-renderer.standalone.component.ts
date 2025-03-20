@@ -51,7 +51,7 @@ export class CommonCellRendererStandAloneComponent {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}`]);
     } else if(this.params.colDef.colId == 'positionNameCell') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/positions/${this.params.data.positionId}`]);
-    } else if(this.params.colDef.colId == 'dealsTitleCell') {
+    } else if(this.params.colDef.colId == 'dealsTitleCell' || this.params.colDef.colId == 'dealsSubTitleCell') {
       this._webService.emitOnWebDataChange({action: 'open_deals_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'dealPositionCell') {
       this.getPositionDetails();

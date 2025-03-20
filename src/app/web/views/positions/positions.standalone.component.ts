@@ -242,7 +242,7 @@ export class PositionsStandAloneComponent {
     if (gridType == 'deals' ) {
       if(this.isProvider) {
         return [
-          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
+          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell' },
           { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
           { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
           { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
@@ -252,7 +252,7 @@ export class PositionsStandAloneComponent {
         ]
       } else {
         return [
-          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
+          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsSubTitleCell' },
           { field: "status", headerName: 'COMMON.Status', sortable : false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
           { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
           { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },

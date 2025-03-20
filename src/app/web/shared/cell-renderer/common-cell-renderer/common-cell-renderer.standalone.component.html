@@ -3,7 +3,7 @@
           <span>{{ params.value }}</span>
     </a>
 
-    <div *ngIf="['resultIdCell', 'dealsTitleCell', 'followerProfileCell', 'transactionTitlePopup', 'offerCell', 'providerSubscriptionNameCell', 'positionNameCell', 'positionSubscriptionNameCell'].includes(params.colDef.colId)" class="d-flex flex-column">
+    <div *ngIf="['resultIdCell', 'dealsTitleCell', 'dealsSubTitleCell', 'followerProfileCell', 'transactionTitlePopup', 'offerCell', 'providerSubscriptionNameCell', 'positionNameCell', 'positionSubscriptionNameCell'].includes(params.colDef.colId)" class="d-flex flex-column">
       <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
         @if(params.colDef.colId == 'transactionTitlePopup') {
           <span>{{ params.value.reason }}</span>
@@ -13,7 +13,7 @@
           <a href="javascript:void(0)" class="default-link">
             <span>Subscription #{{ params.value }}</span>
           </a>
-        } @else if(params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'positionSubscriptionNameCell' || params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'followerProfileCell') {
+        } @else if(params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'positionSubscriptionNameCell' || params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'dealsSubTitleCell' || params.colDef.colId == 'followerProfileCell') {
             <span>{{ params.value }}</span>
         }  @else if(params.colDef.colId == 'resultIdCell') {
             <span>Result #{{ params.value }}</span>
@@ -27,7 +27,7 @@
             #{{ params.value }}
           } @else if (params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'positionSubscriptionNameCell') {
             #{{ params.data.positionId }}
-          } @else if (params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'followerProfileCell') {
+          } @else if (params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'dealsSubTitleCell' || params.colDef.colId == 'followerProfileCell') {
             #{{ params.data.id }}
           }
         </div>
@@ -38,6 +38,8 @@
             {{params.data.offerState}}
           } @else if (params.colDef.colId == 'providerSubscriptionNameCell' || params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'resultIdCell' || params.colDef.colId == 'followerProfileCell') {
             {{params.data.state}}
+          } @else if (params.colDef.colId == 'dealsSubTitleCell') {
+            {{params.data.type}} {{params.data.copyDealKey}}
           }
         </div>
       </div>
