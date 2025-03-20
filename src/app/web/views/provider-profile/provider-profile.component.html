@@ -6,7 +6,7 @@
                     <h5>{{providersData?.nickname}}</h5>
                     <p>{{"PROVIDERS_PROFILE.Provider's profile and sharing settings" | translate}}</p>
                 </div>
-                <button class="primary-btn action-btn" [matMenuTriggerFor]="actions">
+                <button class="primary-btn action-btn" [matMenuTriggerFor]="actions" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                     <img src="../../../../assets/icons/actions.png" />
                     {{"COMMON.Actions" | translate}}
                 </button>
@@ -29,7 +29,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Common Information"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's common settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('common_info')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('common_info')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -50,7 +50,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Personal details of account"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of trading strategy by its owner"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('personal_details')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('personal_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -71,7 +71,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Strategy"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's settings of publishing deals"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy_details')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Finance"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's finance settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn">
+                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -127,7 +127,7 @@
                                         <img src="../../../../assets/icons/rotateIcon.svg" />
                                         {{"COMMON.Refresh"|translate}}
                                     </button>
-                                    <button class="primary-btn" (click)="openCreateOfferModal()">
+                                    <button class="primary-btn" (click)="openCreateOfferModal()" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                         <img src="../../../../assets/icons/plusIcon.png" />
                                         {{"COMMON.Create"|translate}}
                                     </button>
