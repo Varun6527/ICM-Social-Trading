@@ -396,3 +396,8 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
   background: var(--border-color);
 }
+
+.btn-disable {
+  opacity: 0.5;
+  pointer-events: none;
+}

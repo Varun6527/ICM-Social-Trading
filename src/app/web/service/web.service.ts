@@ -81,8 +81,16 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.metric}`, '');
   }
 
+  getProviderMetricById(id: any) {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.metric}/${id}`, '');
+  }
+
   getFollowerMetric() {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscriptions_Metric}`, '');
+  }
+
+  getFollowerMetricById(id: any) {
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.subscriptions_Metric}/${id}`, '');
   }
 
   getProviderTableData() {

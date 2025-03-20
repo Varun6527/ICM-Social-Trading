@@ -318,7 +318,8 @@
         "SubscriptionThirdWarnMsg": "Risk management, to unsubsribe when a certain subscription result is reached",
         "Attempts": "Attempts",
         "MetaTrader position ID": "MetaTrader position ID",
-        "Follower position's close data": "Follower position's close data"
+        "Follower position's close data": "Follower position's close data",
+        "Archive reason": "Archive reason"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

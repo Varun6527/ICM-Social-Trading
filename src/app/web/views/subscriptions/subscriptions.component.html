@@ -6,7 +6,7 @@
                     <h5>{{"SUBSCRIPTION.Subscription Profile"|translate}} #{{subscriptionData?.id}}</h5>
                     <p>{{"SUBSCRIPTION.General information about the subscription"|translate}}</p>
                 </div>
-                <button class="primary-btn action-btn" [matMenuTriggerFor]="actions">
+                <button class="primary-btn action-btn" [matMenuTriggerFor]="actions" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                     <img src="../../../../assets/icons/actions.png" />
                     {{"COMMON.Actions" | translate}}
                 </button>
@@ -21,9 +21,9 @@
                     <button mat-menu-item (click)="openSubscriberArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"PROVIDERS_PROFILE.Unsubscribe"|translate}}</button>
                 </mat-menu>
             </div>
-            <provider-follower-header-cards></provider-follower-header-cards>
+            <provider-follower-header-cards [getDataById]="true" [id]="subscriptionId"></provider-follower-header-cards>
 
-            <div *ngIf="subscriptionData.isActivated && !subscriptionData.activationStatus" class="d-flex flex-column email-not-exist-container">
+            <div *ngIf="subscriptionData.isActivated && !subscriptionData.activationStatus && subscriptionData.state !== 'Archived'" class="d-flex flex-column email-not-exist-container">
                 <p>{{"PROVIDERS_PROFILE.Suspended since"|translate}}: {{subscriptionData.suspension.timeUtc | date:'M/d/yy'}}</p>
                 <p>{{"PROVIDERS_PROFILE.Suspension reason: Subscription was suspended by the"|translate}} {{subscriptionData.suspension.reason | lowercase}}.</p>
             </div>
@@ -34,7 +34,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Provider Filters"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Setting up initial filters for provider's original trades"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('filters')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('filters')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -59,7 +59,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"SUBSCRIPTION.Subscription Strategy"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Setting up the difference between source and copied trades"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -84,7 +84,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Correction"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Final processing of copies' parameters"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('correction')">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('correction')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
@@ -111,7 +111,7 @@
                         <div class="info-section-left-items">
                             <div class="d-flex justify-right g-10">
                                 <div class="d-flex justify-center g-10 align-stretch">
-                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal('create')">
+                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal('create')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                         <img src="../../../../assets/icons/plusIcon.png" />
                                         {{"COMMON.Create"|translate}}
                                     </button>
@@ -126,7 +126,7 @@
                             </common-ag-grid>
                         </div>
                     </div>
-                    <p class="email-not-exist-container" *ngIf="!isEmailExist">
+                    <p class="email-not-exist-container" *ngIf="!isEmailExist && subscriptionData.state !== 'Archived'">
                         {{"PROVIDERS_PROFILE.Email Not Exist Warn Msg"|translate}}
                     </p>
                 </div>
@@ -153,7 +153,7 @@
                                         </h6>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-center items-main">
+                                <div class="d-flex justify-center items-main" *ngIf="subscriptionData.state !== 'Archived'">
                                     <p class="activated-container" *ngIf="subscriptionData.activationStatus">{{"PROVIDERS_PROFILE.SuspendActiveMsg"|translate}}</p>
                                     <p class="not-activated-container" *ngIf="!subscriptionData.activationStatus">{{"PROVIDERS_PROFILE.SuspendDeActiveMsg"|translate}}</p>
                                 </div>
@@ -169,6 +169,14 @@
                                     </div>
                                     <div class="items-right">
                                         <h6 class="status-badge">● {{subscriptionData?.state}}</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-center items-main" *ngIf="subscriptionData.state == 'Archived'">
+                                    <div class="items-left">
+                                        <h6>{{"PROVIDERS_PROFILE.Archive reason"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6 class="status-badge">{{subscriptionData?.archiveReason}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">

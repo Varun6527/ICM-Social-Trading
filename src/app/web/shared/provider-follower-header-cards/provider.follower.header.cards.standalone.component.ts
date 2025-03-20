@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
@@ -116,12 +116,17 @@ export class ProviderFollowerHeaderCardsStandaloneComponent {
   chartOptions: any;
   IConstant: ConstantVariable = new ConstantVariable();
   
+  @Input() getDataById: boolean = false;
+  @Input() id: boolean = false;
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   
 
   constructor(public translate: TranslateService, private _webService: WebService) {
     this.role['hasProvider'] = this._webService.isProviderAccount;
     this.role['hasFollower'] = this._webService.isSubscriptionAccount;
+  }
+
+  ngOnInit() {
     this.getHeaderCardsData();
   }
 
@@ -134,7 +139,13 @@ export class ProviderFollowerHeaderCardsStandaloneComponent {
   }
 
   getProviderMetrics() {
-    this._webService.getProviderMetric().subscribe({
+    let apiObseverable;
+    if(this.getDataById) {
+      apiObseverable = this._webService.getProviderMetricById(this.id);
+    } else {
+      apiObseverable = this._webService.getProviderMetric();
+    }
+    apiObseverable.subscribe({
       next: (response: any) => {
         this.providerMetric = new ProviderMetricUIModal(response);
         this.setChartData("provider");
@@ -146,7 +157,13 @@ export class ProviderFollowerHeaderCardsStandaloneComponent {
   }
 
   getFollowersMetrics() {
-    this._webService.getFollowerMetric().subscribe({
+    let apiObseverable;
+    if(this.getDataById) {
+      apiObseverable = this._webService.getFollowerMetricById(this.id);
+    } else {
+      apiObseverable = this._webService.getFollowerMetric();
+    }
+    apiObseverable.subscribe({
       next: (response: any) => {
         this.followerMetric = new FollowerMetricUIModal(response);
         this.setChartData("follower");

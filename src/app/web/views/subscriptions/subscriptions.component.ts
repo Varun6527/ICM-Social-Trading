@@ -84,13 +84,15 @@ export class SubscriptionsStandAloneComponent {
   }
 
   openImportantInfoPopup() {
-    if(this.subscriptionData.activationHistory == 'New' && !this.subscriptionData.isActivated) {
-      const dialogRef = this.subscriptionInfoDialog.open(SubscriptionInfoDialog, {
-        panelClass: 'info-dialog'
-      });
-      dialogRef.afterClosed().subscribe((event) => {
-        this.recieveChildrenEmitter(event);
-      });
+    if(this.subscriptionData.state !== 'Archived') {
+      if(this.subscriptionData.activationHistory == 'New' && !this.subscriptionData.isActivated) {
+        const dialogRef = this.subscriptionInfoDialog.open(SubscriptionInfoDialog, {
+          panelClass: 'info-dialog'
+        });
+        dialogRef.afterClosed().subscribe((event) => {
+          this.recieveChildrenEmitter(event);
+        });
+      }
     }
   }
 
