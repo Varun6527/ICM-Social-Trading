@@ -59,7 +59,9 @@ export class CommonCellRendererStandAloneComponent {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}/results/${this.params.data.resultId}`]);
     } else if(this.params.colDef.colId == 'offerKeyCell') {
       this._webService.emitOnWebDataChange({action: 'edit_offer_join_link', data: this.params.data });
-    } 
+    } else if(this.params.colDef.colId == 'dealSubscriptionPositionCell' || this.params.colDef.colId == 'positionSubscriptionNameCell') {
+      this.router.navigate([`/portal/subscriptions/${this.params.data.subscriptionId}/positions/${this.params.data.positionId}`]);
+    }
   }
 
   getPositionDetails() {

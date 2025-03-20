@@ -3,7 +3,7 @@
           <span>{{ params.value }}</span>
     </a>
 
-    <div *ngIf="['resultIdCell', 'dealsTitleCell', 'followerProfileCell', 'transactionTitlePopup', 'offerCell', 'providerSubscriptionNameCell', 'positionNameCell'].includes(params.colDef.colId)" class="d-flex flex-column">
+    <div *ngIf="['resultIdCell', 'dealsTitleCell', 'followerProfileCell', 'transactionTitlePopup', 'offerCell', 'providerSubscriptionNameCell', 'positionNameCell', 'positionSubscriptionNameCell'].includes(params.colDef.colId)" class="d-flex flex-column">
       <a (click)="onCellNameClicked()" href="javascript:void(0)" class="default-link line-height-1-7">
         @if(params.colDef.colId == 'transactionTitlePopup') {
           <span>{{ params.value.reason }}</span>
@@ -13,7 +13,7 @@
           <a href="javascript:void(0)" class="default-link">
             <span>Subscription #{{ params.value }}</span>
           </a>
-        } @else if(params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'followerProfileCell') {
+        } @else if(params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'positionSubscriptionNameCell' || params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'followerProfileCell') {
             <span>{{ params.value }}</span>
         }  @else if(params.colDef.colId == 'resultIdCell') {
             <span>Result #{{ params.value }}</span>
@@ -25,7 +25,7 @@
             #{{params.value.id}}
           } @else if (params.colDef.colId == 'providerSubscriptionNameCell' || params.colDef.colId == 'resultIdCell' || params.colDef.colId == 'offerCell') {
             #{{ params.value }}
-          } @else if (params.colDef.colId == 'positionNameCell') {
+          } @else if (params.colDef.colId == 'positionNameCell' || params.colDef.colId == 'positionSubscriptionNameCell') {
             #{{ params.data.positionId }}
           } @else if (params.colDef.colId == 'dealsTitleCell' || params.colDef.colId == 'followerProfileCell') {
             #{{ params.data.id }}
@@ -83,20 +83,24 @@
         <div class="tag" *ngIf="params.colDef.colId == 'providerNameCell'">
           #{{params.data.providerId}}
           </div>
-        <div class="tag">
+          
+        <div class="tag" >
           {{params.data.state}}
         </div>
       </div>
     </div>
     
-    <div *ngIf="params.colDef.colId == 'followerProfileRedirection'" class="d-flex flex-column line-height-1-7 justify-left align-baseline" href="javascript:void(0)">
+    <div *ngIf="params.colDef.colId == 'followerProfileRedirection' || params.colDef.colId == 'dealSubscriptionPositionCell'" class="d-flex flex-column line-height-1-7 justify-left align-baseline" href="javascript:void(0)">
       <div>
         <a href="javascript:void(0)" class="default-link" (click)="onCellNameClicked()">
           <span>{{ params.value }}</span>
         </a>
       </div>
-      <div class="tag">
+      <div class="tag" *ngIf="params.colDef.colId !== 'dealSubscriptionPositionCell'">
         #{{params.data.followerId}}
+      </div>
+      <div class="tag" *ngIf="params.colDef.colId == 'dealSubscriptionPositionCell'">
+        #{{params.data.positionId}}
       </div>
     </div>
 
@@ -161,4 +165,13 @@
 
     <div *ngIf="params.colDef.colId == 'dateTimeCell'">
       {{ params.value ? (params.value | date:'M/d/yy, h:mm:ss a') : '-' }}
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'thresHoldCell'">
+      Total profit > {{params.value | currency: 'USD':'symbol'}}
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'subscriptionActionCell'" class="d-flex flex-column line-height-1-7 justify-left align-baseline">
+      <div>Subscription: {{params.value}}</div>
+      <div>Trading: {{params.data.tradingAction}}</div>
     </div>

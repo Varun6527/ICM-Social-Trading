@@ -500,6 +500,9 @@ export class PositionUiModal {
     profit: string = "";
     closeTime: string = "";
     providerId: any;
+    copyPosition: any;
+    subscriptionId: any;
+
     constructor(obj: any) {
         this.position = obj.position;
         this.providerId = obj.providerId;
@@ -512,6 +515,8 @@ export class PositionUiModal {
         this.openDirection = obj.openDirection;
         this.profit =  new ConvertValueToCurrency(obj.profit, 'USD', false).getConvertedValue();
         this.closeTime = this.transformDate(obj.closeTime);
+        this.copyPosition = obj.copyPosition;
+        this.subscriptionId = obj.subscriptionId;
     }
 
     transformDate(value: string): string {
@@ -540,6 +545,14 @@ export class DealsUiModal {
     time: string = "";
     entryType: string = "";
     providerId: any;
+    status: string = "";
+    positionId: any;
+    subscriptionId: any;
+    profit: any;
+    error: any;
+    attempts: any;
+    copyDealKey: any;
+    type: any;
     constructor(obj: any) {
         this.dealKey = obj.dealKey;
         this.id = obj.id;
@@ -553,6 +566,14 @@ export class DealsUiModal {
         this.time = this.transformDate(obj.time);
         this.entryType = obj.entryType;
         this.providerId = obj.providerId;
+        this.status = obj.status;
+        this.positionId = obj.positionId;
+        this.subscriptionId = obj.subscriptionId;
+        this.profit = obj.profit;
+        this.error = obj.error;
+        this.attempts = obj.attempts;
+        this.copyDealKey = obj.copyDealKey;
+        this.type = obj.type;
     }
 
     transformDate(value: string): string {

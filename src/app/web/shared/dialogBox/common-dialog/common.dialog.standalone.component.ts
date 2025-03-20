@@ -78,5 +78,10 @@ import { Router, RouterModule } from '@angular/router';
         this.router.navigate([`/portal/providers/${recipentObj.id}`]);
       }
     }
+
+    redirectToSubscriptionPosition(data: any) {
+      this.closeCommonDialogPopup();
+      this.router.navigate([`/portal/subscriptions/${data.subscriptionId}/positions/${data.positionId}`]);
+    }
   }
   

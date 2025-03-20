@@ -54,6 +54,11 @@
                     </div>
                     }
                 </ng-container>
+                <ng-container *ngSwitchCase="'postionRedirection'">
+                    <a class="default-link" (click)="redirectToSubscriptionPosition(labelObj.data)">
+                        <span>{{labelObj.value}}</span>
+                    </a>
+                </ng-container>
                 <ng-container *ngSwitchDefault>
                     <div>{{labelObj.value}}</div>
                 </ng-container>

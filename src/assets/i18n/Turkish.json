@@ -307,7 +307,7 @@
         "Excess volume processing": "Excess volume processing",
         "Risk Management": "Risk Management",
         "Setting up the subscription's acceptable risks": "Setting up the subscription's acceptable risks",
-        "Email Not Exist Warn Msg": "Email is not configured. In order to make the system send notifications, please add an email by clicking the settings icon at the top of the page.",
+        "Email Not Exist Warn Msg": "Email is not configured. In order to make the system send notifications, please add an email by clicking the settings option at the side nav menu.",
         "Copy new positions": "Copy new positions",
         "SuspendActiveMsg": "Subscription is active. You may suspend the subscription to temporarily stop copying.",
         "SuspendDeActiveMsg": "Subscription is not active. To start copying, activate the subscription.",
@@ -315,7 +315,8 @@
         "Don't forget to set up your copying options before activation": "Don't forget to set up your copying options before activation",
         "SubscriptionFirstWarnMsg": "Filters, to copy only specific trades from the provider",
         "SubscriptionSecondWarnMsg": "Subscription strategy, to define the copies' volumes and direction",
-        "SubscriptionThirdWarnMsg": "Risk management, to unsubsribe when a certain subscription result is reached"
+        "SubscriptionThirdWarnMsg": "Risk management, to unsubsribe when a certain subscription result is reached",
+        "Attempts": "Attempts"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

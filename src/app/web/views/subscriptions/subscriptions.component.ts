@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { ProviderCommonInfoDialog } from '../../shared/dialogBox/provider-common-info-dialog/providerCommonInfoDialog.standalone.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -28,7 +28,8 @@ import { SubscriptionInfoDialog } from '../../shared/dialogBox/subscription-info
   templateUrl: './subscriptions.component.html',
   styleUrl: './subscriptions.component.scss',
   standalone: true,
-  imports: [CommonModule, CommonAgGridStandAloneComponent, FormsModule, ShowErrorStandAloneComponent, ProviderFollowerHeaderCardsStandaloneComponent, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule]
+  imports: [CommonModule, CommonAgGridStandAloneComponent, FormsModule, ShowErrorStandAloneComponent, ProviderFollowerHeaderCardsStandaloneComponent, MatMenuModule, MatTabsModule, TranslateModule, MatSelectModule, MatInputModule, MatCardModule],
+  providers: [CurrencyPipe]
 })
 export class SubscriptionsStandAloneComponent {
   subscriptionId: any;
@@ -58,7 +59,7 @@ export class SubscriptionsStandAloneComponent {
   readonly subscriptionArchiveDialog = inject(MatDialog);
   readonly subscriptionInfoDialog = inject(MatDialog);
   
-  constructor(private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
+  constructor(private currencyPipe: CurrencyPipe, private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.subscriptionId = params.get('subscriptionId')!;
       this.getAllSubscriptionProfilePageData();
@@ -379,28 +380,30 @@ export class SubscriptionsStandAloneComponent {
   getGridColDefs(gridType: string) {
     if(gridType == 'risk') {
       return [
-        { field: "threshold", headerName: 'Parameter', resizable: false },
-        { field: "subscriptionAction", headerName: 'Actions', resizable: false},
+        { field: "threshold", headerName: 'Parameter', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'thresHoldCell' },
+        { field: "subscriptionAction", headerName: 'Actions', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'subscriptionActionCell' },
         { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'riskCell', resizable: false },
       ];
     } else if(gridType == 'position') {
       return [
 
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionNameCell' },
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionSubscriptionNameCell' },
+        { field: "copyPosition", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
         { field: "status", headerName: 'COMMON.Status', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
         { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
         { field: "openTime", headerName: 'PROVIDERS_PROFILE.Open Time', sort: 'desc', resizable: false },
         { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionVolumeCell' },
         { field: "profit", headerName: 'PROVIDERS_PROFILE.Profit', resizable: false },
         { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false },
-        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, resizable: false, colId: 'positionRedirection' },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, resizable: false, colId: 'positionSubscriptionRedirection' },
       ]
     } else if(gridType == 'deals') {
       return [
         { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealSubscriptionPositionCell' },
+        { field: "status", headerName: 'COMMON.Status', sortable : false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "copyDealKey", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
         { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealPositionCell' },
         { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
         { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
         { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },
@@ -412,7 +415,6 @@ export class SubscriptionsStandAloneComponent {
         { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionTitlePopup' },
         { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, suppressSizeToFit: true },
         { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionAmountViewDisplay'  },
-        { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction'},
         { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false },
         { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
       ]
@@ -534,17 +536,26 @@ export class SubscriptionsStandAloneComponent {
       secondryTitle: "PROVIDERS_PROFILE.Deal's details",
       labelDetails: [
         { title: 'PROVIDERS_PROFILE.Deal', value: dealsData.dealKey },
-        { title: 'PROVIDERS_PROFILE.Position', value: dealsData.position },
+        { title: 'PROVIDERS_PROFILE.Source', value: dealsData.copyDealKey },
+        { title: 'PROVIDERS_PROFILE.Position', value: `${dealsData.position} #${dealsData.positionId}`, type: 'postionRedirection', data: dealsData },
+        { title: 'ACCOUNTS.Type', value: dealsData.type },
         { title: 'PROVIDERS_PROFILE.State', value: dealsData.state },
+        { title: 'COMMON.Status', value: dealsData.status},
         { title: 'PROVIDERS_PROFILE.Symbol', value: dealsData.symbol},
         { title: 'PROVIDERS_PROFILE.Entry', value: dealsData.entry },
         { title: 'PROVIDERS_PROFILE.Entry type', value: dealsData.entryType },
         { title: 'PROVIDERS_PROFILE.Direction', value: dealsData.direction },
         { title: 'PROVIDERS_PROFILE.Volume', value: dealsData.volume },
         { title: 'PROVIDERS_PROFILE.Price', value: dealsData.price },
-        { title: 'PROVIDERS_PROFILE.Time', value: dealsData.time }
+        { title: 'PROVIDERS_PROFILE.Time', value: dealsData.time },
+        { title: 'PROVIDERS_PROFILE.Profit', value: this.currencyPipe.transform(dealsData.profit, dealsData.currency, 'symbol') },
+        { title: 'PROVIDERS_PROFILE.Error', value: dealsData.error },
+        { title: 'PROVIDERS_PROFILE.Attempts', value: dealsData.attempts },
       ]
     };
+    if(!dealsData.error) {
+      commonDialogData.labelDetails.splice(commonDialogData.labelDetails.length - 2, 1);
+    }
     return commonDialogData;
   }
 

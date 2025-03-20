@@ -123,6 +123,8 @@ export class ActionButtonStanAloneComponent {
       this._webService.emitOnWebDataChange({action: 'open_deals_popup', data: this.params.data });
     } else if(this.params.colDef.colId == 'tradingResultRedirection') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}/results/${this.params.data.resultId}`]);
+    } else if(this.params.colDef.colId == 'positionSubscriptionRedirection') {
+      this.router.navigate([`/portal/subscriptions/${this.params.data.subscriptionId}/positions/${this.params.data.positionId}`]);
     }
   }
 }
