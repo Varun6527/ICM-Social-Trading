@@ -317,7 +317,9 @@
         "SubscriptionFirstWarnMsg": "Filters, to copy only specific trades from the provider",
         "SubscriptionSecondWarnMsg": "Subscription strategy, to define the copies' volumes and direction",
         "SubscriptionThirdWarnMsg": "Risk management, to unsubsribe when a certain subscription result is reached",
-        "Attempts": "Attempts"
+        "Attempts": "Attempts",
+        "MetaTrader position ID": "MetaTrader position ID",
+        "Follower position's close data": "Follower position's close data"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

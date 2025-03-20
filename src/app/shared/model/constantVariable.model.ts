@@ -62,7 +62,8 @@ export class ConstantVariable {
         subscription_profile: {
           position: "/api/followers/:subscriptionId/positions",
           deals: "/api/followers/:subscriptionId/deals",
-          risk: "/api/subscriptions/:subscriptionId/risks"
+          risk: "/api/subscriptions/:subscriptionId/risks",
+          single_position: "/api/followers/positions"
         },
         shared_link: {
           create_or_delete: "/api/providers/:providerId/link"

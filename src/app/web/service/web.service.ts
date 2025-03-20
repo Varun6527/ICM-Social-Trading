@@ -264,6 +264,11 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
   }
 
+  getSingleSubscriptionPositionData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.subscription_profile.single_position}/${data.positionId}`;
+    return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, '');
+  }
+
   getSingleTradingAccountData(data: any) {
     return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.trading.account_Details}/${data.accountId}`, '')
   }

@@ -17,9 +17,27 @@
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Position"|translate}}</h6>
+                                    <h6>
+                                        @if(this.isProvider) {
+                                            {{"PROVIDERS_PROFILE.Position" | translate}}
+                                        } @else {
+                                            {{"PROVIDERS_PROFILE.MetaTrader position ID" | translate}}
+                                        }
+                                    </h6>
                                     <p>
                                         <span>{{positionData.position}}</span>
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                    <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
+                                    <p>
+                                        <span>{{positionData.state}}</span>
+                                    </p>
+                                </div>
+                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                    <h6>{{"COMMON.Status"|translate}}</h6>
+                                    <p>
+                                        <span>{{positionData.status}}</span>
                                     </p>
                                 </div>
                                 <div class="d-flex justify-space-between align-center">
@@ -28,7 +46,7 @@
                                         <span>{{positionData.untrackStatus}}</span>
                                     </p>
                                 </div>
-                                <div class="d-flex justify-space-between align-center">
+                                <div class="d-flex justify-space-between align-center" *ngIf="isProvider">
                                     <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
                                     <p>
                                         <span>{{positionData.symbol}}</span>
@@ -44,6 +62,12 @@
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
+                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                    <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
+                                    <p>
+                                        <span>{{positionData.symbol}}</span>
+                                    </p>
+                                </div>
                                 <div class="d-flex justify-space-between align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Direction"|translate}}</h6>
                                     <p>
@@ -74,7 +98,13 @@
                     <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Close Data"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Provider position's close data"|translate}}</p>
+                            <p>
+                                @if(this.isProvider) {
+                                    {{"PROVIDERS_PROFILE.Provider position's close data"|translate}}
+                                } @else {
+                                    {{"PROVIDERS_PROFILE.Follower position's close data"|translate}}
+                                }
+                            </p>
                         </div>
                         <div class="info-section-left-items info-section-left-items-card">
                             <mat-card appearance="outlined">
@@ -139,7 +169,7 @@
                             </mat-card>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100" *ngIf="isProvider">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Copy data"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Position's copy data"|translate}}</p>
@@ -231,9 +261,15 @@
                             </div>
                             <div class="items">
                                 <div class="header d-flex justify-space-between align-center">
-                                    <h6>{{"HOME.Provider"|translate}}</h6>
+                                    <h6>
+                                        @if(this.isProvider) {
+                                            {{"HOME.Provider"|translate}}
+                                        } @else {
+                                            {{"TRANSACTIONS.Subscription"|translate}}
+                                        }
+                                    </h6>
                                 </div>
-                                <div class="d-flex justify-center items-main">
+                                <div class="d-flex justify-center items-main" *ngIf="isProvider">
                                     <div class="items-left">
                                         <h6>{{"HOME.Nickname"|translate}}</h6>
                                     </div>
@@ -245,12 +281,24 @@
                                         </h6>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-center items-main" *ngIf="isFollower">
+                                    <div class="items-left">
+                                        <h6>{{"TRANSACTIONS.Subscription"|translate}}</h6>
+                                    </div>
+                                    <div class="items-right">
+                                        <h6>
+                                            <a [routerLink]="['/portal/subscriptions', subscriptionData.id]" class="default-link">
+                                                <span>Subscription #{{subscriptionData.id}}</span>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-center items-main">
                                     <div class="items-left">
                                         <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6 class="status-badge">{{providersData?.state}}</h6>
+                                        <h6 class="status-badge">{{this.isProvider ? providersData?.state : subscriptionData?.state}}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -258,7 +306,7 @@
                                         <h6>{{"PROVIDERS_PROFILE.Updated (UTC)"|translate}}</h6>
                                     </div>
                                     <div class="items-right">
-                                        <h6>{{providersData?.updatedUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
+                                        <h6>{{positionData?.updatedUtc | date:"MMMM d, y 'at' hh:mm:ss a"}}</h6>
                                     </div>
                                 </div>
                             </div>
