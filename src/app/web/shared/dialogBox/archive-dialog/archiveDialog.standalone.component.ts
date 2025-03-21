@@ -26,6 +26,7 @@ export class ArchiveDialog {
   subscriptionCount: any;
   providerData: any = {};
   offerData: any = {};
+  subscriptionData: any = {};
   modelType: string = "";
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
@@ -38,6 +39,8 @@ export class ArchiveDialog {
       this.getAllSubscriptionData();
     } else if(this.modelType == "offer") {
       this.offerData = this.data.offerData;
+    } else if(this.modelType == "subscription") {
+      this.subscriptionData = this.data.subscriptionData;
     }
   }
 
@@ -61,6 +64,8 @@ export class ArchiveDialog {
       apiObseverableUrl = this._webService.deleteOrArchiveProvider(param);
     } else if(this.modelType == "offer") {
       apiObseverableUrl = this._webService.deleteorArchiveOfferData(param);
+    } else if(this.modelType == "subscription") {
+      apiObseverableUrl = this._webService.deleteOrArchiveFollower(param);
     }
     apiObseverableUrl.subscribe({
       next: (response: any) => {
@@ -69,9 +74,15 @@ export class ArchiveDialog {
           msg = "Provider has been archived";
         } else if(this.modelType == "offer") {
           msg = "Offer has been archived";
+        } else if(this.modelType == "subscription") {
+          msg = "Subscription has been archived";
         }
         this.showSuccessPopupMsg(msg);
-        this.dialogRef.close({action: "redirect_to_provider_page"});
+        if(this.modelType == "provider" || this.modelType == "offer") {
+          this.dialogRef.close({action: "redirect_to_provider_page"});
+        } else if(this.modelType == "subscription") {
+          this.dialogRef.close({action: "redirect_to_subscription_page"});
+        }
         this.showLoader = false;
       },
       error: (errorObj: any) => {
@@ -88,6 +99,8 @@ export class ArchiveDialog {
       param['providerId'] = this.providerData.id
     } else if(this.modelType == "offer") {
       param['offerId'] = this.offerData.id
+    } else if(this.modelType == "subscription") {
+      param['subscriptionId'] = this.subscriptionData.id;
     }
     return param;
   }

@@ -11,7 +11,8 @@
                     {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item><img src="../../../../assets/icons/{{subscriptionData.activationStatus ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
+                    <button mat-menu-item (click)="openActiveOrDeactiveSubscriptionDialog(subscriptionData.activationStatus ? 'suspend' : 'activate' )">
+                        <img src="../../../../assets/icons/{{subscriptionData.activationStatus ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
                         @if(subscriptionData.activationStatus) {
                             {{"PROVIDERS_PROFILE.Suspend"|translate}}
                         } @else {

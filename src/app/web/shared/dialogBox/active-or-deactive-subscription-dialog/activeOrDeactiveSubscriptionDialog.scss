@@ -1,0 +1,11 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .active-or-deactive-subscription-dialog {
+    @include common-popup-design();
+    .active-title {
+        @include common-warn-msg-css(var(--primary-positive-color));
+    }
+    .deactive-title {
+        @include common-warn-msg-css(var(--error-message--container-color));
+    }
+}

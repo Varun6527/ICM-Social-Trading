@@ -320,7 +320,13 @@
         "Attempts": "Attempts",
         "MetaTrader position ID": "MetaTrader position ID",
         "Follower position's close data": "Follower position's close data",
-        "Archive reason": "Archive reason"
+        "Archive reason": "Archive reason",
+        "Suspend copying of positions": "Suspend copying of positions",
+        "New positions copying will be suspended": "New positions copying will be suspended",
+        "Activate copying of positions": "Activate copying of positions",
+        "New positions of the provider will start being copied": "New positions of the provider will start being copied",
+        "Subscription Archive Confirmation": "I confirm archiving the subscription. I understand that the subscription will stop copying the provider, and that the subscription will not be available to use in the future.",
+        "Archive all information about the subscription": "Archive all information about the subscription"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

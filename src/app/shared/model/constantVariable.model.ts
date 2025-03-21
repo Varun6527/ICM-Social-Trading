@@ -63,7 +63,8 @@ export class ConstantVariable {
           position: "/api/followers/:subscriptionId/positions",
           deals: "/api/followers/:subscriptionId/deals",
           risk: "/api/subscriptions/:subscriptionId/risks",
-          single_position: "/api/followers/positions"
+          single_position: "/api/followers/positions",
+          activateOrDeActivateSubscription: "/api/subscriptions/:subscriptionId/activate"
         },
         shared_link: {
           create_or_delete: "/api/providers/:providerId/link"
@@ -254,7 +255,7 @@ export class ConstantVariable {
       this.homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
         return new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: currencyType
+          currency: currencyType ? currencyType : "USD"
         }).format(val);
       }
       return this.homePageMonthlyChartConfig;

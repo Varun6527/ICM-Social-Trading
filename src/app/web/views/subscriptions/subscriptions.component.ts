@@ -22,6 +22,7 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
 import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { SubscriptionInfoDialog } from '../../shared/dialogBox/subscription-info-dialog/subscriptionInfoDialog.standalone.component';
+import { ActiveOrDeactiveSubscriptionDialog } from '../../shared/dialogBox/active-or-deactive-subscription-dialog/activeOrDeactiveSubscriptionDialog.standalone.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -58,6 +59,8 @@ export class SubscriptionsStandAloneComponent {
   readonly createOrUpdateRiskDialog = inject(MatDialog);
   readonly subscriptionArchiveDialog = inject(MatDialog);
   readonly subscriptionInfoDialog = inject(MatDialog);
+  readonly activeOrDeactiveSubscriptionDialog = inject(MatDialog);
+
   
   constructor(private currencyPipe: CurrencyPipe, private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
@@ -452,6 +455,8 @@ export class SubscriptionsStandAloneComponent {
       this.openCreateOrUpdateRiskModal('update', event.data);
     } else if(event['action'] == 'update_user_email') {
       this.isEmailExist = event.email ? true : false;
+    } else if(event['action'] == 'redirect_to_subscription_page') {
+      this.router.navigate(['/portal/subscriptions']);
     }
   }
 
@@ -509,6 +514,16 @@ export class SubscriptionsStandAloneComponent {
       data: { subscriptionData: this.subscriptionData, modelType: 'subscription' } 
     });
     dialogRef.afterClosed().subscribe((event) => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+
+  openActiveOrDeactiveSubscriptionDialog(modelType: string) {
+    const dialogRef = this.activeOrDeactiveSubscriptionDialog.open(ActiveOrDeactiveSubscriptionDialog, {
+      panelClass: 'active-or-deactive-subscription-dialog',
+      data: { subscriptionData: this.subscriptionData, modelType: modelType }
+    });
+    dialogRef.afterClosed().subscribe(event => {
       this.recieveChildrenEmitter(event);
     });
   }

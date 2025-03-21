@@ -335,6 +335,10 @@ export class WebService extends BaseService {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.create}/${data.subscriptionId}`, '');
   }
 
+  deleteOrArchiveFollower(data: any) {
+    return this.sendHttpDeleteAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.follower.create}/${data.subscriptionId}`, { body: {} });
+  }
+
   getProviderDataById(data: any) {
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webHomePage.provider.brief}/${data.providerId}`, "");
   }
@@ -347,6 +351,13 @@ export class WebService extends BaseService {
     let url = `${this.constantVar?.http_Api_Url.subscription_profile.risk}`;
     url = url.replace(':subscriptionId', data.subscriptionId);
     return this.sendHttpGetRequest(`${this.REST_API_SERVER}${url}`, "");
+  }
+
+  activateOrDeactivateSubscription(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.subscription_profile.activateOrDeActivateSubscription}`;
+    url = url.replace(':subscriptionId', data.subscriptionId);
+    delete data['subscriptionId'];
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
   }
 
 }

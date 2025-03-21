@@ -1,11 +1,17 @@
 <h2 mat-dialog-title class="text-center">
-  {{'COMMON.Archive' | translate}}
+  @if(modelType == "subscription") {
+    {{'PROVIDERS_PROFILE.Unsubscribe' | translate}}
+  } @else {
+    {{'COMMON.Archive' | translate}}
+  }
 </h2>
 <p class="text-center">
   @if(modelType == "provider") {
     {{'PROVIDERS_PROFILE.Archive all information about the provider' | translate}}
   } @else if(modelType == "offer") {
     {{'PROVIDERS_PROFILE.Archive all information about the offer' | translate}}
+  } @else if(modelType == "subscription") {
+    {{'PROVIDERS_PROFILE.Archive all information about the subscription' | translate}}
   }
 </p>
 <mat-dialog-content class="mat-typography">
@@ -31,6 +37,8 @@
         {{providerData.state}}
         } @else if(modelType == "offer") {
         {{offerData.state}}
+        } @else if(modelType == "subscription") {
+          {{subscriptionData.state}}
         }
       </div>
     </div>
@@ -53,10 +61,14 @@
       <div>{{subscriptionCount}}</div>
     </div>
     }
-    @if(modelType == "provider") {
-    <mat-checkbox 
-    [(ngModel)]="this.isProviderArchiveConfirm">{{'PROVIDERS_PROFILE.Archive Confirmation' |
-      translate}}</mat-checkbox>
+    @if(modelType == "provider" || modelType == "subscription") {
+    <mat-checkbox [(ngModel)]="this.isProviderArchiveConfirm">
+      @if(modelType == "subscription") {
+        {{'PROVIDERS_PROFILE.Subscription Archive Confirmation' | translate}}
+      } @else if(modelType == "provider") {
+        {{'PROVIDERS_PROFILE.Archive Confirmation' | translate}}
+      }
+    </mat-checkbox>
     }
   </div>
 
@@ -64,7 +76,7 @@
 <div class="d-flex justify-center g-20">
   <button class="secondary-btn" (click)="closeProviderInfoForm()">{{'COMMON.Cancel' | translate}}</button>
   <button class="primary-btn" type="submit"
-    [ngClass]="{'disabled': (!isProviderArchiveConfirm && modelType == 'provider')}" (click)="archive()"
+    [ngClass]="{'disabled': (!isProviderArchiveConfirm && (modelType == 'provider' || modelType == 'subscription'))}" (click)="archive()"
     [IcmLoadingOverlay]="showLoader">{{"COMMON.Archive"|translate}}</button>
 </div>
 <show-error-message></show-error-message>
