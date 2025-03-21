@@ -112,7 +112,7 @@
                         <div class="info-section-left-items">
                             <div class="d-flex justify-right g-10">
                                 <div class="d-flex justify-center g-10 align-stretch">
-                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal('create')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
+                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal(false)" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                         <img src="../../../../assets/icons/plusIcon.png" />
                                         {{"COMMON.Create"|translate}}
                                     </button>

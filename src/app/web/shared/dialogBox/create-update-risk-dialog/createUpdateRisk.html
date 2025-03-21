@@ -1,0 +1,121 @@
+<h2 mat-dialog-title class="text-center">
+  {{"PROVIDERS_PROFILE.Risk Management" | translate}}
+</h2>
+<p class="text-center">
+  {{"PROVIDERS_PROFILE.Setting up the subscription's acceptable risks" | translate}}
+</p>
+<form [formGroup]="createRiskForm">
+
+  <mat-dialog-content class="mat-typography">
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Parameter" | translate}}</mat-label>
+      <mat-select formControlName="parameter">
+        <mat-option [value]="'TotalLoss'">{{"PROVIDERS_PROFILE.Total loss" | translate}}</mat-option>
+        <mat-option [value]="'TotalProfit'">{{"PROVIDERS_PROFILE.Total profit" | translate}}</mat-option>
+        <mat-option [value]="'FloatingLoss'">{{"PROVIDERS_PROFILE.Floating loss" | translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || !createRiskForm.controls['parameter'].errors?.['required']">
+      {{"PROVIDERS_PROFILE.A measure that is compared to the level to perform the automatic action" | translate}}
+    </p>
+    <mat-error class="pb-10" *ngIf="showError && createRiskForm.controls['parameter'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Threshold" | translate}}</mat-label>
+      <input type="number" matInput placeholder="100" formControlName="threshold">
+      <span matTextSuffix>$</span>
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!createRiskForm.controls['threshold'].errors?.['required'] && !(createRiskForm.controls['threshold'].errors?.['min']))">
+      {{"PROVIDERS_PROFILE.Agent fee paid as a percent of all fees to be received by provider" | translate}}
+    </p>
+    <mat-error class="pb-10" *ngIf="showError && createRiskForm.controls['threshold'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+    <mat-error class="pb-10" *ngIf="showError && (createRiskForm.controls['threshold'].errors?.['min'])">
+      {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{'PROVIDERS_PROFILE.Subscription Action' | translate}}</mat-label>
+      <mat-select formControlName="subscriptionAction">
+        @if(createRiskForm.controls['parameter'].value == 'FloatingLoss') {
+        <mat-option [value]="'Keep'">{{'PROVIDERS_PROFILE.Keep' | translate}}</mat-option>
+        }
+        <mat-option [value]="'Suspend'">{{'PROVIDERS_PROFILE.Suspend' | translate}}</mat-option>
+        <mat-option [value]="'Unsubscribe'">{{'PROVIDERS_PROFILE.Unsubscribe' | translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if(!showError || !createRiskForm.controls['subscriptionAction'].errors?.['required']) {
+      <p class="pt-10">
+        {{'PROVIDERS_PROFILE.Actions in case the specified threshold is reached.' | translate}}
+      </p>
+      <p *ngIf="createRiskForm.controls['parameter']?.value == 'FloatingLoss'">
+        {{'PROVIDERS_PROFILE.Keep: do not perform any action on subscription.' | translate}}
+      </p>
+      <p>
+        {{'PROVIDERS_PROFILE.Suspend: suspend subscription.' | translate}}
+      </p>
+      <p class="px-10">
+        {{'PROVIDERS_PROFILE.Unsubscribe: unsubscribe from provider.' | translate}}
+      </p>
+    }
+
+    <mat-error class="pb-10" *ngIf="showError && createRiskForm.controls['subscriptionAction'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{'PROVIDERS_PROFILE.Trading Action' | translate}}</mat-label>
+      <mat-select formControlName="tradingAction">
+        @if(createRiskForm.controls['subscriptionAction'].value == "Unsubscribe") {
+          <mat-option [value]="'CloseAll'">{{'PROVIDERS_PROFILE.Close all' | translate}}</mat-option>
+        } @else {
+          <mat-option [value]="'KeepAll'">{{'PROVIDERS_PROFILE.Keep all' | translate}}</mat-option>
+          <mat-option [value]="'CloseAll'">{{'PROVIDERS_PROFILE.Close all' | translate}}</mat-option>
+          @if(createRiskForm.controls['parameter'].value == 'FloatingLoss') {
+            <mat-option [value]="'CloseUnprofitable'">{{'PROVIDERS_PROFILE.Close unprofitable' | translate}}</mat-option>
+          }
+          <mat-option [value]="'CloseAllUnprofitable'">{{'PROVIDERS_PROFILE.Close all unprofitable' | translate}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    @if(!showError || !createRiskForm.controls['tradingAction'].errors?.['required']) {
+      <p class="pt-10">
+        {{'PROVIDERS_PROFILE.Actions in case the specified threshold is reached.' | translate}}
+      </p>
+      @if(createRiskForm.controls['subscriptionAction'].value == "Unsubscribe") {
+        <p> {{'PROVIDERS_PROFILE.Close all: close all copied positions.' | translate}}</p>
+      } @else {
+        <p>{{'PROVIDERS_PROFILE.Keep all: do not perform any action on copied position.' | translate}}</p>
+        <p>{{'PROVIDERS_PROFILE.Close all: close all copied positions.' | translate}}</p>
+        @if(createRiskForm.controls['parameter'].value == 'FloatingLoss') {
+          <p>
+            {{'PROVIDERS_PROFILE.Close unprofitable Msg' | translate}}.
+            </p>
+        }
+        <p class="px-10">{{'PROVIDERS_PROFILE.Close all unprofitable: close all copies with loss' | translate}}.</p>
+      }
+    }
+    <mat-error class="pb-10" *ngIf="showError && createRiskForm.controls['tradingAction'].errors?.['required']">
+      {{'login.FieldRequired' | translate}}
+    </mat-error>
+
+  </mat-dialog-content>
+
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeDialog()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="createOrUpdateRisk()" [IcmLoadingOverlay]="showLoader">
+      @if(!isUpdate) {
+      {{"COMMON.Create"|translate}}
+      } @else {
+      {{"COMMON.Save Changes"|translate}}
+      }
+    </button>
+  </div>
+</form>
+<show-error-message></show-error-message>

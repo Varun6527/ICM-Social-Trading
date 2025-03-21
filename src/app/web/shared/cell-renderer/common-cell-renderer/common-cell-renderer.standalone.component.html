@@ -170,7 +170,7 @@
     </div>
 
     <div *ngIf="params.colDef.colId == 'thresHoldCell'">
-      Total profit > {{params.value | currency: 'USD':'symbol'}}
+      {{params.data.parameter}} > {{params.value | currency: 'USD':'symbol'}}
     </div>
 
     <div *ngIf="params.colDef.colId == 'subscriptionActionCell'" class="d-flex flex-column line-height-1-7 justify-left align-baseline">

@@ -1,0 +1,5 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .create-update-risk-dialog {
+    @include common-popup-design();
+}

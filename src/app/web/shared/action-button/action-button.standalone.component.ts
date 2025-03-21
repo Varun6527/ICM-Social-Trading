@@ -101,9 +101,15 @@ export class ActionButtonStanAloneComponent {
       } else if(type == "delete") {
         this._webService.emitOnWebDataChange({action: 'delete_agent_data', data: this.params.data });
       }
+    } else if(this.params.colDef.colId == 'riskCell') {
+      if(type == "edit") {
+        this._webService.emitOnWebDataChange({action: 'update_risk_data', data: this.params.data });
+      } else if(type == "delete") {
+        this._webService.emitOnWebDataChange({action: 'delete_risk_data', data: this.params.data });
+      }
     }
   }
-
+  
   onActionClick() {
     if(this.params.colDef.colId == 'providerProfileRedirection') {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}`]);

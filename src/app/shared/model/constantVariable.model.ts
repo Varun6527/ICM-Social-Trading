@@ -82,7 +82,9 @@ export class ConstantVariable {
         OfferNameDuplicated: "Offer with this title already exists",
         AgentIsInvalid: "Agent account is invalid",
         OfferJoinLinkDuplicated: "Join link key duplicated",
-        SubscriptionDuplicated: "This subscription already exists in the system"
+        SubscriptionDuplicated: "This subscription already exists in the system",
+        SubscriptionRiskLevelAlreadyReached: "The rule cannot be saved: this threshold is already reached. Please set up a higher threshold in order to save the rule",
+        SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed."
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

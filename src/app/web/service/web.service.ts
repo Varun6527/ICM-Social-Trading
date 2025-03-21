@@ -360,6 +360,13 @@ export class WebService extends BaseService {
     return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
   }
 
+  createOrUpdateRiskData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.subscription_profile.risk}`;
+    url = url.replace(':subscriptionId', data.subscriptionId);
+    delete data['subscriptionId'];
+    return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
+  }
+
 }
 
 

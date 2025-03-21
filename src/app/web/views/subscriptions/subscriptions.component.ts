@@ -23,6 +23,7 @@ import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/cr
 import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { SubscriptionInfoDialog } from '../../shared/dialogBox/subscription-info-dialog/subscriptionInfoDialog.standalone.component';
 import { ActiveOrDeactiveSubscriptionDialog } from '../../shared/dialogBox/active-or-deactive-subscription-dialog/activeOrDeactiveSubscriptionDialog.standalone.component';
+import { CreateUpdateRiskDialog } from '../../shared/dialogBox/create-update-risk-dialog/createUpdateRisk.standalone.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -452,16 +453,22 @@ export class SubscriptionsStandAloneComponent {
     } else if(event['action'] == 'refresh_subscription_data') {
       this.refreshSubscriptionData();
     } else if(event['action'] == 'update_risk_data') {
-      this.openCreateOrUpdateRiskModal('update', event.data);
+      this.openCreateOrUpdateRiskModal(true, event.data);
     } else if(event['action'] == 'update_user_email') {
       this.isEmailExist = event.email ? true : false;
     } else if(event['action'] == 'redirect_to_subscription_page') {
       this.router.navigate(['/portal/subscriptions']);
+    } else if(event['action'] == 'refresh_risk_data') {
+      this.refreshRiskData();
     }
   }
 
   async refreshSubscriptionData() {
     let result = await this.getSubscriptionProfileData();
+  }
+
+  async refreshRiskData() {
+    let result = await this.getRiskData();
   }
 
   openBeTradingAccountPopup() {
@@ -498,10 +505,10 @@ export class SubscriptionsStandAloneComponent {
     });
   }
 
-  openCreateOrUpdateRiskModal(modelType: any, formData?: any) {
-    const dialogRef = this.createOrUpdateRiskDialog.open(CreateOfferDialog, {
+  openCreateOrUpdateRiskModal(isUpdate: any, formData?: any) {
+    const dialogRef = this.createOrUpdateRiskDialog.open(CreateUpdateRiskDialog, {
       panelClass: 'create-update-risk-dialog',
-      data: { subscriptionData: this.subscriptionData, modelType: modelType, formData: formData }
+      data: { subscriptionData: this.subscriptionData, isUpdate: isUpdate, riskData: this.riskGridData, riskFormData: formData }
     });
     dialogRef.afterClosed().subscribe((event) => {
       this.recieveChildrenEmitter(event);
