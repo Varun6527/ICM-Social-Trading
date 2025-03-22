@@ -22,6 +22,7 @@ export class SidenavStanaloneComponent extends BaseLanguageTranslationComponent 
   showProvider: boolean = false;
   showSubscription: boolean = false;
   showRatingWidget: boolean = false;
+  showReportsPage: boolean = false;
   clientSettings: any = {};
   providerData: any = {};
   iConstant: ConstantVariable = new ConstantVariable();
@@ -86,6 +87,7 @@ export class SidenavStanaloneComponent extends BaseLanguageTranslationComponent 
   setOrRefreshUserProfileConfig(event?: any) {
     this.showProvider = this._webService.isProviderAccount;
     this.showSubscription = this._webService.isSubscriptionAccount;
+    this.showReportsPage = this._webService.isReportPageEnable;
     this.showRatingWidget = this._authService.userConfig.ratings.integrationMode == "EmbeddedPage";
     this.getClientDetail();
     if(this.showProvider) {

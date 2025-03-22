@@ -46,7 +46,7 @@
                         <p>{{"SIDEBAR.Providers"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="showProvider || showSubscription">
+                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="(showProvider || showSubscription) && showReportsPage">
                     <li routerLinkActive="menu-active">
                         <img class="reports-icon" src="../../../../assets/icons/file.png" />
                         <p>{{"SIDEBAR.Reports"|translate}}</p>

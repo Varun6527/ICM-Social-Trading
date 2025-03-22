@@ -106,7 +106,7 @@ export class MyReportsGaurd implements CanActivate {
         return new Promise((resolve, reject) => {
             this._webService.setOrRefreshUserProfileDataAsObserver().subscribe({
                 next: (response) => {
-                    let flag = this._webService.isProviderAccount || this._webService.isSubscriptionAccount;
+                    let flag = (this._webService.isProviderAccount || this._webService.isSubscriptionAccount) && this._webService.isReportPageEnable;
                     if (!flag) {
                         this._router.navigate(['./portal']);
                         reject(false);

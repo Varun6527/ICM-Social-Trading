@@ -124,9 +124,13 @@ export class ProviderSubscriptionStandAloneComponent {
   getProviderSubscriptionTabsConfig() {
     let arr = [];
     arr.push(
-      this.getFeesTabConfig(),
-      this.getResultTabConfig()
+      this.getFeesTabConfig()
     );
+    if(this._webService.showSubscriptionsTradingResults) {
+      arr.push(
+        this.getResultTabConfig()
+      );
+    }
     return arr;
   }
 

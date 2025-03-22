@@ -16,6 +16,8 @@ export class WebService extends BaseService {
   userPermissionConfig: any;  
   isProviderAccount: boolean = false;
   isSubscriptionAccount: boolean = false;
+  isReportPageEnable: boolean = false;
+  showSubscriptionsTradingResults: boolean = false;
   //End
 
   constructor(private http: HttpClient) {
@@ -27,6 +29,8 @@ export class WebService extends BaseService {
     this.userPermissionConfig = undefined;
     this.isProviderAccount = false;
     this.isSubscriptionAccount = false;
+    this.isReportPageEnable = false;
+    this.showSubscriptionsTradingResults = false;
   }
 
   subscribeOnWebDataChange(subscribeedFrom: string, callback: any) {
@@ -50,6 +54,8 @@ export class WebService extends BaseService {
             this.userPermissionConfig = result;
             this.isProviderAccount = result?.provider?.view;
             this.isSubscriptionAccount = result?.subscription?.view;
+            this.isReportPageEnable = result?.reports.view;
+            this.showSubscriptionsTradingResults = result?.provider?.showSubscriptionsTradingResults.length > 0
             callback({status: true, response: result});
         },
         error: (error: any) => {
