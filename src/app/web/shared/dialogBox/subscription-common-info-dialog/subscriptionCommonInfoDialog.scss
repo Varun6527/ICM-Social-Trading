@@ -1,0 +1,5 @@
+@import '../../../../../_mixins.scss';
+
+::ng-deep .subscriptionProfile-commonInfo {
+    @include common-popup-design();
+}

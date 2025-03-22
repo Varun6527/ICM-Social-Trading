@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
-import { ProviderCommonInfoDialog } from '../../shared/dialogBox/provider-common-info-dialog/providerCommonInfoDialog.standalone.component';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,12 +18,12 @@ import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-d
 import { FormsModule } from '@angular/forms';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
-import { CreateOfferDialog } from '../../shared/dialogBox/create-offer-dialog/createOfferDialog.standalone.component';
 import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { SubscriptionInfoDialog } from '../../shared/dialogBox/subscription-info-dialog/subscriptionInfoDialog.standalone.component';
 import { ActiveOrDeactiveSubscriptionDialog } from '../../shared/dialogBox/active-or-deactive-subscription-dialog/activeOrDeactiveSubscriptionDialog.standalone.component';
 import { CreateUpdateRiskDialog } from '../../shared/dialogBox/create-update-risk-dialog/createUpdateRisk.standalone.component';
 import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
+import { SubscriptionCommonInfoDialog } from '../../shared/dialogBox/subscription-common-info-dialog/subscriptionCommonInfoDialog.standalone.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -62,7 +61,7 @@ export class SubscriptionsStandAloneComponent {
   readonly subscriptionArchiveDialog = inject(MatDialog);
   readonly subscriptionInfoDialog = inject(MatDialog);
   readonly activeOrDeactiveSubscriptionDialog = inject(MatDialog);
-  readonly deleteOfferDataDialog = inject(MatDialog);
+  readonly deleteRiskDataDialog = inject(MatDialog);
 
   
   constructor(private currencyPipe: CurrencyPipe, private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
@@ -500,7 +499,7 @@ export class SubscriptionsStandAloneComponent {
   }
 
   openCommonInfoDialog(modelType: string) {
-    const dialogRef = this.commonInfoDialog.open(ProviderCommonInfoDialog, {
+    const dialogRef = this.commonInfoDialog.open(SubscriptionCommonInfoDialog, {
       panelClass: 'subscriptionProfile-commonInfo',
       data: { subscriptionData: this.subscriptionData, modelType: modelType }
     });
@@ -541,7 +540,7 @@ export class SubscriptionsStandAloneComponent {
   
 
   deleteRiskData(modelData: any) {
-    const dialogRef = this.deleteOfferDataDialog.open(DeleteOfferDataDialog, {
+    const dialogRef = this.deleteRiskDataDialog.open(DeleteOfferDataDialog, {
       panelClass: 'delete-offer-dialog',
       data: { subscriptionData: this.subscriptionData, modelType: 'risk', modelData: modelData, riskData: this.riskGridData }
     });

@@ -1,0 +1,188 @@
+<h2 mat-dialog-title class="text-center">
+  @if(this.modelType == 'filters') {
+    {{'PROVIDERS_PROFILE.Provider Filters'|translate}}
+  }
+  @if(modelType == "strategy") {
+    {{'SUBSCRIPTION.Subscription Strategy'|translate}}
+  }
+  @if(modelType == "correction") {
+    {{'PROVIDERS_PROFILE.Correction'|translate}}
+  }
+</h2>
+<p class="text-center">
+  @if(this.modelType == 'filters') {
+    {{"PROVIDERS_PROFILE.Setting up initial filters for provider's original trades"|translate}}
+  }
+  @if(modelType == "strategy") {
+    {{"PROVIDERS_PROFILE.Setting up the difference between source and copied trades"|translate}}
+  }
+  @if(modelType == "correction") {
+    {{"PROVIDERS_PROFILE.Final processing of copies' parameters"|translate}}
+  }
+</p>
+<form [formGroup]="subscriptionCommonInfoForm">
+  <mat-dialog-content class="mat-typography">
+    @if(this.modelType == 'filters') {
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Direction"|translate}}</mat-label>
+      <mat-select formControlName="direction">
+        <mat-option [value]="'All'">{{"COMMON.All"|translate}}</mat-option>
+        <mat-option [value]="'Buy'">{{"PROVIDERS_PROFILE.Buy"|translate}}</mat-option>
+        <mat-option [value]="'Sell'">{{"PROVIDERS_PROFILE.Sell"|translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p class="pb-10" *ngIf="!showError || (!subscriptionCommonInfoForm.controls['direction'].errors?.['required'])">
+      {{"PROVIDERS_PROFILE.Provider deals of only specified direction will be copied"|translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && subscriptionCommonInfoForm.controls['direction'].errors?.['required']">
+      {{'login.FieldRequired'|translate}}</mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Minimum lots"|translate}}</mat-label>
+      <input type="number" matInput placeholder="1" formControlName="minimumLot">
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!subscriptionCommonInfoForm.controls['minimumLot'].errors?.['min'] && !subscriptionCommonInfoForm.controls['minimumLot'].errors?.['wrongValue'])">
+      {{"PROVIDERS_PROFILE.New provider deals with volumes lower than the specified will not be copied"|translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && subscriptionCommonInfoForm.controls['minimumLot'].errors?.['min']">
+      {{'PROVIDERS_PROFILE.Value must be greater than 0'|translate}}</mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && subscriptionCommonInfoForm.controls['minimumLot'].errors?.['wrongValue']">
+      {{"PROVIDERS_PROFILE.Wrong value"|translate}}
+    </mat-error>
+
+    <mat-form-field class="common-field">
+      <mat-label>{{"PROVIDERS_PROFILE.Maximum lots"|translate}}</mat-label>
+      <input type="number" matInput placeholder="10" formControlName="maximumLot">
+    </mat-form-field>
+    <p class="pb-10"
+      *ngIf="!showError || (!subscriptionCommonInfoForm.controls['maximumLot'].errors?.['min'] && !subscriptionCommonInfoForm.controls['maximumLot'].errors?.['wrongValue'])">
+      {{"PROVIDERS_PROFILE.New provider deals with volumes equal or higher than the specified will not be copied"|translate}}
+    </p>
+    <mat-error class="pb-10"
+      *ngIf="showError && subscriptionCommonInfoForm.controls['maximumLot'].errors?.['min']">
+      {{'PROVIDERS_PROFILE.Value must be greater than 0'|translate}}</mat-error>
+    <mat-error class="pb-10"
+      *ngIf="showError && subscriptionCommonInfoForm.controls['maximumLot'].errors?.['wrongValue']">
+      {{"PROVIDERS_PROFILE.Wrong value"|translate}}
+    </mat-error>
+    }
+    @if(modelType == "strategy") {
+      <mat-form-field class="common-field">
+        <mat-label>{{"SUBSCRIPTION.Volume scaling"|translate}}</mat-label>
+        <mat-select formControlName="type">
+          <mat-option [value]="'Multiply'">{{"PROVIDERS_PROFILE.Multiply"|translate}}</mat-option>
+          <mat-option [value]="'Fixed'">{{"PROVIDERS_PROFILE.Fixed"|translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      @if(!showError || (!subscriptionCommonInfoForm.controls['type'].errors?.['required'])) {
+        <p class="pt-10">
+          <strong>{{"PROVIDERS_PROFILE.Multiply"|translate}}</strong> - {{"PROVIDERS_PROFILE.A copy's volume is equal to the provider's original volume multiplied by the"|translate}} <em>{{"PROVIDERS_PROFILE.Volume multiplier"|translate}}</em>.
+        </p>
+        <p class="px-10">
+          <strong>{{"PROVIDERS_PROFILE.Fixed"|translate}}</strong> - {{"PROVIDERS_PROFILE.Copies' volumes"|translate}} {{"PROVIDERS_PROFILE.are always equal to the specified"|translate}} <em>{{"PROVIDERS_PROFILE.Copies' volumes"|translate}}.</em>.
+        </p>
+      }
+      <mat-error class="pb-10"
+        *ngIf="showError && subscriptionCommonInfoForm.controls['type'].errors?.['required']">
+        {{'login.FieldRequired'|translate}}
+      </mat-error>
+
+      <mat-form-field class="common-field">
+        <mat-label>
+          @if(subscriptionCommonInfoForm.controls['type'].value == "Multiply") {
+            {{"PROVIDERS_PROFILE.Volume multiplier"|translate}}
+          } @else {
+            {{"PROVIDERS_PROFILE.Copies' volumes"|translate}}
+          }
+        </mat-label>
+        <input type="number" matInput placeholder="1" formControlName="riskRatio">
+      </mat-form-field>
+      <p class="pb-10"
+        *ngIf="!showError || (!subscriptionCommonInfoForm.controls['riskRatio'].errors?.['min'] && !subscriptionCommonInfoForm.controls['riskRatio'].errors?.['required'])">
+        @if(subscriptionCommonInfoForm.controls['type'].value == "Multiply") {
+          {{"PROVIDERS_PROFILE.Number to multiply the provider's volume by for a copy"|translate}}
+        } @else {
+          {{"PROVIDERS_PROFILE.Volume to be opened on each copy"|translate}}
+        }
+      </p>
+      <mat-error class="pb-10"
+        *ngIf="showError && subscriptionCommonInfoForm.controls['riskRatio'].errors?.['min']">
+        {{'PROVIDERS_PROFILE.Value must be greater than 0'|translate}}
+      </mat-error>
+      <mat-error class="pb-10"
+        *ngIf="showError && subscriptionCommonInfoForm.controls['riskRatio'].errors?.['required']">
+        {{'login.FieldRequired'|translate}}
+      </mat-error>
+
+      @if(subscriptionCommonInfoForm.controls['type'].value == "Multiply") {
+        <mat-form-field class="common-field">
+          <mat-label>{{"PROVIDERS_PROFILE.Minimum Volume Handling"|translate}}</mat-label>
+          <mat-select formControlName="minVolumeHandling">
+            <mat-option [value]="'Skip'">{{"PROVIDERS_PROFILE.Skip"|translate}}</mat-option>
+            <mat-option [value]="'MinLot'">{{"PROVIDERS_PROFILE.MinLot"|translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <p class="pb-10" *ngIf="!showError || (!subscriptionCommonInfoForm.controls['minVolumeHandling'].errors?.['required'])">
+          {{"PROVIDERS_PROFILE.Provider deals of only specified direction will be copied"|translate}}
+        </p>
+        <mat-error class="pb-10"
+          *ngIf="showError && subscriptionCommonInfoForm.controls['minVolumeHandling'].errors?.['required']">
+          {{'login.FieldRequired'|translate}}
+        </mat-error>
+      }
+    }
+
+    @if(modelType == "correction") {
+      <mat-form-field class="common-field">
+        <mat-label>{{'PROVIDERS_PROFILE.Max open volume'|translate}}</mat-label>
+        <input type="number" matInput placeholder="0.01" formControlName="riskFactor">
+      </mat-form-field>
+      <p class="pb-10"
+        *ngIf="!showError || (!subscriptionCommonInfoForm.controls['riskFactor'].errors?.['min'])">
+        {{'PROVIDERS_PROFILE.The maximum volume to be copied'|translate}}
+      </p>
+      <mat-error class="pb-10"
+        *ngIf="showError && subscriptionCommonInfoForm.controls['riskFactor'].errors?.['min']">
+        {{'PROVIDERS_PROFILE.Value must be greater than 0'|translate}}
+      </mat-error>
+
+      @if(subscriptionCommonInfoForm.controls['riskFactor'].value) {
+        <mat-form-field class="common-field">
+          <mat-label>{{'PROVIDERS_PROFILE.Action'|translate}}</mat-label>
+          <mat-select formControlName="action">
+            <mat-option [value]="'Skip'">{{'PROVIDERS_PROFILE.Skip'|translate}}</mat-option>
+            <mat-option [value]="'ScaleDown'">{{'PROVIDERS_PROFILE.Scale down'|translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        @if(!showError || (!subscriptionCommonInfoForm.controls['action'].errors?.['required'])) {
+          <p class="pt-10">
+            {{'PROVIDERS_PROFILE.Risk Factor Hint'|translate}}
+          </p>
+          <p>
+            {{'PROVIDERS_PROFILE.Scale down: The resulting volume of the copy will be equal to Max open volume'|translate}}
+            .
+          </p>
+          <p class="px-10">
+            {{'PROVIDERS_PROFILE.Skip'|translate}}: {{'PROVIDERS_PROFILE.The copy will not be opened'|translate}}
+            .
+          </p>
+        }
+        <mat-error class="pb-10"
+          *ngIf="showError && subscriptionCommonInfoForm.controls['action'].errors?.['required']">
+          {{'login.FieldRequired'|translate}}
+        </mat-error>
+      }
+    }
+  </mat-dialog-content>
+  <div class="d-flex justify-center g-20">
+    <button class="secondary-btn" (click)="closeFollowerInfoForm()">{{'COMMON.Cancel' | translate}}</button>
+    <button class="primary-btn" type="submit" (click)="updateFollowerDetails()"
+      [IcmLoadingOverlay]="showLoader">{{"COMMON.Save Changes"|translate}}</button>
+  </div>
+</form>
+
+<show-error-message></show-error-message>

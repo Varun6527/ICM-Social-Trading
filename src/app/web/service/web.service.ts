@@ -367,6 +367,12 @@ export class WebService extends BaseService {
     return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
   }
 
+  updateFollowerDataById(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.create}/${data.subscriptionId}`;
+    delete data['subscriptionId'];
+    return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
+  }
+
 }
 
 
