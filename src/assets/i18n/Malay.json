@@ -347,7 +347,8 @@
         "Close all: close all copied positions.": "Close all: close all copied positions.",
         "Keep all: do not perform any action on copied position.": "Keep all: do not perform any action on copied position.",
         "Close unprofitable Msg": "Close unprofitable: close copied positions one by one, starting with the most losing one, until loss level becomes lower than the therhold",
-        "Close all unprofitable: close all copies with loss": "Close all unprofitable: close all copies with loss"
+        "Close all unprofitable: close all copies with loss": "Close all unprofitable: close all copies with loss",
+        "Delete the risk rule": "Delete the risk rule"
     },
     "OFFERS": {
         "General information about the offer": "Maklumat umum mengenai tawaran",

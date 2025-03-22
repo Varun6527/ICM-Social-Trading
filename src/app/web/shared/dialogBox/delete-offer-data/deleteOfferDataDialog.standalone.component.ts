@@ -18,8 +18,10 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
 export class DeleteOfferDataDialog {
   showLoader: boolean = false;
   offerData: any = {};
+  riskData: any;
   modelType: string = "";
   modelData: any = {};
+  subscriptionData: any;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   IConstant: ConstantVariable = new ConstantVariable();
@@ -28,15 +30,26 @@ export class DeleteOfferDataDialog {
     this.modelType = this.data.modelType;
     this.modelData = this.data.modelData;
     this.offerData = this.data.offerData;
+    this.subscriptionData = this.data.subscriptionData;
+    this.riskData = this.data.riskData;
   }
 
   deleteOfferData() {
     this.showLoader = true;
-    let param = this.getParamOfDeleteOfferData();
-    this._webService.updateOfferData(param).subscribe({
+    let param = this.getParamOfDeleteOfferData(), apiObseverable: any, successMsg = "", eventMsg = "";
+    if(this.modelType == "agent" || this.modelType == "joinLink") {
+      apiObseverable = this._webService.updateOfferData(param);
+      successMsg = "Offer has been updated";
+      eventMsg = "refresh_offer_data";
+    } else if(this.modelType == "risk") {
+      apiObseverable = this._webService.createOrUpdateRiskData(param);
+      successMsg = "Subscription has been updated";
+      eventMsg = "refresh_risk_data";
+    }
+    apiObseverable?.subscribe({
       next: (response: any) => {
-        this.showSuccessPopupMsg("Offer has been updated");
-        this.dialogRef.close({action: "refresh_offer_data"});
+        this.showSuccessPopupMsg(successMsg);
+        this.dialogRef.close({action: eventMsg });
         this.showLoader = false;
       },
       error: (errorObj: any) => {
@@ -52,11 +65,16 @@ export class DeleteOfferDataDialog {
     if(this.modelType == "agent") {
       param['additionalAgents'] = JSON.parse(JSON.stringify(this.offerData.additionalAgents));
       param['additionalAgents']['chain'] = param['additionalAgents']['chain'].filter((o: any) => o.externalAccount != this.modelData.externalAccount);
+      param['offerId'] = this.offerData.id;
     } else if(this.modelType == "joinLink") {
       param['registration'] = JSON.parse(JSON.stringify(this.offerData.registration));
       param['registration']['links'] = param['registration']['links'].filter((o: any) => o.key != this.modelData.key);
+      param['offerId'] = this.offerData.id;
+    } else if(this.modelType == "risk") {
+      param['rules'] = JSON.parse(JSON.stringify(this.riskData));
+      param['rules'] = param['rules'].filter((obj: any)=> obj.parameter !== this.modelData.parameter);
+      param['subscriptionId'] = this.subscriptionData.id;
     }
-    param['offerId'] = this.offerData.id;
     return param;
   }
   

@@ -24,6 +24,7 @@ import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDial
 import { SubscriptionInfoDialog } from '../../shared/dialogBox/subscription-info-dialog/subscriptionInfoDialog.standalone.component';
 import { ActiveOrDeactiveSubscriptionDialog } from '../../shared/dialogBox/active-or-deactive-subscription-dialog/activeOrDeactiveSubscriptionDialog.standalone.component';
 import { CreateUpdateRiskDialog } from '../../shared/dialogBox/create-update-risk-dialog/createUpdateRisk.standalone.component';
+import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -61,6 +62,7 @@ export class SubscriptionsStandAloneComponent {
   readonly subscriptionArchiveDialog = inject(MatDialog);
   readonly subscriptionInfoDialog = inject(MatDialog);
   readonly activeOrDeactiveSubscriptionDialog = inject(MatDialog);
+  readonly deleteOfferDataDialog = inject(MatDialog);
 
   
   constructor(private currencyPipe: CurrencyPipe, private router: Router, public translate: TranslateService, private _webService: WebService, private route: ActivatedRoute) {
@@ -460,6 +462,8 @@ export class SubscriptionsStandAloneComponent {
       this.router.navigate(['/portal/subscriptions']);
     } else if(event['action'] == 'refresh_risk_data') {
       this.refreshRiskData();
+    } else if(event['action'] == 'delete_risk_data') {
+      this.deleteRiskData(event['data']);
     }
   }
 
@@ -529,6 +533,17 @@ export class SubscriptionsStandAloneComponent {
     const dialogRef = this.activeOrDeactiveSubscriptionDialog.open(ActiveOrDeactiveSubscriptionDialog, {
       panelClass: 'active-or-deactive-subscription-dialog',
       data: { subscriptionData: this.subscriptionData, modelType: modelType }
+    });
+    dialogRef.afterClosed().subscribe(event => {
+      this.recieveChildrenEmitter(event);
+    });
+  }
+  
+
+  deleteRiskData(modelData: any) {
+    const dialogRef = this.deleteOfferDataDialog.open(DeleteOfferDataDialog, {
+      panelClass: 'delete-offer-dialog',
+      data: { subscriptionData: this.subscriptionData, modelType: 'risk', modelData: modelData, riskData: this.riskGridData }
     });
     dialogRef.afterClosed().subscribe(event => {
       this.recieveChildrenEmitter(event);
