@@ -1,0 +1,1 @@
+import{a}from"./chunk-BGRXAIFX.js";import"./chunk-AGXGLGFY.js";import"./chunk-ZMEXDH5L.js";import"./chunk-BUFGAGPR.js";import"./chunk-KKB3U7AD.js";import"./chunk-BBDCSVIU.js";import"./chunk-D2HZNMZZ.js";import"./chunk-GPXXUB3O.js";import"./chunk-VFCAWHKN.js";import"./chunk-XTLRYQGA.js";export{a as TransactionsStandAloneComponent};
