@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/web/views/providers-list/cellRenderers/symbol-cell-renderer/symbol-cell-renderer.component.scss"],
+  "sourcesContent": [".symbol-icon {\r\n    height: 40px;\r\n    width: 40px;\r\n    border-radius: 100%;\r\n    margin-right: 10px;\r\n  }"],
+  "mappings": ";AAAA,CAAA;AACI,UAAA;AACA,SAAA;AACA,iBAAA;AACA,gBAAA;;",
+  "names": []
+}

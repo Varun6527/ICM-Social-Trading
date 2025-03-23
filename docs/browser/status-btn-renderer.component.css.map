@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/web/shared/status-btn-renderer/status-btn-renderer.component.scss"],
+  "sourcesContent": [".status{\r\n    img{\r\n        display: flex;\r\n        justify-content: center;\r\n        align-items: center;\r\n    }\r\n}\r\n\r\n.inactiveIcon{\r\n    height: 25px;\r\n    width: 25px;\r\n}"],
+  "mappings": ";AACI,CAAA,OAAA;AACI,WAAA;AACA,mBAAA;AACA,eAAA;;AAIR,CAAA;AACI,UAAA;AACA,SAAA;;",
+  "names": []
+}

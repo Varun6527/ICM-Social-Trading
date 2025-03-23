@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/web/views/providers-list/cellRenderers/risk-cell-renderer/risk-cell-renderer.component.scss"],
+  "sourcesContent": [".row-container {\r\n    display: flex;\r\n    // justify-content: center; \r\n    align-items: center;  \r\n    height: 100%;           \r\n  }\r\n  \r\n  .badge {\r\n    padding: 4px 4px 4px 12px;\r\n    background-color: #FEF3F2;\r\n    border-radius: 16px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    line-height: 10px;\r\n    align-items: center;\r\n    width: 70px;\r\n    max-width: 100px;\r\n  \r\n    p {\r\n      color: #B42318;\r\n      font-size: 12px;\r\n    }\r\n  \r\n    .badge-count {\r\n      background-color: #D92D20;\r\n      padding: 2px 8px;\r\n      border-radius: 16px;\r\n  \r\n      p {\r\n        color: white;\r\n        font-size: 12px;\r\n        line-height: 20px;\r\n      }\r\n    }\r\n  }\r\n  "],
+  "mappings": ";AAAA,CAAA;AACI,WAAA;AAEA,eAAA;AACA,UAAA;;AAGF,CAAA;AACE,WAAA,IAAA,IAAA,IAAA;AACA,oBAAA;AACA,iBAAA;AACA,WAAA;AACA,mBAAA;AACA,eAAA;AACA,eAAA;AACA,SAAA;AACA,aAAA;;AAEA,CAXF,MAWE;AACE,SAAA;AACA,aAAA;;AAGF,CAhBF,MAgBE,CAAA;AACE,oBAAA;AACA,WAAA,IAAA;AACA,iBAAA;;AAEA,CArBJ,MAqBI,CALF,YAKE;AACE,SAAA;AACA,aAAA;AACA,eAAA;;",
+  "names": []
+}

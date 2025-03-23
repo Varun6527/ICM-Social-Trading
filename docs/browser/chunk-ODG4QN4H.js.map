@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/guard/auth.guard.ts"],
+  "sourcesContent": ["import { Injectable } from '@angular/core';\r\nimport { CanActivate, Router } from '@angular/router';\r\nimport { AuthService } from '../../auth/service/auth.service';\r\n\r\n@Injectable({\r\n    providedIn: 'root'\r\n})\r\n\r\nexport class AuthGuard implements CanActivate {\r\n\r\n    constructor(private _authService: AuthService, private _router: Router) {\r\n        \r\n    }\r\n\r\n    canActivate(): boolean {\r\n        let flag = this._authService.isAccessTokenGenerated();\r\n        if (!flag) {\r\n            this._router.navigate(['./portal/login'], { queryParams: { redirectUrl: window.location.pathname }, queryParamsHandling: 'merge' });\r\n            return false;\r\n        } else {\r\n            return true;\r\n        }\r\n    }\r\n}"],
+  "mappings": ";;;;;;;;;;AAQM,IAAO,YAAP,MAAO,WAAS;EAEE;EAAmC;EAAvD,YAAoB,cAAmC,SAAe;AAAlD,SAAA,eAAA;AAAmC,SAAA,UAAA;EAEvD;EAEA,cAAW;AACP,QAAI,OAAO,KAAK,aAAa,uBAAsB;AACnD,QAAI,CAAC,MAAM;AACP,WAAK,QAAQ,SAAS,CAAC,gBAAgB,GAAG,EAAE,aAAa,EAAE,aAAa,OAAO,SAAS,SAAQ,GAAI,qBAAqB,QAAO,CAAE;AAClI,aAAO;IACX,OAAO;AACH,aAAO;IACX;EACJ;;qCAdS,YAAS,mBAAA,WAAA,GAAA,mBAAA,MAAA,CAAA;EAAA;4EAAT,YAAS,SAAT,WAAS,WAAA,YAHN,OAAM,CAAA;;",
+  "names": []
+}

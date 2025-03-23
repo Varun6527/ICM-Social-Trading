@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["provider.follower.header.cards.standalone.component.ts"],
+  "sourcesContent": ["\n        .green-color {\n            color: var(--primary-positive-color);\n        }\n\n        .red-color {\n            color: var(--error-message--container-color);\n        }\n "],
+  "mappings": ";AACQ,CAAA;AACI,SAAA,IAAA;;AAGJ,CAAA;AACI,SAAA,IAAA;;",
+  "names": []
+}

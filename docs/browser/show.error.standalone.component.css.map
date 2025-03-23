@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["show.error.standalone.component.ts"],
+  "sourcesContent": ["\n    ::ng-deep .mat-mdc-snack-bar-container.default-error-style {\n        --mat-snack-bar-button-color: var(--primaryWhite);\n        --mdc-snackbar-container-color: var(--error-message--container-color);\n        --mdc-snackbar-supporting-text-color: var(--primaryWhite);\n        width: 350px;\n    }\n    ::ng-deep .mat-mdc-snack-bar-container.default-success-style {\n        --mat-snack-bar-button-color: var(--primaryWhite);\n        --mdc-snackbar-container-color: var(--primary-positive-color);\n        --mdc-snackbar-supporting-text-color: var(--primaryWhite);\n        width: 350px;\n    }\n  "],
+  "mappings": ";AACI,UAAA,CAAA,2BAAA,CAAA;AACI,gCAAA,IAAA;AACA,kCAAA,IAAA;AACA,wCAAA,IAAA;AACA,SAAA;;AAEJ,UAAA,CANA,2BAMA,CAAA;AACI,gCAAA,IAAA;AACA,kCAAA,IAAA;AACA,wCAAA,IAAA;AACA,SAAA;;",
+  "names": []
+}
