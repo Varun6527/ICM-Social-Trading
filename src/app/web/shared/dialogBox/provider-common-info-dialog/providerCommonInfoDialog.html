@@ -8,6 +8,9 @@
   @if(this.modelType == 'personal_details') {
     {{"PROVIDERS_PROFILE.Personal details of account" | translate}}
   }
+  @if(this.modelType == 'finance') {
+    {{"PROVIDERS_PROFILE.Finance" | translate}}
+  }
 </h2>
 <p class="text-center">
   @if(this.modelType == 'common_info') {
@@ -18,6 +21,9 @@
   }
   @if(this.modelType == 'personal_details') {
     {{"PROVIDERS_PROFILE.Description of trading strategy by its owner" | translate}}
+  }
+  @if(this.modelType == 'finance') {
+    {{"PROVIDERS_PROFILE.Provider's finance settings" | translate}}
   }
 </p>
 <form [formGroup]="providerCommonInfoForm">
@@ -36,6 +42,30 @@
       <mat-error class="pb-10"
         *ngIf="showError && providerCommonInfoForm.controls['nickname'].errors?.['minlength']">{{'COMMON.Warn6CharMsg' |
         translate}}</mat-error>
+
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Visibility"|translate}}</mat-label>
+        <mat-select formControlName="visibility">
+          <mat-option [value]="'Public'">{{"PROVIDERS_PROFILE.Public"|translate}}</mat-option>
+          <mat-option [value]="'Private'">{{"PROVIDERS_PROFILE.Private"|translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      @if(!showError || !providerCommonInfoForm.controls['visibility'].errors?.['required']) {
+        <p class="pt-10">
+          {{"PROVIDERS_PROFILE.Provider's availability for subscriptions"|translate}}.
+        </p>
+        <p>
+          {{"PROVIDERS_PROFILE.Public providers are available to subscribe from the client portal or leaderboards"|translate}}.
+        </p>
+        <p class="px-10">
+          {{"PROVIDERS_PROFILE.Private providers are hidden and can be followed only via join links to their offers"|translate}}.
+        </p>
+      }
+      
+      <mat-error class="pb-10"
+        *ngIf="showError && providerCommonInfoForm.controls['visibility'].errors?.['required']">
+        {{'login.FieldRequired' | translate}}
+      </mat-error>
 
       <mat-form-field class="common-field">
         <mat-label>{{"PROVIDERS_PROFILE.Show account name"|translate}} *</mat-label>
@@ -91,6 +121,21 @@
           <p>{{this.providerCommonInfoForm.controls['notes'].value}}</p>
         </mat-expansion-panel>
       </mat-accordion>
+    }
+    @if(this.modelType == 'finance') {
+      <mat-form-field class="common-field">
+        <mat-label>{{"PROVIDERS_PROFILE.Fee receiver account"|translate}}</mat-label>
+        <mat-select formControlName="paymentAccountId">
+          <mat-option [value]="account.clientId" *ngFor="let account of financeAccountData">{{account.externalAccount}}-{{account.externalName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <p class="pt-10" *ngIf="!showError || !providerCommonInfoForm.controls['paymentAccountId'].errors?.['required']">
+          {{"PROVIDERS_PROFILE.Trading account collecting the performance fees paid by followers to the provider"|translate}}
+        </p>
+      <mat-error class="pb-10"
+        *ngIf="showError && providerCommonInfoForm.controls['paymentAccountId'].errors?.['required']">
+        {{'login.FieldRequired' | translate}}
+      </mat-error>
     }
   </mat-dialog-content>
   <div class="d-flex justify-center g-20">

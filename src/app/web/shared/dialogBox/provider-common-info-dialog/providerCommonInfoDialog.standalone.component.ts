@@ -22,6 +22,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
 export class ProviderCommonInfoDialog {
   providerCommonInfoForm: FormGroup;
   providerData: any;
+  financeAccountData: any = [];
   modelType: string = "";
   showError: boolean = false;
   showLoader: boolean = false;
@@ -35,13 +36,14 @@ export class ProviderCommonInfoDialog {
     this.providerCommonInfoForm = this.fb.group({
       nickname: [''],
       showAccountName: [false],
+      visibility: [''],
       summary: [''],
       notes: [''],
       hideStops: [false],
-      mode: ['']
+      mode: [''],
+      paymentAccountId: ['']
     });
     this.setProviderFormData();
-    console.log(data);
   }
   
   get getControl() {
@@ -54,7 +56,7 @@ export class ProviderCommonInfoDialog {
       param['additional'] = this.providerData.additional;
       param['nickname'] = this.getControl['nickname'].value;
       param['additional']['showAccountName'] = this.getControl['showAccountName'].value;
-      param['visibility'] = this.providerData.visibility;
+      param['visibility'] = this.getControl['visibility'].value;
     } else if(this.modelType == "personal_details") {
       param['additional'] = this.providerData.additional;
       param['additional']['summary'] = this.getControl['summary'].value;
@@ -63,6 +65,8 @@ export class ProviderCommonInfoDialog {
       param['strategy'] = this.providerData.strategy;
       param['strategy']['hideStops'] = this.getControl['hideStops'].value;
       param['strategy']['mode'] = this.getControl['mode'].value;
+    } else if(this.modelType == "finance") {
+      param['paymentAccountId'] = this.getControl['paymentAccountId'].value;
     }
     param['providerId'] = this.providerData.id;
     return param;
@@ -93,10 +97,14 @@ export class ProviderCommonInfoDialog {
     if(this.modelType == "common_info") {
       this.providerCommonInfoForm.patchValue({
         nickname: this.providerData.nickname,
-        showAccountName: this.providerData.additional.showAccountName
+        showAccountName: this.providerData.additional.showAccountName,
+        visibility: this.providerData.visibility
       });
       this.getControl['nickname'].setValidators([Validators.required, Validators.minLength(6)]);
       this.getControl['nickname'].updateValueAndValidity();
+
+      this.getControl['visibility'].setValidators([Validators.required]);
+      this.getControl['visibility'].updateValueAndValidity();
     } else if(this.modelType == "personal_details") {
       this.providerCommonInfoForm.patchValue({
         summary: this.providerData.additional.summary,
@@ -107,8 +115,32 @@ export class ProviderCommonInfoDialog {
         hideStops: this.providerData.strategy.hideStops,
         mode: this.providerData.strategy.mode
       });
+    } else if(this.modelType == "finance") {
+      this.getFinanceData();
+      this.providerCommonInfoForm.patchValue({
+        paymentAccountId: this.providerData.clientId
+      });
+
+      this.getControl['paymentAccountId'].setValidators([Validators.required]);
+      this.getControl['paymentAccountId'].updateValueAndValidity();
     }
     this.providerCommonInfoForm.updateValueAndValidity();
+  }
+
+  getFinanceData() {
+    let param = {
+      scope: 'Active',
+      $filter: `clientId eq ${this.providerData.clientId}`,
+      $count: false
+    }
+    this._webService.getTradingAccountData(param).subscribe({
+      next: (response: any) => {
+        this.financeAccountData = response.items;
+      },
+      error: (errorObj) => {
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+      }
+    })
   }
   
   showErrorWarnMessage(msg: any) {

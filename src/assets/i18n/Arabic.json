@@ -369,7 +369,11 @@
         "Scale down": "Scale down",
         "Risk Factor Hint": "Determines the action taken if the copy's volume calculated according to the strategy is higher than specified in Max open volume.",
         "Scale down: The resulting volume of the copy will be equal to Max open volume": "Scale down: The resulting volume of the copy will be equal to Max open volume",
-        "The copy will not be opened": "The copy will not be opened"
+        "The copy will not be opened": "The copy will not be opened",
+        "Provider's availability for subscriptions": "Provider's availability for subscriptions",
+        "Public providers are available to subscribe from the client portal or leaderboards": "Public providers are available to subscribe from the client portal or leaderboards",
+        "Private providers are hidden and can be followed only via join links to their offers": "Private providers are hidden and can be followed only via join links to their offers",
+        "Trading account collecting the performance fees paid by followers to the provider": "Trading account collecting the performance fees paid by followers to the provider"
     },
     "OFFERS":{
         "General information about the offer":"معلومات عامة عن العرض",

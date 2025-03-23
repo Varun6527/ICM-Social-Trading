@@ -40,6 +40,10 @@
                                     <p>{{providersData?.nickname}}</p>
                                 </div>
                                 <div class="d-flex justify-space-between g-20 align-center">
+                                    <h6>{{"PROVIDERS_PROFILE.Visibility"|translate}}</h6>
+                                    <p>{{providersData?.visibility}}</p>
+                                </div>
+                                <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Show account name"|translate}}</h6>
                                     <p>{{providersData?.additional?.showAccountName}}</p>
                                 </div>
@@ -92,7 +96,7 @@
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Finance"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's finance settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('finance')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
