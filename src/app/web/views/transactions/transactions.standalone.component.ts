@@ -147,9 +147,9 @@ export class TransactionsStandAloneComponent {
       { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, width: 150, suppressSizeToFit: true },
       { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 150, colId: 'transactionAmountViewDisplay', suppressSizeToFit: true  },
       { field: "senderObj", headerName: 'TRANSACTIONS.Sender', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionsenderAction', suppressSizeToFit: true },
-      { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, width: 150, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction', suppressSizeToFit: true },
+      { field: "reciepentObj", headerName: 'TRANSACTIONS.Recipient', resizable: false, width: 200, sortable : false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'transactionRecipientAction', suppressSizeToFit: true },
       { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false, width: 200, suppressSizeToFit: true },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false, width: 100, suppressSizeToFit: true }
     ];
     this.setupGridConfig(colDefs);
   }

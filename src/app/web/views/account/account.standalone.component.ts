@@ -82,7 +82,7 @@ export class AccountStandAloneComponent {
       { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
       { field: "equity", headerName: 'ACCOUNTS.Equity', resizable: false, width: 150, maxWidth: 150 },
       { field: "connectTime", headerName: 'ACCOUNTS.Connected', resizable: false, width: 220, maxWidth: 220 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'accountDetailsPopup', showPopupArraow: true, sortable: false }
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, width: 200, maxWidth: 200, colId: 'accountDetailsPopup', showPopupArraow: true, sortable: false }
     ];
     this.setupGridConfig(colDefs);
   }

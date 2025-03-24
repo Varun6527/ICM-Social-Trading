@@ -171,39 +171,39 @@ export class HomeStandAloneComponent {
   }
 
   setupProviderGridConfig() {
-    let colDefs = [
-      { field: "nickName", headerName: 'HOME.Nickname', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerProfileRedirection' },
-      { field: "providerFees", headerName: 'HOME.Fees', resizable: false, width: 140, maxWidth: 140 },
-      { field: "followers", headerName: 'HOME.Followers', resizable: true, width: 150, minWidth: 150, maxWidth: 250 },
-      { field: "followersGrowth", headerName: 'HOME.Followers Growth', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
-      { field: "closedProfit", headerName: 'HOME.Closed Profit', resizable: true, width: 150, minWidth: 150, maxWidth: 250 },
-      { field: "registerTime", headerName: 'HOME.Registered', resizable: false, width: 250, maxWidth: 250 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'providerProfileRedirection', sortable: false }
+    let colDefs = [  
+      { field: "nickName", headerName: 'HOME.Nickname', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerProfileRedirection', autoHeight: true, wrapText: true, resizable: true, width: 250 },
+      { field: "providerFees", headerName: 'HOME.Fees', autoHeight: true, wrapText: true, resizable: true, width: 100 },
+      { field: "followers", headerName: 'HOME.Followers', autoHeight: true, wrapText: true, resizable: true, width: 100 },
+      { field: "followersGrowth", headerName: 'HOME.Followers Growth', autoHeight: true, wrapText: true, resizable: true, width: 100 },
+      { field: "closedProfit", headerName: 'HOME.Closed Profit', autoHeight: true, wrapText: true, resizable: true, width: 100 },
+      { field: "registerTime", headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "actions", headerName: " ", cellRenderer: ActionButtonStanAloneComponent, colId: 'providerProfileRedirection', sortable: false, wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
   }
 
   setupFollowerGridConfig() {
     let colDefs = [
-      { field: "providerName", headerName: 'HOME.Provider', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'followerProfileRedirection' },
-      { field: "tradingProfit", headerName: 'HOME.Trading profit', resizable: false, width: 140, maxWidth: 140 },
-      { field: "copiedPosition", headerName: 'HOME.Copied Position', resizable: true, minWidth: 150, maxWidth: 250 },
-      { field: "paidFees", headerName: 'HOME.Paid Fees', resizable: true, width: 170, minWidth: 170, maxWidth: 250 },
-      { field: "registerTime", headerName: 'HOME.Registered', resizable: false, width: 250, maxWidth: 250 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'followerProfileRedirection', sortable: false }
+      { field: "providerName", headerName: 'HOME.Provider', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'followerProfileRedirection', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "tradingProfit", headerName: 'HOME.Trading profit', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "copiedPosition", headerName: 'HOME.Copied Position', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "paidFees", headerName: 'HOME.Paid Fees', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "registerTime", headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId: 'followerProfileRedirection', sortable: false, wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
   }
 
   setupAccountGridConfig() {
     let colDefs = [
-      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, colId: 'accountDetailsPopup' },
-      { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, resizable: false, width: 140, maxWidth: 140 },
-      { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', resizable: false, width: 200, maxWidth: 250 },
-      { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
-      { field: "equity", headerName: 'ACCOUNTS.Equity', resizable: false, width: 150, maxWidth: 150 },
-      { field: "connectTime", headerName: 'ACCOUNTS.Connected', resizable: false, width: 220, maxWidth: 220 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId: 'accountDetailsPopup', showPopupArraow: true, sortable: false  }
+      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'accountDetailsPopup' , wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', wrapText: true, autoHeight: true, resizable: true, width: 200},
+      { field: "balance", headerName: 'ACCOUNTS.Balance', wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "equity", headerName: 'ACCOUNTS.Equity', wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "connectTime", headerName: 'ACCOUNTS.Connected', wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId: 'accountDetailsPopup', wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
   }

@@ -362,7 +362,7 @@ export class ProviderProfileStandAloneComponent {
       return [
         { field: "offerId", sort: 'desc', headerName: 'PROVIDERS_PROFILE.Title', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell' },
         { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell'},
-        { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false },
+        { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', resizable: false, width: 200 },
         { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', resizable: false },
         { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerRedirection', resizable: false },
       ];
@@ -374,7 +374,7 @@ export class ProviderProfileStandAloneComponent {
         { field: "offerTitle", sortable: false, headerName: 'PROVIDERS_PROFILE.Offer', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'offerTitleCell' },
         { field: "tradingAccountNo", sortable: false, headerName: 'PROVIDERS_PROFILE.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell'},
         { field: "equity", sortable: false, headerName: 'PROVIDERS_PROFILE.Equity', resizable: false },
-        { field: "registerTime", headerName: 'PROVIDERS_PROFILE.Registered', sort: 'desc', resizable: false },
+        { field: "registerTime", headerName: 'PROVIDERS_PROFILE.Registered', sort: 'desc', resizable: false, width: 200 },
         { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'providerSubscriptionRedirection', resizable: false },
       ];
     } else if(gridType == 'position') {
