@@ -52,8 +52,8 @@ export class ProvidersStandAloneComponent {
       { field: "tradingAccount", sortable: false, headerName: 'PROVIDERS.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell'  },
       { field: "strategyMode", headerName: 'PROVIDERS.Strategy Mode', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
       { field: "equity", headerName: 'PROVIDERS.Equity', resizable: false },
-      { field: "registerTime", headerName: 'PROVIDERS.Registered', resizable: false, flex: 1 },
-      { field: "actions", sortable: false, headerName: "", cellRenderer: ActionButtonStanAloneComponent, flex: 1, colId : 'providerProfileRedirection' }
+      { field: "registerTime", headerName: 'PROVIDERS.Registered', resizable: false, width: 200 },
+      { field: "actions", sortable: false, headerName: "", cellRenderer: ActionButtonStanAloneComponent, width:200, colId : 'providerProfileRedirection' }
     ];
     this.setupGridConfig(colDefs);
   }
