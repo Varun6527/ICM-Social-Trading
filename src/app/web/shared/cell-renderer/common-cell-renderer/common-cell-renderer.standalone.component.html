@@ -177,3 +177,7 @@
       <div>Subscription: {{params.value}}</div>
       <div>Trading: {{params.data.tradingAction}}</div>
     </div>
+
+    <div *ngIf="params.colDef.colId == 'currencyCell'">
+      {{params.value | currency: 'USD':'symbol'}}
+    </div>

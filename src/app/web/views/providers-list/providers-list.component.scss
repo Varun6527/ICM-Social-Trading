@@ -93,9 +93,9 @@
 .providersList-section{
   .providersList-cards {
     display: flex;
-    gap: 20px;
+    gap: 60px;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: left;
   
     .providersList-card {
       width: 340px;

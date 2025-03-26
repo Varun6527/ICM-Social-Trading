@@ -373,7 +373,8 @@
         "Provider's availability for subscriptions": "Provider's availability for subscriptions",
         "Public providers are available to subscribe from the client portal or leaderboards": "Public providers are available to subscribe from the client portal or leaderboards",
         "Private providers are hidden and can be followed only via join links to their offers": "Private providers are hidden and can be followed only via join links to their offers",
-        "Trading account collecting the performance fees paid by followers to the provider": "Trading account collecting the performance fees paid by followers to the provider"
+        "Trading account collecting the performance fees paid by followers to the provider": "Trading account collecting the performance fees paid by followers to the provider",
+        "Most Active": "Most Active"
 
     },
     "OFFERS":{

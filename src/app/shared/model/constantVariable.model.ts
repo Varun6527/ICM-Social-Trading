@@ -101,7 +101,8 @@ export class ConstantVariable {
         { key: "ManagementFeeDeclined", value: "Management fee declined" },
         { key: "RiskManagementRuleReached", value: "Risk actions performed" },
         { key: "ProviderProfileChanged", value: "Provider profile changed" },
-        { key: "OfferProfileChanged", value: "Offer profile changed" }
+        { key: "OfferProfileChanged", value: "Offer profile changed" },
+        { key: "SubscriptionGroupNotAllowed", value: "Unable to subscribe to provider using the selected trading account. Try to use another trading account." }
     ]
     
     providerAvatarPath: string = "/files/avatars/";

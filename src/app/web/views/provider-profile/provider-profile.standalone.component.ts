@@ -432,33 +432,9 @@ export class ProviderProfileStandAloneComponent {
   openBeTradingAccountPopup() {
     this.tradingDialog.open(CommonDialogStandAloneComponent, {
       panelClass: 'common-dialog',
-      data: this.prepareTradingAccountData()
+      data: this._webService.prepareTradingAccountData(this.tradeAccountData)
     });
     this.tradingDialog.afterAllClosed.subscribe((result) => { });
-  }
-
-  prepareTradingAccountData() {
-    let tradingAccountDetails = this.tradeAccountData;
-    let commonDialogData = {
-      mainTitle: 'HOME.TradingAccInfo',
-      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
-      labelDetails: [
-        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
-        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
-        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
-        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
-        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
-        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
-        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
-        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
-        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
-        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
-        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
-        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
-        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
-      ] 
-    }
-    return commonDialogData;
   }
 
   recieveChildrenEmitter(event: any) {
