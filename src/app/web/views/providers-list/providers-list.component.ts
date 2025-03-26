@@ -291,18 +291,13 @@ export class ProvidersListComponent {
   }
   initializeTabLabels() {
     this.tabLabels = [
-      { name: 'featured', label: this.translate.instant('PROVIDERS_LIST.Featured') },
-      { name: 'bestPerformers', label: this.translate.instant('PROVIDERS_LIST.Best Performers') },
-      { name: 'cryptoKings', label: this.translate.instant('PROVIDERS_LIST.Crypto Kings') },
-      { name: 'highWinRatio', label: this.translate.instant('PROVIDERS_LIST.High Win Ratio') },
-      { name: 'highOwnFunds', label: this.translate.instant('PROVIDERS_LIST.High Own Funds') },
-      { name: 'lowRisk', label: this.translate.instant('PROVIDERS_LIST.Low Risk') },
-      { name: 'lowDrawdown', label: this.translate.instant('PROVIDERS_LIST.Low Drawdown') },
-      { name: 'lowFees', label: this.translate.instant('PROVIDERS_LIST.Low Fees') },
-      { name: 'mostPopular', label: this.translate.instant('PROVIDERS_LIST.Most Popular') },
-      { name: 'mostInvested', label: this.translate.instant('PROVIDERS_LIST.Most Invested') },
-      { name: 'watchlist', label: this.translate.instant('PROVIDERS_LIST.Watchlist') },
       { name: 'all', label: this.translate.instant('PROVIDERS_LIST.All') },
+      { name: 'watchlist', label: this.translate.instant('PROVIDERS_LIST.Watchlist') },
+      { name: 'mostPopular', label: this.translate.instant('PROVIDERS_LIST.Most Popular') },
+      { name: 'mostActive', label: this.translate.instant('PROVIDERS_PROFILE.Most Active') },
+      { name: 'highWinRatio', label: this.translate.instant('PROVIDERS_LIST.High Win Ratio') },
+      { name: 'lowFees', label: this.translate.instant('PROVIDERS_LIST.Low Fees') },
+      
     ];
   }
 
