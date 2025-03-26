@@ -173,11 +173,11 @@ export class HomeStandAloneComponent {
   setupProviderGridConfig() {
     let colDefs = [  
       { field: "nickName", headerName: 'HOME.Nickname', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerProfileRedirection', autoHeight: true, wrapText: true, resizable: true, width: 250 },
-      { field: "providerFees", headerName: 'HOME.Fees', autoHeight: true, wrapText: true, resizable: true, width: 100 },
-      { field: "followers", headerName: 'HOME.Followers', autoHeight: true, wrapText: true, resizable: true, width: 100 },
-      { field: "followersGrowth", headerName: 'HOME.Followers Growth', autoHeight: true, wrapText: true, resizable: true, width: 100 },
-      { field: "closedProfit", headerName: 'HOME.Closed Profit', autoHeight: true, wrapText: true, resizable: true, width: 100 },
-      { field: "registerTime", headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "providerFees", headerName: 'HOME.Fees', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "followers", headerName: 'HOME.Followers', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "followersGrowth", headerName: 'HOME.Followers Growth', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "closedProfit", headerName: 'HOME.Closed Profit', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "registerTime", sort: 'desc', headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'dateTimeCell', cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "actions", headerName: " ", cellRenderer: ActionButtonStanAloneComponent, colId: 'providerProfileRedirection', sortable: false, wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
@@ -185,11 +185,11 @@ export class HomeStandAloneComponent {
 
   setupFollowerGridConfig() {
     let colDefs = [
-      { field: "providerName", headerName: 'HOME.Provider', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'followerProfileRedirection', autoHeight: true, wrapText: true, resizable: true, width: 200 },
-      { field: "tradingProfit", headerName: 'HOME.Trading profit', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "providerName", headerName: 'HOME.Provider', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'followerProfileRedirection', autoHeight: true, wrapText: true, resizable: true, width: 250 },
+      { field: "tradingProfit", headerName: 'HOME.Trading profit', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "copiedPosition", headerName: 'HOME.Copied Position', autoHeight: true, wrapText: true, resizable: true, width: 200 },
-      { field: "paidFees", headerName: 'HOME.Paid Fees', autoHeight: true, wrapText: true, resizable: true, width: 200 },
-      { field: "registerTime", headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "paidFees", headerName: 'HOME.Paid Fees', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "registerTime", headerName: 'HOME.Registered', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'dateTimeCell', cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId: 'followerProfileRedirection', sortable: false, wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
@@ -197,12 +197,12 @@ export class HomeStandAloneComponent {
 
   setupAccountGridConfig() {
     let colDefs = [
-      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'accountDetailsPopup' , wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'accountDetailsPopup' , wrapText: true, autoHeight: true, resizable: true, width: 250 },
       { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, wrapText: true, autoHeight: true, resizable: true, width: 200 },
       { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', wrapText: true, autoHeight: true, resizable: true, width: 200},
-      { field: "balance", headerName: 'ACCOUNTS.Balance', wrapText: true, autoHeight: true, resizable: true, width: 200 },
-      { field: "equity", headerName: 'ACCOUNTS.Equity', wrapText: true, autoHeight: true, resizable: true, width: 200 },
-      { field: "connectTime", headerName: 'ACCOUNTS.Connected', wrapText: true, autoHeight: true, resizable: true, width: 200 },
+      { field: "balance", headerName: 'ACCOUNTS.Balance', wrapText: true, autoHeight: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "equity", headerName: 'ACCOUNTS.Equity', wrapText: true, autoHeight: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "connectTime", headerName: 'ACCOUNTS.Connected', wrapText: true, autoHeight: true, resizable: true, width: 200, colId: 'dateTimeCell', cellRenderer: CommonCellRendererStandAloneComponent },
       { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId: 'accountDetailsPopup', wrapText: true, autoHeight: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
@@ -241,32 +241,9 @@ export class HomeStandAloneComponent {
   openBeTradingAccountPopup(data: any) {
     this.commonDialog.open(CommonDialogStandAloneComponent, {
       panelClass: 'common-dialog',
-      data: this.prepareTradingAccountData(data)
+      data: this._webService.prepareTradingAccountData(data)
     });
     this.commonDialog.afterAllClosed.subscribe(()=>{});
-  }
-
-  prepareTradingAccountData(tradingAccountDetails: any) {
-    let commonDialogData = {
-      mainTitle: 'HOME.TradingAccInfo',
-      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
-      labelDetails: [
-        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
-        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
-        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
-        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
-        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
-        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
-        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
-        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
-        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
-        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
-        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
-        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
-        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
-      ] 
-    }
-    return commonDialogData;
   }
 
   ngOnDestroy() {

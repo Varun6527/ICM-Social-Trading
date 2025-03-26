@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
 import { map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class WebService extends BaseService {
   showSubscriptionsTradingResults: boolean = false;
   //End
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private currencyPipe: CurrencyPipe, private datePipe: DatePipe) {
     super(http);
     this.constantVar = new ConstantVariable();
   }
@@ -31,6 +32,14 @@ export class WebService extends BaseService {
     this.isSubscriptionAccount = false;
     this.isReportPageEnable = false;
     this.showSubscriptionsTradingResults = false;
+  }
+
+  transFormCurrency(value: any, type?: any) {
+    return this.currencyPipe.transform(value, type ? type : 'USD', 'symbol') || '-';
+  }
+
+  transFormDateTime(value: any) {
+    return this.datePipe.transform(value, 'M/d/yy, h:mm:ss a') || '-';
   }
 
   subscribeOnWebDataChange(subscribeedFrom: string, callback: any) {
@@ -377,6 +386,29 @@ export class WebService extends BaseService {
     let url = `${this.constantVar?.http_Api_Url.webHomePage.follower.create}/${data.subscriptionId}`;
     delete data['subscriptionId'];
     return this.sendHttpPatchAjaxRequest(`${this.REST_API_SERVER}${url}`, data);
+  }
+
+  prepareTradingAccountData(tradingAccountDetails: any) {
+    let commonDialogData = {
+      mainTitle: 'HOME.TradingAccInfo',
+      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
+      labelDetails: [
+        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
+        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
+        { title: 'ACCOUNTS.Connected', value: this.transFormDateTime(tradingAccountDetails.connectTime) },
+        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
+        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
+        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
+        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
+        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
+        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
+        { title: 'ACCOUNTS.Balance', value: this.transFormCurrency(tradingAccountDetails.balance) },
+        { title: 'ACCOUNTS.Credit', value: this.transFormCurrency(tradingAccountDetails.credit) },
+        { title: 'ACCOUNTS.Equity', value: this.transFormCurrency(tradingAccountDetails.equity) },
+        { title: 'ACCOUNTS.FloatProfit', value: this.transFormCurrency(tradingAccountDetails.floatingPoint) }
+      ]
+    }
+    return commonDialogData;
   }
 
 }

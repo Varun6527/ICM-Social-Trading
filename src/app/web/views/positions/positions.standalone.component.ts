@@ -363,7 +363,7 @@ export class PositionsStandAloneComponent {
         { title: 'PROVIDERS_PROFILE.Volume', value: dealsData.volume },
         { title: 'PROVIDERS_PROFILE.Price', value: dealsData.price },
         { title: 'PROVIDERS_PROFILE.Time', value: dealsData.time },
-        { title: 'PROVIDERS_PROFILE.Profit', value: this.currencyPipe.transform(dealsData.profit, dealsData.currency, 'symbol') },
+        { title: 'PROVIDERS_PROFILE.Profit', value: this._webService.transFormCurrency(dealsData.profit, dealsData.currency) },
         { title: 'PROVIDERS_PROFILE.Error', value: dealsData.error },
         { title: 'PROVIDERS_PROFILE.Attempts', value: dealsData.attempts },
       ]
@@ -377,33 +377,9 @@ export class PositionsStandAloneComponent {
   openBeTradingAccountPopup() {
     this.tradingDialog.open(CommonDialogStandAloneComponent, {
       panelClass: 'common-dialog',
-      data: this.prepareTradingAccountData()
+      data: this._webService.prepareTradingAccountData(this.tradeAccountData)
     });
     this.tradingDialog.afterAllClosed.subscribe((result) => { });
-  }
-
-  prepareTradingAccountData() {
-    let tradingAccountDetails = this.tradeAccountData;
-    let commonDialogData = {
-      mainTitle: 'HOME.TradingAccInfo',
-      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
-      labelDetails: [
-        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
-        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
-        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
-        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
-        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
-        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
-        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
-        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
-        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
-        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
-        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
-        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
-        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
-      ] 
-    }
-    return commonDialogData;
   }
 
   ngOnDestroy() {

@@ -76,13 +76,13 @@ export class AccountStandAloneComponent {
 
   setupAccountGridConfig() {
     let colDefs = [
-      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, width: 250, suppressSizeToFit: true, colId: 'accountDetailsPopup' },
-      { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, resizable: false, width: 140, maxWidth: 140 },
-      { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', resizable: false, width: 200, maxWidth: 250 },
-      { field: "balance", headerName: 'ACCOUNTS.Balance', resizable: false, width: 150, maxWidth: 150 },
-      { field: "equity", headerName: 'ACCOUNTS.Equity', resizable: false, width: 150, maxWidth: 150 },
-      { field: "connectTime", headerName: 'ACCOUNTS.Connected', resizable: false, width: 220, maxWidth: 220 },
-      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, width: 200, maxWidth: 200, colId: 'accountDetailsPopup', showPopupArraow: true, sortable: false }
+      { field: "tradingAccName", headerName: 'ACCOUNTS.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId: 'accountDetailsPopup', autoHeight: true, wrapText: true, resizable: true, width: 250, sort: 'desc' },
+      { field: 'type', headerName: 'ACCOUNTS.Type', cellRenderer: TypeCellRendererStandAloneComponent, cellStyle: { display: 'flex', 'justify-content': 'center', 'flex-direction': 'column'}, autoHeight: true, wrapText: true, resizable: true, width: 140 },
+      { field: "tradingAccountNo", headerName: 'ACCOUNTS.Trading Account', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "balance", headerName: 'ACCOUNTS.Balance', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "equity", headerName: 'ACCOUNTS.Equity', autoHeight: true, wrapText: true, resizable: true, width: 200, colId: 'currencyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+      { field: "connectTime", headerName: 'ACCOUNTS.Connected', autoHeight: true, wrapText: true, resizable: true, width: 200 },
+      { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId: 'accountDetailsPopup', showPopupArraow: true, sortable: false, autoHeight: true, wrapText: true, resizable: true, width: 200 }
     ];
     this.setupGridConfig(colDefs);
   }
@@ -130,32 +130,9 @@ export class AccountStandAloneComponent {
   openBeTradingAccountPopup(data: any) {
     this.commonDialog.open(CommonDialogStandAloneComponent, {
       panelClass: 'common-dialog',
-      data: this.prepareTradingAccountData(data)
+      data: this._webService.prepareTradingAccountData(data)
     });
     this.commonDialog.afterAllClosed.subscribe((result)=>{});
-  }
-
-  prepareTradingAccountData(tradingAccountDetails: any) {
-    let commonDialogData = {
-      mainTitle: 'HOME.TradingAccInfo',
-      secondryTitle: 'ACCOUNTS.InfoMetaTradeAccount',
-      labelDetails: [
-        { title: 'COMMON.Id', value: tradingAccountDetails.clientId },
-        { title: 'COMMON.State', value: tradingAccountDetails.state, type: 'tag' },
-        { title: 'ACCOUNTS.Connected', value: tradingAccountDetails.connectTime },
-        { title: 'PROVIDERS_PROFILE.MT login', value: tradingAccountDetails.tradingAccountNo },
-        { title: 'PROVIDERS_PROFILE.MT name', value: tradingAccountDetails.tradingAccName },
-        { title: 'ACCOUNTS.TradeGroupType', value: tradingAccountDetails.tradeGroupType, type: 'tag' },
-        { title: 'ACCOUNTS.AvailInMetaTrade', value: tradingAccountDetails.avialableInMetaTrade, type: 'tag' },
-        { title: 'ACCOUNTS.TradeType', value: tradingAccountDetails.tradeType, type: 'tag' },
-        { title: 'PROVIDERS_PROFILE.Currency', value: tradingAccountDetails.currency },
-        { title: 'ACCOUNTS.Balance', value: tradingAccountDetails.balance },
-        { title: 'ACCOUNTS.Credit', value: tradingAccountDetails.credit },
-        { title: 'ACCOUNTS.Equity', value: tradingAccountDetails.equity },
-        { title: 'ACCOUNTS.FloatProfit', value: tradingAccountDetails.floatingPoint }
-      ] 
-    }
-    return commonDialogData;
   }
 
   ngOnDestroy() {

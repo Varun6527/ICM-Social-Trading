@@ -112,25 +112,13 @@ export class ProviderDetailsUIModal {
     constructor(proDetailObj: any) {
         this.providerId = proDetailObj.providerId;
         this.nickName = proDetailObj.nickname;
-        this.providerFees = new ConvertValueToCurrency(proDetailObj.fees, proDetailObj.currency, false).getConvertedValue();
+        this.providerFees = proDetailObj.fees;
         this.followers = proDetailObj.followers;
         this.followersGrowth = proDetailObj.followersGrowth;
-        this.closedProfit = new ConvertValueToCurrency(proDetailObj.closedPnL, proDetailObj.currency, false).getConvertedValue();
-        this.registerTime = this.transformDate(proDetailObj.registerTime);
+        this.closedProfit = proDetailObj.closedPnL;
+        this.registerTime = proDetailObj.registerTime;
         this.visibility = proDetailObj.visibility;
     }
-
-    transformDate(value: string): string {
-        return new Date(value).toLocaleString('en-US', { 
-            year: '2-digit', 
-            month: 'numeric', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit', 
-            hour12: true 
-          }).replace(',', '');
-      }
 }
 
 export class ProviderTableUIModal {
@@ -187,30 +175,18 @@ export class TradingAccountUIModal {
         this.clientId = tradeObj.clientId;
         this.type = tradeObj.type;
         this.tradingAccountNo = tradeObj.externalAccount;
-        this.balance = new ConvertValueToCurrency(tradeObj.balance, tradeObj.currency, false).getConvertedValue();
-        this.equity = new ConvertValueToCurrency(tradeObj.equity, tradeObj.currency, false).getConvertedValue();
-        this.connectTime = this.transformDate(tradeObj.connectTime);
+        this.balance = tradeObj.balance;
+        this.equity = tradeObj.equity;
+        this.connectTime = tradeObj.connectTime;
         this.tradingAccName = tradeObj.externalName;
         this.state = tradeObj.state;
         this.tradeGroupType = tradeObj.externalGroupType;
         this.tradeType = tradeObj.platformType;
         this.currency = tradeObj.currency;
-        this.credit = new ConvertValueToCurrency(tradeObj.credit, tradeObj.currency, false).getConvertedValue();
-        this.floatingPoint = new ConvertValueToCurrency(tradeObj.floating, tradeObj.currency, false).getConvertedValue();
+        this.credit = tradeObj.credit;
+        this.floatingPoint = tradeObj.floating;
         this.avialableInMetaTrade = tradeObj.externalVisibility == 'Visible' ? 'Available' : 'Not Available';
     }
-
-    transformDate(value: string): string {
-        return new Date(value).toLocaleString('en-US', { 
-            year: '2-digit', 
-            month: 'numeric', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit', 
-            hour12: true 
-          }).replace(',', '');
-      }
 }
 
 export class TransactionHistoryUiModal {
@@ -311,23 +287,11 @@ export class FollowerDetailsUIModal {
     constructor(followDetailObj: any) {
         this.followerId = followDetailObj.subscriptionId;
         this.providerName = followDetailObj.refs.provider.name;
-        this.tradingProfit = new ConvertValueToCurrency(followDetailObj.totalProfit, followDetailObj.currency, false).getConvertedValue();
+        this.tradingProfit = followDetailObj.totalProfit;
         this.copiedPosition = followDetailObj.copiedPositions;
-        this.paidFees = new ConvertValueToCurrency(followDetailObj.paidFees, followDetailObj.currency, false).getConvertedValue();
-        this.registerTime = this.transformDate(followDetailObj.registerTime);
+        this.paidFees = followDetailObj.paidFees
+        this.registerTime = followDetailObj.registerTime;
     }
-
-    transformDate(value: string): string {
-        return new Date(value).toLocaleString('en-US', { 
-            year: '2-digit', 
-            month: 'numeric', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit', 
-            hour12: true 
-          }).replace(',', '');
-      }
 }
 
 export class ProvidersEarningModal {
