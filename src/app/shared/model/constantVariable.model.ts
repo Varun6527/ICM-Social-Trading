@@ -131,7 +131,7 @@ export class ConstantVariable {
           curve: "smooth",
           width: 3,
         },
-        colors: ['#146BB2'],
+        colors: [],
         xaxis: {
           labels: {
             show: true, // Hide x-axis labels
@@ -250,17 +250,32 @@ export class ConstantVariable {
     }
 
     getHomePageChartConfig(valuesArr: number[], labelsArr: string[], currencyType: string, chartName: string) {
+      let homePageMonthlyChartConfig = JSON.parse(JSON.stringify(this.homePageMonthlyChartConfig));
       if(valuesArr.length == 1) valuesArr.push(...valuesArr);
       if(labelsArr.length == 1) labelsArr.push(...labelsArr);
-      this.homePageMonthlyChartConfig.series[0].data = valuesArr;
-      this.homePageMonthlyChartConfig.series[0].name = chartName;
-      this.homePageMonthlyChartConfig.xaxis.categories  = labelsArr;
-      this.homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
+      homePageMonthlyChartConfig.series[0].data = valuesArr;
+      homePageMonthlyChartConfig.series[0].name = chartName;
+      homePageMonthlyChartConfig.xaxis.categories  = labelsArr;
+      homePageMonthlyChartConfig.colors  = ['#146BB2'];
+      homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
         return new Intl.NumberFormat('en-US', {
           style: 'currency',
           currency: currencyType ? currencyType : "USD"
         }).format(val);
       }
-      return this.homePageMonthlyChartConfig;
+      return homePageMonthlyChartConfig;
+    }
+
+    getProviderListPageChartConfig(valuesArr: number[]) {
+      let homePageMonthlyChartConfig = JSON.parse(JSON.stringify(this.homePageMonthlyChartConfig));
+      homePageMonthlyChartConfig.series[0].data = valuesArr;
+      homePageMonthlyChartConfig.series[0].name = "";
+      homePageMonthlyChartConfig.xaxis.categories  = valuesArr.map(o => `${o} %`);
+      homePageMonthlyChartConfig.xaxis.labels.show = false;
+      homePageMonthlyChartConfig.colors = ['#12B76A'];
+      homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
+        return `${val} %`
+      }
+      return homePageMonthlyChartConfig;
     }
 }

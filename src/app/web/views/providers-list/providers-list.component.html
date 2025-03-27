@@ -10,7 +10,7 @@
                 </div>
             </div>
             <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup" preserveContent="true">
-                <mat-tab *ngFor="let tab of tabLabels;let indx = index" [label]="tab.label">
+                <mat-tab *ngFor="let tab of tabLabels;let indx = index" label="{{tab.label | translate}}">
                 @if(indx == selectedTabIndex) {
                     <div class="providersList-header-buttons d-flex justify-space-between align-center pb-20 abccc">
                         <div class="d-flex justify-space-between g-10 align-center">
@@ -23,20 +23,9 @@
                                 <h5> {{"PROVIDERS_LIST.Commodities"|translate}} </h5>
                             </div>
                             <div class="d-flex justify-center g-10 align-center">
-                                <!-- <button class="secondary-btn">
-                                    <img src="../../../../assets/icons/rotateIcon.svg" />
-                                    Refresh
-                                </button> -->
-                                <!-- <img src="../../../../assets/icons/searchIcon.svg" /> -->
                                     <mat-form-field class="search-provider-field" appearance="outline">
-                                        <mat-icon color="secondary" matPrefix>search</mat-icon>
                                         <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
-                                        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                            @for (option of filteredOptions | async; track option) {
-                                            <mat-option [value]="option">{{option.name}}</mat-option>
-                                            }
-                                        </mat-autocomplete>
+                                        <input type="text" matInput>
                                     </mat-form-field>
                             </div>
                         </div>
@@ -55,7 +44,7 @@
                     </div>
                     <div class="providersList-section">
                         <div class="providersList-cards" *ngIf="viewMode == 'cards'">
-                            <mat-card *ngFor="let card of cards; let indx = index" appearance="outlined" class="providersList-card">
+                            <mat-card *ngFor="let card of ratingsData" appearance="outlined" class="providersList-card">
                                 <mat-card-content>
                                     <div class="header d-flex align-center justify-space-between">
                                         <div class="title d-flex align-start g-10">
@@ -79,22 +68,12 @@
                                                 <img class="saveIcon" src="../../../../assets/icons/arrow-up.png" /> 198.42%
                                             </p>
                                         </div>
-                                        <div id="chart" *ngIf="chartOptions" class="providersList-chart">
-                                            <apx-chart 
-                                              [series]="chartOptions.series"
-                                              [chart]="chartOptions.chart"
-                                              [xaxis]="chartOptions.xaxis"
-                                              [stroke]="chartOptions.stroke"
-                                              [tooltip]="chartOptions.tooltip"
-                                              [yaxis]="chartOptions.yaxis"
-                                              [grid]="chartOptions.grid"
-                                              [dataLabels]="chartOptions.dataLabels"
-                                              [fill]="chartOptions.fill"
-                                              [colors]="chartOptions.colors"
-                                              [labels]="chartOptions.labels"
-                                              [responsive]="chartOptions.responsive"
-                                              [legend]="chartOptions.legend"
-                                            ></apx-chart>
+                                        <div id="chart" *ngIf="chartOptions" class="d-flex justify-center align-center">
+                                            <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                                            [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [yaxis]="chartOptions.yaxis"
+                                            [grid]="chartOptions.grid" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
+                                            [colors]="chartOptions.colors" [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"
+                                            [legend]="chartOptions.legend"></apx-chart>
                                         </div>
                                         <div class="main-content d-flex align-center flex-wrap justify-space-between g-20">
                                             <div class="text d-flex flex-column">
@@ -124,13 +103,7 @@
                                         </div>
                                     </div>
                                     <div class="footer">
-                                        <div class="content d-flex justify-space-between align-center">
-                                            <div class="badge d-flex justify-space-between g-10">
-                                                <p>{{"PROVIDERS_LIST.Risk"|translate}}</p>
-                                                <div class="badge-count">
-                                                    <p>10</p>
-                                                </div>
-                                            </div>
+                                        <div class="content d-flex justify-right align-center">
                                             <button class="edit-btn content-btn">
                                                 {{"PROVIDERS_LIST.Copy"|translate}}
                                             </button>

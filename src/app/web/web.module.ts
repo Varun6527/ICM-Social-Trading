@@ -5,17 +5,12 @@ import { SidenavStanaloneComponent } from './shared/sidenav/sidenav.standalone.c
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AgGridModule } from 'ag-grid-angular';
-import { ActionButtonStanAloneComponent } from './shared/action-button/action-button.standalone.component';
-import { TransactionsStandAloneComponent } from './views/transactions/transactions.standalone.component';
-import { TypeCellRendererStandAloneComponent } from './shared/type-cell-renderer/type-cell-renderer.standalone.component';
-import { CommonCellRendererStandAloneComponent } from './shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { StatusBtnRendererComponent } from './shared/status-btn-renderer/status-btn-renderer.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatMenuModule} from '@angular/material/menu';
-import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -33,13 +28,11 @@ import {MatDividerModule} from '@angular/material/divider';
 import { SymbolCellRendererComponent } from './views/providers-list/cellRenderers/symbol-cell-renderer/symbol-cell-renderer.component';
 import { ProviderListProfileTypeCellRendererComponent } from './views/providers-list/cellRenderers/provider-list-profile-type-cell-renderer/provider-list-profile-type-cell-renderer.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show.error.standalone.component';
 
 @NgModule({
   declarations: [
     WebLayoutComponent,
     StatusBtnRendererComponent,
-    ProvidersListComponent,
     TypeIconComponent,
     StrategyCellRendererComponent,
     RiskCellRendererComponent,
@@ -57,9 +50,7 @@ import { ShowErrorStandAloneComponent } from '../shared/component/showerror/show
     WebRoutingModule,
     AgGridModule,MatInputModule,MatSelectModule,MatFormFieldModule,MatMenuModule,
     MatAutocompleteModule,MatCardModule,NgApexchartsModule,MatNativeDateModule,MatDatepickerModule,
-    MatIconModule,MatButtonToggleModule,MatDividerModule,TranslateModule,ShowErrorStandAloneComponent,
-    TransactionsStandAloneComponent,
-    CommonCellRendererStandAloneComponent,TypeCellRendererStandAloneComponent,ActionButtonStanAloneComponent
+    MatIconModule,MatButtonToggleModule,MatDividerModule,TranslateModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WebLayoutComponent } from './layout/web-layout/web-layout.component';
-import { ProvidersListComponent } from './views/providers-list/providers-list.component';
 import { ProviderListProfileComponent } from './views/providers-list/provider-list-profile/provider-list-profile.component';
 import { MyFollowerGaurd, MyProviderGaurd, MyRatingsGaurd, MyReportsGaurd } from './gaurd/web.gaurd';
 import { AuthGuard } from '../shared/guard/auth.guard';
@@ -96,7 +95,7 @@ const WEB_ROUTES: Routes = [
 
       {
         path: 'ratings',
-        component: ProvidersListComponent,
+        loadComponent: () => import('./views/providers-list/providers-list.standalone.component').then(s => s.ProvidersListStanAloneComponent),
         title: "ICM | Providers List",
         canActivate: [AuthGuard, MyRatingsGaurd]
       },
