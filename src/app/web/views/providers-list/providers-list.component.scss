@@ -1,18 +1,11 @@
-@use '@angular/material' as mat;
-
 .search-provider-form {
   min-width: 150px;
   max-width: 600px;
   width: 100%;
 }
 
-// .search-provider-field {
-//   width: 600px;
-// }
-
 .search-provider-field .mat-form-field-outline {
   border-color: #D0D5DD !important;
-  /* Replace #your-color with your desired border color */
 }
 
 .divider {
@@ -21,15 +14,6 @@
   color: #D0D5DD;
   font-weight: 100;
 }
-
-// ::ng-deep .providerProfile-tabGroup .mdc-tab__text-label{
-//     font-size: 20px !important;
-//     font-weight: 500;
-//     color: #667085 !important;
-// }
-// ::ng-deep .providerProfile-tabGroup .mdc-tab{
-//     padding: 0 50px !important;
-// }
 
 .providerProfile-tabGroup {
   .providerProfile-tabFilters {
@@ -54,9 +38,7 @@
 }
 
 .providersList-header-buttons{
-
-  @include mat.form-field-density(-2);
-  .search-provider-field{
+  .search-provider-field {
     background-color: white;
     position: relative; /* To position child elements properly */
     display: flex;
@@ -101,19 +83,6 @@
       width: 340px;
       border: 1px solid #EAECF0;
       box-shadow: 0px 1px 3px 0px #1018281A;
-      // .mat-mdc-card-content{
-      //   padding: unset !important;
-      // }
-      // .mat-mdc-card-content:first-child{
-      //   padding: unset !important;
-      // }
-      // .mat-mdc-card-content:last-child{
-      //   padding: unset !important;
-      // }
-    
-      #chart {
-        touch-action: none;
-      }
     
       .header {
         .title {
@@ -226,8 +195,4 @@
 .countryIcon {
   height: 30px;
   width: 30px;
-}
-::ng-deep .chartHeader .ag-header-cell-comp-wrapper .ag-header-cell-label{
-  display: flex;
-  justify-content: center;
 }
