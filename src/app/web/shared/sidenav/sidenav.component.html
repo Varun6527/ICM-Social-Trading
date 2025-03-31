@@ -68,7 +68,7 @@
                 </li>
                 <li class="logout-item">
                     @if(showProvider && providerData && providerData?.public?.avatarPath) {
-                        <img width="40" [src]="providerData.public.avatarPath" />
+                        <img width="40" height="40" [src]="providerData.public.avatarPath" />
                     } @else {
                         <img width="40" src="../../../../assets/icons/default-user-profile.png" />
                     }

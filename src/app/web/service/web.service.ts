@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../../shared/service/base.service';
 import { ConstantVariable } from "../../shared/model/constantVariable.model";
-import { map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, map, mergeMap, Observable, of, Subject, switchMap, tap } from 'rxjs';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Injectable({
@@ -200,6 +200,10 @@ export class WebService extends BaseService {
 
   getFileServerUrl() {
     return this.File_SERVER;
+  }
+
+  getRatingServerUrl() {
+    return this.RATING_SERVER;
   }
 
   getProviderProfilePageData(data: any) {
@@ -411,6 +415,41 @@ export class WebService extends BaseService {
     return commonDialogData;
   }
 
+  // Rating Api Methods
+
+  getRatingBriefWidgetData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${this.constantVar?.http_Api_Url.rating.widget_brief}`, data);
+  }
+
+  getRatingSearchData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.search}`;
+    url = url.replace(':ratingId', data.ratingId);
+    delete data['ratingId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
+
+  getRatingData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.get_data}/${data.ratingId}`;
+    delete data['ratingId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
+
+  getWatchListedProviderData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.watchListed_data}/${data.watchListId}`;
+    delete data['watchListId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
+
+  getInitialProviderListPageData(data: any) {
+    const watchListedProvider$ = this.getWatchListedProviderData(data).pipe(catchError(error => of({ error })));
+    const widgetBrief$ = this.getRatingBriefWidgetData(data).pipe(catchError(error => of({ error })));
+    return forkJoin({
+      widgetBrief: widgetBrief$,
+      watchListedProvider: watchListedProvider$
+    });
+  }
+
+// End of Rating api Methods
 }
 
 

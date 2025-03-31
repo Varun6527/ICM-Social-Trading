@@ -29,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'portal',
-    loadChildren: () => import('./web/web.module').then(m => m.WebModule),
+    loadChildren: () => import('./web/app/web.module').then(m => m.WebModule),
     canActivate: [AuthGuard],
     resolve: { myData: UserDataResolver, myProfileData: UserProfileDataResolver }
   }

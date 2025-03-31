@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ChartComponent,
@@ -6,7 +7,8 @@ import {
   ApexXAxis,
   ApexDataLabels,
   ApexTooltip,
-  ApexStroke, ApexFill
+  ApexStroke, ApexFill,
+  NgApexchartsModule
 } from "ng-apexcharts"
 
 export type ChartOptions = {
@@ -23,12 +25,29 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-chart-cell-renderer',
-  templateUrl: './chart-cell-renderer.component.html',
-  styleUrl: './chart-cell-renderer.component.scss'
+  template: `
+    <div id="cellChart">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [stroke]="chartOptions.stroke"
+        [tooltip]="chartOptions.tooltip"
+        [yaxis]="chartOptions.yaxis"
+        [grid]="chartOptions.grid"
+        [dataLabels]="chartOptions.dataLabels"
+        [fill]="chartOptions.fill"
+        [colors]="chartOptions.colors"
+        [labels]="chartOptions.labels"
+        [legend]="chartOptions.legend"
+          ></apx-chart>
+    </div>
+  `,
+  standalone: true,
+  imports: [CommonModule, NgApexchartsModule]
 })
 
-
-export class ChartCellRendererComponent {
+export class ChartCellRendererStandAloneComponent {
 
   @ViewChild("cellChart") cellChart !: ChartComponent;
   public chartOptions!: Partial<ChartOptions> | any;

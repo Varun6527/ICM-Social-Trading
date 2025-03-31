@@ -618,3 +618,44 @@ export class ProfitsUiModal {
         }).replace(',', '');
     }
 }
+
+export class RatingUiModal {
+    widgetId: any;
+    accountId: any;
+    avatarPath: string;
+    accountName: string;
+    countryFlagUrl: string;
+    isWatchListed: boolean;
+    returnMonth: any;
+    historyGraph: any = {value: [], valueInPercent: []};
+    extension: any = {};
+    winRatio: any;
+    maxDrawdown: any;
+    account: any;
+
+    constructor(obj: any, fileServer: string, ratingServer: string, watchListArr: any) {
+       this.widgetId = obj.widgetId;
+       this.accountId = obj.accountId;
+       this.avatarPath = this.prepareRatingAvatarPath(obj.public.avatarPath, fileServer);
+       this.accountName = obj.accountName;
+       this.countryFlagUrl = `${ratingServer}/widgets/${obj.account.countryCode}.svg`;
+       this.isWatchListed = watchListArr.includes(this.accountId);
+       this.returnMonth = obj.returnMonth;
+       this.historyGraph.value = obj.history.entries.length > 0 ? obj.history.entries.map((o: any) => o.rt) : [0, 0];
+       this.historyGraph.valueInPercent = obj.history.entries.length > 0 ? obj.history.entries.map((o: any) => `${o.rt} %`) : ["0%", "0%"];
+       this.extension = obj.extension;
+       this.winRatio = obj.winRatio;
+       this.maxDrawdown = obj.maxDrawdown;
+       this.account = obj.account;
+    }
+
+    prepareRatingAvatarPath(path: string, fileServer: string) {
+      if(path) {
+        const part = path.split("/files/")[1]; 
+        const result = `${fileServer}/files/${part}`;
+        return result;
+      } else {
+        return "../../../../assets/icons/default-user-profile.png";
+      }
+    }
+}

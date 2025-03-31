@@ -10,9 +10,9 @@ import { ShowErrorStandAloneComponent } from '../../../shared/component/showerro
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { WebService } from '../../service/web.service';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
-import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
+import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
 import { ArchiveDialog } from '../../shared/dialogBox/archive-dialog/archiveDialog.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAgentDialog } from '../../shared/dialogBox/add-agent-dialog/addAgentDialog.standalone.component';
@@ -157,7 +157,7 @@ export class OffersStandALoneComponent {
       return [
         { field: "key", headerName: 'COMMON.Key', resizable: false, colId: 'offerKeyCell', cellRenderer: CommonCellRendererStandAloneComponent },
         { field: "expiration", headerName: 'OFFERS.Expiration', resizable: false, colId: 'dateCell', cellRenderer: CommonCellRendererStandAloneComponent },
-        { field: "status", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererComponent },
+        { field: "status", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent },
         { field: "agent", headerName: 'COMMON.Agent', resizable: false, valueFormatter: (params: any) => `${params.value ? params.value : '-'}` },
         { field: "actions", headerName: "", sortable: false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerJoinActionCell', resizable: false },
       ];

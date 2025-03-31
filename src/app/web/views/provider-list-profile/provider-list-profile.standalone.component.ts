@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColDef } from 'ag-grid-community';
 import {
   ChartComponent,
@@ -10,12 +10,23 @@ import {
   ApexTooltip,
   ApexStroke, ApexFill,
   ApexPlotOptions,
-  ApexLegend
+  ApexLegend,
+  NgApexchartsModule
 } from "ng-apexcharts";
 import { Observable } from 'rxjs';
-import { SymbolCellRendererComponent } from '../cellRenderers/symbol-cell-renderer/symbol-cell-renderer.component';
-import { ProviderListProfileTypeCellRendererComponent } from '../cellRenderers/provider-list-profile-type-cell-renderer/provider-list-profile-type-cell-renderer.component';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
+import { StrategyCellRendererStandAloneComponent } from '../../shared/cell-renderer/strategy-cell-renderer/strategy-cell-renderer.standalone.component';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { AgGridModule } from 'ag-grid-angular';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { RouterModule } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -37,9 +48,11 @@ export interface User {
 @Component({
   selector: 'app-provider-list-profile',
   templateUrl: './provider-list-profile.component.html',
-  styleUrl: './provider-list-profile.component.scss'
+  styleUrl: './provider-list-profile.component.scss',
+  standalone: true,
+  imports: [CommonModule, MatDividerModule, MatAutocompleteModule, RouterModule, TranslateModule, AgGridModule, NgApexchartsModule, MatButtonToggleModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatCardModule]
 })
-export class ProviderListProfileComponent {
+export class ProviderListProfileStandAloneComponent {
 
   @ViewChild("chart") chart !: ChartComponent;
   public barChartOptions!: Partial<ChartOptions> | any;
@@ -708,7 +721,7 @@ export class ProviderListProfileComponent {
       openPrice: "$1500",
       openTime: "2023-12-01 10:00",
       profit: "$200",
-      symbolIcon: '../../../../assets/icons/providerIcon.jpeg'
+      strategyIcon: '../../../../assets/icons/providerIcon.jpeg'
     },
     {
       id: 2,
@@ -720,7 +733,7 @@ export class ProviderListProfileComponent {
       openPrice: "$2500",
       openTime: "2023-12-02 11:00",
       profit: "$300",
-      symbolIcon: '../../../../assets/icons/providerIcon1.png'
+      strategyIcon: '../../../../assets/icons/providerIcon1.png'
     },
     {
       id: 3,
@@ -732,7 +745,7 @@ export class ProviderListProfileComponent {
       openPrice: "$1200",
       openTime: "2023-12-03 12:00",
       profit: "$150",
-      symbolIcon: '../../../../assets/icons/providerIcon2.png'
+      strategyIcon: '../../../../assets/icons/providerIcon2.png'
     },
     {
       id: 4,
@@ -744,7 +757,7 @@ export class ProviderListProfileComponent {
       openPrice: "$3000",
       openTime: "2023-12-04 13:00",
       profit: "$1000",
-      symbolIcon: '../../../../assets/icons/providerIcon3.png'
+      strategyIcon: '../../../../assets/icons/providerIcon3.png'
     },
     {
       id: 5,
@@ -756,7 +769,7 @@ export class ProviderListProfileComponent {
       openPrice: "$1000",
       openTime: "2023-12-05 14:00",
       profit: "$500",
-      symbolIcon: '../../../../assets/icons/providerIcon4.png'
+      strategyIcon: '../../../../assets/icons/providerIcon4.png'
     },
     {
       id: 6,
@@ -768,7 +781,7 @@ export class ProviderListProfileComponent {
       openPrice: "$1100",
       openTime: "2023-12-06 15:00",
       profit: "$600",
-      symbolIcon: '../../../../assets/icons/providerIcon5.png'
+      strategyIcon: '../../../../assets/icons/providerIcon5.png'
     },
     {
       id: 7,
@@ -780,14 +793,14 @@ export class ProviderListProfileComponent {
       openPrice: "$1200",
       openTime: "2023-12-07 16:00",
       profit: "$700",
-      symbolIcon: '../../../../assets/icons/providerIcon6.png'
+      strategyIcon: '../../../../assets/icons/providerIcon6.png'
     },
   ];
 
   initializeColDefs() {
     this.colDefs=[
-      { field: "symbol", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Symbol'), resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: SymbolCellRendererComponent },
-      { field: "type", headerName:this.translate.instant('PROVIDERS_LIST_PROFILE.Type'), resizable: false, cellRenderer: ProviderListProfileTypeCellRendererComponent, width: 100 },
+      { field: "symbol", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Symbol'), resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent },
+      { field: "type", headerName:this.translate.instant('PROVIDERS_LIST_PROFILE.Type'), resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
       { field: "assetType", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Asset Type'), resizable: false, width: 150 },
       { field: "contractSize", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Contract Size'), resizable: false, width: 150 },
       { field: "volume", headerName:this.translate.instant('PROVIDERS_LIST_PROFILE.Volume'), resizable: false, width: 150 },
@@ -796,7 +809,6 @@ export class ProviderListProfileComponent {
       { field: "profit", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Profit'), resizable: false, width: 150, cellStyle: { color: '#12B76A' } },
     ];
   }
-
 
   displayFn(user: User): string {
     return user && user.name ? user.name : '';

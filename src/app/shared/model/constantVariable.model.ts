@@ -71,6 +71,12 @@ export class ConstantVariable {
         },
         avatar: {
           upload: '/api/providers/:providerId/avatar'
+        },
+        rating: {
+          widget_brief: "/api/widgets/brief",
+          search: "/api/rating/:ratingId/search",
+          get_data: "/api/rating",
+          watchListed_data: "/api/watchlist",
         }
     };
     errorMessageObj: any = {
@@ -266,12 +272,8 @@ export class ConstantVariable {
       return homePageMonthlyChartConfig;
     }
 
-    getProviderListPageChartConfig(valuesArr: number[]) {
+    getProviderListPageChartConfig() {
       let homePageMonthlyChartConfig = JSON.parse(JSON.stringify(this.homePageMonthlyChartConfig));
-      homePageMonthlyChartConfig.series[0].data = valuesArr;
-      homePageMonthlyChartConfig.series[0].name = "";
-      homePageMonthlyChartConfig.xaxis.categories  = valuesArr.map(o => `${o} %`);
-      homePageMonthlyChartConfig.xaxis.labels.show = false;
       homePageMonthlyChartConfig.colors = ['#12B76A'];
       homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
         return `${val} %`

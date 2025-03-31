@@ -1,6 +1,6 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
+import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
 import {MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -369,7 +369,7 @@ export class ProviderProfileStandAloneComponent {
     } else if(gridType == 'subscription') {
       return [
         { field: "subscriptionId", headerName: 'REPORTS.Name',  resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerSubscriptionNameCell' },
-        { field: "isActivated", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererComponent },
+        { field: "isActivated", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent },
         { field: "volume", sortable: false, headerName: 'PROVIDERS_PROFILE.Volume Scaling', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell'},
         { field: "offerTitle", sortable: false, headerName: 'PROVIDERS_PROFILE.Offer', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'offerTitleCell' },
         { field: "tradingAccountNo", sortable: false, headerName: 'PROVIDERS_PROFILE.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell'},
