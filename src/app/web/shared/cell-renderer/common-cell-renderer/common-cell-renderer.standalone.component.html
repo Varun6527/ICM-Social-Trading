@@ -179,5 +179,5 @@
     </div>
 
     <div *ngIf="params.colDef.colId == 'currencyCell'">
-      {{params.value | currency: 'USD':'symbol'}}
+      {{params.value || params.value == 0 ? (params.value | currency: (params.data.currency ? params.data.currency : 'USD') :'symbol') : '-'}}
     </div>

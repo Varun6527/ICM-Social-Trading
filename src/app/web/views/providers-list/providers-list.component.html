@@ -56,7 +56,8 @@
                                         <div class="info d-flex align-center justify-space-between g-10">
                                             <img width="30" height="30" [src]="rating.countryFlagUrl" />
                                             <a href="javascript:void(0)">
-                                                <img (click)="toggleWatchList(rating)" [ngClass]="{'img-selected' : rating.isWatchListed }" width="20" height="20" src="../../../../assets/icons/saveIcon.png" />
+                                                <img (click)="toggleWatchList(rating)" width="20" height="20" 
+                                                [src]="rating.isWatchListed ? '../../../../assets/icons/selected-saveIcon.png' : '../../../../assets/icons/saveIcon.png'" />
                                             </a>
                                         </div>
                                     </div>
@@ -120,7 +121,7 @@
                             </mat-card>
                         </div>
                         <div class="providersList-table" *ngIf="viewMode == 'table'">
-                            <common-ag-grid [gridConfig]="ratingsGridConfig" [gridData]="rowData"
+                            <common-ag-grid [gridConfig]="ratingsGridConfig" [gridData]="ratingsData"
                                 [showGridLoader]="showRatingsGridLoader">
                             </common-ag-grid>
                         </div>

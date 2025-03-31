@@ -10,12 +10,16 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, RouterModule, MatMenuModule, TranslateModule],
   template: `
-    @if(params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell' && params.colDef.colId !== 'riskCell') {
+    @if(params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell' && params.colDef.colId !== 'riskCell' && params.colDef.colId !== 'copyTradeBtnCell') {
       <button (click)="onActionClick()" class="tableActionBtn">
         <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
 
         <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
       </button>
+    } @else if(params.colDef.colId === 'copyTradeBtnCell') {
+      <div class="d-flex align-center">
+        <button class="edit-btn" (click)="onActionClick()">{{"PROVIDERS_LIST.Copy"|translate}}</button>
+      </div>
     } @else {
       <button class="tableActionBtn" [matMenuTriggerFor]="actionMenu">
         <img src=".././../../../assets/icons/three-dots.png" width="20" />
@@ -131,6 +135,8 @@ export class ActionButtonStanAloneComponent {
       this.router.navigate([`/portal/providers/${this.params.data.providerId}/subscriptions/${this.params.data.subscriptionId}/results/${this.params.data.resultId}`]);
     } else if(this.params.colDef.colId == 'positionSubscriptionRedirection') {
       this.router.navigate([`/portal/subscriptions/${this.params.data.subscriptionId}/positions/${this.params.data.positionId}`]);
+    } else if(this.params.colDef.colId == 'copyTradeBtnCell') {
+      this._webService.emitOnWebDataChange({action: 'open_copy_trade_popup', data: this.params.data });
     }
   }
 }
