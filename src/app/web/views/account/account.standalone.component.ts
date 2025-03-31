@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
-import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
+import { TypeCellRendererStandAloneComponent } from '../../shared/cell-renderer/type-cell-renderer/type-cell-renderer.standalone.component';
 import { TranslateModule} from '@ngx-translate/core';
 import { WebService } from '../../service/web.service';
 import { TradingAccountUIModal } from '../../shared/ui-model/web.ui.model';

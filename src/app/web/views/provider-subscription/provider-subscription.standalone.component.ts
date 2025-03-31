@@ -15,7 +15,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { TradingResultUiModal, TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 
 @Component({

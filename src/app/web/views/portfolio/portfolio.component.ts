@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +14,7 @@ import { WebService } from '../../service/web.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { Router } from '@angular/router';
 import { BeFollowerDialogStandAloneComponent } from '../../shared/dialogBox/create-follower-dialog/beFollowerDialog.standalone.component';
-import { StatusBtnRendererComponent } from '../../shared/status-btn-renderer/status-btn-renderer.component';
+import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
 
 @Component({
   selector: 'app-portfolio',
@@ -50,7 +50,7 @@ export class PortfolioStandAloneComponent {
   setupFollowerTableConfig() {
     let colDefs = [
       { field: "refs.provider.name", headerName: 'HOME.Provider', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'followerProfileCell' },
-      { field: "activationStatus", headerName: 'PROVIDERS_PROFILE.Activity', resizable: false, cellRenderer: StatusBtnRendererComponent, colId : 'activityCell' },
+      { field: "activationStatus", headerName: 'PROVIDERS_PROFILE.Activity', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, colId : 'activityCell' },
       { field: "externalAccount", headerName: 'SUBSCRIPTION.Trading account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'providerTradingAccountCell' },
       { field: "performance.fee", headerName: 'OFFERS.Performance fee', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'performanceFeeCell' },
       { field: "registerTime", headerName: 'PROVIDERS.Registered', sort:'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'dateTimeCell' },

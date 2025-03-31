@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams } from 'ag-grid-community';
 
 @Component({
   selector: 'status-cell-renderer',
@@ -52,16 +50,16 @@ import { ICellRendererParams } from 'ag-grid-community';
   }
   `
 })
-export class TypeCellRendererStandAloneComponent implements ICellRendererAngularComp {
+export class TypeCellRendererStandAloneComponent {
   public value: string = '';
   public valueFormatted: string = '';
 
-  agInit(params: ICellRendererParams): void {
+  agInit(params: any): void {
     this.value = params.value;
     this.valueFormatted = params.valueFormatted!;
   }
 
-  refresh(params: ICellRendererParams): boolean {
+  refresh(params: any): boolean {
     this.value = params.value;
     this.valueFormatted = params.valueFormatted!;
     return true;

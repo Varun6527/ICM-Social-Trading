@@ -1,5 +1,5 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
@@ -10,26 +10,22 @@
                 </div>
             </div>
             <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start" class="providerProfile-tabGroup" preserveContent="true">
-                <mat-tab *ngFor="let tab of tabLabels;let indx = index" label="{{tab.label | translate}}">
-                @if(indx == selectedTabIndex) {
-                    <div class="providersList-header-buttons d-flex justify-space-between align-center pb-20 abccc">
-                        <div class="d-flex justify-space-between g-10 align-center">
+                <mat-tab *ngFor="let tab of tabFilterLabels;let indx = index" label="{{tab.label | translate}}">
+                
+                    <div class="providersList-header-buttons d-flex justify-right align-center pb-20">
+                        <!-- <div class="d-flex justify-space-between g-10 align-center">
                             <div class="d-flex justify-space-between providerProfile-tabFilters g-10 align-center">
-                                <h5 class="active"> {{"PROVIDERS_LIST.Any"|translate}} </h5>
-                                <h5> {{"PROVIDERS_LIST.Forex"|translate}} </h5>
-                                <h5> {{"PROVIDERS_LIST.Indices"|translate}} </h5>
-                                <h5> {{"PROVIDERS_LIST.Crypto"|translate}} </h5>
-                                <h5> {{"PROVIDERS_LIST.Algorithmic"|translate}} </h5>
-                                <h5> {{"PROVIDERS_LIST.Commodities"|translate}} </h5>
+                                <h5 class="{{subFilter.active ? 'active' : ''}}" *ngFor="let subFilter of subFilterLabels">{{subFilter.label|translate}} </h5>
                             </div>
                             <div class="d-flex justify-center g-10 align-center">
-                                    <mat-form-field class="search-provider-field" appearance="outline">
-                                        <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
-                                        <input type="text" matInput>
-                                    </mat-form-field>
+                                
                             </div>
-                        </div>
+                        </div> -->
                         <div class="d-flex g-20">
+                            <mat-form-field class="search-provider-field" appearance="outline">
+                                <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
+                                <input type="text" matInput>
+                            </mat-form-field>
                             <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='cards' ? 'secondary-btn-active':''" (click)="switchMode('cards')">
                                 <img src="../../../../assets/icons/gridIcon.svg" />
                             </button>
@@ -42,63 +38,74 @@
                             </button>
                         </div>
                     </div>
+                    @if(indx == selectedTabIndex) {
                     <div class="providersList-section">
+                        @if(!this.showRatingLoader) {
                         <div class="providersList-cards" *ngIf="viewMode == 'cards'">
-                            <mat-card *ngFor="let card of ratingsData" appearance="outlined" class="providersList-card">
+                            <mat-card *ngFor="let rating of ratingsData" appearance="outlined" class="providersList-card">
                                 <mat-card-content>
                                     <div class="header d-flex align-center justify-space-between">
                                         <div class="title d-flex align-start g-10">
-                                            <a routerLink="/portal/ratings/1">
-                                            <img class="provider-icon" src="../../../../assets/icons/providerIcon.jpeg" />
-                                            <div class="text">
-                                                <p class="heading">Catalog</p>
-                                                <p class="sub-heading">catalogapp.io</p>
-                                            </div>
+                                            <a routerLink="/portal/ratings/{{rating.accountId}}">
+                                                <img class="provider-icon" [src]="rating.avatarPath" height="40" width="40" />
+                                                <div class="text">
+                                                    <p class="heading">{{rating.accountName}}</p>
+                                                </div>
                                             </a>
                                         </div>
                                         <div class="info d-flex align-center justify-space-between g-10">
-                                            <img class="countryIcon" src="../../../../assets/icons/southAfricaIcon.svg" />
-                                            <img class="saveIcon" src="../../../../assets/icons/saveIcon.png" />
+                                            <img width="30" height="30" [src]="rating.countryFlagUrl" />
+                                            <a href="javascript:void(0)">
+                                                <img (click)="toggleWatchList(rating)" [ngClass]="{'img-selected' : rating.isWatchListed }" width="20" height="20" src="../../../../assets/icons/saveIcon.png" />
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="main">
                                         <div class="main-head pb-20 d-flex justify-space-between align-center">
                                             <p class="title">Return 1M</p>
-                                            <p class="value d-flex align-center">
-                                                <img class="saveIcon" src="../../../../assets/icons/arrow-up.png" /> 198.42%
+                                            <p class="{{rating.returnMonth >= 0 ? 'green-value' : 'red-value' }} d-flex align-center">
+                                                @if(rating.returnMonth >= 0) {
+                                                    <img width="20" height="20" src="../../../../assets/icons/arrow-up.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
+                                                } @else {
+                                                    <img width="20" height="20" src="../../../../assets/icons/arrow-down.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
+                                                }
+                                                
                                             </p>
                                         </div>
-                                        <div id="chart" *ngIf="chartOptions" class="d-flex justify-center align-center">
-                                            <apx-chart *ngIf="chartOptions" [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-                                            [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [yaxis]="chartOptions.yaxis"
-                                            [grid]="chartOptions.grid" [dataLabels]="chartOptions.dataLabels" [fill]="chartOptions.fill"
-                                            [colors]="chartOptions.colors" [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"
-                                            [legend]="chartOptions.legend"></apx-chart>
+                                        <div id="chart" *ngIf="cardChartOptions" class="d-flex justify-center align-center">
+                                            <apx-chart [series]="[{ name: '', data: rating.historyGraph.value }]" 
+                                                [chart]="cardChartOptions.chart" [stroke]="cardChartOptions.stroke"
+                                                [xaxis]="{labels: {show: false}, axisTicks: {show: false},axisBorder: {show: false},categories: rating.historyGraph.valueInPercent }" 
+                                                [tooltip]="cardChartOptions.tooltip"
+                                                [yaxis]="cardChartOptions.yaxis" [grid]="cardChartOptions.grid"
+                                                [dataLabels]="cardChartOptions.dataLabels" [fill]="cardChartOptions.fill"
+                                                [colors]="cardChartOptions.colors" [labels]="cardChartOptions.labels"
+                                                [responsive]="cardChartOptions.responsive" [legend]="cardChartOptions.legend"></apx-chart>
                                         </div>
                                         <div class="main-content d-flex align-center flex-wrap justify-space-between g-20">
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Fee"|translate}}</p>
-                                                <p class="subtitle">50%</p>
+                                                <p class="subtitle">{{(rating?.extension?.performanceFee || rating?.extension?.performanceFee == 0)  ? rating?.extension?.performanceFee + '%' : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Win Ratio"|translate}}</p>
-                                                <p class="subtitle">5.05</p>
+                                                <p class="subtitle">{{(rating?.winRatio || rating?.winRatio == 0)  ? rating?.winRatio + '%' : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Drawdown"|translate}}</p>
-                                                <p class="subtitle">50%</p>
+                                                <p class="subtitle">{{(rating?.maxDrawdown || rating?.maxDrawdown == 0) ? rating?.maxDrawdown + '%' : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Investors"|translate}}</p>
-                                                <p class="subtitle">1</p>
+                                                <p class="subtitle">{{(rating?.extension?.investors || rating?.extension?.investors == 0) ? rating?.extension?.investors : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Invested"|translate}}</p>
-                                                <p class="subtitle">$500</p>
+                                                <p class="subtitle">{{(rating?.extension?.investorsEquity || rating?.extension?.investorsEquity == 0)  ? (rating?.extension?.investorsEquity | currency: rating?.account?.currency:'symbol') : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Own Funds"|translate}}</p>
-                                                <p class="subtitle">$2,209</p>
+                                                <p class="subtitle">{{(rating?.account?.balance || rating?.account?.balance == 0) ? (rating?.account?.balance | currency: rating?.account?.currency:'symbol') : '-'}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -113,15 +120,24 @@
                             </mat-card>
                         </div>
                         <div class="providersList-table" *ngIf="viewMode == 'table'">
-                            <ag-grid-angular class="ag-theme-alpine" style="height: 500px;width: 100%;" [rowData]="rowData"
-                            [columnDefs]="colDefs" [suppressRowHoverHighlight]="true">
-                        </ag-grid-angular>
+                            <common-ag-grid [gridConfig]="ratingsGridConfig" [gridData]="rowData"
+                                [showGridLoader]="showRatingsGridLoader">
+                            </common-ag-grid>
                         </div>
+                        } @else {
+                        <div class="loader-container" class="half-view-port-height d-flex justify-center align-center">
+                            <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+                        </div>
+                        }
                     </div>
-                }
+                    }
                 </mat-tab>
             </mat-tab-group>
             
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+<show-error-message></show-error-message>

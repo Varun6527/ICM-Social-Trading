@@ -1,5 +1,5 @@
 import {Component, inject, ViewChild} from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';

@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
 import { WebService } from '../../service/web.service';
@@ -14,7 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { TypeCellRendererStandAloneComponent } from '../../shared/type-cell-renderer/type-cell-renderer.standalone.component';
+import { TypeCellRendererStandAloneComponent } from '../../shared/cell-renderer/type-cell-renderer/type-cell-renderer.standalone.component';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/provider-follower-header-cards/provider.follower.header.cards.standalone.component';

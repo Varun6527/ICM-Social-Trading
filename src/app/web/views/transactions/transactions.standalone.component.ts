@@ -1,5 +1,5 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ActionButtonStanAloneComponent } from '../../shared/action-button/action-button.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
