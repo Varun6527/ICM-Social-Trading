@@ -644,6 +644,7 @@ export class RatingUiModal {
        this.historyGraph.value = obj.history.entries.length > 0 ? obj.history.entries.map((o: any) => o.rt) : [0, 0];
        this.historyGraph.valueInPercent = obj.history.entries.length > 0 ? obj.history.entries.map((o: any) => `${o.rt} %`) : ["0%", "0%"];
        this.extension = obj.extension;
+       this.extension.performanceFee = this.extension.performanceFee == "-" ? 0 : this.extension.performanceFee;
        this.winRatio = obj.winRatio;
        this.maxDrawdown = obj.maxDrawdown;
        this.account = obj.account;
