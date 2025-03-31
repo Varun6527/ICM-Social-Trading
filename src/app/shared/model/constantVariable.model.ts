@@ -227,10 +227,6 @@ export class ConstantVariable {
         ]
     };
 
-    constructor() {
-        this.setLanguageArr();
-    }
-
     setLanguageArr() {
         this.languageArr = [
             { code: 'en', name: 'English', displayLabel: 'English', icon: 'GB.png' },
@@ -255,6 +251,112 @@ export class ConstantVariable {
         ];
     }
 
+    providerListLinechartOptions = {
+      series: [
+        {
+          name: 'Dataset 1', // First dataset
+          data: []
+        }
+      ],
+      chart: {
+        height: 60,
+        width: 200,
+        padding: 0,
+        type: "line",
+        toolbar: {
+          show: false,
+        },
+        zoom: {
+          enabled: false // Disables zooming
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: false // Hide the legend
+      },
+      stroke: {
+        show: true,
+        curve: "straight",
+        width: [3],
+      },
+      colors: ['#0D4878'], 
+      xaxis: {
+        labels: {
+          show: false, // Hide x-axis labels
+        },
+        axisTicks: {
+          show: false // Hide x-axis ticks
+        },
+        axisBorder: {
+          show: false // Hide x-axis border line
+        },
+        categories: [] // Sample month labels
+      },
+      yaxis: {
+        labels: {
+          show: false, // Hide y-axis labels
+          // offsetY: 190 
+        },
+        axisBorder: {
+          show: false // Hide y-axis border line
+        },
+        axisTicks: {
+          show: false // Hide y-axis ticks
+        }
+      },
+      grid: {
+        show: false, // Hide background grid lines
+        padding: {
+          top: -80,
+          left: 0,
+          bottom: 0,
+          right: 0,
+        }
+      },
+      tooltip: {
+        enabled: false // Disables the tooltip on hover
+      },
+      responsive: [
+        {
+          breakpoint: 600,
+          options: {
+            chart: {
+              height: 120
+            },
+            stroke: {
+              width: 2
+            },
+            grid: {
+              padding: {
+                top: -50,
+                bottom: -10
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 768,
+          options: {
+            chart: {
+              height: 130
+            },
+            grid: {
+              padding: {
+                top: -60,
+                bottom: -15
+              }
+            }
+          }
+        }
+      ]
+    };
+
+    constructor() {
+        this.setLanguageArr();
+    }
+
     getHomePageChartConfig(valuesArr: number[], labelsArr: string[], currencyType: string, chartName: string) {
       let homePageMonthlyChartConfig = JSON.parse(JSON.stringify(this.homePageMonthlyChartConfig));
       if(valuesArr.length == 1) valuesArr.push(...valuesArr);
@@ -273,11 +375,14 @@ export class ConstantVariable {
     }
 
     getProviderListPageChartConfig() {
-      let homePageMonthlyChartConfig = JSON.parse(JSON.stringify(this.homePageMonthlyChartConfig));
-      homePageMonthlyChartConfig.colors = ['#12B76A'];
-      homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
+      this.homePageMonthlyChartConfig.colors = ['#12B76A'];
+      this.homePageMonthlyChartConfig.tooltip.y.formatter = function (val: number) {
         return `${val} %`
       }
-      return homePageMonthlyChartConfig;
+      return this.homePageMonthlyChartConfig;
+    }
+
+    getProviderLineChart() {
+      return this.providerListLinechartOptions;
     }
 }

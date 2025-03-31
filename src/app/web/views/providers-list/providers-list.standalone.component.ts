@@ -14,6 +14,8 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
 import { RatingUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
+import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 
 @Component({
   selector: 'app-providers-list',
@@ -23,20 +25,6 @@ import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/com
   imports: [NgApexchartsModule, CommonModule, RouterModule, MatCardModule, MatTabsModule, MatInputModule, CommonAgGridStandAloneComponent, TranslateModule, ShowErrorStandAloneComponent]
 })
 export class ProvidersListStanAloneComponent {
-  rowData = [
-    {
-      id: 1,
-      strategy: "Catalog",
-      investors: 1,
-      invested: "$500",
-      ownFunds: "$2200",
-      drawdown: "54.5%",
-      fee: "50%",
-      risk: "High",
-      chart: "Bar",
-      strategyIcon: '../../../../assets/icons/providerIcon.jpeg'
-    }
-  ];
   selectedTabIndex: number = 0;
   cardChartOptions: any;
   viewMode: any;
@@ -57,6 +45,9 @@ export class ProvidersListStanAloneComponent {
   IConstant: ConstantVariable = new ConstantVariable();
 
   constructor(private _webService: WebService, private _authService: AuthService) {
+    this._webService.subscribeOnWebDataChange("ProvidersListStanAloneComponent", (event: any)=>{
+      this.recieveChildrenEmitter(event);
+    });
     this.watchListId = this._webService.userPermissionConfig.integrationMetadata.WatchlistId;
     this.widget_key = this._authService.userConfig.ratings.embeddedWidgetKey;
     this.cardChartOptions = this.IConstant.getProviderListPageChartConfig();
@@ -158,20 +149,6 @@ export class ProvidersListStanAloneComponent {
     this.getRatingsData();
   }
 
-  setupRatingConfig() {
-    let colDefs = [
-      { field: "strategy", headerName: 'PROVIDERS_LIST.Title', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent },
-      { field: "investors", headerName: 'PROVIDERS_LIST.Investors', resizable: false, width: 150 },
-      { field: "invested", headerName: 'PROVIDERS_LIST.Invested', resizable: false, width: 150 },
-      { field: "ownFunds", headerName: 'PROVIDERS_LIST.Own Funds', resizable: false, width: 150 },
-      { field: "drawdown", headerName: 'PROVIDERS_LIST.Drawdown', resizable: false, width: 150 },
-      { field: "fee", headerName: 'PROVIDERS_LIST.Fee', resizable: false, width: 150 },
-      { field: "chart", headerName: 'PROVIDERS_LIST.Chart', resizable: false, cellRenderer: ChartCellRendererStandAloneComponent, width: 200, headerClass: 'chartHeader' }
-      // { field: "action", headerName: '', resizable: false, cellRenderer: ButtonCellRendererComponent, width: 150, cellStyle: { 'padding-left': '40px' }, },
-    ];
-    this.setupGridConfig(colDefs);
-  }
-
   setupGridConfig(colDefs: any) {
     this.ratingsGridConfig = {
       maxHeight: '400px',
@@ -184,8 +161,22 @@ export class ProvidersListStanAloneComponent {
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
       rowModelType: 'clientSide',
-      rowHeight: undefined
+      rowHeight: 70
     }
+  }
+
+  setupRatingConfig() {
+    let colDefs = [
+      { field: "accountName", headerName: 'PROVIDERS_LIST.Title', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent },
+      { field: "extension.investors", headerName: 'PROVIDERS_LIST.Investors', resizable: false, width: 150, valueFormatter: (params: any) => params.value ? params.value : '-' },
+      { field: "extension.investorsEquity", headerName: 'PROVIDERS_LIST.Invested', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell' },
+      { field: "account.balance", headerName: 'PROVIDERS_LIST.Own Funds', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell' },
+      { field: "maxDrawdown", headerName: 'PROVIDERS_LIST.Drawdown', resizable: false, width: 150, valueFormatter: (params: any) => params.value || params.value == 0 ? params.value + '%' : '-' },
+      { field: "extension.performanceFee", headerName: 'PROVIDERS_LIST.Fee', resizable: false, width: 150, valueFormatter: (params: any) => params.value || params.value == 0 ? params.value + '%' : '-' },
+      { field: "historyGraph.value", headerName: 'PROVIDERS_LIST.Chart', resizable: false, cellRenderer: ChartCellRendererStandAloneComponent, width: 200},
+      { field: "action", sortable: false, headerName: '', resizable: false, cellRenderer: ActionButtonStanAloneComponent, colId: 'copyTradeBtnCell', width: 150, cellStyle: { 'padding-left': '40px', 'display': 'flex', 'justify-content': 'center', 'align-items': 'center' } },
+    ];
+    this.setupGridConfig(colDefs);
   }
 
   initializeFilterTabLabels() {
@@ -231,5 +222,15 @@ export class ProvidersListStanAloneComponent {
 
   toggleWatchList(ratingObj: any) {
 
+  }
+
+  openCopyTradePopup(ratingObj: any) {
+
+  }
+
+  recieveChildrenEmitter(event: any) {
+    if(event['action'] == 'open_copy_trade_popup') {
+      this.openCopyTradePopup(event.data);
+    }
   }
 }

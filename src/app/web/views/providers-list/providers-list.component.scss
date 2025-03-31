@@ -186,10 +186,6 @@
   border-radius: 100%;
 }
 
-.img-selected {
-  filter: brightness(0) saturate(100%) invert(23%) sepia(84%) saturate(1322%) hue-rotate(189deg) brightness(94%) contrast(94%);
-}
-
 .half-view-port-height {
   height: calc(100vh - 200px);
 }
