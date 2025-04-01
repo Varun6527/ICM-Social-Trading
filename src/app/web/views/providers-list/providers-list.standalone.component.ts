@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { StrategyCellRendererStandAloneComponent } from '../../shared/cell-renderer/strategy-cell-renderer/strategy-cell-renderer.standalone.component';
 import { ChartCellRendererStandAloneComponent } from '../../shared/cell-renderer/chart-cell-renderer/chart-cell-renderer.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
@@ -40,8 +40,19 @@ export class ProvidersListStanAloneComponent {
   showRatingLoader: boolean = false;
   ratingsGridConfig: any = {};
   showRatingsGridLoader: boolean = false;
+  showMoreDataLoader: boolean = false;
+  paginationConfigObj: any = {
+    totalCount: 6,
+    currentPage: 1,
+    pageSize: 6,
+    totalPages: 0,
+    skip: 0,
+    top: 6
+  };
+  scrollBottomobserver!: IntersectionObserver;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
+  @ViewChild('observer', { static: false }) observerElement!: ElementRef;
   IConstant: ConstantVariable = new ConstantVariable();
 
   constructor(private _webService: WebService, private _authService: AuthService) {
@@ -51,6 +62,7 @@ export class ProvidersListStanAloneComponent {
     this.watchListId = this._webService.userPermissionConfig.integrationMetadata.WatchlistId;
     this.widget_key = this._authService.userConfig.ratings.embeddedWidgetKey;
     this.cardChartOptions = this.IConstant.getProviderListPageChartConfig();
+    
     this.intialProviderListPageSetup();
   }
 
@@ -58,8 +70,7 @@ export class ProvidersListStanAloneComponent {
     let result1 = await this.getInitialDataOfRatingWidgetAndWatchList();
     this.initializeFilterTabLabels();
     // this.initializeSubFilterLabels();
-    let result2 = await this.getRatingsData();
-    this.switchMode("cards");
+    this.switchMode("cards", true);
   }
 
   getRatingParam() {
@@ -69,6 +80,10 @@ export class ProvidersListStanAloneComponent {
     param['$filter'] = this.tabFilterLabels[this.selectedTabIndex].filter;
     param['$count'] = true;
     param['widget_key'] = this.widget_key;
+    if(this.viewMode == "cards") {
+      param['$skip'] = this.paginationConfigObj.skip;
+      param['$top'] = this.paginationConfigObj.top;
+    }
     return param;
   }
 
@@ -78,14 +93,19 @@ export class ProvidersListStanAloneComponent {
     );
   }
 
-  getRatingsData() {
+  getRatingsData(loadInitalRatingData: boolean) {
     return new Promise<void>((resolve, reject)=> {
-      this.showRatingLoader = true;
+
+      if(loadInitalRatingData) this.showRatingLoader = true;
+
       let param = this.getRatingParam();
       param = this.removeEmptyParamKeys(param);
       this._webService.getRatingData(param).subscribe({
         next: (response: any) => {
-          this.ratingsData = [];
+          this.paginationConfigObj.totalCount = response.count;
+
+          if(loadInitalRatingData) this.ratingsData = [];
+
           response.items.forEach((obj: any) =>
             this.ratingsData.push(
               new RatingUiModal(
@@ -96,10 +116,12 @@ export class ProvidersListStanAloneComponent {
               )
             ));
           this.showRatingLoader = false;
+          this.showMoreDataLoader = false;
           resolve();
         },
         error: (errorObj) => {
           this.showRatingLoader = false;
+          this.showMoreDataLoader = false;
           this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
           reject();
         }
@@ -146,7 +168,18 @@ export class ProvidersListStanAloneComponent {
 
   onTabChange(event: any) {
     this.selectedTabIndex = event.index;
-    this.getRatingsData();
+    this.switchMode(this.viewMode, true);
+  }
+
+  resetPaginationConfig() {
+    this.paginationConfigObj = {
+      totalCount: 6,
+      currentPage: 1,
+      pageSize: 6,
+      totalPages: 0,
+      skip: 0,
+      top: 6
+    };
   }
 
   setupGridConfig(colDefs: any) {
@@ -158,7 +191,7 @@ export class ProvidersListStanAloneComponent {
       pageSizeDropdownArr: [25, 50, 100],
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
-      enablePagination: true,
+      enablePagination: false,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
       rowModelType: 'clientSide',
       rowHeight: 70
@@ -213,10 +246,22 @@ export class ProvidersListStanAloneComponent {
   //   ];
   // }
 
-  switchMode(type: any) {
-    this.viewMode = type;
-    if(this.viewMode == "table") {
-      this.setupRatingConfig();
+  async switchMode(type: any, isInitialState: boolean) {
+    if(type == "cards") {
+      if(isInitialState) {
+        this.setupIntersectionObserver();
+        this.resetPaginationConfig();
+      }
+      this.viewMode = type;
+      let result = await this.getRatingsData(isInitialState);
+    } else if(type == "table") {
+      if(isInitialState) {
+        this.scrollBottomobserver.disconnect();
+        this.setupRatingConfig();
+        this.resetPaginationConfig();
+      }
+      this.viewMode = type;
+      let result = await this.getRatingsData(isInitialState);
     }
   }
 
@@ -232,5 +277,56 @@ export class ProvidersListStanAloneComponent {
     if(event['action'] == 'open_copy_trade_popup') {
       this.openCopyTradePopup(event.data);
     }
+  }
+
+  setupIntersectionObserver() {
+    this.scrollBottomobserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if(this.showMoreDataLoader) return;
+        let flag = this.updateNextPaginationParamAndGetDataLoadFlag();
+        if(flag) {
+          this.showMoreDataLoader = true;
+          this.switchMode(this.viewMode, false);
+        } else {
+          return;
+        }
+      }
+    });
+    if (this.observerElement) {
+      this.scrollBottomobserver.observe(this.observerElement.nativeElement);
+    }
+  }
+
+  updateNextPaginationParamAndGetDataLoadFlag() {
+    let paginationObj = this.generatePaginationParams(this.paginationConfigObj.totalCount, this.paginationConfigObj.pageSize);
+    this.paginationConfigObj.totalPages = paginationObj.totalPages;
+    this.paginationConfigObj.currentPage = this.paginationConfigObj.currentPage + 1;
+    let skipTopObj: any = paginationObj.getParams(this.paginationConfigObj.currentPage);
+    if(skipTopObj) {
+      this.paginationConfigObj.skip = skipTopObj.skip;
+      this.paginationConfigObj.top = skipTopObj.top;
+      return true;
+    } else {
+      this.paginationConfigObj.currentPage = this.paginationConfigObj.currentPage - 1;
+      return false;
+    }
+  }
+
+  generatePaginationParams(totalCount: number, perPage: number) {
+    const totalPages = Math.ceil(totalCount / perPage); 
+    const getParams = (pageNumber: number) => {
+      if (pageNumber > totalPages) return null;
+      const skip = (pageNumber - 1) * perPage;
+      const top = perPage;
+      return { skip, top };
+    };
+    return {
+      totalPages,
+      getParams
+    };
+  }
+
+  ngOnDestroy() {
+    this._webService.unSubscribeOnWebDataChange('ProvidersListStanAloneComponent');
   }
 }
