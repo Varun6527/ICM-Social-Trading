@@ -26,10 +26,10 @@
                                 <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
                                 <input type="text" matInput>
                             </mat-form-field>
-                            <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='cards' ? 'secondary-btn-active':''" (click)="switchMode('cards')">
+                            <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='cards' ? 'secondary-btn-active':''" (click)="switchMode('cards', true)">
                                 <img src="../../../../assets/icons/gridIcon.svg" />
                             </button>
-                            <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='table' ? 'secondary-btn-active':''" (click)="switchMode('table')">
+                            <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='table' ? 'secondary-btn-active':''" (click)="switchMode('table', true)">
                                 <img src="../../../../assets/icons/listIcon.svg" />
                             </button>
                             <button class="secondary-btn">
@@ -139,6 +139,11 @@
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
         <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
+    <div #observer>
+        <div class="loader-container" *ngIf="showMoreDataLoader" class="d-flex justify-center align-center pb-20">
+            <img src="../../../../assets/icons/ajax-loader-large.gif" />
+        </div>
     </div>
 </mat-card>
 <show-error-message></show-error-message>
