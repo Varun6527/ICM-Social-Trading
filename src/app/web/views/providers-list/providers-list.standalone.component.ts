@@ -68,7 +68,10 @@ export class ProvidersListStanAloneComponent {
   }
 
   async intialProviderListPageSetup() {
+    this.showPageLoader = true;
     let result1 = await this.getInitialDataOfRatingWidgetAndWatchList();
+    let result2 = await this._webService.fetchAndSetTradingDataForAllUser(this.widget_key, this.ratingId);
+    this.showPageLoader = false;
     this.initializeFilterTabLabels();
     // this.initializeSubFilterLabels();
     this.switchMode("cards", true);
@@ -101,7 +104,7 @@ export class ProvidersListStanAloneComponent {
 
       let param = this.getRatingParam();
       param = this.removeEmptyParamKeys(param);
-      this._webService.getRatingData(param).subscribe({
+      this._webService.getRatingDataWithPagination(param).subscribe({
         next: (response: any) => {
           this.paginationConfigObj.totalCount = response.count;
 
@@ -132,7 +135,6 @@ export class ProvidersListStanAloneComponent {
 
   getInitialDataOfRatingWidgetAndWatchList() {
     return new Promise<void>((resolve, reject)=> {
-      this.showPageLoader = true;
       let param = {
         widget_key: this.widget_key,
         watchListId: this.watchListId
@@ -142,14 +144,9 @@ export class ProvidersListStanAloneComponent {
           this.widgetsBriefArr = response.widgetBrief.items;
           this.ratingId = response.widgetBrief.items.find((o: any) => o.key == this.widget_key).id;
           this.watchListAccountsArr = response?.watchListedProvider?.watch?.values ? response?.watchListedProvider?.watch?.values : [];
-          this.showPageLoader = false;
-          //Below mehtod used to fetch all the user data and then loop through them and then get call the trading data according to user type and then sort it out
-          this._webService.fetchAndSetTradingDataForAllUser(this.widget_key, this.ratingId);
-          //End
           resolve();
         },
         error: (errorObj) => {
-          this.showPageLoader = false;
           this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
           reject();
         }
