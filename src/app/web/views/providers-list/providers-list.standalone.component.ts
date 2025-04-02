@@ -68,26 +68,35 @@ export class ProvidersListStanAloneComponent {
   }
 
   async intialProviderListPageSetup() {
-    this.showPageLoader = true;
     let result1 = await this.getInitialDataOfRatingWidgetAndWatchList();
-    let result2 = await this._webService.fetchAndSetTradingDataForAllUser(this.widget_key, this.ratingId);
-    this.showPageLoader = false;
+    let result2 = await this.fetchAndSetTradingDataForAllUser();
     this.initializeFilterTabLabels();
     // this.initializeSubFilterLabels();
     this.switchMode("cards", true);
+  }
+
+  setClientSideSorting(data: any) {
+    let type: string = this.tabFilterLabels[this.selectedTabIndex].type;
+    if(type == "mostActive") {
+      return data.sort((a: any, b: any) => b.totalTrades - a.totalTrades);
+    } else if(type == "highWinRatio") {
+      return data.sort((a: any, b: any) => b.winRatio - a.winRatio);
+    } else {
+      return data;
+    }
   }
 
   getRatingParam() {
     let param: any = {};
     param['ratingId'] = this.ratingId;
     param['$orderby'] = this.tabFilterLabels[this.selectedTabIndex].orderBy;
-    param['$filter'] = this.tabFilterLabels[this.selectedTabIndex].filter;
     param['$count'] = true;
     param['widget_key'] = this.widget_key;
     if(this.viewMode == "cards") {
       param['$skip'] = this.paginationConfigObj.skip;
       param['$top'] = this.paginationConfigObj.top;
     }
+    param['$filter'] = this.getFiltersDataOfTab();
     return param;
   }
 
@@ -109,7 +118,8 @@ export class ProvidersListStanAloneComponent {
           this.paginationConfigObj.totalCount = response.count;
 
           if(loadInitalRatingData) this.ratingsData = [];
-
+          response.items = this.setClientSideSorting(response.items);
+         
           response.items.forEach((obj: any) =>
             this.ratingsData.push(
               new RatingUiModal(
@@ -118,7 +128,7 @@ export class ProvidersListStanAloneComponent {
                 this._webService.getRatingServerUrl(),
                 this.watchListAccountsArr.map((o: any) => o.accountId)
               )
-            ));
+          ));
           this.showRatingLoader = false;
           this.showMoreDataLoader = false;
           resolve();
@@ -135,6 +145,7 @@ export class ProvidersListStanAloneComponent {
 
   getInitialDataOfRatingWidgetAndWatchList() {
     return new Promise<void>((resolve, reject)=> {
+      this.showPageLoader = true;
       let param = {
         widget_key: this.widget_key,
         watchListId: this.watchListId
@@ -144,10 +155,12 @@ export class ProvidersListStanAloneComponent {
           this.widgetsBriefArr = response.widgetBrief.items;
           this.ratingId = response.widgetBrief.items.find((o: any) => o.key == this.widget_key).id;
           this.watchListAccountsArr = response?.watchListedProvider?.watch?.values ? response?.watchListedProvider?.watch?.values : [];
+          this.showPageLoader = false;
           resolve();
         },
         error: (errorObj) => {
           this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+          this.showPageLoader = false;
           reject();
         }
       })
@@ -213,17 +226,6 @@ export class ProvidersListStanAloneComponent {
     this.setupGridConfig(colDefs);
   }
 
-  initializeFilterTabLabels() {
-    this.tabFilterLabels = [
-      { type: 'all', label: 'PROVIDERS_LIST.All', orderBy: "rank asc", filter: "" },
-      { type: 'watchlist', label: 'PROVIDERS_LIST.Watchlist', orderBy: "rank asc", filter: this.getWatchListFilter() },
-      { type: 'mostPopular', label: 'PROVIDERS_LIST.Most Popular', orderBy: "investors desc, rank asc", filter: "" },
-      { type: 'mostActive', label: 'PROVIDERS_PROFILE.Most Active', orderBy: "rank asc", filter: "" },
-      { type: 'highWinRatio', label: 'PROVIDERS_LIST.High Win Ratio', orderBy: "rank asc", filter: "" },
-      { type: 'lowFees', label: 'PROVIDERS_LIST.Low Fees', orderBy: "performanceFee asc, rank asc", filter: "" },
-    ];
-  }
-
   getWatchListFilter() {
     if(this.watchListAccountsArr.length > 0) {
       let str = "";
@@ -280,6 +282,53 @@ export class ProvidersListStanAloneComponent {
     }
   }
 
+  getFiltersDataOfTab() {
+    let type = this.tabFilterLabels[this.selectedTabIndex].type;
+    if(type == "all") {
+      return "";
+    } else if(type == "watchlist") {
+      return this.getWatchListFilter();
+    } else if(type == "mostPopular") {
+      return "";
+    } else if(type == "mostActive") {
+      return this.getMostActiveProvider();
+    } else if(type == "highWinRatio") {
+      return this.getHighWinRatioProvider();
+    } else if(type == "lowFees") {
+      return "";
+    }
+    return "";
+  }
+
+  getMostActiveProvider() {
+    if(this._webService.sortedRatingsData.sortedByTotalTrades.length == 0) return "";
+    let str = "", arr = [];
+    this._webService.sortedRatingsData.sortedByTotalTrades.forEach((obj: any)=>{
+      str += `(accountId eq ${obj.accountId}) or `;
+    })
+    return str.slice(0, -4);
+  }
+
+  getHighWinRatioProvider() {
+    if(this._webService.sortedRatingsData.sortedByWinRatio.length == 0) return "";
+    let str = "", arr = [];
+    this._webService.sortedRatingsData.sortedByWinRatio.forEach((obj: any) => {
+      str += `(accountId eq ${obj.accountId}) or `;
+    })
+    return str.slice(0, -4);
+  }
+
+  initializeFilterTabLabels() {
+    this.tabFilterLabels = [
+      { type: 'all', label: 'PROVIDERS_LIST.All', orderBy: "rank asc"},
+      { type: 'watchlist', label: 'PROVIDERS_LIST.Watchlist', orderBy: "rank asc" },
+      { type: 'mostPopular', label: 'PROVIDERS_LIST.Most Popular', orderBy: "investors desc, rank asc" },
+      { type: 'mostActive', label: 'PROVIDERS_PROFILE.Most Active', orderBy: "rank asc" },
+      { type: 'highWinRatio', label: 'PROVIDERS_LIST.High Win Ratio', orderBy: "rank asc" },
+      { type: 'lowFees', label: 'PROVIDERS_LIST.Low Fees', orderBy: "performanceFee asc, rank asc" },
+    ];
+  }
+
   setupIntersectionObserver() {
     this.scrollBottomobserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
@@ -325,6 +374,27 @@ export class ProvidersListStanAloneComponent {
       totalPages,
       getParams
     };
+  }
+
+  fetchAndSetTradingDataForAllUser() {
+    return new Promise<void>((resolve)=>{
+      this.showPageLoader = true;
+      let param = {
+        widget_key: this.widget_key,
+        ratingId: this.ratingId
+      };
+      this._webService.getSortedRatingsTradingDetails(param).subscribe({
+        next: (response)=>  {
+          this._webService.sortedRatingsData = response;
+          this.showPageLoader = false;
+          resolve();
+        },
+        error: (errorObj) => {
+          this.showPageLoader = false;
+          resolve();
+        }
+      })
+    })
   }
 
   ngOnDestroy() {
