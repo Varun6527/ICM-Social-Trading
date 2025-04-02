@@ -19,7 +19,7 @@ export class WebService extends BaseService {
   isSubscriptionAccount: boolean = false;
   isReportPageEnable: boolean = false;
   showSubscriptionsTradingResults: boolean = false;
-  sortedRatingsData: any = {sortedByWinRatio: [], sortedByTotalTrades: []};
+  sortedRatingsData: { sortedByWinRatio: any[], sortedByTotalTrades: any[] } = {sortedByWinRatio: [], sortedByTotalTrades: []};
   //End
 
   constructor(private http: HttpClient, private currencyPipe: CurrencyPipe, private datePipe: DatePipe) {
@@ -557,25 +557,6 @@ export class WebService extends BaseService {
       })
     };
   }
-
-  fetchAndSetTradingDataForAllUser(widget_key: any, ratingId: any) {
-    return new Promise<void>((resolve)=>{
-      let param = {
-        widget_key: widget_key,
-        ratingId: ratingId
-      };
-      this.getSortedRatingsTradingDetails(param).subscribe({
-        next: (response)=>  {
-          this.sortedRatingsData = response;
-          resolve();
-        },
-        error: (errorObj) => {
-          resolve();
-        }
-      })
-    })
-  }
-
 // End of Rating api Methods
 }
 
