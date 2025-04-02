@@ -56,6 +56,7 @@ export class ProvidersListStanAloneComponent {
   IConstant: ConstantVariable = new ConstantVariable();
 
   constructor(private _webService: WebService, private _authService: AuthService) {
+    
     this._webService.subscribeOnWebDataChange("ProvidersListStanAloneComponent", (event: any)=>{
       this.recieveChildrenEmitter(event);
     });
@@ -142,6 +143,9 @@ export class ProvidersListStanAloneComponent {
           this.ratingId = response.widgetBrief.items.find((o: any) => o.key == this.widget_key).id;
           this.watchListAccountsArr = response?.watchListedProvider?.watch?.values ? response?.watchListedProvider?.watch?.values : [];
           this.showPageLoader = false;
+          //Below mehtod used to fetch all the user data and then loop through them and then get call the trading data according to user type and then sort it out
+          this._webService.fetchAndSetTradingDataForAllUser(this.widget_key, this.ratingId);
+          //End
           resolve();
         },
         error: (errorObj) => {

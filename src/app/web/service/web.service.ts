@@ -19,6 +19,7 @@ export class WebService extends BaseService {
   isSubscriptionAccount: boolean = false;
   isReportPageEnable: boolean = false;
   showSubscriptionsTradingResults: boolean = false;
+  sortedRatingsData: any = {sortedByWinRatio: [], sortedByTotalTrades: []};
   //End
 
   constructor(private http: HttpClient, private currencyPipe: CurrencyPipe, private datePipe: DatePipe) {
@@ -428,12 +429,6 @@ export class WebService extends BaseService {
     return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
   }
 
-  getRatingData(data: any) {
-    let url = `${this.constantVar?.http_Api_Url.rating.get_data}/${data.ratingId}`;
-    delete data['ratingId'];
-    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
-  }
-
   getWatchListedProviderData(data: any) {
     let url = `${this.constantVar?.http_Api_Url.rating.watchListed_data}/${data.watchListId}`;
     delete data['watchListId'];
@@ -447,6 +442,127 @@ export class WebService extends BaseService {
       widgetBrief: widgetBrief$,
       watchListedProvider: watchListedProvider$
     });
+  }
+
+  getTradingDataByAccountId(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.tradingData}?widget_key=${data.widget_key}`;
+    url = url.replace(':accountId', data.accountId);
+    delete data['accountId'];
+    return this.sendHttpGetRequest(`${this.RATING_SERVER}${url}`, "");
+  }
+
+  getSortedRatingsTradingDetails(data: any) {
+    let getRatingsData = this.getRatingData(data);
+    return getRatingsData.pipe(
+      map((ratingsData: any) => {
+        const accountIds = [...new Set(ratingsData.items.map((rx: any) => rx.accountId))]; // Get unique accountIds
+        return { ratingsData, accountIds };
+      }),
+      // Switch to new observable fetching account details
+      switchMap(({ ratingsData, accountIds }) => {
+          // Loop through account IDs and call the method for each
+          const accountRequests = accountIds.map((accountId: any) => { 
+          data['accountId'] = accountId;
+          let getRatingsTradingDataById = this.getTradingDataByAccountId(data);
+          return getRatingsTradingDataById;
+        });
+        return forkJoin(accountRequests).pipe(
+          map(tradingAccountDetails => {
+            // Merge transactions with account details
+            const ratingsDataWithTradingDetails = ratingsData.items.map((rx: any) => ({
+              ...rx,
+              tradingAccountDetails: tradingAccountDetails.find((acc: any) => acc.id === rx.accountId)
+            }));
+            // Sort transactions based on date
+            return this.processAndSortData(ratingsDataWithTradingDetails);
+          })
+        );
+      })
+    );
+  }
+
+  processAndSortData(data: any[]): { sortedByTotalTrades: any[], sortedByWinRatio: any[] } {
+    const processedData = data.map(item => {
+      const totalTrades = item.tradingAccountDetails?.summary?.total?.count || 0;
+      const profitableTrades = item.tradingAccountDetails?.summary?.won?.count || 0;
+      let winRatio = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
+      winRatio = parseFloat(winRatio.toFixed(2))
+      return {
+        accountId: item.accountId,
+        totalTrades,
+        winRatio
+      };
+    });
+    return {
+      sortedByTotalTrades: [...processedData].sort((a, b) => b.totalTrades - a.totalTrades),
+      sortedByWinRatio: [...processedData].sort((a, b) => b.winRatio - a.winRatio)
+    };
+  }
+
+  getRatingData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.get_data}/${data.ratingId}`;
+    delete data['ratingId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data).pipe(
+      switchMap((ratingsData: any) => {
+        const accountIdsToFetch = new Set<string>();
+
+        // Identify accounts that need API calls (i.e., those missing winRatio)
+        ratingsData.items.forEach((rx: any) => {
+          const existingData = this.sortedRatingsData?.sortedByWinRatio.find((data: any) => data.accountId === rx.accountId);
+          if (!(existingData?.winRatio >= 0)) {
+            accountIdsToFetch.add(rx.accountId);
+          }
+        });
+
+        // If all required winRatios exist, return the transformed data immediately
+        if (accountIdsToFetch.size === 0) {
+          return of(this.getRatingsDataWithWinRatios(ratingsData));
+        }
+
+        // Otherwise, fetch missing account details
+        const tradingRequests = Array.from(accountIdsToFetch).map((accountId: any) => {
+          data['accountId'] = accountId;
+          let getRatingsTradingDataById = this.getTradingDataByAccountId(data);
+          return getRatingsTradingDataById;
+        });
+        return forkJoin(tradingRequests).pipe(
+          map(accountDetails => this.getRatingsDataWithWinRatios(ratingsData, accountDetails))
+        );
+      })
+    );
+  }
+
+  getRatingsDataWithWinRatios(ratingsData: any, tradingDetails: any[] = []): any[] {
+    return {
+      ...ratingsData,
+      items: ratingsData.items.map((rx: any) => {
+        // Check if winRatio already exists in sortedRatingsData
+        const existingData = this.sortedRatingsData?.sortedByWinRatio.find((data: any) => data.accountId === rx.accountId);
+        if ((existingData?.winRatio >= 0)) {
+          return { ...rx, winRatio: parseFloat(existingData.winRatio.toFixed(2)) };
+        }
+        // Otherwise, calculate winRatio from fetched account details
+        const trading = tradingDetails.find(acc => acc.id === rx.accountId);
+        const totalTrades = trading?.summary?.total?.count || 0;
+        const profitableTrades = trading?.summary?.won?.count || 0;
+        let winRatio = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
+        winRatio = parseFloat(winRatio.toFixed(2))
+        return { ...rx, winRatio };
+      })
+    };
+  }
+
+  fetchAndSetTradingDataForAllUser(widget_key: any, ratingId: any) {
+    let param = {
+      widget_key: widget_key,
+      ratingId: ratingId
+    };
+    this.getSortedRatingsTradingDetails(param).subscribe({
+      next: (response)=>  {
+        this.sortedRatingsData = response;
+        console.log(this.sortedRatingsData);
+      }
+    })
   }
 
 // End of Rating api Methods
