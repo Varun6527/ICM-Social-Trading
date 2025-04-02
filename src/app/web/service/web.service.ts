@@ -502,6 +502,12 @@ export class WebService extends BaseService {
   getRatingData(data: any) {
     let url = `${this.constantVar?.http_Api_Url.rating.get_data}/${data.ratingId}`;
     delete data['ratingId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
+
+  getRatingDataWithPagination(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.get_data}/${data.ratingId}`;
+    delete data['ratingId'];
     return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data).pipe(
       switchMap((ratingsData: any) => {
         const accountIdsToFetch = new Set<string>();
@@ -553,15 +559,20 @@ export class WebService extends BaseService {
   }
 
   fetchAndSetTradingDataForAllUser(widget_key: any, ratingId: any) {
-    let param = {
-      widget_key: widget_key,
-      ratingId: ratingId
-    };
-    this.getSortedRatingsTradingDetails(param).subscribe({
-      next: (response)=>  {
-        this.sortedRatingsData = response;
-        console.log(this.sortedRatingsData);
-      }
+    return new Promise<void>((resolve)=>{
+      let param = {
+        widget_key: widget_key,
+        ratingId: ratingId
+      };
+      this.getSortedRatingsTradingDetails(param).subscribe({
+        next: (response)=>  {
+          this.sortedRatingsData = response;
+          resolve();
+        },
+        error: (errorObj) => {
+          resolve();
+        }
+      })
     })
   }
 
