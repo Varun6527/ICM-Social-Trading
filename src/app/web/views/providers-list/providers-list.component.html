@@ -22,10 +22,17 @@
                             </div>
                         </div> -->
                         <div class="d-flex g-20">
-                            <mat-form-field class="search-provider-field" appearance="outline">
-                                <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
-                                <input type="text" matInput>
-                            </mat-form-field>
+                            <form [formGroup]="mySearchForm">
+                                <mat-form-field class="search-provider-field" appearance="outline">
+                                    <mat-label>{{"PROVIDERS_LIST.Search"|translate}}</mat-label>
+                                    <input type="text" formControlName="providerObj" matInput [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="goToProviderRatingProfilePage()">
+                                        @for (option of filteredOptions | async; track option) {
+                                        <mat-option [value]="option">{{option.accountName}}</mat-option>
+                                        }
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </form>
                             <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='cards' ? 'secondary-btn-active':''" (click)="switchMode('cards', true)">
                                 <img src="../../../../assets/icons/gridIcon.svg" />
                             </button>
@@ -55,10 +62,24 @@
                                         </div>
                                         <div class="info d-flex align-center justify-space-between g-10">
                                             <img width="30" height="30" [src]="rating.countryFlagUrl" />
-                                            <a href="javascript:void(0)">
-                                                <img (click)="toggleWatchList(rating)" width="20" height="20" 
+                                            <a href="javascript:void(0)" [ngClass]="{'btn-disable': disableWatchListBtn}">
+                                                <img #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" *ngIf="rating.isWatchListed"
+                                                 (click)="openWatchListWarnMenu(menuTrigger)" width="20" height="20" 
+                                                [src]="rating.isWatchListed ? '../../../../assets/icons/selected-saveIcon.png' : '../../../../assets/icons/saveIcon.png'" />
+
+                                                <img *ngIf="!rating.isWatchListed"
+                                                 (click)="toggleWatchList(rating)" width="20" height="20" 
                                                 [src]="rating.isWatchListed ? '../../../../assets/icons/selected-saveIcon.png' : '../../../../assets/icons/saveIcon.png'" />
                                             </a>
+                                            <mat-menu #menu="matMenu" class="watchlist-warn-menu">
+                                                <p class="pb-20">
+                                                    Please note: removing account from watchlist will reset its watch statistic. Please confirm removing {{rating.accountName}} from watchlist.
+                                                </p>
+                                                <div class="d-flex justify-space-between">
+                                                  <button mat-button class="secondary-btn">Cancel</button>
+                                                  <button mat-button color="warn" class="primary-btn" (click)="toggleWatchList(rating)">Confirm</button>
+                                                </div>
+                                              </mat-menu>
                                         </div>
                                     </div>
                                     <div class="main">

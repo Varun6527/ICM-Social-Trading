@@ -446,6 +446,12 @@ export class WebService extends BaseService {
     return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
   }
 
+  updateWatchListedProviderData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.watchListed_data}?widget_key=${data.widget_key}`;
+    delete data['widget_key'];
+    return this.sendHttpPostAjaxRequest(`${this.RATING_SERVER}${url}`, data);
+  }
+
   getInitialProviderListPageData(data: any) {
     const watchListedProvider$ = this.getWatchListedProviderData(data).pipe(catchError(error => of({ error })));
     const widgetBrief$ = this.getRatingBriefWidgetData(data).pipe(catchError(error => of({ error })));
@@ -503,6 +509,7 @@ export class WebService extends BaseService {
       let winRatio = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
       winRatio = parseFloat(winRatio.toFixed(2))
       return {
+        accountName: item.accountName,
         accountId: item.accountId,
         totalTrades,
         winRatio
