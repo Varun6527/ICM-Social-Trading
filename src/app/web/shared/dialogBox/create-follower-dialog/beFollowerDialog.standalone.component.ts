@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { WebService } from '../../../service/web.service';
@@ -32,7 +32,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
   
     @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   
-    constructor(private cdr: ChangeDetectorRef, private _webService: WebService, private fb: FormBuilder, public dialogRef: MatDialogRef<BeFollowerDialogStandAloneComponent>) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef, private _webService: WebService, private fb: FormBuilder, public dialogRef: MatDialogRef<BeFollowerDialogStandAloneComponent>) {
       //Setup ReactiveForm for Create Provider
       this.createFollowerForm = this.fb.group({
         accountId: ['', [Validators.required]],
@@ -48,6 +48,14 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
     ngOnInit() {
       this.setProvidersAutoComplete();
       this.onProviderObjEmpty();
+    }
+
+    setProviderObj() {
+      if(this.data) {
+        this.createFollowerForm.controls['providerObj'].setValue(this.data);
+        this.createFollowerForm.controls['providerObj'].updateValueAndValidity();
+        this.getOffersOfProvider();
+      }
     }
 
     onProviderObjEmpty() {
@@ -91,6 +99,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
       this._webService.getAllProvidersData().subscribe({
         next: (response: any) => {
           this.providersData = response.items.filter((o: any) => o.hasPublicOffers).map((o: any) => { return { nickName: o.nickname, id: o.id, visibility: o.visibility } });
+          this.setProviderObj();
         },
         error: (errorObj) => {
           this.showErrorWarnMessage(errorObj?.error?.errorMessage);

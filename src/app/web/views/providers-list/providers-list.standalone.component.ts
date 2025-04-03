@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { StrategyCellRendererStandAloneComponent } from '../../shared/cell-renderer/strategy-cell-renderer/strategy-cell-renderer.standalone.component';
 import { ChartCellRendererStandAloneComponent } from '../../shared/cell-renderer/chart-cell-renderer/chart-cell-renderer.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
@@ -20,13 +20,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, Observable, startWith } from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
+import { BeFollowerDialogStandAloneComponent } from '../../shared/dialogBox/create-follower-dialog/beFollowerDialog.standalone.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-providers-list',
   templateUrl: './providers-list.component.html',
   styleUrl: './providers-list.component.scss',
   standalone: true,
-  imports: [NgApexchartsModule, RouterModule, MatMenuModule, CommonModule, ReactiveFormsModule, MatAutocompleteModule, RouterModule, MatCardModule, MatTabsModule, MatInputModule, CommonAgGridStandAloneComponent, TranslateModule, ShowErrorStandAloneComponent]
+  imports: [NgApexchartsModule, RouterModule, MatDialogModule, MatMenuModule, CommonModule, ReactiveFormsModule, MatAutocompleteModule, RouterModule, MatCardModule, MatTabsModule, MatInputModule, CommonAgGridStandAloneComponent, TranslateModule, ShowErrorStandAloneComponent]
 })
 export class ProvidersListStanAloneComponent {
   selectedTabIndex: number = 0;
@@ -57,6 +59,7 @@ export class ProvidersListStanAloneComponent {
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   @ViewChild('observer', { static: false }) observerElement!: ElementRef;
   IConstant: ConstantVariable = new ConstantVariable();
+  readonly beFollowerDialog = inject(MatDialog);
 
   constructor(private _webService: WebService, private _router: Router, private _authService: AuthService) {
     
@@ -271,7 +274,20 @@ export class ProvidersListStanAloneComponent {
   recieveChildrenEmitter(event: any) {
     if(event['action'] == 'open_copy_trade_popup') {
       this.openCopyTradePopup(event.data);
+    } else if (event['action'] == 'follower_created') {
+      this.refreshUserProfileAndRedirectToProviderOrFollowerProfile(event.data);
+      this.beFollowerDialog.closeAll();
     }
+  }
+
+  refreshUserProfileAndRedirectToProviderOrFollowerProfile(response: any) {
+    this._webService.setOrRefreshUserProfileData((result: any)=>{
+      if(result.status) {
+        this._webService.emitOnWebDataChange({action: "refresh_sidenav_menu_options", callback: () => {
+            this._router.navigate([`/portal/subscriptions/${response.id}`]);
+        }});
+      }
+    })
   }
 
   getFiltersDataOfTab() {
@@ -498,7 +514,11 @@ export class ProvidersListStanAloneComponent {
   }
 
   openCopyTradePopup(ratingObj: any) {
-
+    this.beFollowerDialog.open(BeFollowerDialogStandAloneComponent, {
+      panelClass: 'beFollower-dialog',
+      data: {id: ratingObj.accountId, nickName: ratingObj.accountName, visibility: ratingObj.account.isPublic ? "Public" : "Private" }
+    });
+    this.beFollowerDialog.afterAllClosed.subscribe(()=>{});
   }
 
   ngOnDestroy() {
