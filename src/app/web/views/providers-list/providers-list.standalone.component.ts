@@ -41,15 +41,9 @@ export class ProvidersListStanAloneComponent {
   ratingsGridConfig: any = {};
   showRatingsGridLoader: boolean = false;
   showMoreDataLoader: boolean = false;
-  paginationConfigObj: any = {
-    totalCount: 6,
-    currentPage: 1,
-    pageSize: 6,
-    totalPages: 0,
-    skip: 0,
-    top: 6
-  };
+  paginationConfigObj: any = {};
   scrollBottomobserver!: IntersectionObserver;
+  customFilterTabSortedData: { sortedByWinRatio: any[], sortedByTotalTrades: any[] } = {sortedByWinRatio: [], sortedByTotalTrades: []};;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   @ViewChild('observer', { static: false }) observerElement!: ElementRef;
@@ -92,15 +86,26 @@ export class ProvidersListStanAloneComponent {
     param['$orderby'] = this.tabFilterLabels[this.selectedTabIndex].orderBy;
     param['$count'] = true;
     param['widget_key'] = this.widget_key;
-    if(this.viewMode == "cards") {
-      param['$skip'] = this.paginationConfigObj.skip;
-      param['$top'] = this.paginationConfigObj.top;
-    }
+    param['$skip'] = this.paginationConfigObj.skip;
+    param['$top'] = this.paginationConfigObj.top;
     param['$filter'] = this.getFiltersDataOfTab();
     return param;
   }
 
   removeEmptyParamKeys(obj: any) {
+    //For Table View Need to fetch All data. becuase it has client side pagination
+    if(this.viewMode == "table") { 
+      delete obj['$skip'];
+      delete obj['$top'];
+    }
+    //End
+    //If filter have some data then we need to remove skip top property
+    if(obj['$filter']) {
+      delete obj['$skip'];
+      delete obj['$top'];
+    }
+    //End
+    
     return Object.fromEntries(
       Object.entries(obj).filter(([_, value]) => value !== null && value !== undefined && value !== "")
     );
@@ -108,11 +113,8 @@ export class ProvidersListStanAloneComponent {
 
   getRatingsData(loadInitalRatingData: boolean) {
     return new Promise<void>((resolve, reject)=> {
-
       if(loadInitalRatingData) this.showRatingLoader = true;
-
-      let param = this.getRatingParam();
-      param = this.removeEmptyParamKeys(param);
+      let param = this.removeEmptyParamKeys(this.getRatingParam());
       this._webService.getRatingDataWithPagination(param).subscribe({
         next: (response: any) => {
           this.paginationConfigObj.totalCount = response.count;
@@ -226,18 +228,6 @@ export class ProvidersListStanAloneComponent {
     this.setupGridConfig(colDefs);
   }
 
-  getWatchListFilter() {
-    if(this.watchListAccountsArr.length > 0) {
-      let str = "";
-      this.watchListAccountsArr.forEach(({accountId}: any, indx: any)=>{
-          str += `(accountId eq ${accountId}) or `;
-      });
-      return str.slice(0, -4);
-    } else {
-      return "";
-    }
-  }
-
   // initializeSubFilterLabels() {
   //   this.subFilterLabels = [
   //     { type: 'any', label: 'PROVIDERS_LIST.Any', active: false },
@@ -259,7 +249,7 @@ export class ProvidersListStanAloneComponent {
       let result = await this.getRatingsData(isInitialState);
     } else if(type == "table") {
       if(isInitialState) {
-        this.scrollBottomobserver.disconnect();
+        this.removeIntersectionOberver();
         this.setupRatingConfig();
         this.resetPaginationConfig();
       }
@@ -300,21 +290,45 @@ export class ProvidersListStanAloneComponent {
     return "";
   }
 
+  getWatchListFilter() {
+    if (this.watchListAccountsArr.length == 0) return "";
+    let str = "", arr = this.watchListAccountsArr;
+    if (this.viewMode == "cards") {
+      arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
+    } else if (this.viewMode == "table") {
+      arr = this.watchListAccountsArr;
+    }
+    arr.forEach(({ accountId }: any, indx: any) => {
+      str += `(accountId eq ${accountId}) or `;
+    });
+    return str.slice(0, -4);
+  }
+
   getMostActiveProvider() {
-    if(this._webService.sortedRatingsData.sortedByTotalTrades.length == 0) return "";
-    let str = "", arr = [];
-    this._webService.sortedRatingsData.sortedByTotalTrades.forEach((obj: any)=>{
+    if(this.customFilterTabSortedData.sortedByTotalTrades.length == 0) return "";
+    let str = "", arr = this.customFilterTabSortedData.sortedByTotalTrades;
+    if(this.viewMode == "cards") {
+      arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
+    } else if(this.viewMode == "table") {
+      arr = this.customFilterTabSortedData.sortedByTotalTrades;
+    }
+      arr.forEach((obj: any)=>{
       str += `(accountId eq ${obj.accountId}) or `;
-    })
+    });
     return str.slice(0, -4);
   }
 
   getHighWinRatioProvider() {
-    if(this._webService.sortedRatingsData.sortedByWinRatio.length == 0) return "";
-    let str = "", arr = [];
-    this._webService.sortedRatingsData.sortedByWinRatio.forEach((obj: any) => {
+    if(this.customFilterTabSortedData.sortedByWinRatio.length == 0) return "";
+    let str = "", arr: any = this.customFilterTabSortedData.sortedByWinRatio;
+    if(this.viewMode == "cards") {
+      arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
+    } else if(this.viewMode == "table") {
+      arr = this.customFilterTabSortedData.sortedByWinRatio;
+    }
+    arr.forEach((obj: any) => {
       str += `(accountId eq ${obj.accountId}) or `;
-    })
+    });
     return str.slice(0, -4);
   }
 
@@ -323,8 +337,8 @@ export class ProvidersListStanAloneComponent {
       { type: 'all', label: 'PROVIDERS_LIST.All', orderBy: "rank asc"},
       { type: 'watchlist', label: 'PROVIDERS_LIST.Watchlist', orderBy: "rank asc" },
       { type: 'mostPopular', label: 'PROVIDERS_LIST.Most Popular', orderBy: "investors desc, rank asc" },
-      { type: 'mostActive', label: 'PROVIDERS_PROFILE.Most Active', orderBy: "rank asc" },
-      { type: 'highWinRatio', label: 'PROVIDERS_LIST.High Win Ratio', orderBy: "rank asc" },
+      { type: 'mostActive', label: 'PROVIDERS_PROFILE.Most Active', orderBy: "" },
+      { type: 'highWinRatio', label: 'PROVIDERS_LIST.High Win Ratio', orderBy: "" },
       { type: 'lowFees', label: 'PROVIDERS_LIST.Low Fees', orderBy: "performanceFee asc, rank asc" },
     ];
   }
@@ -332,12 +346,14 @@ export class ProvidersListStanAloneComponent {
   setupIntersectionObserver() {
     this.scrollBottomobserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        if(this.showMoreDataLoader) return;
-        let flag = this.updateNextPaginationParamAndGetDataLoadFlag();
+        if(this.showMoreDataLoader || this.showRatingLoader) return;
+        this.showMoreDataLoader = true;
+        this.setTotalCountIfCustomFiltersTab();
+        let flag = this.updateNextPaginationParamAndGetDataLoadFlag(this.paginationConfigObj);
         if(flag) {
-          this.showMoreDataLoader = true;
           this.switchMode(this.viewMode, false);
         } else {
+          this.showMoreDataLoader = false;
           return;
         }
       }
@@ -347,17 +363,32 @@ export class ProvidersListStanAloneComponent {
     }
   }
 
-  updateNextPaginationParamAndGetDataLoadFlag() {
-    let paginationObj = this.generatePaginationParams(this.paginationConfigObj.totalCount, this.paginationConfigObj.pageSize);
-    this.paginationConfigObj.totalPages = paginationObj.totalPages;
-    this.paginationConfigObj.currentPage = this.paginationConfigObj.currentPage + 1;
-    let skipTopObj: any = paginationObj.getParams(this.paginationConfigObj.currentPage);
+  removeIntersectionOberver() {
+    this.scrollBottomobserver.disconnect();
+  }
+
+  setTotalCountIfCustomFiltersTab() {
+    let type = this.tabFilterLabels[this.selectedTabIndex].type;
+    if(type == "watchlist") {
+      this.paginationConfigObj.totalCount = this.watchListAccountsArr.length;
+    } else if(type == "mostActive") {
+      this.paginationConfigObj.totalCount = this.customFilterTabSortedData.sortedByWinRatio.length;
+    } else if(type == "highWinRatio") {
+      this.paginationConfigObj.totalCount = this.customFilterTabSortedData.sortedByTotalTrades.length;
+    }
+  }
+
+  updateNextPaginationParamAndGetDataLoadFlag(paginationConfigObj: any) {
+    let paginationObj = this.generatePaginationParams(paginationConfigObj.totalCount, paginationConfigObj.pageSize);
+    paginationConfigObj.totalPages = paginationObj.totalPages;
+    paginationConfigObj.currentPage = paginationConfigObj.currentPage + 1;
+    let skipTopObj: any = paginationObj.getParams(paginationConfigObj.currentPage);
     if(skipTopObj) {
-      this.paginationConfigObj.skip = skipTopObj.skip;
-      this.paginationConfigObj.top = skipTopObj.top;
+      paginationConfigObj.skip = skipTopObj.skip;
+      paginationConfigObj.top = skipTopObj.top;
       return true;
     } else {
-      this.paginationConfigObj.currentPage = this.paginationConfigObj.currentPage - 1;
+      paginationConfigObj.currentPage = paginationConfigObj.currentPage - 1;
       return false;
     }
   }
@@ -386,6 +417,7 @@ export class ProvidersListStanAloneComponent {
       this._webService.getSortedRatingsTradingDetails(param).subscribe({
         next: (response)=>  {
           this._webService.sortedRatingsData = response;
+          this.customFilterTabSortedData = response;
           this.showPageLoader = false;
           resolve();
         },
