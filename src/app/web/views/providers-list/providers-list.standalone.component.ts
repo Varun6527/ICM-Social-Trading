@@ -293,7 +293,7 @@ export class ProvidersListStanAloneComponent {
   }
 
   getWatchListFilter() {
-    if (this.watchListAccountsArr.length == 0) return "";
+    if (this.watchListAccountsArr.length == 0) return "(accountId eq null)";
     let str = "", arr = this.watchListAccountsArr;
     if (this.viewMode == "cards") {
       arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
@@ -307,7 +307,7 @@ export class ProvidersListStanAloneComponent {
   }
 
   getMostActiveProvider() {
-    if(this.customFilterTabSortedData.sortedByTotalTrades.length == 0) return "";
+    if(this.customFilterTabSortedData.sortedByTotalTrades.length == 0) return "(accountId eq null)";
     let str = "", arr = this.customFilterTabSortedData.sortedByTotalTrades;
     if(this.viewMode == "cards") {
       arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
@@ -321,7 +321,7 @@ export class ProvidersListStanAloneComponent {
   }
 
   getHighWinRatioProvider() {
-    if(this.customFilterTabSortedData.sortedByWinRatio.length == 0) return "";
+    if(this.customFilterTabSortedData.sortedByWinRatio.length == 0) return "(accountId eq null)";
     let str = "", arr: any = this.customFilterTabSortedData.sortedByWinRatio;
     if(this.viewMode == "cards") {
       arr = arr.slice(this.paginationConfigObj.skip, this.paginationConfigObj.skip + this.paginationConfigObj.top);
