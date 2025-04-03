@@ -426,7 +426,18 @@ export class WebService extends BaseService {
     let url = `${this.constantVar?.http_Api_Url.rating.search}`;
     url = url.replace(':ratingId', data.ratingId);
     delete data['ratingId'];
-    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data).pipe(
+      map((response: any) => ({
+        ...response,
+        items: response.items.map((item: any) => ({
+          wi: item.wi,
+          accountId: item.ai,
+          accountName: item.nm,
+          pi: item.pi,
+          upd: item.upd
+        }))
+      }))
+    )
   }
 
   getWatchListedProviderData(data: any) {
@@ -452,7 +463,7 @@ export class WebService extends BaseService {
   }
 
   getSortedRatingsTradingDetails(data: any) {
-    let getRatingsData = this.getRatingData(data);
+    let getRatingsData = this.getRatingSearchData(data);
     return getRatingsData.pipe(
       map((ratingsData: any) => {
         const accountIds = [...new Set(ratingsData.items.map((rx: any) => rx.accountId))]; // Get unique accountIds
@@ -545,7 +556,7 @@ export class WebService extends BaseService {
         // Check if winRatio already exists in sortedRatingsData
         const existingData = this.sortedRatingsData?.sortedByWinRatio.find((data: any) => data.accountId === rx.accountId);
         if ((existingData?.winRatio >= 0)) {
-          return { ...rx, winRatio: parseFloat(existingData.winRatio.toFixed(2)) };
+          return { ...rx, winRatio: parseFloat(existingData.winRatio.toFixed(2)), totalTrades: existingData.totalTrades };
         }
         // Otherwise, calculate winRatio from fetched account details
         const trading = tradingDetails.find(acc => acc.id === rx.accountId);
@@ -553,7 +564,7 @@ export class WebService extends BaseService {
         const profitableTrades = trading?.summary?.won?.count || 0;
         let winRatio = totalTrades > 0 ? (profitableTrades / totalTrades) * 100 : 0;
         winRatio = parseFloat(winRatio.toFixed(2))
-        return { ...rx, winRatio };
+        return { ...rx, winRatio, totalTrades };
       })
     };
   }
