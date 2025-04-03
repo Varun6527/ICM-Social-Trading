@@ -459,7 +459,11 @@ export class WebService extends BaseService {
     let url = `${this.constantVar?.http_Api_Url.rating.tradingData}?widget_key=${data.widget_key}`;
     url = url.replace(':accountId', data.accountId);
     delete data['accountId'];
-    return this.sendHttpGetRequest(`${this.RATING_SERVER}${url}`, "");
+    return this.sendHttpGetRequest(`${this.RATING_SERVER}${url}`, "").pipe(
+      catchError(error => {
+        return of({id: data.accountId}); // Return an empty obj instead of failing
+      })
+    );
   }
 
   getSortedRatingsTradingDetails(data: any) {
