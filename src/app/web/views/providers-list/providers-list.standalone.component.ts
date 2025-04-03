@@ -8,7 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { WebService } from '../../service/web.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
@@ -16,13 +16,17 @@ import { RatingUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { map, Observable, startWith } from 'rxjs';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-providers-list',
   templateUrl: './providers-list.component.html',
   styleUrl: './providers-list.component.scss',
   standalone: true,
-  imports: [NgApexchartsModule, CommonModule, RouterModule, MatCardModule, MatTabsModule, MatInputModule, CommonAgGridStandAloneComponent, TranslateModule, ShowErrorStandAloneComponent]
+  imports: [NgApexchartsModule, RouterModule, MatMenuModule, CommonModule, ReactiveFormsModule, MatAutocompleteModule, RouterModule, MatCardModule, MatTabsModule, MatInputModule, CommonAgGridStandAloneComponent, TranslateModule, ShowErrorStandAloneComponent]
 })
 export class ProvidersListStanAloneComponent {
   selectedTabIndex: number = 0;
@@ -43,13 +47,18 @@ export class ProvidersListStanAloneComponent {
   showMoreDataLoader: boolean = false;
   paginationConfigObj: any = {};
   scrollBottomobserver!: IntersectionObserver;
-  customFilterTabSortedData: { sortedByWinRatio: any[], sortedByTotalTrades: any[] } = {sortedByWinRatio: [], sortedByTotalTrades: []};;
+  customFilterTabSortedData: { sortedByWinRatio: any[], sortedByTotalTrades: any[] } = {sortedByWinRatio: [], sortedByTotalTrades: []};
+  filteredOptions: Observable<any[]> | undefined;
+  mySearchForm = new FormGroup({
+    providerObj: new FormControl(null) 
+  });
+  disableWatchListBtn: boolean = false;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   @ViewChild('observer', { static: false }) observerElement!: ElementRef;
   IConstant: ConstantVariable = new ConstantVariable();
 
-  constructor(private _webService: WebService, private _authService: AuthService) {
+  constructor(private _webService: WebService, private _router: Router, private _authService: AuthService) {
     
     this._webService.subscribeOnWebDataChange("ProvidersListStanAloneComponent", (event: any)=>{
       this.recieveChildrenEmitter(event);
@@ -67,6 +76,7 @@ export class ProvidersListStanAloneComponent {
     this.initializeFilterTabLabels();
     // this.initializeSubFilterLabels();
     this.switchMode("cards", true);
+    this.setProvidersSearchAutoComplete();
   }
 
   setClientSideSorting(data: any) {
@@ -207,7 +217,7 @@ export class ProvidersListStanAloneComponent {
       pageSizeDropdownArr: [25, 50, 100],
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
-      enablePagination: false,
+      enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
       rowModelType: 'clientSide',
       rowHeight: 70
@@ -256,14 +266,6 @@ export class ProvidersListStanAloneComponent {
       this.viewMode = type;
       let result = await this.getRatingsData(isInitialState);
     }
-  }
-
-  toggleWatchList(ratingObj: any) {
-
-  }
-
-  openCopyTradePopup(ratingObj: any) {
-
   }
 
   recieveChildrenEmitter(event: any) {
@@ -422,11 +424,81 @@ export class ProvidersListStanAloneComponent {
           resolve();
         },
         error: (errorObj) => {
+          this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
           this.showPageLoader = false;
           resolve();
         }
       })
     })
+  }
+
+  displayFn(provider: any): string {
+    return provider && provider.accountName ? provider.accountName : '';
+  }
+  
+  setProvidersSearchAutoComplete() {
+    this.filteredOptions = this.mySearchForm.controls['providerObj'].valueChanges.pipe(
+      startWith(''),
+      map((value: any) => {
+        const filterValue = typeof value === 'string' ? value.toLowerCase() : value?.accountName.toLowerCase();
+        return this.customFilterTabSortedData.sortedByTotalTrades.filter((data: any) => data.accountName.toLowerCase().includes(filterValue))
+      })
+    );
+  }
+
+  goToProviderRatingProfilePage() {
+    let obj: any = this.mySearchForm.controls['providerObj'].value;
+    this._router.navigate([`/portal/ratings/${obj.accountId}`]);
+  }
+
+  toggleWatchList(ratingObj: any) {
+    if(ratingObj.isWatchListed) {
+      this.watchListAccountsArr = this.watchListAccountsArr.filter((o: any) => o.accountId !== ratingObj.accountId);
+    } else {
+      let obj = {accountId: ratingObj.accountId, from: new Date().toISOString().split("T")[0]};
+      this.watchListAccountsArr.push(obj);
+    }
+    this.updateWatchListData(ratingObj);
+  }
+
+  updateWatchListData(ratingObj: any) {
+    this.disableWatchListBtn = true;
+    let param = {
+      id: this.watchListId,
+      watch: {values: this.watchListAccountsArr.map((o: any) => {return {...o, from: o.from.split("T")[0] }})},
+      widget_key: this.widget_key
+    };
+    this._webService.updateWatchListedProviderData(param).subscribe({
+      next: ()=> {
+        ratingObj.isWatchListed = !ratingObj.isWatchListed;
+        if(ratingObj.isWatchListed) {
+          this.showSuccessPopupMsg("Account has been added to watchlist")
+        } else {
+          this.removeDeletedWatchListedData(ratingObj)
+          
+          this.showSuccessPopupMsg("Account has been removed from watchlist")
+        }
+        this.disableWatchListBtn = false;
+      },
+      error: (errorObj) => {
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+        this.disableWatchListBtn = false;
+      }
+    })
+  }
+
+  removeDeletedWatchListedData(ratingObj: any) {
+    if(this.tabFilterLabels[this.selectedTabIndex].type == "watchlist") {
+      this.ratingsData = this.ratingsData.filter((o: any) => o.accountId !== ratingObj.accountId);
+    }
+  }
+
+  openWatchListWarnMenu(trigger: any) {
+    trigger?.openMenu();
+  }
+
+  openCopyTradePopup(ratingObj: any) {
+
   }
 
   ngOnDestroy() {
