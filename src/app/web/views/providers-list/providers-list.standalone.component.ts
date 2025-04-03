@@ -207,7 +207,7 @@ export class ProvidersListStanAloneComponent {
       pageSizeDropdownArr: [25, 50, 100],
       initialSelectedPageSize: 25,
       columnDefination: colDefs,
-      enablePagination: false,
+      enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
       rowModelType: 'clientSide',
       rowHeight: 70
