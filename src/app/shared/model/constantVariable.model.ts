@@ -91,7 +91,9 @@ export class ConstantVariable {
         OfferJoinLinkDuplicated: "Join link key duplicated",
         SubscriptionDuplicated: "This subscription already exists in the system",
         SubscriptionRiskLevelAlreadyReached: "The rule cannot be saved: this threshold is already reached. Please set up a higher threshold in order to save the rule",
-        SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed."
+        SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed.",
+        SubscriptionGroupNotAllowed: "Unable to subscribe to provider using the selected trading account. Try to use another trading account.",
+        OfferNotFound: "No Public Offer found for this provider"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

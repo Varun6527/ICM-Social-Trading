@@ -29,6 +29,7 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
     filteredOptions: Observable<any[]> | undefined;
     IConstant: any;
     showLoader:boolean = false;
+    noOfferData: boolean = false;
   
     @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   
@@ -114,9 +115,16 @@ import { IcmLoadingOverlayDirective } from '../../../../shared/directive/icmload
       this._webService.getOffersOfProvider(param).subscribe({
         next: (response: any) => {
           this.offersArr = response.items;
-          if(this.offersArr.length > 0)
-          this.getControl['offerObj'].setValue(this.offersArr[0]);
-          this.getControl['offerObj'].updateValueAndValidity();
+          if(this.offersArr.length > 0) {
+            this.getControl['offerObj'].setValidators(Validators.required);
+            this.getControl['offerObj'].setValue(this.offersArr[0]);
+            this.getControl['offerObj'].updateValueAndValidity();
+            this.noOfferData = false;
+          } else {
+            this.getControl['offerObj'].removeValidators(Validators.required);
+            this.getControl['offerObj'].updateValueAndValidity();
+            this.noOfferData = true;
+          }
         },
         error: (errorObj) => {
           this.showErrorWarnMessage(errorObj?.error?.errorMessage);
