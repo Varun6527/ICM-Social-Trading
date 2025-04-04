@@ -58,7 +58,7 @@ export class UploadAvatarDialog {
     this._webService.updateProviderData(param).subscribe({
       next: (response: any) => {
         this.showSuccessPopupMsg("Provider has been updated");
-        this._webService.emitOnWebDataChange({action: "refresh_provider_image"});
+        this._webService.emitOnWebDataChange({action: "refresh_provider_Sidebar"});
         this.dialogRef.close({action: "refresh_provider_data"});
         this.showLoader = false;
       },
@@ -79,7 +79,7 @@ export class UploadAvatarDialog {
     this._webService.uploadAvatar(param).subscribe({
       next: (response: any) => {
         this.showSuccessPopupMsg("Provider has been updated");
-        this._webService.emitOnWebDataChange({action: "refresh_provider_image"});
+        this._webService.emitOnWebDataChange({action: "refresh_provider_Sidebar"});
         this.dialogRef.close({action: "refresh_provider_data"});
         this.showLoader = false;
       },

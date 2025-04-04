@@ -13,13 +13,18 @@ import { ShowErrorStandAloneComponent } from '../../../shared/component/showerro
 import { ProvidersEarningModal, ProvidersOffersModal, FeesModal, PublishPostionModal, CopiedPostionModal } from '../../shared/ui-model/web.ui.model';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDialogStandAloneComponent } from '../../shared/dialogBox/filter-dialog/filter.dialog.standalone.component';
+import { DateAdapter, NativeDateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS } from '@angular/material/core';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
   standalone: true,
-  imports: [CommonModule, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatTabsModule, CommonAgGridStandAloneComponent, IcmDateRangePickerStandAloneComponent]
+  imports: [CommonModule, ShowErrorStandAloneComponent, TranslateModule, MatCardModule, MatTabsModule, CommonAgGridStandAloneComponent, IcmDateRangePickerStandAloneComponent],
+  providers: [ 
+    {provide: DateAdapter, useClass: NativeDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS}
+ ]
 })
 export class ReportsStandAloneComponent {
   isProvider: boolean = false;
