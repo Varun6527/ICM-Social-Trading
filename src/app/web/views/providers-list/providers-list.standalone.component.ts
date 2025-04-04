@@ -516,7 +516,7 @@ export class ProvidersListStanAloneComponent {
   openCopyTradePopup(ratingObj: any) {
     this.beFollowerDialog.open(BeFollowerDialogStandAloneComponent, {
       panelClass: 'beFollower-dialog',
-      data: {id: ratingObj.accountId, nickName: ratingObj.accountName, visibility: ratingObj.account.isPublic ? "Public" : "Private" }
+      data: {id: ratingObj.profileId, nickName: ratingObj.accountName, visibility: ratingObj.account.isPublic ? "Public" : "Private" }
     });
     this.beFollowerDialog.afterAllClosed.subscribe(()=>{});
   }

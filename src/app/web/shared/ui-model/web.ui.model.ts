@@ -632,6 +632,7 @@ export class RatingUiModal {
     winRatio: any;
     maxDrawdown: any;
     account: any;
+    profileId: any;
 
     constructor(obj: any, fileServer: string, ratingServer: string, watchListArr: any) {
        this.widgetId = obj.widgetId;
@@ -648,6 +649,7 @@ export class RatingUiModal {
        this.winRatio = obj.winRatio;
        this.maxDrawdown = obj.maxDrawdown;
        this.account = obj.account;
+       this.profileId = obj.profileId;
     }
 
     prepareRatingAvatarPath(path: string, fileServer: string) {
