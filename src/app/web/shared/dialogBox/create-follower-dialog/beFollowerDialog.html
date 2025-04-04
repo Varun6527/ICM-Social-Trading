@@ -40,13 +40,18 @@
                             [value]="obj">{{obj.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <p class="pb-10" *ngIf="!showError || !createFollowerForm.controls['offerObj'].errors?.['required']">
-                    {{'ACCOUNTS.SelectOfferOfProvider' | translate}}
-                </p>
-                <mat-error class="pb-10" *ngIf="showError && createFollowerForm.controls['offerObj'].errors?.['required']">
-                    {{'login.FieldRequired' | translate}}
-                </mat-error>
-
+                @if(!noOfferData) {
+                    <p class="pb-10" *ngIf="!showError || !createFollowerForm.controls['offerObj'].errors?.['required']">
+                        {{'ACCOUNTS.SelectOfferOfProvider' | translate}}
+                    </p>
+                    <mat-error class="pb-10" *ngIf="showError && createFollowerForm.controls['offerObj'].errors?.['required']">
+                        {{'login.FieldRequired' | translate}}
+                    </mat-error>
+                } @else {
+                    <p class="pb-10">
+                        <strong>{{'PROVIDERS_PROFILE.There are no public offers' | translate}}</strong>
+                    </p>
+                }
             </mat-dialog-content>
             <div class="d-flex justify-center g-20">
                 <button mat-dialog-close class="secondary-btn" (click)="closeCreateFollowerForm()">{{'COMMON.Cancel' | translate}}</button>
