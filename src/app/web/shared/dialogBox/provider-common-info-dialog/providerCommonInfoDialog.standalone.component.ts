@@ -83,6 +83,9 @@ export class ProviderCommonInfoDialog {
     this._webService.updateProviderData(param).subscribe({
       next: (response) => {
         this.showSuccessPopupMsg("Provider has been updated");
+        if(this.modelType == "common_info") {
+          this._webService.emitOnWebDataChange({action: "refresh_provider_Sidebar"});
+        }
         this.dialogRef.close({action: 'refresh_provider_data'});
         this.showLoader = false;
       },

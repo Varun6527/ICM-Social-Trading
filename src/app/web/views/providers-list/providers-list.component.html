@@ -73,18 +73,18 @@
                                             </a>
                                             <mat-menu #menu="matMenu" class="watchlist-warn-menu">
                                                 <p class="pb-20">
-                                                    Please note: removing account from watchlist will reset its watch statistic. Please confirm removing {{rating.accountName}} from watchlist.
+                                                    {{'PROVIDERS_PROFILE.WatchListWarnMenu' | translate:{accountName:rating.accountName} }}
                                                 </p>
                                                 <div class="d-flex justify-space-between">
-                                                  <button mat-button class="secondary-btn">Cancel</button>
-                                                  <button mat-button color="warn" class="primary-btn" (click)="toggleWatchList(rating)">Confirm</button>
+                                                  <button mat-button class="secondary-btn">{{"COMMON.Cancel"|translate}}</button>
+                                                  <button mat-button color="warn" class="primary-btn" (click)="toggleWatchList(rating)">{{"PROVIDERS_PROFILE.Confirm"|translate}}</button>
                                                 </div>
                                               </mat-menu>
                                         </div>
                                     </div>
                                     <div class="main">
                                         <div class="main-head pb-20 d-flex justify-space-between align-center">
-                                            <p class="title">Return 1M</p>
+                                            <p class="title">{{"PROVIDERS_PROFILE.Return 1M"|translate}}</p>
                                             <p class="{{rating.returnMonth >= 0 ? 'green-value' : 'red-value' }} d-flex align-center">
                                                 @if(rating.returnMonth >= 0) {
                                                     <img width="20" height="20" src="../../../../assets/icons/arrow-up.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%

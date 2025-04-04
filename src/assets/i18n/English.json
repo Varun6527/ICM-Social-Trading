@@ -374,7 +374,10 @@
         "Public providers are available to subscribe from the client portal or leaderboards": "Public providers are available to subscribe from the client portal or leaderboards",
         "Private providers are hidden and can be followed only via join links to their offers": "Private providers are hidden and can be followed only via join links to their offers",
         "Trading account collecting the performance fees paid by followers to the provider": "Trading account collecting the performance fees paid by followers to the provider",
-        "Most Active": "Most Active"
+        "Most Active": "Most Active",
+        "Confirm": "Confirm",
+        "WatchListWarnMenu": "Please note: removing account from watchlist will reset its watch statistic. Please confirm removing {{accountName}} from watchlist.",
+        "Return 1M": "Return 1M"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",
