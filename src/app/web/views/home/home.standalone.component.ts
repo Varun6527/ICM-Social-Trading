@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { TypeCellRendererStandAloneComponent } from '../../shared/cell-renderer/
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { AgGridConfig, CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
 import { ProviderFollowerHeaderCardsStandaloneComponent } from '../../shared/provider-follower-header-cards/provider.follower.header.cards.standalone.component';
+import { AuthService } from '../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -34,24 +35,41 @@ export class HomeStandAloneComponent {
   providerDetails: any = [];
   followerDetails: any = [];
   tradingAccountDetails: any = [];
-  role: any = {};
+  isProvider: boolean = false;
+  isFollower: boolean = false;
+  isRatingModuleEnabled: boolean = false;
   selectAccountStatus: string = "Active";
   gridData: any = [];
   gridConfig!: AgGridConfig;
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
+  @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
   readonly beProviderDialog = inject(MatDialog);
   readonly beFollowerDialog = inject(MatDialog);
   readonly commonDialog = inject(MatDialog);
 
-  constructor(private _webService: WebService, private _router: Router) {
-    this.role['hasProvider'] = this._webService.isProviderAccount;
-    this.role['hasFollower'] = this._webService.isSubscriptionAccount;
+  constructor(private _webService: WebService, private _router: Router, private _authService: AuthService) {
+    this.isProvider = this._webService.isProviderAccount;
+    this.isFollower = this._webService.isSubscriptionAccount;
+    this.isRatingModuleEnabled = this._authService.userConfig?.ratings?.integrationMode?.toLowerCase() == "embeddedpage";
     this.getHomePageData();
     this._webService.subscribeOnWebDataChange('HomeStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(()=>{
+      this.loadRatingModule();
+    }, 500);
+  }
+
+  async loadRatingModule() {
+    if(this.isRatingModuleEnabled && this.isFollower) {
+      const { ProvidersListStanAloneComponent } = await import('../providers-list/providers-list.standalone.component');
+      this.container.createComponent(ProvidersListStanAloneComponent);
+    }
   }
 
   recieveChildrenEmitter(event: any) {
@@ -81,9 +99,9 @@ export class HomeStandAloneComponent {
   }
 
   getHomePageData() {
-    if (this.role['hasProvider']) {
+    if (this.isProvider) {
       this.getProviderTableData();
-    } else if (this.role['hasFollower']) {
+    } else if (this.isFollower) {
       this.getFollowersTableData();
     } else {
       this.getTradingAccountData("showPageLoader");
@@ -159,10 +177,10 @@ export class HomeStandAloneComponent {
   }
 
   setUpAgGridOfHomePage() {
-    if (this.role['hasProvider']) {
+    if (this.isProvider) {
       this.setupProviderGridConfig();
       this.gridData = this.providerDetails;
-    } else if (this.role['hasFollower']) {
+    } else if (this.isFollower) {
       this.setupFollowerGridConfig();
       this.gridData = this.followerDetails;
     } else {
