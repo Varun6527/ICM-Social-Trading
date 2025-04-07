@@ -73,12 +73,14 @@
                         <img width="40" src="../../../../assets/icons/default-user-profile.png" />
                     }
                     <div class="user-name">
-                        @if(isProvider) {
-                            <p>{{providerData?.nickname}}</p>
+                        @if(isProvider && isFollower) {
+                            <p>{{providerData?.nickname ? providerData?.nickname : "Multi Purpose User (Provider & Follower)"}}</p>
+                        } @else if(isProvider) {
+                            <p>{{providerData?.nickname ? providerData?.nickname : "Provider User"}}</p>
                         } @else if(isFollower) {
                             <p>Follower</p>
                         } @else {
-                            <p>New User</p>
+                            <p>New User (No Roles Assigned)</p>
                         }
                         <span>{{clientSettings?.settings?.email}}</span>
                     </div>
