@@ -15,13 +15,13 @@
                         <p>{{"SIDEBAR.Home"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/providers'" *ngIf="showProvider">
+                <a [routerLink]="'/portal/providers'" *ngIf="isProvider">
                     <li id="provider-menu-relative" routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Providers"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/subscriptions'" *ngIf="showSubscription">
+                <a [routerLink]="'/portal/subscriptions'" *ngIf="isFollower">
                     <li routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Portfolio"|translate}}</p>
@@ -46,7 +46,7 @@
                         <p>{{"SIDEBAR.Providers"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="(showProvider || showSubscription) && showReportsPage">
+                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="(isProvider || isFollower) && showReportsPage">
                     <li routerLinkActive="menu-active">
                         <img class="reports-icon" src="../../../../assets/icons/file.png" />
                         <p>{{"SIDEBAR.Reports"|translate}}</p>
@@ -67,15 +67,15 @@
                     <a (click)="openSettingsPopup()" href="javascript:void(0)" class="anchor-decore-none">{{"SIDEBAR.Settings"|translate}}</a>
                 </li>
                 <li class="logout-item">
-                    @if(showProvider && providerData && providerData?.public?.avatarPath) {
+                    @if(isProvider && providerData && providerData?.public?.avatarPath) {
                         <img width="40" height="40" [src]="providerData.public.avatarPath" />
                     } @else {
                         <img width="40" src="../../../../assets/icons/default-user-profile.png" />
                     }
                     <div class="user-name">
-                        @if(showProvider) {
+                        @if(isProvider) {
                             <p>{{providerData?.nickname}}</p>
-                        } @else if(showSubscription) {
+                        } @else if(isFollower) {
                             <p>Follower</p>
                         } @else {
                             <p>New User</p>

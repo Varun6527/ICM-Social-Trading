@@ -11,13 +11,13 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 @Component({
   selector: 'provider-follower-header-cards',
   template: `
-        <div class="stats d-flex justify-space-between g-20" *ngIf="(role['hasProvider'] || role['hasFollower']) && (providerMetric || followerMetric)">
+        <div class="stats d-flex justify-space-between g-20" *ngIf="(isProvider || isFollower) && (providerMetric || followerMetric)">
                 <div class="stats-card" [ngClass]="{'justify-center': (providerMetric?.monthlyFeesArr.length === 0) || (followerMetric?.monthlyTradeArr.length === 0) }">
                     <h6>
-                        <ng-container *ngIf="role['hasProvider'] && providerMetric?.monthlyFeesArr.length > 0">
+                        <ng-container *ngIf="isProvider && providerMetric?.monthlyFeesArr.length > 0">
                             {{'HOME.Monthly Fees' | translate}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower'] && followerMetric?.monthlyTradeArr.length > 0">
+                        <ng-container *ngIf="isFollower && followerMetric?.monthlyTradeArr.length > 0">
                             {{'HOME.Monthly Trading' | translate}}
                         </ng-container>
                     </h6>
@@ -31,44 +31,44 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
                 </div>
                 <div class="stats-card">
                     <h6>
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{'HOME.Followers' | translate}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{'HOME.Trading profit' | translate}}
                         </ng-container>
                     </h6>
                     <h3 class="{{followerMetric?.tradeProfitClass}}">
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{providerMetric?.followers}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{followerMetric?.tradeProfit}}
                         </ng-container>
                     </h3>
                     <p>
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{'COMMON.Active' | translate}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{currentDate | date:'MMMM'}}<!-- <p>{{'COMMON.September' | translate}}</p> -->
                         </ng-container>
                     </p>
                 </div>
                 <div class="stats-card">
                     <h6>
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{'HOME.Followers Growth' | translate}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{'HOME.Copied Position' | translate}}
                         </ng-container>
                     </h6>
                     <h3 [ngClass]="{'green-color': providerMetric?.followerGrowth > 0, 'red-color': providerMetric?.followerGrowth < 0 }">
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{providerMetric?.followerGrowth}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{followerMetric?.copiedPos}}
                         </ng-container>
                     </h3>
@@ -76,18 +76,18 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
                 </div>
                 <div class="stats-card">
                     <h6>
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{'HOME.Closed Profit (own)' | translate}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{'HOME.Paid Fees' | translate}}
                         </ng-container>
                     </h6>
                     <h3 class="{{providerMetric?.closedProfitClass}}">
-                        <ng-container *ngIf="role['hasProvider']">
+                        <ng-container *ngIf="isProvider">
                             {{providerMetric?.closedProfit}}
                         </ng-container>
-                        <ng-container *ngIf="role['hasFollower']">
+                        <ng-container *ngIf="isFollower">
                             {{followerMetric?.paidFees}}
                         </ng-container>
                     </h3>
@@ -109,7 +109,6 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
   imports: [CommonModule, TranslateModule, ShowErrorStandAloneComponent, NgApexchartsModule]
 })
 export class ProviderFollowerHeaderCardsStandaloneComponent {
-  role: any = {};
   currentDate: Date = new Date();
   providerMetric?: ProviderMetricUIModal | any;
   followerMetric?: FollowerMetricUIModal | any;
@@ -118,12 +117,14 @@ export class ProviderFollowerHeaderCardsStandaloneComponent {
   
   @Input() getDataById: boolean = false;
   @Input() id: boolean = false;
+  @Input() isProvider: boolean = false;
+  @Input() isFollower: boolean = false;
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   
 
   constructor(public translate: TranslateService, private _webService: WebService) {
-    this.role['hasProvider'] = this._webService.isProviderAccount;
-    this.role['hasFollower'] = this._webService.isSubscriptionAccount;
+    this.isProvider = this._webService.isProviderAccount;
+    this.isFollower = this._webService.isSubscriptionAccount;
   }
 
   ngOnInit() {
@@ -131,9 +132,9 @@ export class ProviderFollowerHeaderCardsStandaloneComponent {
   }
 
   getHeaderCardsData() {
-    if (this.role['hasProvider']) {
+    if (this.isProvider) {
       this.getProviderMetrics();
-    } else if (this.role['hasFollower']) {
+    } else if (this.isFollower) {
       this.getFollowersMetrics();
     }
   }

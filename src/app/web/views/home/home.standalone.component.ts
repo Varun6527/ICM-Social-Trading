@@ -41,6 +41,7 @@ export class HomeStandAloneComponent {
   selectAccountStatus: string = "Active";
   gridData: any = [];
   gridConfig!: AgGridConfig;
+  homePageConfig: any = [];
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
@@ -53,10 +54,15 @@ export class HomeStandAloneComponent {
     this.isProvider = this._webService.isProviderAccount;
     this.isFollower = this._webService.isSubscriptionAccount;
     this.isRatingModuleEnabled = this._authService.userConfig?.ratings?.integrationMode?.toLowerCase() == "embeddedpage";
+    this.setHomePageConfig();
     this.getHomePageData();
     this._webService.subscribeOnWebDataChange('HomeStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
+  }
+
+  setHomePageConfig() {
+
   }
 
   ngAfterViewInit() {

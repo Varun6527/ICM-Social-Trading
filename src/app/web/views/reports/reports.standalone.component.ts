@@ -63,10 +63,42 @@ export class ReportsStandAloneComponent {
   }
 
   setUpReportsTabs() {
-    if(this.isProvider) {
+    if(this.isProvider && this.isFollower) {
+      this.tabArrConfig = this.getMultiUserReportsTabsConfig();
+    } else if(this.isProvider) {
       this.tabArrConfig = this.getProviderReportsTabsConfig();
     } else if(this.isFollower) {
       this.tabArrConfig = this.getFollowerReportsTabsConfig();
+    }
+  }
+
+  getMultiUserReportsTabsConfig() {
+    let arr = [];
+    arr.push(
+      this.getEarningsTabConfigObj(),
+      this.getMultiFeesTabConfigObj(),
+      this.getMultiTradingTabConfigObj()
+    );
+    return arr;
+  }
+
+  getMultiFeesTabConfigObj() {
+    return {
+      label: 'REPORTS.Fees',
+      reportsArr: [
+        this.getFeesReportsConfig(true),
+        this.getFeesReportsConfig(false)
+      ]
+    }
+  }
+
+  getMultiTradingTabConfigObj() {
+    return {
+      label: 'REPORTS.Trading',
+      reportsArr: [
+        this.getPublishedPositionReportsConfig(),
+        this.getCopiedPositionReportsConfig(false)
+      ]
     }
   }
 
@@ -74,7 +106,7 @@ export class ReportsStandAloneComponent {
     let arr = [];
     arr.push(
       this.getEarningsTabConfigObj(),
-      this.getFeesTabConfigObj(),
+      this.getFeesTabConfigObj(true),
       this.getTradingTabConfigObj()
     );
     return arr;
@@ -83,8 +115,8 @@ export class ReportsStandAloneComponent {
   getFollowerReportsTabsConfig() {
     let arr = [];
     arr.push(
-      this.getFeesTabConfigObj(),
-      this.getCopiedPositionConfigObj()
+      this.getFeesTabConfigObj(false),
+      this.getCopiedPositionConfigObj(false)
     );
     return arr;
   }
@@ -99,11 +131,11 @@ export class ReportsStandAloneComponent {
     }
   }
 
-  getFeesTabConfigObj() {
+  getFeesTabConfigObj(hasProvider: boolean) {
     return {
       label: 'REPORTS.Fees',
       reportsArr: [
-        this.getFeesReportsConfig()
+        this.getFeesReportsConfig(hasProvider)
       ]
     }
   }
@@ -117,11 +149,11 @@ export class ReportsStandAloneComponent {
     }
   }
 
-  getCopiedPositionConfigObj() {
+  getCopiedPositionConfigObj(hasProvider: boolean) {
     return {
       label: 'REPORTS.Trading',
       reportsArr: [
-        this.getCopiedPositionReportsConfig()
+        this.getCopiedPositionReportsConfig(hasProvider)
       ]
     }
   }
@@ -164,15 +196,15 @@ export class ReportsStandAloneComponent {
     }
   }
 
-  getFeesReportsConfig() {
-    let feesColDef = this.getGridColDefs('fees');
+  getFeesReportsConfig(hasProvider: boolean) {
+    let feesColDef = this.getGridColDefs('fees', hasProvider);
     return {
-      title: `${this.isProvider ? 'REPORTS.Received fees' : 'HOME.Paid Fees'}`,
-      description: `${this.isProvider ?  "REPORTS.The list of fee payments received by your providers during the specified period" : 'REPORTS.FeesTitleForSubscriber'}`,
-      showProviderFilter: this.isProvider ? true : false,
+      title: `${hasProvider ? 'REPORTS.Received fees' : 'HOME.Paid Fees'}`,
+      description: `${hasProvider ?  "REPORTS.The list of fee payments received by your providers during the specified period" : 'REPORTS.FeesTitleForSubscriber'}`,
+      showProviderFilter: hasProvider ? true : false,
       defaultDateRange: "Last 7 days",
       grid: {
-        apiUrl: `${this.isProvider ? this.constantVariable.http_Api_Url.reports.recieved_Fees : this.constantVariable.http_Api_Url.reports.paid_Fees }`,
+        apiUrl: `${hasProvider ? this.constantVariable.http_Api_Url.reports.recieved_Fees : this.constantVariable.http_Api_Url.reports.paid_Fees }`,
         colDef: feesColDef,
         config: this.getCommonGridConfig(feesColDef, 'fees'),
         data: [],
@@ -202,8 +234,8 @@ export class ReportsStandAloneComponent {
     }
   }
 
-  getCopiedPositionReportsConfig() {
-    let publishColDef = this.getGridColDefs('copied');
+  getCopiedPositionReportsConfig(hasProvider: boolean) {
+    let publishColDef = this.getGridColDefs('copied', hasProvider);
     return {
       title: "REPORTS.Copied Positions Report",
       description: "REPORTS.DescriptionOfCopiedPostionReport",
@@ -253,7 +285,7 @@ export class ReportsStandAloneComponent {
     return param;
   }
 
-  getGridColDefs(gridType: string) {
+  getGridColDefs(gridType: string, hasProvider?: boolean) {
     if(gridType == 'provider') {
       return [
         { field: "nickName" , headerName:'REPORTS.Nickname',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,colId: 'providerProfileRedirection',flex:1},
@@ -267,7 +299,7 @@ export class ReportsStandAloneComponent {
       ]
     } else if(gridType == 'fees') {
       return [
-        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection'},
+        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection', hasProvider: hasProvider},
         { field: "providerFeesObj" , headerName : 'REPORTS.Fees',resizable: false,flex:1, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerFees'},
         { field: "amount" ,headerName:'REPORTS.Amount',resizable: false,flex:1, suppressSizeToFit: true},
       ]
@@ -278,7 +310,7 @@ export class ReportsStandAloneComponent {
       ]
     } else if(gridType == 'copied') {
       return [
-        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection'},
+        { field: "name" , headerName:'REPORTS.Name',resizable: false , suppressSizeToFit: true,cellRenderer: CommonCellRendererStandAloneComponent,flex:1, colId: 'subscriptionRedirection', hasProvider: hasProvider},
         { field: "count" , headerName :'REPORTS.Count',resizable: false,flex:1},
       ]
     }

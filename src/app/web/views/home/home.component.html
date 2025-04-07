@@ -1,6 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content" *ngIf="!showLoader">
-        <div class="home-card">
+    <mat-card-content class="section-card-content">
+    <!-- @for (obj of homePageConfig; track obj) { -->
+        <div class="home-card" *ngIf="!showLoader">
             <div class="header d-flex justify-space-between align-center">
                 <div class="header-title">
                     <h5>{{ 'HOME.HELLO' | translate }}</h5>
@@ -56,11 +57,12 @@
                 <ng-template #container></ng-template>
             </div>
         </div>
+        <div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
+            <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        </div>
+    <!-- } -->
     </mat-card-content>
 
-    <div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
-    </div>
 </mat-card>
 <show-error-message></show-error-message>
 

@@ -108,8 +108,8 @@
 
     <div *ngIf="params.colDef.colId == 'subscriptionRedirection'">
       <div class="d-flex justify-left g-5 align-center">
-        <a href="javascript:void(0)" class="default-link" [ngClass]="{'cursor-default': isProvider}"
-        (click)="isProvider ? '' : onCellNameClicked()">
+        <a href="javascript:void(0)" class="default-link" [ngClass]="{'cursor-default': params.colDef.hasProvider}"
+        (click)="params.colDef.hasProvider ? '' : onCellNameClicked()">
             <span>{{ params.value }}</span>
         </a>
         <div>
