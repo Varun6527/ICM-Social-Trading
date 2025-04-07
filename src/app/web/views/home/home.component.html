@@ -20,20 +20,20 @@
             <provider-follower-header-cards></provider-follower-header-cards>
 
             <div class="metrics-table">
-                <div class="header-title" [ngClass]="{'d-flex justify-space-between pb-20': !role['hasProvider'] && !role['hasFollower']}">
-                    <ng-container *ngIf="role['hasProvider']">
+                <div class="header-title" [ngClass]="{'d-flex justify-space-between pb-20': !isProvider && !isFollower}">
+                    <ng-container *ngIf="isProvider">
                         <h5>{{'HOME.Provider Metrics' | translate}}</h5>
                         <p>{{'HOME.Metrics of individual providers' | translate}}</p>
                     </ng-container>
-                    <ng-container *ngIf="role['hasFollower']">
+                    <ng-container *ngIf="isFollower">
                         <h5>{{'HOME.Follower Metrics' | translate}}</h5>
                         <p>{{'HOME.Metrics of individual Follower' | translate}}</p>
                     </ng-container>
-                    <div *ngIf="!role['hasProvider'] && !role['hasFollower']">
+                    <div *ngIf="!isProvider && !isFollower">
                         <h5>{{'ACCOUNTS.Accounts' | translate}}</h5>
                         <p>{{'ACCOUNTS.AccountsAddFromMetaTrade' | translate}}</p>
                     </div>
-                    <div class="d-flex g-20 common-dropdown align-start" *ngIf="!role['hasProvider'] && !role['hasFollower']">
+                    <div class="d-flex g-20 common-dropdown align-start" *ngIf="!isProvider && !isFollower">
                           <mat-form-field>
                             <mat-label>{{'PROVIDERS_PROFILE.Scope' | translate}}</mat-label>
                             <mat-select [(ngModel)]="selectAccountStatus" (selectionChange)="refreshTradeAccountList()">
@@ -50,6 +50,10 @@
                 <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData"
                 [showGridLoader]="showGridLoader">
                 </common-ag-grid>
+            </div>
+
+            <div *ngIf="isRatingModuleEnabled && isFollower" class="rating-home-container">
+                <ng-template #container></ng-template>
             </div>
         </div>
     </mat-card-content>

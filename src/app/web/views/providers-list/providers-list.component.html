@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
-            <div class="header d-flex justify-space-between align-center">
+            <div class="header d-flex justify-space-between align-center homepage-header-css">
                 <div class="header-title">
                     <h5>{{"PROVIDERS_LIST.Providers"|translate}}</h5>
                     <p>{{"PROVIDERS_LIST.List of providers"|translate}}</p>
@@ -39,10 +39,10 @@
                             <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='table' ? 'secondary-btn-active':''" (click)="switchMode('table', true)">
                                 <img src="../../../../assets/icons/listIcon.svg" />
                             </button>
-                            <button class="secondary-btn">
+                            <!-- <button class="secondary-btn">
                                 <img src="../../../../assets/icons/filterIcon.svg" />
                                 {{"PROVIDERS_LIST.More Filters"|translate}}
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                     @if(indx == selectedTabIndex) {
