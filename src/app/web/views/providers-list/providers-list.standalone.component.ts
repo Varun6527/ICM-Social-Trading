@@ -229,7 +229,7 @@ export class ProvidersListStanAloneComponent {
 
   setupRatingConfig() {
     let colDefs = [
-      { field: "accountName", headerName: 'PROVIDERS_LIST.Title', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent },
+      { field: "accountName", headerName: 'PROVIDERS_LIST.Title', resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent, cellRendererParams: { ratingId: this.ratingId  } },
       { field: "extension.investors", headerName: 'PROVIDERS_LIST.Investors', resizable: false, width: 150, valueFormatter: (params: any) => params.value ? params.value : '-' },
       { field: "extension.investorsEquity", headerName: 'PROVIDERS_LIST.Invested', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell' },
       { field: "account.balance", headerName: 'PROVIDERS_LIST.Own Funds', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell' },

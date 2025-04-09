@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, inject, ViewChild, ViewContainerRef, Input } from '@angular/core';
 import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,13 +35,10 @@ export class HomeStandAloneComponent {
   providerDetails: any = [];
   followerDetails: any = [];
   tradingAccountDetails: any = [];
-  isProvider: boolean = false;
-  isFollower: boolean = false;
   isRatingModuleEnabled: boolean = false;
   selectAccountStatus: string = "Active";
   gridData: any = [];
   gridConfig!: AgGridConfig;
-  homePageConfig: any = [];
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
@@ -50,19 +47,18 @@ export class HomeStandAloneComponent {
   readonly beFollowerDialog = inject(MatDialog);
   readonly commonDialog = inject(MatDialog);
 
+  @Input() showHeader: boolean = true; 
+  @Input() isProvider: boolean = false;
+  @Input() isFollower: boolean = false;
+
   constructor(private _webService: WebService, private _router: Router, private _authService: AuthService) {
     this.isProvider = this._webService.isProviderAccount;
     this.isFollower = this._webService.isSubscriptionAccount;
     this.isRatingModuleEnabled = this._authService.userConfig?.ratings?.integrationMode?.toLowerCase() == "embeddedpage";
-    this.setHomePageConfig();
     this.getHomePageData();
     this._webService.subscribeOnWebDataChange('HomeStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
-  }
-
-  setHomePageConfig() {
-
   }
 
   ngAfterViewInit() {
