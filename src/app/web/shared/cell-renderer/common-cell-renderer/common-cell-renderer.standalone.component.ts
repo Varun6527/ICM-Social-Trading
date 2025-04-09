@@ -13,12 +13,9 @@ import { CommonModule } from '@angular/common';
 })
 export class CommonCellRendererStandAloneComponent {
   params: any;
-  isProvider: boolean;
-  isFollower: boolean;
 
   constructor(private router:Router, private _webService: WebService) {
-    this.isProvider = this._webService.isProviderAccount;
-    this.isFollower = this._webService.isSubscriptionAccount;
+    
   }
 
   // AG Grid passes the row data into this method

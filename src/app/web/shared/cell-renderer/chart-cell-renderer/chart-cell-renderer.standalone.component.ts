@@ -1,15 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexTooltip,
-  ApexStroke, ApexFill,
-  NgApexchartsModule
-} from "ng-apexcharts"
+import { Component } from '@angular/core';
+import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTooltip, ApexStroke, ApexFill, NgApexchartsModule } from "ng-apexcharts"
 import { ConstantVariable } from '../../../../shared/model/constantVariable.model';
 
 export type ChartOptions = {

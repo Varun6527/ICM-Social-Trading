@@ -93,7 +93,8 @@ export class ConstantVariable {
         SubscriptionRiskLevelAlreadyReached: "The rule cannot be saved: this threshold is already reached. Please set up a higher threshold in order to save the rule",
         SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed.",
         SubscriptionGroupNotAllowed: "Unable to subscribe to provider using the selected trading account. Try to use another trading account.",
-        OfferNotFound: "No Public Offer found for this provider"
+        OfferNotFound: "No Public Offer found for this provider",
+        OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

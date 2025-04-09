@@ -108,8 +108,8 @@
 
     <div *ngIf="params.colDef.colId == 'subscriptionRedirection'">
       <div class="d-flex justify-left g-5 align-center">
-        <a href="javascript:void(0)" class="default-link" [ngClass]="{'cursor-default': isProvider}"
-        (click)="isProvider ? '' : onCellNameClicked()">
+        <a href="javascript:void(0)" class="default-link" [ngClass]="{'cursor-default': params.colDef.hasProvider}"
+        (click)="params.colDef.hasProvider ? '' : onCellNameClicked()">
             <span>{{ params.value }}</span>
         </a>
         <div>
@@ -180,4 +180,8 @@
 
     <div *ngIf="params.colDef.colId == 'currencyCell'">
       {{params.value || params.value == 0 ? (params.value | currency: (params.data.currency ? params.data.currency : 'USD') :'symbol') : '-'}}
+    </div>
+
+    <div *ngIf="params.colDef.colId == 'currencyCellWithNoSymbol'">
+      {{params.value || params.value == 0 ? (params.value | currency: (params.data.currency ? params.data.currency : 'USD') :'':'') : '-'}}
     </div>

@@ -1,820 +1,199 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ColDef } from 'ag-grid-community';
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexTooltip,
-  ApexStroke, ApexFill,
-  ApexPlotOptions,
-  ApexLegend,
-  NgApexchartsModule
-} from "ng-apexcharts";
-import { Observable } from 'rxjs';
+import { Component, inject, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ProviderChartsStandaloneComponent } from '../../shared/provider-charts/provider.charts.standalone.component';
 import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
 import { StrategyCellRendererStandAloneComponent } from '../../shared/cell-renderer/strategy-cell-renderer/strategy-cell-renderer.standalone.component';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { AgGridModule } from 'ag-grid-angular';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  stroke: ApexStroke;
-  tooltip: ApexTooltip;
-  dataLabels: ApexDataLabels;
-  colors: any
-  fill: ApexFill
-  labels: any
-  plotOptions: ApexPlotOptions
-  legen: ApexLegend
-};
-export interface User {
-  name: string;
-}
+import { WebService } from '../../service/web.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonAgGridStandAloneComponent } from '../../shared/common-ag-grid/common.aggrid.standalone.component';
+import { BeFollowerDialogStandAloneComponent } from '../../shared/dialogBox/create-follower-dialog/beFollowerDialog.standalone.component';
+import { RatingUiModal } from '../../shared/ui-model/web.ui.model';
+import { ShowErrorStandAloneComponent } from '../../../shared/component/showerror/show.error.standalone.component';
+import { ConstantVariable } from '../../../shared/model/constantVariable.model';
+import { AuthService } from '../../../auth/service/auth.service';
+import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 
 @Component({
   selector: 'app-provider-list-profile',
   templateUrl: './provider-list-profile.component.html',
   styleUrl: './provider-list-profile.component.scss',
   standalone: true,
-  imports: [CommonModule, MatDividerModule, MatAutocompleteModule, RouterModule, TranslateModule, AgGridModule, NgApexchartsModule, MatButtonToggleModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatCardModule]
+  imports: [CommonModule, ProviderChartsStandaloneComponent, CommonAgGridStandAloneComponent, MatDividerModule, RouterModule, TranslateModule, MatButtonToggleModule, MatCardModule, ShowErrorStandAloneComponent]
 })
 export class ProviderListProfileStandAloneComponent {
+  showGridLoader: boolean = false;
+  ratingData :any = {};
+  offerData: any = {};
+  gridConfig: any = {};
+  gridData: any = [];
+  performanceToggle = 'performance';
+  showPageLoader: boolean = false;
+  widget_key: string = "";
+  accountId: any;
+  ratingId: any;
 
-  @ViewChild("chart") chart !: ChartComponent;
-  public barChartOptions!: Partial<ChartOptions> | any;
-  public stackedChartOptions!: Partial<ChartOptions> | any;
-  public areaChartOptions !: Partial<ChartOptions> | any;
-  public pieChartOptions !: Partial<ChartOptions> | any;
-  public riskStackedChartOptions !: Partial<ChartOptions> | any;
-  public portfolioChartOptions1 !: Partial<ChartOptions> | any;
-  public portfolioChartOptions2 !: Partial<ChartOptions> | any;
-  public portfolioChartOptions3 !: Partial<ChartOptions> | any;
+  IConstant: ConstantVariable = new ConstantVariable();
+  readonly beFollowerDialog = inject(MatDialog);
+  @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
 
-
-  public performanceToggle = 'performance'
-  myControl = new FormControl<string | User>('');
-  options: User[] = [{ name: 'Mary' }, { name: 'Shelley' }, { name: 'Igor' }];
-  filteredOptions!: Observable<User[]>;
-
-  colDefs: ColDef[] = []
-
-
-  constructor(public translate: TranslateService
-  ) {
-    this.barChartOptions = {
-      series: [84, 80, 67],
-      chart: {
-        height: 350,
-        type: 'radialBar',
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
-          },
-          track: {
-            show: true,
-            background: "#F2F4F7",
-            strokeWidth: '100%',
-            margin: 5, // Space between bars
-          },
-          dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
-            value: {
-              fontSize: '30px',
-              fontWeight: 600
-            },
-            total: {
-              show: true,
-              label: '',
-              formatter: function (w: any) {
-                return 316;
-              },
-            }
-          },
-        },
-      },
-      stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
-      },
-      labels: ['Apples', 'Oranges', 'Bananas'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ]
-    };
-    this.stackedChartOptions = {
-      series: [
-        {
-          name: 'Series 1',
-          data: [44, 55, 41, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
-        },
-        {
-          name: 'Series 2',
-          data: [13, 23, 20, 8, 13, 27, 29, 41, 34, 22, 31, 14] // Data for 12 months
-        },
-        {
-          name: 'Series 3',
-          data: [11, 17, 15, 15, 21, 14, 19, 25, 18, 12, 20, 16] // Data for 12 months
-        }
-      ],
-      chart: {
-        type: 'bar',
-        height: 350,
-        stacked: true,
-        toolbar: {
-          show: false
-        },
-        zoom: {
-          enabled: true
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          borderRadius: 10, // Border radius applied to the top of each stack
-          borderRadiusApplication: 'end', // Apply to the topmost part of the stack
-        }
-      },
-      xaxis: {
-        categories: [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ] // Display months on the X-axis
-      },
-      yaxis: {
-        show: false // Disable Y-axis
-      },
-      legend: {
-        position: 'top',
-        offsetY: 2,
-        horizontalAlign: 'right', // Align the legend to the right
-        floating: true, // Make the legend float (position absolute)
-        offsetX: 10, // Adjust horizontal position for fine-tuning
-      },
-      fill: {
-        opacity: 1
-      },
-      colors: ['#0A365B', '#105995', '#A8D1F3'], // Custom stack colors
-      tooltip: {
-        enabled: false // Disable tooltips on hover
-      },
-      dataLabels: {
-        enabled: false // Disable data labels
-      }
-    };
-    this.areaChartOptions = {
-      series: [{
-        name: "STOCK ABC",
-        data: [80, 76, 73, 80, 78, 80, 87, 88, 90, 93, 95, 97]
-      }],
-      chart: {
-        type: 'area',
-        height: 450,
-        zoom: {
-          enabled: false
-        },
-        toolbar: {
-          show: false
-        },
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        curve: 'smooth',
-        width: [2], // Reduced stroke width
-      },
-      colors: ['#146BB2'],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'light',
-          type: 'vertical',
-          shadeIntensity: 0, // Minimal overall shading
-          gradientToColors: ['#146BB2'], // The darker color at the top
-          inverseColors: false,
-          opacityFrom: 0.5, // Higher opacity at the top
-          opacityTo: 0.1, // Lower opacity at the bottom
-          stops: [0, 100] // Focus on top being darker, then gradual lightening
-        }
-      },
-      title: {
-        text: 'Fundamental Analysis of Stocks',
-        align: 'left'
-      },
-      subtitle: {
-        text: 'Price Movements',
-        align: 'left'
-      },
-      labels: [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ],
-      xaxis: {
-        categories: [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
-        title: {
-          text: 'Month', // Add a label below the x-axis
-          style: {
-            fontSize: '14px',
-            fontWeight: 'light',
-            color: '#333' // Adjust text color as needed
-          }
-        }
-      },
-      yaxis: {
-        opposite: false,
-      },
-      legend: {
-        position: 'top',
-        offsetY: 0,
-        horizontalAlign: 'right', // Align the legend to the right
-        floating: true, // Make the legend float (position absolute)
-        offsetX: 0, // Adjust horizontal position for fine-tuning
-      },
-    };
-    this.pieChartOptions = {
-      series: [42],
-      chart: {
-        height: 350,
-        type: 'radialBar',
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: '60%', // Adjust this percentage to reduce the inner spacing
-          },
-          track: {
-            show: true,
-            background: "#F2F4F7",
-            strokeWidth: '100%',
-          },
-          dataLabels: {
-            value: {
-              fontSize: '25px',
-              fontWeight: 600
-            },
-            total: {
-              show: true,
-              label: 'Trades Total',
-              fontWeight: 400,
-              formatter: function (w: any) {
-                return 121;
-              },
-            }
-          }
-        },
-      },
-      stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
-      },
-      labels: ['Apples'],
-      colors: ['#0A365B'],
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ]
-    };
-    this.riskStackedChartOptions = {
-      series: [
-        {
-          name: '2019',
-          data: [44, 55, 41, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
-        },
-        {
-          name: '2020',
-          data: [13, 23, 20, 8, 13, 27, 29, 41, 34, 22, 31, 14] // Data for 12 months
-        },
-        {
-          name: '2021',
-          data: [11, 17, 15, 15, 21, 14, 19, 25, 18, 12, 20, 16] // Data for 12 months
-        }
-      ],
-      chart: {
-        type: 'bar',
-        height: 280,
-        stacked: true,
-        toolbar: {
-          show: false
-        },
-        zoom: {
-          enabled: true
-        }
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          borderRadius: 10, // Border radius applied to the top of each stack
-          borderRadiusApplication: 'end', // Apply to the topmost part of the stack
-        }
-      },
-      xaxis: {
-        categories: [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
-        title: {
-          text: 'Month', // Add a label below the x-axis
-          style: {
-            fontSize: '14px',
-            fontWeight: 'light',
-            color: '#333' // Adjust text color as needed
-          }
-        }
-      },
-      yaxis: {
-        show: true
-      },
-      legend: {
-        position: 'top',
-        offsetY: 2,
-        horizontalAlign: 'right', // Align the legend to the right
-        floating: true, // Make the legend float (position absolute)
-        offsetX: 10, // Adjust horizontal position for fine-tuning
-      },
-      fill: {
-        opacity: 1
-      },
-      colors: ['#0A365B', '#105995', '#A8D1F3'], // Custom stack colors
-      tooltip: {
-        enabled: false // Disable tooltips on hover
-      },
-      dataLabels: {
-        enabled: false // Disable data labels
-      }
-    };
-    this.portfolioChartOptions1 = {
-      series: [84, 80, 67],
-      chart: {
-        height: 350,
-        type: 'radialBar',
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
-          },
-          track: {
-            show: true,
-            background: "#F2F4F7",
-            strokeWidth: '100%',
-            margin: 5, // Space between bars
-          },
-          dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
-            value: {
-              fontSize: '25px',
-              fontWeight: 500
-            },
-            total: {
-              show: true,
-              label: 'Top Traded',
-              fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
-              },
-            }
-          },
-        },
-      },
-      stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
-      },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
-      },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ]
-    };
-    this.portfolioChartOptions2 = {
-      series: [84, 80, 67],
-      chart: {
-        height: 350,
-        type: 'radialBar',
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
-          },
-          track: {
-            show: true,
-            background: "#F2F4F7",
-            strokeWidth: '100%',
-            margin: 5, // Space between bars
-          },
-          dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
-            value: {
-              fontSize: '25px',
-              fontWeight: 500
-            },
-            total: {
-              show: true,
-              label: 'Top Winner',
-              fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
-              },
-            }
-          },
-        },
-      },
-      stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
-      },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
-      },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ]
-    };
-    this.portfolioChartOptions3 = {
-      series: [84, 80, 67],
-      chart: {
-        height: 350,
-        type: 'radialBar',
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
-          },
-          track: {
-            show: true,
-            background: "#F2F4F7",
-            strokeWidth: '100%',
-            margin: 5, // Space between bars
-          },
-          dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
-            value: {
-              fontSize: '25px',
-              fontWeight: 500
-            },
-            total: {
-              show: true,
-              label: 'Top Traded',
-              fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
-              },
-            }
-          },
-        },
-      },
-      stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
-      },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
-      },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ]
-    };
-  }
-
-  ngOnInit(): void {
-    this.translate.onLangChange.subscribe(() => {
-      this.initializeColDefs();
+  constructor(public translate: TranslateService, private _authService: AuthService, private _webService: WebService, private _router: Router, private route: ActivatedRoute) {
+    this.widget_key = this._authService.userConfig.ratings.embeddedWidgetKey;
+    this.route.paramMap.subscribe(params => {
+      this.accountId = params.get('accountId')!;
+      this.ratingId = params.get('ratingId')!;
+      this.initialSetupOfProviderListProfilePage();
     });
-    this.initializeColDefs(); 
+    this._webService.subscribeOnWebDataChange("ProviderListProfileStandAloneComponent", (event: any)=>{
+      this.recieveChildrenEmitter(event);
+    });
   }
 
-  rowData = [
-    {
-      id: 1,
-      symbol: "Catalog",
-      type: 'Buy',
-      assetType: "Equity",
-      contractSize: "100 units",
-      volume: 500,
-      openPrice: "$1500",
-      openTime: "2023-12-01 10:00",
-      profit: "$200",
-      strategyIcon: '../../../../assets/icons/providerIcon.jpeg'
-    },
-    {
-      id: 2,
-      symbol: "Growth Fund",
-      type: 'Buy',
-      assetType: "Mutual Fund",
-      contractSize: "50 shares",
-      volume: 1000,
-      openPrice: "$2500",
-      openTime: "2023-12-02 11:00",
-      profit: "$300",
-      strategyIcon: '../../../../assets/icons/providerIcon1.png'
-    },
-    {
-      id: 3,
-      symbol: "Value Fund",
-      type: 'Sell',
-      assetType: "ETF",
-      contractSize: "200 units",
-      volume: 2500,
-      openPrice: "$1200",
-      openTime: "2023-12-03 12:00",
-      profit: "$150",
-      strategyIcon: '../../../../assets/icons/providerIcon2.png'
-    },
-    {
-      id: 4,
-      symbol: "High Risk Hedge",
-      type: 'Sell',
-      assetType: "Hedge Fund",
-      contractSize: "10 shares",
-      volume: 50000,
-      openPrice: "$3000",
-      openTime: "2023-12-04 13:00",
-      profit: "$1000",
-      strategyIcon: '../../../../assets/icons/providerIcon3.png'
-    },
-    {
-      id: 5,
-      symbol: "Quotient",
-      type: 'Buy',
-      assetType: "Bond",
-      contractSize: "500 units",
-      volume: 75000,
-      openPrice: "$1000",
-      openTime: "2023-12-05 14:00",
-      profit: "$500",
-      strategyIcon: '../../../../assets/icons/providerIcon4.png'
-    },
-    {
-      id: 6,
-      symbol: "Layers",
-      type: 'Buy',
-      assetType: "Commodity",
-      contractSize: "100 barrels",
-      volume: 75000,
-      openPrice: "$1100",
-      openTime: "2023-12-06 15:00",
-      profit: "$600",
-      strategyIcon: '../../../../assets/icons/providerIcon5.png'
-    },
-    {
-      id: 7,
-      symbol: "Stable Growth",
-      type: 'Sell',
-      assetType: "Index",
-      contractSize: "2000 points",
-      volume: 75000,
-      openPrice: "$1200",
-      openTime: "2023-12-07 16:00",
-      profit: "$700",
-      strategyIcon: '../../../../assets/icons/providerIcon6.png'
-    },
-  ];
+  async initialSetupOfProviderListProfilePage() {
+    this.showPageLoader = true;
+    let result1 = await this.getRatingData();
+    let result2 = await this.getOffersData();
+    this.showPageLoader = false;
+    this.setupPositionGridConfig();
+    this.getPositionData();
+  }
 
-  initializeColDefs() {
-    this.colDefs=[
-      { field: "symbol", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Symbol'), resizable: false, width: 250, suppressSizeToFit: true, cellRenderer: StrategyCellRendererStandAloneComponent },
-      { field: "type", headerName:this.translate.instant('PROVIDERS_LIST_PROFILE.Type'), resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
-      { field: "assetType", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Asset Type'), resizable: false, width: 150 },
-      { field: "contractSize", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Contract Size'), resizable: false, width: 150 },
-      { field: "volume", headerName:this.translate.instant('PROVIDERS_LIST_PROFILE.Volume'), resizable: false, width: 150 },
-      { field: "openPrice", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Open Price'), resizable: false, width: 150 },
-      { field: "openTime", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Open Time'), resizable: false, width: 200 },
-      { field: "profit", headerName: this.translate.instant('PROVIDERS_LIST_PROFILE.Profit'), resizable: false, width: 150, cellStyle: { color: '#12B76A' } },
+  getPositionData() {
+    this.showGridLoader = true;
+    let param = {
+      providerId: this.ratingData.profileId,
+      $count: true
+    }
+    this._webService.getPositionDetails(param).subscribe({
+      next: (response: any) => {
+        this.gridData = response.items;
+        this.showGridLoader = false;
+      },
+      error: (errorObj) => {
+        this.showGridLoader = false;
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+      }
+    })
+}
+
+  getRatingData() {
+    return new Promise<void>((resolve, reject) => {
+      let param = {
+        widget_key: this.widget_key,
+        $filter: `(accountId eq ${this.accountId})`,
+        ratingId: this.ratingId
+      };
+      this._webService.getRatingData(param).subscribe({
+        next: (response: any) => {
+          response.items.forEach((obj: any) =>
+            this.ratingData = new RatingUiModal(obj, this._webService.getFileServerUrl(), this._webService.getRatingServerUrl(), [])
+          );
+          resolve();
+        },
+        error: (errorObj) => {
+          this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+          resolve();
+        }
+      })
+    })
+  }
+
+  getOffersData() {
+    return new Promise<void>((resolve) => {
+      let param = {
+        id: this.ratingData.profileId
+      }
+      this._webService.getOffersOfProvider(param).subscribe({
+        next: (response: any) => {
+          this.offerData = response.items[0] || {};
+          resolve();
+        },
+        error: (errorObj) => {
+          this.showErrorWarnMessage(errorObj?.error?.errorMessage);
+          resolve();
+        }
+      })
+    })
+  }
+
+  setupPositionGridConfig() {
+    let colDefs = [
+      { field: "symbol", headerName: 'PROVIDERS_LIST_PROFILE.Symbol', resizable: false, width: 150, suppressSizeToFit: true },
+      { field: "openDirection", headerName:'PROVIDERS_LIST_PROFILE.Type', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
+      { field: "openVolume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', resizable: false, width: 150 },
+      { field: "openTime", sort: 'desc', headerName: 'PROVIDERS_LIST_PROFILE.Open Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
+      { field: "openPrice", headerName: 'PROVIDERS_LIST_PROFILE.Open Price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
+      { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
+      { field: "closePrice", headerName: 'PROVIDERS_PROFILE.Close price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
+      { field: "profit", headerName: 'PROVIDERS_LIST_PROFILE.Profit', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell', cellStyle: (params: any) => { return { color: params.value < 0 ? 'var(--error-message--container-color)' : 'var(--primary-positive-color)' } } }
     ];
+    this.setupGridConfig(colDefs);
   }
 
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
+  setupGridConfig(colDefs: any) {
+    this.gridConfig = {
+      maxHeight: '400px',
+      noDataWarnMessage: 'There are no position',
+      gridOptions: {},
+      agGridTheme: 'ag-theme-alpine',
+      pageSizeDropdownArr: [25, 50, 100],
+      initialSelectedPageSize: 25,
+      columnDefination: colDefs,
+      enablePagination: true,
+      headerNameLangArr: colDefs.map((o: any) => o.headerName),
+      rowModelType: 'clientSide',
+      rowHeight: undefined
+    }
   }
+
   togglePerformance(type: any) {
     this.performanceToggle = type
+  }
+  
+  recieveChildrenEmitter(event: any) {
+    if (event['action'] == 'follower_created') {
+      this.refreshUserProfileAndRedirectToProviderOrFollowerProfile(event.data);
+      this.beFollowerDialog.closeAll();
+    }
+  }
+
+  refreshUserProfileAndRedirectToProviderOrFollowerProfile(response: any) {
+    this._webService.setOrRefreshUserProfileData((result: any)=>{
+      if(result.status) {
+        this._webService.emitOnWebDataChange({action: "refresh_sidenav_menu_options", callback: () => {
+            this._router.navigate([`/portal/subscriptions/${response.id}`]);
+        }});
+      }
+    })
+  }
+
+  openCopyStrategyPopup() {
+    this.beFollowerDialog.open(BeFollowerDialogStandAloneComponent, {
+      panelClass: 'beFollower-dialog',
+      data: {id: this.ratingData.profileId, nickName: this.ratingData.accountName, visibility: this.ratingData.account?.isPublic ? "Public" : "Private" }
+    });
+    this.beFollowerDialog.afterAllClosed.subscribe(()=>{});
+  }
+
+  showErrorWarnMessage(msg: any) {
+    const errorConfigObj = this.errorComponent?.config;
+    errorConfigObj.message = msg ? msg : errorConfigObj.message;
+    this.errorComponent?.openErrorSnackbar();
+  }
+
+  showSuccessPopupMsg(msg: string) {
+    const errorConfigObj = this.errorComponent?.config;
+    errorConfigObj.customStyle = 'default-success-style';
+    errorConfigObj.message = msg ? msg : errorConfigObj.message;
+    this.errorComponent?.openErrorSnackbar();
+  }
+
+  ngOnDestroy() {
+    this._webService.unSubscribeOnWebDataChange('ProviderListProfileStandAloneComponent');
   }
 
 }

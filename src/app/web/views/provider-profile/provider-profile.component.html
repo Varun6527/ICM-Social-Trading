@@ -22,7 +22,7 @@
                     <button mat-menu-item (click)="openProviderArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
-            <provider-follower-header-cards [getDataById]="true" [id]="providerId"></provider-follower-header-cards>
+            <provider-follower-header-cards [isProvider]="true" [isFollower]="false" [getDataById]="true" [id]="providerId"></provider-follower-header-cards>
             <div class="info-section d-flex justify-space-between">
                 <div class="info-section-left">
                     <div class="d-flex justify-space-between w-100">

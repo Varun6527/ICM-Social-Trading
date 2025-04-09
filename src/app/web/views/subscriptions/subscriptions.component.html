@@ -22,7 +22,7 @@
                     <button mat-menu-item (click)="openSubscriberArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"PROVIDERS_PROFILE.Unsubscribe"|translate}}</button>
                 </mat-menu>
             </div>
-            <provider-follower-header-cards [getDataById]="true" [id]="subscriptionId"></provider-follower-header-cards>
+            <provider-follower-header-cards [isProvider]="false" [isFollower]="true" [getDataById]="true" [id]="subscriptionId"></provider-follower-header-cards>
 
             <div *ngIf="subscriptionData.isActivated && !subscriptionData.activationStatus && subscriptionData.state !== 'Archived'" class="d-flex flex-column email-not-exist-container">
                 <p>{{"PROVIDERS_PROFILE.Suspended since"|translate}}: {{subscriptionData.suspension.timeUtc | date:'M/d/yy'}}</p>

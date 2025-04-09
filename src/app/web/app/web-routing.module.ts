@@ -99,7 +99,7 @@ const WEB_ROUTES: Routes = [
         canActivate: [AuthGuard, MyRatingsGaurd]
       },
       {
-        path: 'ratings/:profileId',
+        path: 'ratings/:ratingId/:accountId',
         loadComponent: () => import('../views/provider-list-profile/provider-list-profile.standalone.component').then(s => s.ProviderListProfileStandAloneComponent),
         title: "ICM | Providers List",
         canActivate: [AuthGuard, MyRatingsGaurd]

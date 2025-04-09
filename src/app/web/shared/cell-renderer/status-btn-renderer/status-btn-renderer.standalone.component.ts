@@ -11,8 +11,8 @@ import { Component } from '@angular/core';
             <img height="25" width="25" *ngIf="!params.data.isActivated && params.data.state == 'Archived'" src="../../../../assets/icons/cancelIcon.png" />
             <img height="25" width="25" *ngIf="!params.data.isActivated && params.data.state == 'Active'" src="../../../../assets/icons/redSettingsIcon.png" />
         } @else if(params.colDef.colId == 'ratingType') {
-          <img src="../../../../../../assets/icons/buyIcon.svg" *ngIf="params.data.type == 'Buy'"/>
-          <img src="../../../../../../assets/icons/sellIcon.svg" *ngIf="params.data.type == 'Sell'">
+          <img src="../../../../../../assets/icons/buyIcon.svg" *ngIf="params.data.type == 'Buy' || params.value == 'Buy'"/>
+          <img src="../../../../../../assets/icons/sellIcon.svg" *ngIf="params.data.type == 'Sell'|| params.value == 'Sell'">
         } @else {
             <img height="25" width="25" *ngIf="params.value == true || params.value == 'Active'" src="../../../../assets/icons/Check icon.png" />
             <img height="25" width="25" *ngIf="params.value == false || params.value == 'Expired'" src="../../../../assets/icons/cancelIcon.png" />
