@@ -1,5 +1,5 @@
 <mat-card appearance="outlined" class="section-card">
-    <mat-card-content class="section-card-content">
+    <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="pb-20 d-flex justify-start">
             <a [routerLink]="'/portal/ratings'" class="anchor-decore-none">
                 <button class="secondary-btn"> <img src="../../../../../assets/icons/arrow-left.svg" />{{"COMMON.Back"|translate}}</button>
@@ -13,32 +13,32 @@
                         <p class="heading">Catalog</p>
                     </div>
                 </div>
-                <button class="primary-btn">{{"PROVIDERS_LIST_PROFILE.Copy Strategy" |translate}}</button>
+                <button class="primary-btn" (click)="openCopyStrategyPopup()">{{"PROVIDERS_LIST_PROFILE.Copy Strategy" |translate}}</button>
             </div>
             <div class="mid-area d-flex justify-space-between align-center pb-10">
                 <div>
                     <p>{{"PROVIDERS_LIST_PROFILE.Manager Bio"|translate}}</p>
-                    <p class="sub-heading">The Strategy Manager hasn’t provided a BIO</p>
+                    <p class="sub-heading">{{ratingData.additional?.summary ? ratingData.additional?.summary : '-'}}</p>
                 </div>
                 <div class="values d-flex justify-space-between align-center g-20">
                     <div>
                         <p>{{"PROVIDERS_LIST_PROFILE.Fees"|translate}}</p>
-                        <p class="sub-heading">50%</p>
+                        <p class="sub-heading">{{offerData?.performance?.fee || offerData?.performance?.fee == 0 ? offerData?.performance?.fee + '%' : '-'}}</p>
                     </div>
                     <div>
                         <p>{{"PROVIDERS_LIST_PROFILE.Min. Investment"|translate}}</p>
-                        <p class="sub-heading">$500</p>
+                        <p class="sub-heading">{{offerData?.filters?.minBalance || offerData?.filters?.minBalance == 0 ? (offerData?.filters?.minBalance | currency: offerData.currency:'symbol') : '-'}}</p>
                     </div>
                     <div>
                         <p>{{"PROVIDERS_LIST_PROFILE.Invested"|translate}}</p>
-                        <p class="sub-heading">$500</p>
+                        <p class="sub-heading">{{(ratingData?.extension?.investorsEquity || ratingData?.extension?.investorsEquity == 0)  ? (ratingData?.extension?.investorsEquity | currency: ratingData?.account?.currency:'symbol') : '-'}}</p>
                     </div>
                 </div>
             </div>
             <div class="desc-area d-flex justify-space-between align-center pb-10">
                 <div>
                     <p>{{"PROVIDERS_LIST_PROFILE.Description"|translate}}</p>
-                    <p class="sub-heading">Permanent little.</p>
+                    <p class="sub-heading">{{ratingData.additional?.notes ? ratingData.additional?.notes : '-'}}</p>
                 </div>
                 <!-- <div class="values d-flex justify-space-between align-center g-20">
                     <div>
@@ -198,10 +198,14 @@
         </div>
         <div class="provider-list-profile-table pb-20">
             <div>
-                <common-ag-grid [gridConfig]="gridConfig" [gridData]="rowData"
+                <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData"
                     [showGridLoader]="showGridLoader">
                 </common-ag-grid>
             </div>
         </div>
     </mat-card-content>
+    <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
+        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+    </div>
 </mat-card>
+<show-error-message></show-error-message>
