@@ -129,7 +129,7 @@ export class ProviderChartsStandaloneComponent {
               label: `Total Asset ${graphType === 'volume' ? 'Volume' : 'Count'}`,
               fontWeight: 400,
               formatter: function () {
-                return totalCount;
+                return totalCount.toFixed(2);
               },
             }
           },

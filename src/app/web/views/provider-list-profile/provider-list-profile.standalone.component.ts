@@ -118,7 +118,6 @@ export class ProviderListProfileStandAloneComponent {
   onPerfRiskPortfolioChartMetricChange() {
     let selectedTab = this.chartsData.perfRiskPortfolioChart.selectedTab, chartData: any = [];
     if(selectedTab == 'performance') { 
-      console.log(this.tradingMetricsData);
       chartData = this.tradingMetricsData.total;
       this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.totalTradingData = chartData;
       this._webService.emitOnWebDataChange({action: "onTotalTradingMetricChange", chartConfig: { data: chartData, type: selectedTab }});
@@ -165,7 +164,6 @@ export class ProviderListProfileStandAloneComponent {
         this.tradingMetricsData = response.summary;
         this.tradingStaticsData = this.getTradeSummaryData(response.summary);
         this.onPerfRiskPortfolioChartMetricChange();
-        console.log(response);
       },
       error: (errorObj: any) => {
         this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
