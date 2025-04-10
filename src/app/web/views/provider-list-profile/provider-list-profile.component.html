@@ -72,16 +72,16 @@
                     <h6>{{"PROVIDERS_LIST_PROFILE.Return & Investment"|translate}}</h6>
                     <div class="assets-badge">
                         <mat-button-toggle-group name="fontStyle" aria-label="Font Style"
-                            [hideSingleSelectionIndicator]="true">
-                            <mat-button-toggle value="open" [checked]="true">{{"PROVIDERS_LIST_PROFILE.Returns"|translate}}</mat-button-toggle>
-                            <mat-button-toggle value="closed">{{"PROVIDERS_LIST_PROFILE.Investors"|translate}}</mat-button-toggle>
-                            <mat-button-toggle value="closed">{{"PROVIDERS_LIST_PROFILE.Invested"|translate}}</mat-button-toggle>
+                            [hideSingleSelectionIndicator]="true" [(ngModel)]="chartsData.monthlyDetailsChart.type" (change)="onMonthlyMetricChange()">
+                            <mat-button-toggle value="returns">{{"PROVIDERS_LIST_PROFILE.Returns"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="investors">{{"PROVIDERS_LIST_PROFILE.Investors"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="invested">{{"PROVIDERS_LIST_PROFILE.Invested"|translate}}</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>
                 <mat-divider class="assets-divider"></mat-divider>
                 <div>
-                    <provider-charts [chartType]="'stackChart'" ></provider-charts>
+                    <provider-charts [chartType]="'monthlyDetailsChart'"></provider-charts>
                 </div>
             </div>
         </div>

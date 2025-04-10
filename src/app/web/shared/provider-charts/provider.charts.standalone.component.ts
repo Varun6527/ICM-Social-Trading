@@ -28,7 +28,7 @@ export type ChartOptions = {
             [fill]="chartOptions.fill" [colors]="chartOptions.colors"
             [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"
             [legend]="chartOptions.legend" [plotOptions]="chartOptions.plotOptions"
-            [states]="chartOptions.states" [noData]="chartNoData"></apx-chart>
+            [states]="chartOptions.states" [noData]="chartOptions.noData"></apx-chart>
         `,
   standalone: true,
   imports: [CommonModule, TranslateModule, NgApexchartsModule]
@@ -66,8 +66,9 @@ export class ProviderChartsStandaloneComponent {
     if (event.action == 'onAssestMetricChange' && this.chartType == 'assestChart') {
       this.resetChartDataConfig();
       this.chartOptions = this.getAssestChartConfig(event.data);
-    } else if (this.chartType == 'stackChart') {
-      this.chartOptions = this.getStackedBarChartConfig();
+    } else if (event.action == 'onMonthlyMetricChange' && this.chartType == 'monthlyDetailsChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getMonthlyDetailsChartConfig(event.data);
     } else if (this.chartType == 'areaChart') {
       this.chartOptions = this.getAreaChartConfig();
     } else if (this.chartType == 'pieChart') {
@@ -179,26 +180,40 @@ export class ProviderChartsStandaloneComponent {
             }
           }
         }
-      ]
+      ],
+      noData: this.chartNoData
     };
   }
 
-  getStackedBarChartConfig() {
-    return {
-      series: [
-        {
-          name: 'Series 1',
-          data: [0, 0, 0, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
-        },
-        {
-          name: 'Series 2',
-          data: [13, 23, 20, 8, 13, 27, 29, 41, 34, 22, 31, 14] // Data for 12 months
-        },
-        {
-          name: 'Series 3',
-          data: [11, 17, 15, 15, 21, 14, 19, 25, 18, 12, 20, 16] // Data for 12 months
+  getMonthlyDetailsChartConfig(data: any) {
+    this.chartDataConfig = data;
+    let graphType = this.chartDataConfig.type;
+    let chartData = this.chartDataConfig.data || [];
+
+    let series: any = [];
+    if(graphType == 'returns') {
+      const seriesMap = new Map<number, number[]>();
+      chartData.forEach((item: any) => {
+        const date = new Date(item.month);
+        const year = date.getFullYear();
+        const month = date.getMonth(); 
+        if (!seriesMap.has(year)) {
+          seriesMap.set(year, new Array(12).fill(null));
         }
-      ],
+        seriesMap.get(year)![month] = item.returnChange;
+      });
+      series = Array.from(seriesMap.entries()).map(([year, dataArr]) => ({
+        name: year.toString(),
+        data: dataArr
+      }));
+    } else if(graphType == 'investors') {
+      //prepare data according to chart
+    } else if(graphType == 'invested') {
+      //prepare data according to chart
+    }
+    
+    return {
+      series: series,
       chart: {
         type: 'bar',
         height: 350,
@@ -233,28 +248,41 @@ export class ProviderChartsStandaloneComponent {
         categories: [
           'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ] // Display months on the X-axis
+        ],
+        title: {
+          text: 'Month', // Add a label below the x-axis
+          style: {
+            fontSize: '14px',
+            fontWeight: 'light',
+            color: '#333' // Adjust text color as needed
+          }
+        }
       },
       yaxis: {
-        show: false // Disable Y-axis
+        show: true
       },
       legend: {
         position: 'top',
         offsetY: 2,
-        horizontalAlign: 'right', // Align the legend to the right
-        floating: true, // Make the legend float (position absolute)
-        offsetX: 10, // Adjust horizontal position for fine-tuning
+        horizontalAlign: 'right', 
+        floating: true, 
+        offsetX: 10, 
       },
       fill: {
         opacity: 1
       },
-      colors: ['#0A365B', '#105995', '#A8D1F3'], // Custom stack colors
+      colors: ['#0A365B', '#105995', '#A8D1F3'], 
       tooltip: {
-        enabled: false // Disable tooltips on hover
+        y: {
+          formatter: function(value: number) {
+            return `Total ${graphType} (${value}%)`;
+          }
+        }
       },
       dataLabels: {
-        enabled: false // Disable data labels
-      }
+        enabled: false
+      },
+      noData: this.chartNoData
     };
   }
 
