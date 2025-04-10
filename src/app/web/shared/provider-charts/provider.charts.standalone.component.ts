@@ -190,22 +190,28 @@ export class ProviderChartsStandaloneComponent {
     let graphType = this.chartDataConfig.type;
     let chartData = this.chartDataConfig.data || [];
 
-    const seriesMap = new Map<number, number[]>();
-    chartData.forEach((item: any) => {
-      const date = new Date(item.month);
-      const year = date.getFullYear();
-      const month = date.getMonth(); 
-
-      if (!seriesMap.has(year)) {
-        seriesMap.set(year, new Array(12).fill(null));
-      }
-      seriesMap.get(year)![month] = item.returnChange;
-    });
-
-    const series = Array.from(seriesMap.entries()).map(([year, dataArr]) => ({
-      name: year.toString(),
-      data: dataArr
-    }));
+    let series: any = [];
+    if(graphType == 'returns') {
+      const seriesMap = new Map<number, number[]>();
+      chartData.forEach((item: any) => {
+        const date = new Date(item.month);
+        const year = date.getFullYear();
+        const month = date.getMonth(); 
+        if (!seriesMap.has(year)) {
+          seriesMap.set(year, new Array(12).fill(null));
+        }
+        seriesMap.get(year)![month] = item.returnChange;
+      });
+      series = Array.from(seriesMap.entries()).map(([year, dataArr]) => ({
+        name: year.toString(),
+        data: dataArr
+      }));
+    } else if(graphType == 'investors') {
+      //prepare data according to chart
+    } else if(graphType == 'invested') {
+      //prepare data according to chart
+    }
+    
     return {
       series: series,
       chart: {
