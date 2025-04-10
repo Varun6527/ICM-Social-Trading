@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-strategy-cell-renderer',
   template: `
-    <a [routerLink]="'/portal/ratings/'+params.data.accountId" class="default-link">
+    <a [routerLink]="'/portal/ratings/' + params.ratingId + '/'+ params.data.accountId" class="default-link">
       <div class="d-flex align-center">
           <img height="40" width="40" [src]="params.data.avatarPath" [alt]="params.value" class="strategy-icon" />
         <div>

@@ -77,7 +77,8 @@ export class ConstantVariable {
           search: "/api/rating/:ratingId/search",
           get_data: "/api/rating",
           watchListed_data: "/api/watchlist",
-          tradingData: "/api/reports/:accountId/trading"
+          tradingData: "/api/reports/:accountId/trading",
+          instrumentData: "/api/reports/:accountId/instruments",
         }
     };
     errorMessageObj: any = {

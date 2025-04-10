@@ -1,8 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content">
-    <!-- @for (obj of homePageConfig; track obj) { -->
         <div class="home-card" *ngIf="!showLoader">
-            <div class="header d-flex justify-space-between align-center">
+            <div class="header d-flex justify-space-between align-center" *ngIf="showHeader">
                 <div class="header-title">
                     <h5>{{ 'HOME.HELLO' | translate }}</h5>
                     <p>{{'HOME.Homepage with overall statistics' | translate}}</p>
@@ -18,7 +17,7 @@
                     </button>
                 </div>
             </div>
-            <provider-follower-header-cards></provider-follower-header-cards>
+            <provider-follower-header-cards [isProvider]="isProvider" [isFollower]="isFollower"></provider-follower-header-cards>
 
             <div class="metrics-table">
                 <div class="header-title" [ngClass]="{'d-flex justify-space-between pb-20': !isProvider && !isFollower}">
@@ -60,7 +59,6 @@
         <div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
             <img src="../../../../assets/logo/ICM Logo Default 1.png" />
         </div>
-    <!-- } -->
     </mat-card-content>
 
 </mat-card>

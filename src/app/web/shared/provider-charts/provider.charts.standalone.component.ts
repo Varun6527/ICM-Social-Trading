@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTooltip, ApexStroke, ApexFill, ApexPlotOptions, ApexLegend, NgApexchartsModule } from "ng-apexcharts";
+import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTooltip, ApexStroke, ApexFill, ApexPlotOptions, ApexLegend, NgApexchartsModule, ApexNoData } from "ng-apexcharts";
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -28,27 +28,44 @@ export type ChartOptions = {
             [fill]="chartOptions.fill" [colors]="chartOptions.colors"
             [labels]="chartOptions.labels" [responsive]="chartOptions.responsive"
             [legend]="chartOptions.legend" [plotOptions]="chartOptions.plotOptions"
-            [states]="chartOptions.states"></apx-chart>
+            [states]="chartOptions.states" [noData]="chartNoData"></apx-chart>
         `,
   standalone: true,
   imports: [CommonModule, TranslateModule, NgApexchartsModule]
 })
 export class ProviderChartsStandaloneComponent {
   chartOptions!: Partial<ChartOptions> | any;
+  chartNoData: ApexNoData = {
+    text: 'No data available',
+    align: 'center',
+    verticalAlign: 'middle',
+    style: {
+      color: '#999',
+      fontSize: '16px'
+    }
+  };
   
   @Input() chartType: string = "";
-  @Input() dataConfig: any = {};
+  @Input() chartDataConfig: any = {data: [], type: ''};
   constructor(public translate: TranslateService, private _webService: WebService) {
-
+    this._webService.subscribeOnWebDataChange('ProviderChartsStandaloneComponent', (event: any)=>{
+      this.setupChartsConfig(event);
+    })
   }
 
   ngOnInit() {
-    this.setupChartsConfig();
+    this.setupChartsConfig({});
   }
 
-  setupChartsConfig() {
-    if (this.chartType == 'barChart') {
-      this.chartOptions = this.getBarChartConfig();
+  resetChartDataConfig() {
+    this.chartDataConfig = {data: [], type: ''};
+  }
+
+
+  setupChartsConfig(event: any) {
+    if (event.action == 'onAssestMetricChange' && this.chartType == 'assestChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getAssestChartConfig(event.data);
     } else if (this.chartType == 'stackChart') {
       this.chartOptions = this.getStackedBarChartConfig();
     } else if (this.chartType == 'areaChart') {
@@ -66,9 +83,20 @@ export class ProviderChartsStandaloneComponent {
     }
   }
 
-  getBarChartConfig() {
+  getAssestChartConfig(data: any) {
+    this.chartDataConfig = data;
+    let graphType = this.chartDataConfig.type;
+    let chartData = this.chartDataConfig.data || [];
+    const shareField = graphType === 'volume' ? 'volumeShare' : 'countShare';
+    const countField = graphType === 'volume' ? 'volume' : 'count';
+
+    const sortedData = [...chartData].sort((a: any, b: any) => b[shareField] - a[shareField]);
+    const seriesData = sortedData.map((item: any) => item[shareField]);
+    const labels = sortedData.map((item: any) => item.symbol);
+    const totalCount = sortedData.reduce((sum: number, item: any) => sum + item[countField], 0);
+
     return {
-      series: [84, 80, 67],
+      series: seriesData,
       chart: {
         height: 350,
         type: 'radialBar',
@@ -76,13 +104,13 @@ export class ProviderChartsStandaloneComponent {
       plotOptions: {
         radialBar: {
           hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
+            size: '45%', 
           },
           track: {
             show: true,
             background: "#F2F4F7",
             strokeWidth: '100%',
-            margin: 5, // Space between bars
+            margin: 5, 
           },
           dataLabels: {
             name: {
@@ -94,19 +122,31 @@ export class ProviderChartsStandaloneComponent {
             },
             total: {
               show: true,
-              label: '',
-              formatter: function (w: any) {
-                return 316;
+              label: `Total ${graphType === 'volume' ? 'Volume' : 'Count'}`,
+              fontWeight: 400,
+              formatter: function () {
+                return totalCount;
               },
             }
           },
         },
       },
       stroke: {
-        lineCap: 'round', // This enables rounded edges for the bars
+        lineCap: 'round', 
       },
-      labels: ['Apples', 'Oranges', 'Bananas'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
+      labels: labels,
+      colors: ['#0A365B', '#105995', '#A8D1F3'],
+      tooltip: {
+        enabled: true,
+        custom: (opts: any) => {
+          const seriesIndex = opts.seriesIndex;
+          const dataItem = sortedData[seriesIndex];
+          return `<div style="padding: 5px;">
+                    <strong>Symbol:</strong> ${dataItem.symbol}<br/>
+                    <strong>Total ${graphType === 'volume' ? 'Volume' : 'Count'}:</strong> ${dataItem[countField]}<br/>
+                  </div>`;
+        }
+      },
       responsive: [
         {
           breakpoint: 600,
@@ -148,7 +188,7 @@ export class ProviderChartsStandaloneComponent {
       series: [
         {
           name: 'Series 1',
-          data: [44, 55, 41, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
+          data: [0, 0, 0, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
         },
         {
           name: 'Series 2',
@@ -714,6 +754,10 @@ export class ProviderChartsStandaloneComponent {
         }
       ]
     };
+  }
+
+  ngOnDestroy() {
+    this._webService.unSubscribeOnWebDataChange('ProviderChartsStandaloneComponent')
   }
 }
 

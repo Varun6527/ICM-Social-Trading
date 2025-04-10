@@ -2,7 +2,6 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProviderChartsStandaloneComponent } from '../../shared/provider-charts/provider.charts.standalone.component';
 import { StatusBtnRendererStandAloneComponent } from '../../shared/cell-renderer/status-btn-renderer/status-btn-renderer.standalone.component';
-import { StrategyCellRendererStandAloneComponent } from '../../shared/cell-renderer/strategy-cell-renderer/strategy-cell-renderer.standalone.component';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -17,13 +16,14 @@ import { ShowErrorStandAloneComponent } from '../../../shared/component/showerro
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { AuthService } from '../../../auth/service/auth.service';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-provider-list-profile',
   templateUrl: './provider-list-profile.component.html',
   styleUrl: './provider-list-profile.component.scss',
   standalone: true,
-  imports: [CommonModule, ProviderChartsStandaloneComponent, CommonAgGridStandAloneComponent, MatDividerModule, RouterModule, TranslateModule, MatButtonToggleModule, MatCardModule, ShowErrorStandAloneComponent]
+  imports: [CommonModule, FormsModule, ProviderChartsStandaloneComponent, CommonAgGridStandAloneComponent, MatDividerModule, RouterModule, TranslateModule, MatButtonToggleModule, MatCardModule, ShowErrorStandAloneComponent]
 })
 export class ProviderListProfileStandAloneComponent {
   showGridLoader: boolean = false;
@@ -36,6 +36,9 @@ export class ProviderListProfileStandAloneComponent {
   widget_key: string = "";
   accountId: any;
   ratingId: any;
+  chartsData: any = {
+    assestChart: { data: [], type:'count' }
+  };
 
   IConstant: ConstantVariable = new ConstantVariable();
   readonly beFollowerDialog = inject(MatDialog);
@@ -60,6 +63,27 @@ export class ProviderListProfileStandAloneComponent {
     this.showPageLoader = false;
     this.setupPositionGridConfig();
     this.getPositionData();
+    this.getAssestsChartsData();
+  }
+
+  onAssestMetricChange() {
+    this._webService.emitOnWebDataChange({action: "onAssestMetricChange", data: this.chartsData.assestChart});
+  }
+
+  getAssestsChartsData() {
+    let param = {
+      accountId: this.accountId,
+      widget_key: this.widget_key
+    }
+    this._webService.getAssestsChartsDataByAccountId(param).subscribe({
+      next: (response: any) => {
+        this.chartsData.assestChart.data = response.distribution;
+        this.onAssestMetricChange();
+      },
+      error: (errorObj: any) => {
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+      }
+    })
   }
 
   getPositionData() {

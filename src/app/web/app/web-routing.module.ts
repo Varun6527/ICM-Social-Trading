@@ -11,7 +11,7 @@ const WEB_ROUTES: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('../views/home/home.standalone.component').then(s => s.HomeStandAloneComponent),
+        loadComponent: () => import('../views/home/home.wrapper.standalone.component').then(s => s.HomeWrapperStandAloneComponent),
         title: "ICM | Home"
       },
       {
