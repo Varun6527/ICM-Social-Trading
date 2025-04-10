@@ -55,7 +55,7 @@
                 <div class="d-flex justify-space-between align-center px-20">
                     <h6>{{"PROVIDERS_LIST_PROFILE.Asset Allocation"|translate}}</h6>
                     <div class="assets-badge">
-                        <mat-button-toggle-group name="fontStyle" [(ngModel)]="chartsData.assestChart.type" (change)="onAssestMetricChange()" aria-label="Font Style"
+                        <mat-button-toggle-group name="fontStyle" [(ngModel)]="chartsData.assestChart.selectedTab" (change)="onAssestMetricChange()" aria-label="Font Style"
                             [hideSingleSelectionIndicator]="true">
                             <mat-button-toggle value="count">{{"REPORTS.Count"|translate}}</mat-button-toggle>
                             <mat-button-toggle value="volume">{{"PROVIDERS_LIST_PROFILE.Volume"|translate}}</mat-button-toggle>
@@ -72,7 +72,7 @@
                     <h6>{{"PROVIDERS_LIST_PROFILE.Return & Investment"|translate}}</h6>
                     <div class="assets-badge">
                         <mat-button-toggle-group name="fontStyle" aria-label="Font Style"
-                            [hideSingleSelectionIndicator]="true" [(ngModel)]="chartsData.monthlyDetailsChart.type" (change)="onMonthlyMetricChange()">
+                            [hideSingleSelectionIndicator]="true" [(ngModel)]="chartsData.monthlyDetailsChart.selectedTab" (change)="onMonthlyMetricChange()">
                             <mat-button-toggle value="returns">{{"PROVIDERS_LIST_PROFILE.Returns"|translate}}</mat-button-toggle>
                             <mat-button-toggle value="investors">{{"PROVIDERS_LIST_PROFILE.Investors"|translate}}</mat-button-toggle>
                             <mat-button-toggle value="invested">{{"PROVIDERS_LIST_PROFILE.Invested"|translate}}</mat-button-toggle>
@@ -90,98 +90,89 @@
                 <div class="d-flex justify-center">
                     <div class="performance-badge">
                         <mat-button-toggle-group name="fontStyle" aria-label="Font Style"
-                            [hideSingleSelectionIndicator]="true">
-                            <mat-button-toggle value="open" [checked]="performanceToggle == 'performance'"
-                                (click)="togglePerformance('performance')">{{"PROVIDERS_LIST_PROFILE.Performance"|translate}}</mat-button-toggle>
-                            <mat-button-toggle value="closed" [checked]="performanceToggle == 'risk'"
-                                (click)="togglePerformance('risk')">{{"PROVIDERS_LIST_PROFILE.Risk"|translate}}</mat-button-toggle>
-                            <mat-button-toggle value="closed" [checked]="performanceToggle == 'portfolio'"
-                                (click)="togglePerformance('portfolio')">{{"PROVIDERS_LIST_PROFILE.Portfolio"|translate}}</mat-button-toggle>
+                            [hideSingleSelectionIndicator]="true" [(ngModel)]="chartsData.perfRiskPortfolioChart.selectedTab" (change)="onPerfRiskPortfolioChartMetricChange()">
+                            <mat-button-toggle value="performance">{{"PROVIDERS_LIST_PROFILE.Performance"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="risk">{{"PROVIDERS_LIST_PROFILE.Risk"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="portfolio">{{"PROVIDERS_LIST_PROFILE.Portfolio"|translate}}</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <div class="performance-tab" *ngIf="performanceToggle == 'performance'">
+                <div class="performance-tab" [hidden]="chartsData.perfRiskPortfolioChart.selectedTab !== 'performance'">
                     <mat-divider class="assets-divider"></mat-divider>
                     <div class="d-flex justify-space-between align-center">
                         <div style="width: 70%;">
-                            <provider-charts [chartType]="'areaChart'" ></provider-charts>
+                            <provider-charts [chartType]="'performanceChart'"></provider-charts>
                         </div>
                         <div style="width: 30%;" class="assets-card">
-                            <provider-charts [chartType]="'pieChart'" ></provider-charts>
+                            <provider-charts [chartType]="'totalTradingChart'"></provider-charts>
                             <div class="pieChart-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Trade Won"|translate}}</p>
-                                    <p class="positive">101/83%</p>
+                                    <p class="positive">{{tradingStaticsData.tradeWon}}</p>
                                 </div>
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Trade Lost"|translate}}</p>
-                                    <p class="negative">20/17%</p>
+                                    <p class="negative">{{tradingStaticsData.tradeLost}}</p>
                                 </div>
                             </div>
                             <div class="pieChart-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Best Trade"|translate}}</p>
-                                    <p class="positive">238.37</p>
+                                    <p class="positive">{{tradingStaticsData.bestTrade}}</p>
                                 </div>
                                 <div>
-                                    <p>{{"PROVIDERS_LIST_PROFILE.Trade Lost"|translate}}</p>
-                                    <p class="negative">339.47</p>
+                                    <p>{{"PROVIDERS_PROFILE.Worst Trade"|translate}}</p>
+                                    <p class="negative">{{tradingStaticsData.worstTrade}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="risk-tab" *ngIf="performanceToggle == 'risk'">
+                <div class="risk-tab" [hidden]="chartsData.perfRiskPortfolioChart.selectedTab !== 'risk'">
                     <div class="d-flex justify-space-between align-center g-20 pb-20">
                         <div class="trading-card">
                             <h6>{{"PROVIDERS_LIST_PROFILE.Trading Frequency"|translate}}</h6>
-                            <provider-charts [chartType]="'riskStackedChart'" ></provider-charts>
+                            <provider-charts [chartType]="'riskMetricChart'" ></provider-charts>
                         </div>
                         <div class="strategy-card">
                             <div class="d-flex justify-space-between">
                                 <h6>{{"PROVIDERS_LIST_PROFILE.Strategy Stats"|translate}}</h6>
-                                <div class="badge d-flex justify-space-between g-10">
-                                    <p>{{"PROVIDERS_LIST_PROFILE.Risk"|translate}}</p>
-                                    <div class="badge-count">
-                                        <p>10</p>
-                                    </div>
-                                </div>
                             </div>
                             <div class="strategy-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Avg. Profit Per Trade"|translate}}</p>
-                                    <p class="positive">$33.67</p>
+                                    <p class="positive">{{tradingMetricsData?.total?.averageProfitPerTrade || tradingMetricsData?.total?.averageProfitPerTrade == 0 ? (tradingMetricsData.total.averageProfitPerTrade | currency: 'USD':'symbol') : '-'}}</p>
                                 </div>
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Avg. Loss Per Trade"|translate}}</p>
-                                    <p class="negative">-$77.28</p>
+                                    <p class="negative">{{tradingMetricsData?.lost?.averageProfitPerTrade || tradingMetricsData?.lost?.averageProfitPerTrade == 0 ? (tradingMetricsData.lost.averageProfitPerTrade | currency: 'USD':'symbol') : '-'}}</p>
                                 </div>
                             </div>
                             <div class="strategy-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Trade Avg. Duration"|translate}}</p>
-                                    <p>3 Days</p>
+                                    <p>{{tradingMetricsData.averageDuration ? tradingMetricsData.averageDuration : '-'}}</p>
                                 </div>
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Sharpe Ratio"|translate}}</p>
-                                    <p>0.25</p>
+                                    <p>{{ratingData.sharpeRatio ? ratingData.sharpeRatio : '-'}}</p>
                                 </div>
                             </div>
                             <div class="strategy-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Max. Drawdown"|translate}}</p>
-                                    <p>89.25</p>
+                                    <p>{{ratingData.maxDrawdown ? ratingData.maxDrawdown : '-'}}</p>
                                 </div>
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Max. Drawdown Time"|translate}}</p>
-                                    <p>13/04/2024</p>
+                                    <p>{{ratingData.maxDrawdownTime ? (ratingData.maxDrawdownTime | date: 'MM/dd/yy')  : '-'}}</p>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div class="portfolio-tab" *ngIf="performanceToggle == 'portfolio'">
+                <div class="portfolio-tab" [hidden]="chartsData.perfRiskPortfolioChart.selectedTab !== 'portfolio'">
                     <div class="d-flex justify-space-between align-center g-20 pb-20">
                         <div class="porflio-card">
                             <provider-charts [chartType]="'portfolioChartOptions1'" ></provider-charts>

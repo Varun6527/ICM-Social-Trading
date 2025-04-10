@@ -583,7 +583,7 @@ export class WebService extends BaseService {
     };
   }
 
-  getAssestsChartsData(data: any) {
+  getInstrumentData(data: any) {
     let url = `${this.constantVar?.http_Api_Url.rating.instrumentData}`;
     url = url.replace(':accountId', data.accountId);
     delete data['accountId'];

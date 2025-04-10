@@ -65,16 +65,19 @@ export class ProviderChartsStandaloneComponent {
   setupChartsConfig(event: any) {
     if (event.action == 'onAssestMetricChange' && this.chartType == 'assestChart') {
       this.resetChartDataConfig();
-      this.chartOptions = this.getAssestChartConfig(event.data);
+      this.chartOptions = this.getAssestChartConfig(event.chartConfig);
     } else if (event.action == 'onMonthlyMetricChange' && this.chartType == 'monthlyDetailsChart') {
       this.resetChartDataConfig();
-      this.chartOptions = this.getMonthlyDetailsChartConfig(event.data);
-    } else if (this.chartType == 'areaChart') {
-      this.chartOptions = this.getAreaChartConfig();
-    } else if (this.chartType == 'pieChart') {
-      this.chartOptions = this.getPieChartConfig();
-    } else if (this.chartType == 'riskStackedChart') {
-      this.chartOptions = this.getRiskStackedChartConfig();
+      this.chartOptions = this.getMonthlyDetailsChartConfig(event.chartConfig);
+    } else if (event.action == 'onPerformanceMetricChange' && this.chartType == 'performanceChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getPerformanceChartConfig(event.chartConfig);
+    } else if (event.action == 'onTotalTradingMetricChange' && this.chartType == 'totalTradingChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getTotalTradingChartConfig(event.chartConfig);
+    } else if (event.action == 'onRiskMetricChange' && this.chartType == 'riskMetricChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getRiskChartConfig(event.chartConfig);
     } else if (this.chartType == 'portfolioChartOptions1') {
       this.chartOptions = this.getPortfolioChartOptions1Config();
     } else if (this.chartType == 'portfolioChartOptions2') {
@@ -105,7 +108,7 @@ export class ProviderChartsStandaloneComponent {
       plotOptions: {
         radialBar: {
           hollow: {
-            size: '45%', 
+            size: '70%', 
           },
           track: {
             show: true,
@@ -286,11 +289,14 @@ export class ProviderChartsStandaloneComponent {
     };
   }
 
-  getAreaChartConfig() {
+  getPerformanceChartConfig(data: any) {
+    this.chartDataConfig = data;
+    let graphType = this.chartDataConfig.type;
+    let chartData = this.chartDataConfig.data || [];
     return {
       series: [{
         name: "STOCK ABC",
-        data: [80, 76, 73, 80, 78, 80, 87, 88, 90, 93, 95, 97]
+        data: chartData
       }],
       chart: {
         type: 'area',
@@ -360,12 +366,16 @@ export class ProviderChartsStandaloneComponent {
         floating: true, // Make the legend float (position absolute)
         offsetX: 0, // Adjust horizontal position for fine-tuning
       },
+      noData: this.chartNoData
     };
   }
 
-  getPieChartConfig() {
+  getTotalTradingChartConfig(data: any) {
+    this.chartDataConfig = data;
+    const countValue = this.chartDataConfig.data.count || 0;
+    const tooltipData = this.chartDataConfig.data;
     return {
-      series: [42],
+      series: [countValue],
       chart: {
         height: 350,
         type: 'radialBar',
@@ -389,8 +399,8 @@ export class ProviderChartsStandaloneComponent {
               show: true,
               label: 'Trades Total',
               fontWeight: 400,
-              formatter: function (w: any) {
-                return 121;
+              formatter: function () {
+                return countValue;
               },
             }
           }
@@ -399,8 +409,21 @@ export class ProviderChartsStandaloneComponent {
       stroke: {
         lineCap: 'round', // This enables rounded edges for the bars
       },
-      labels: ['Apples'],
+      labels: [countValue.toString()],
       colors: ['#0A365B'],
+      tooltip: {
+        enabled: true,
+        custom: function (opts: any) {
+          return `<div style="padding: 5px;">
+                    <strong>Profit:</strong> ${tooltipData.profit}<br/>
+                    <strong>Average Trade Size:</strong> ${tooltipData.averageTradeSize}<br/>
+                    <strong>Average Profit Per Trade:</strong> ${tooltipData.averageProfitPerTrade}<br/>
+                    <strong>Average Profit Per Lot:</strong> ${tooltipData.averageProfitPerLot}<br/>
+                    <strong>Buy Count:</strong> ${tooltipData.buyCount}<br/>
+                    <strong>Sell Count:</strong> ${tooltipData.sellCount}<br/>
+                  </div>`;
+        }
+      },
       responsive: [
         {
           breakpoint: 600,
@@ -433,26 +456,17 @@ export class ProviderChartsStandaloneComponent {
             }
           }
         }
-      ]
+      ],
+      noData: this.chartNoData
     };
   }
 
-  getRiskStackedChartConfig() {
+  getRiskChartConfig(data: any) {
+    this.chartDataConfig = data;
+    let graphType = this.chartDataConfig.type;
+    let chartData = this.chartDataConfig.data || [];
     return {
-      series: [
-        {
-          name: '2019',
-          data: [44, 55, 41, 67, 22, 43, 56, 78, 34, 23, 45, 67] // Data for 12 months
-        },
-        {
-          name: '2020',
-          data: [13, 23, 20, 8, 13, 27, 29, 41, 34, 22, 31, 14] // Data for 12 months
-        },
-        {
-          name: '2021',
-          data: [11, 17, 15, 15, 21, 14, 19, 25, 18, 12, 20, 16] // Data for 12 months
-        }
-      ],
+      series: chartData,
       chart: {
         type: 'bar',
         height: 280,
@@ -516,7 +530,8 @@ export class ProviderChartsStandaloneComponent {
       },
       dataLabels: {
         enabled: false // Disable data labels
-      }
+      },
+      noData: this.chartNoData
     };
   }
 
