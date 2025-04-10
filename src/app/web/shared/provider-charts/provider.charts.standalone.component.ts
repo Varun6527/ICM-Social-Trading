@@ -122,7 +122,7 @@ export class ProviderChartsStandaloneComponent {
             },
             total: {
               show: true,
-              label: `Total ${graphType === 'volume' ? 'Volume' : 'Count'}`,
+              label: `Total Asset ${graphType === 'volume' ? 'Volume' : 'Count'}`,
               fontWeight: 400,
               formatter: function () {
                 return totalCount;
