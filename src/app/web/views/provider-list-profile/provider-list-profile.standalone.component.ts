@@ -37,7 +37,8 @@ export class ProviderListProfileStandAloneComponent {
   accountId: any;
   ratingId: any;
   chartsData: any = {
-    assestChart: { data: [], type:'count' }
+    assestChart: { data: [], type:'count' },
+    monthlyDetailsChart: { data: { returns: [], investors: [], invested: [] }, type: 'returns' }
   };
 
   IConstant: ConstantVariable = new ConstantVariable();
@@ -64,10 +65,24 @@ export class ProviderListProfileStandAloneComponent {
     this.setupPositionGridConfig();
     this.getPositionData();
     this.getAssestsChartsData();
+    this.getMonthlyReturnChartsData();
+    //Need to call get investor api here which gives us all added investor month by month.
+    //Need to call get invested api here which gives us all added invested amount month by month.
+    
   }
 
   onAssestMetricChange() {
     this._webService.emitOnWebDataChange({action: "onAssestMetricChange", data: this.chartsData.assestChart});
+  }
+
+  onMonthlyMetricChange() {
+    if(this.chartsData.monthlyDetailsChart.type == 'returns') { 
+      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.returns, type: 'returns' }});
+    } else if(this.chartsData.monthlyDetailsChart.type == 'investors') {
+      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.investors, type: 'investors' }});
+    } else if(this.chartsData.monthlyDetailsChart.type == 'invested') {
+      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.invested, type: 'invested' }});
+    }
   }
 
   getAssestsChartsData() {
@@ -75,10 +90,26 @@ export class ProviderListProfileStandAloneComponent {
       accountId: this.accountId,
       widget_key: this.widget_key
     }
-    this._webService.getAssestsChartsDataByAccountId(param).subscribe({
+    this._webService.getAssestsChartsData(param).subscribe({
       next: (response: any) => {
         this.chartsData.assestChart.data = response.distribution;
         this.onAssestMetricChange();
+      },
+      error: (errorObj: any) => {
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+      }
+    })
+  }
+
+  getMonthlyReturnChartsData() {
+    let param = {
+      accountId: this.accountId,
+      widget_key: this.widget_key
+    }
+    this._webService.getMonthlyReturnChartsData(param).subscribe({
+      next: (response: any) => {
+        this.chartsData.monthlyDetailsChart.data.returns = response;
+        this.onMonthlyMetricChange();
       },
       error: (errorObj: any) => {
         this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);

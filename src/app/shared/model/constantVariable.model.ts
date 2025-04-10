@@ -79,6 +79,7 @@ export class ConstantVariable {
           watchListed_data: "/api/watchlist",
           tradingData: "/api/reports/:accountId/trading",
           instrumentData: "/api/reports/:accountId/instruments",
+          monthlyReturns: "/api/history/:accountId/monthly"
         }
     };
     errorMessageObj: any = {
