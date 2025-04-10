@@ -28,18 +28,40 @@ import { FormsModule } from '@angular/forms';
 export class ProviderListProfileStandAloneComponent {
   showGridLoader: boolean = false;
   ratingData :any = {};
+  tradingMetricsData: any = {}
   offerData: any = {};
   gridConfig: any = {};
   gridData: any = [];
-  performanceToggle = 'performance';
   showPageLoader: boolean = false;
   widget_key: string = "";
   accountId: any;
   ratingId: any;
   chartsData: any = {
-    assestChart: { data: [], type:'count' },
-    monthlyDetailsChart: { data: { returns: [], investors: [], invested: [] }, type: 'returns' }
+    assestChart: {
+      tabs: {
+        count: { charts: { countData: [] } },
+        volume: { charts: { volumeData: [] } },
+      },
+      selectedTab: 'count'
+    },
+    monthlyDetailsChart: {
+      tabs: {
+        returns: { charts: { returnsData: []}},
+        investors: { charts: { investorsData: []}},
+        invested: { charts: { investedData: []}},
+      },
+      selectedTab: 'returns'
+    },
+    perfRiskPortfolioChart: {
+      tabs: {
+        performance: { charts: { tradingPerformanceData: [], totalTradingData: [] } },
+        risk: { charts: { tradingFrequencyData: [] } },
+        portfolio: { charts: { topTrade: [], topWonTrade: [], topLostTrade: [] } }
+      },
+      selectedTab: 'performance'
+    }
   };
+  tradingStaticsData: any = {};
 
   IConstant: ConstantVariable = new ConstantVariable();
   readonly beFollowerDialog = inject(MatDialog);
@@ -68,21 +90,86 @@ export class ProviderListProfileStandAloneComponent {
     this.getMonthlyReturnChartsData();
     //Need to call get investor api here which gives us all added investor month by month.
     //Need to call get invested api here which gives us all added invested amount month by month.
-    
+    this.getTradingMetricsData();
   }
 
   onAssestMetricChange() {
-    this._webService.emitOnWebDataChange({action: "onAssestMetricChange", data: this.chartsData.assestChart});
+    let selectedTab = this.chartsData.assestChart.selectedTab, chartData = [];
+    if(selectedTab == 'count') {
+      chartData = this.chartsData.assestChart.tabs[selectedTab].charts.countData;
+    } else if(selectedTab == 'volume') {
+      chartData = this.chartsData.assestChart.tabs[selectedTab].charts.volumeData;
+    }
+    this._webService.emitOnWebDataChange({action: "onAssestMetricChange", chartConfig: { data: chartData, type: selectedTab } });
   }
 
   onMonthlyMetricChange() {
-    if(this.chartsData.monthlyDetailsChart.type == 'returns') { 
-      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.returns, type: 'returns' }});
-    } else if(this.chartsData.monthlyDetailsChart.type == 'investors') {
-      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.investors, type: 'investors' }});
-    } else if(this.chartsData.monthlyDetailsChart.type == 'invested') {
-      this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", data: { data: this.chartsData.monthlyDetailsChart.data.invested, type: 'invested' }});
+    let selectedTab = this.chartsData.monthlyDetailsChart.selectedTab, chartData = [];
+    if(selectedTab == 'returns') { 
+      chartData = this.chartsData.monthlyDetailsChart.tabs[selectedTab].charts.returnsData;
+    } else if(selectedTab == 'investors') {
+      //Assign data here for investors chart.
+    } else if(selectedTab == 'invested') {
+      //Assign data here for investors chart.
     }
+    this._webService.emitOnWebDataChange({action: "onMonthlyMetricChange", chartConfig: { data: chartData, type: selectedTab }});
+  }
+
+  onPerfRiskPortfolioChartMetricChange() {
+    let selectedTab = this.chartsData.perfRiskPortfolioChart.selectedTab, chartData: any = [];
+    if(selectedTab == 'performance') { 
+      chartData = this.tradingMetricsData.total;
+      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.totalTradingData = chartData;
+      this._webService.emitOnWebDataChange({action: "onTotalTradingMetricChange", chartConfig: { data: chartData, type: selectedTab }});
+
+      //Perfomance first chart data binding pending
+      this._webService.emitOnWebDataChange({action: "onPerformanceMetricChange", chartConfig: { data: [], type: selectedTab }});
+      //end of chart data binding
+    } else if(selectedTab == 'risk') {
+      this._webService.emitOnWebDataChange({action: "onRiskMetricChange", chartConfig: { data: [], type: selectedTab }});
+      //Assign data here for investors chart.
+    } else if(selectedTab == 'portfolio') {
+      //Assign data here for investors chart.
+    }
+  }
+
+  getTradeSummaryData(tradeData: any) {
+    if (!tradeData) return {};
+
+    const wonCount = tradeData?.won?.count || 0;
+    const lostCount = tradeData?.lost?.count || 0;
+    const totalTrades = wonCount + lostCount;
+
+    const wonPercentage = totalTrades > 0 ? ((wonCount / totalTrades) * 100).toFixed(0) : '0';
+    const lostPercentage = totalTrades > 0 ? ((lostCount / totalTrades) * 100).toFixed(0) : '0';
+
+    const bestProfit = tradeData?.best?.profit ?? null;
+    const worstProfit = tradeData?.worst?.profit ?? null;
+
+    return {
+        tradeWon: `${wonCount}/${wonPercentage}%`,
+        tradeLost: `${lostCount}/${lostPercentage}%`,
+        bestTrade: bestProfit !== null ? bestProfit.toFixed(2) : '--',
+        worstTrade: worstProfit !== null ? Math.abs(worstProfit).toFixed(2) : '--',
+    };
+  }
+
+  getTradingMetricsData() {
+    let param = {
+      accountId: this.accountId,
+      widget_key: this.widget_key
+    }
+    this._webService.getTradingDataByAccountId(param).subscribe({
+      next: (response: any) => {
+        this.tradingMetricsData = response.summary;
+        this.tradingStaticsData = this.getTradeSummaryData(response.summary);
+        this.onPerfRiskPortfolioChartMetricChange();
+      },
+      error: (errorObj: any) => {
+        this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
+      }
+    })
+    
   }
 
   getAssestsChartsData() {
@@ -90,9 +177,10 @@ export class ProviderListProfileStandAloneComponent {
       accountId: this.accountId,
       widget_key: this.widget_key
     }
-    this._webService.getAssestsChartsData(param).subscribe({
+    this._webService.getInstrumentData(param).subscribe({
       next: (response: any) => {
-        this.chartsData.assestChart.data = response.distribution;
+        this.chartsData.assestChart.tabs['count'].charts.countData = response.distribution;
+        this.chartsData.assestChart.tabs['volume'].charts.volumeData = response.distribution;
         this.onAssestMetricChange();
       },
       error: (errorObj: any) => {
@@ -108,7 +196,7 @@ export class ProviderListProfileStandAloneComponent {
     }
     this._webService.getMonthlyReturnChartsData(param).subscribe({
       next: (response: any) => {
-        this.chartsData.monthlyDetailsChart.data.returns = response;
+        this.chartsData.monthlyDetailsChart.tabs['returns'].charts.returnsData = response;
         this.onMonthlyMetricChange();
       },
       error: (errorObj: any) => {
@@ -203,10 +291,6 @@ export class ProviderListProfileStandAloneComponent {
       rowModelType: 'clientSide',
       rowHeight: undefined
     }
-  }
-
-  togglePerformance(type: any) {
-    this.performanceToggle = type
   }
   
   recieveChildrenEmitter(event: any) {
