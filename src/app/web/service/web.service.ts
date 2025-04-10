@@ -579,6 +579,15 @@ export class WebService extends BaseService {
       })
     };
   }
+
+  
+
+  getAssestsChartsDataByAccountId(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.instrumentData}`;
+    url = url.replace(':accountId', data.accountId);
+    delete data['accountId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
 // End of Rating api Methods
 }
 

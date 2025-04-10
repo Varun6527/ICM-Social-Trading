@@ -55,16 +55,16 @@
                 <div class="d-flex justify-space-between align-center px-20">
                     <h6>{{"PROVIDERS_LIST_PROFILE.Asset Allocation"|translate}}</h6>
                     <div class="assets-badge">
-                        <mat-button-toggle-group name="fontStyle" aria-label="Font Style"
+                        <mat-button-toggle-group name="fontStyle" [(ngModel)]="chartsData.assestChart.type" (change)="onAssestMetricChange()" aria-label="Font Style"
                             [hideSingleSelectionIndicator]="true">
-                            <mat-button-toggle value="open" [checked]="true">{{"PROVIDERS_LIST_PROFILE.Open"|translate}}</mat-button-toggle>
-                            <mat-button-toggle value="closed">{{"PROVIDERS_LIST_PROFILE.Closed"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="count">{{"REPORTS.Count"|translate}}</mat-button-toggle>
+                            <mat-button-toggle value="volume">{{"PROVIDERS_LIST_PROFILE.Volume"|translate}}</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>
                 <mat-divider class="assets-divider"></mat-divider>
                 <div>
-                    <provider-charts [chartType]="'barChart'" [dataConfig]="{}"></provider-charts>
+                    <provider-charts [chartType]="'assestChart'"></provider-charts>
                 </div>
             </div>
             <div class="returns-card">
@@ -81,7 +81,7 @@
                 </div>
                 <mat-divider class="assets-divider"></mat-divider>
                 <div>
-                    <provider-charts [chartType]="'stackChart'" [dataConfig]="{}"></provider-charts>
+                    <provider-charts [chartType]="'stackChart'" ></provider-charts>
                 </div>
             </div>
         </div>
@@ -104,10 +104,10 @@
                     <mat-divider class="assets-divider"></mat-divider>
                     <div class="d-flex justify-space-between align-center">
                         <div style="width: 70%;">
-                            <provider-charts [chartType]="'areaChart'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'areaChart'" ></provider-charts>
                         </div>
                         <div style="width: 30%;" class="assets-card">
-                            <provider-charts [chartType]="'pieChart'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'pieChart'" ></provider-charts>
                             <div class="pieChart-value d-flex justify-space-between align-center pb-10">
                                 <div>
                                     <p>{{"PROVIDERS_LIST_PROFILE.Trade Won"|translate}}</p>
@@ -135,7 +135,7 @@
                     <div class="d-flex justify-space-between align-center g-20 pb-20">
                         <div class="trading-card">
                             <h6>{{"PROVIDERS_LIST_PROFILE.Trading Frequency"|translate}}</h6>
-                            <provider-charts [chartType]="'riskStackedChart'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'riskStackedChart'" ></provider-charts>
                         </div>
                         <div class="strategy-card">
                             <div class="d-flex justify-space-between">
@@ -184,13 +184,13 @@
                 <div class="portfolio-tab" *ngIf="performanceToggle == 'portfolio'">
                     <div class="d-flex justify-space-between align-center g-20 pb-20">
                         <div class="porflio-card">
-                            <provider-charts [chartType]="'portfolioChartOptions1'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'portfolioChartOptions1'" ></provider-charts>
                         </div>
                         <div class="porflio-card">
-                            <provider-charts [chartType]="'portfolioChartOptions2'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'portfolioChartOptions2'" ></provider-charts>
                         </div>
                         <div class="porflio-card">
-                            <provider-charts [chartType]="'portfolioChartOptions3'" [dataConfig]="{}"></provider-charts>
+                            <provider-charts [chartType]="'portfolioChartOptions3'" ></provider-charts>
                         </div>
                     </div>
                 </div>
