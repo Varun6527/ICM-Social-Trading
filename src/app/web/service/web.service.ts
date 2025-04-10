@@ -473,6 +473,9 @@ export class WebService extends BaseService {
   }
 
   getSortedRatingsTradingDetails(data: any) {
+    if(this.sortedRatingsData.sortedByTotalTrades.length > 0 || this.sortedRatingsData.sortedByWinRatio.length > 0) {
+      return of(this.sortedRatingsData); // Return the cached data if available
+    }
     let getRatingsData = this.getRatingSearchData(data);
     return getRatingsData.pipe(
       map((ratingsData: any) => {
