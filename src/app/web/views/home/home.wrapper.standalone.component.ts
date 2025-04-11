@@ -23,7 +23,6 @@ export class HomeWrapperStandAloneComponent {
     isProvider: boolean = false;
     isFollower: boolean = false;
     constructor(private _webService:  WebService) {
-        console.log("i got here HomeWrapperStandAloneComponent");
         this.isProvider = this._webService.isProviderAccount;
         this.isFollower = this._webService.isSubscriptionAccount;
     }
