@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexTooltip, ApexStroke, ApexFill, ApexPlotOptions, ApexLegend, NgApexchartsModule, ApexNoData } from "ng-apexcharts";
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -47,14 +48,13 @@ export class ProviderChartsStandaloneComponent {
   
   @Input() chartType: string = "";
   @Input() chartDataConfig: any = {data: [], type: ''};
-  constructor(public translate: TranslateService, private _webService: WebService) {
+  constructor(public translate: TranslateService, private _webService: WebService, private datePipe: DatePipe) {
     this._webService.subscribeOnWebDataChange('ProviderChartsStandaloneComponent', (event: any)=>{
       this.setupChartsConfig(event);
     })
   }
 
   ngOnInit() {
-    this.setupChartsConfig({});
   }
 
   resetChartDataConfig() {
@@ -78,12 +78,15 @@ export class ProviderChartsStandaloneComponent {
     } else if (event.action == 'onRiskMetricChange' && this.chartType == 'riskMetricChart') {
       this.resetChartDataConfig();
       this.chartOptions = this.getRiskChartConfig(event.chartConfig);
-    } else if (this.chartType == 'portfolioChartOptions1') {
-      this.chartOptions = this.getPortfolioChartOptions1Config();
-    } else if (this.chartType == 'portfolioChartOptions2') {
-      this.chartOptions = this.getPortfolioChartOptions2Config();
-    } else if (this.chartType == 'portfolioChartOptions3') {
-      this.chartOptions = this.getPortfolioChartOptions3Config();
+    } else if (event.action == 'onTopTradeMetricChange' && this.chartType == 'topTradeMetricChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getTopTradeChartConfig(event.chartConfig);
+    } else if (event.action == 'onTopWonTradeMetricChange' && this.chartType == 'topWonTradeMetricChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getTopTradeWonChartConfig(event.chartConfig);
+    } else if (event.action == 'onTopLostTradeMetricChange' && this.chartType == 'topLostTradeMetricChart') {
+      this.resetChartDataConfig();
+      this.chartOptions = this.getTopTradeLostChartConfig(event.chartConfig);
     }
   }
 
@@ -535,9 +538,13 @@ export class ProviderChartsStandaloneComponent {
     };
   }
 
-  getPortfolioChartOptions1Config() {
+  getTopTradeChartConfig(data: any) {
+    this.chartDataConfig = data;
+    const symbolValue = this.chartDataConfig?.data?.symbol || 0;
+    const profitValue = this.chartDataConfig?.data == null ? [] : [this.chartDataConfig?.data?.profit || 0];
+    const tooltipData = this.chartDataConfig?.data;
     return {
-      series: [84, 80, 67],
+      series: profitValue,
       chart: {
         height: 350,
         type: 'radialBar',
@@ -545,43 +552,45 @@ export class ProviderChartsStandaloneComponent {
       plotOptions: {
         radialBar: {
           hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
+            size: '60%', // Adjust this percentage to reduce the inner spacing
           },
           track: {
             show: true,
             background: "#F2F4F7",
             strokeWidth: '100%',
-            margin: 5, // Space between bars
           },
           dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
             value: {
               fontSize: '25px',
-              fontWeight: 500
+              fontWeight: 600
             },
             total: {
               show: true,
-              label: 'Top Traded',
+              label: 'Top Trade',
               fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
+              formatter: function () {
+                return symbolValue;
               },
             }
-          },
+          }
         },
       },
       stroke: {
         lineCap: 'round', // This enables rounded edges for the bars
       },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
+      labels: [profitValue.toString()],
+      colors: ['#0A365B'],
+      tooltip: {
+        enabled: true,
+        custom: (opts: any) => {
+          return `<div style="padding: 5px;">
+                    <strong>Direction:</strong> ${tooltipData?.direction}<br/>
+                    <strong>Open Time:</strong> ${this.datePipe.transform(tooltipData?.openTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Close Time:</strong> ${this.datePipe.transform(tooltipData?.closeTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Volume:</strong> ${tooltipData?.volume}<br/>
+                    <strong>Largest Profit:</strong> ${tooltipData?.profit}<br/>
+                  </div>`;
+        }
       },
       responsive: [
         {
@@ -589,10 +598,6 @@ export class ProviderChartsStandaloneComponent {
           options: {
             chart: {
               height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
             },
             stroke: {
               width: 2
@@ -619,13 +624,18 @@ export class ProviderChartsStandaloneComponent {
             }
           }
         }
-      ]
+      ],
+      noData: this.chartNoData
     };
   }
 
-  getPortfolioChartOptions2Config() {
+  getTopTradeWonChartConfig(data: any) {
+    this.chartDataConfig = data;
+    const symbolValue = this.chartDataConfig?.data?.symbol || 0;
+    const wonValue = this.chartDataConfig?.data == null ? [] : [this.chartDataConfig?.data?.profit || 0];
+    const tooltipData = this.chartDataConfig?.data;
     return {
-      series: [84, 80, 67],
+      series: wonValue,
       chart: {
         height: 350,
         type: 'radialBar',
@@ -633,43 +643,45 @@ export class ProviderChartsStandaloneComponent {
       plotOptions: {
         radialBar: {
           hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
+            size: '60%', // Adjust this percentage to reduce the inner spacing
           },
           track: {
             show: true,
             background: "#F2F4F7",
             strokeWidth: '100%',
-            margin: 5, // Space between bars
           },
           dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
             value: {
               fontSize: '25px',
-              fontWeight: 500
+              fontWeight: 600
             },
             total: {
               show: true,
-              label: 'Top Winner',
+              label: 'Top Won Trade',
               fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
+              formatter: function () {
+                return symbolValue;
               },
             }
-          },
+          }
         },
       },
       stroke: {
         lineCap: 'round', // This enables rounded edges for the bars
       },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
+      labels: [wonValue.toString()],
+      colors: ['#0A365B'],
+      tooltip: {
+        enabled: true,
+        custom: (opts: any) => {
+          return `<div style="padding: 5px;">
+                    <strong>Direction:</strong> ${tooltipData?.direction}<br/>
+                    <strong>Open Time:</strong> ${this.datePipe.transform(tooltipData?.openTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Close Time:</strong> ${this.datePipe.transform(tooltipData?.closeTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Volume:</strong> ${tooltipData?.volume}<br/>
+                    <strong>Best Profit:</strong> ${tooltipData?.profit}<br/>
+                  </div>`;
+        }
       },
       responsive: [
         {
@@ -677,10 +689,6 @@ export class ProviderChartsStandaloneComponent {
           options: {
             chart: {
               height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
             },
             stroke: {
               width: 2
@@ -707,13 +715,18 @@ export class ProviderChartsStandaloneComponent {
             }
           }
         }
-      ]
+      ],
+      noData: this.chartNoData
     };
   }
 
-  getPortfolioChartOptions3Config() {
+  getTopTradeLostChartConfig(data: any) {
+    this.chartDataConfig = data;
+    const symbolValue = this.chartDataConfig?.data?.symbol || 0;
+    const LostValue = this.chartDataConfig?.data == null ? [] : [this.chartDataConfig?.data?.profit || 0];
+    const tooltipData = this.chartDataConfig?.data;
     return {
-      series: [84, 80, 67],
+      series: LostValue,
       chart: {
         height: 350,
         type: 'radialBar',
@@ -721,43 +734,45 @@ export class ProviderChartsStandaloneComponent {
       plotOptions: {
         radialBar: {
           hollow: {
-            size: '45%', // Adjust this percentage to reduce the inner spacing
+            size: '60%', // Adjust this percentage to reduce the inner spacing
           },
           track: {
             show: true,
             background: "#F2F4F7",
             strokeWidth: '100%',
-            margin: 5, // Space between bars
           },
           dataLabels: {
-            name: {
-              fontSize: '25px',
-            },
             value: {
               fontSize: '25px',
-              fontWeight: 500
+              fontWeight: 600
             },
             total: {
               show: true,
-              label: 'Top Traded',
+              label: 'Top Lost Trade',
               fontWeight: 400,
-              formatter: function (w: any) {
-                return 316;
+              formatter: function () {
+                return symbolValue;
               },
             }
-          },
+          }
         },
       },
       stroke: {
         lineCap: 'round', // This enables rounded edges for the bars
       },
-      labels: ['Gold', 'GER40Cash', 'US100Cash'],
-      colors: ['#0A365B', '#146BB2', '#00D2FF'],
-      legend: {
-        show: true,
-        position: 'bottom', // Position at the bottom
-        horizontalAlign: 'center', // Center align the legend
-        offsetY: -30
+      labels: [LostValue.toString()],
+      colors: ['#0A365B'],
+      tooltip: {
+        enabled: true,
+        custom: (opts: any) => {
+          return `<div style="padding: 5px;">
+                    <strong>Direction:</strong> ${tooltipData?.direction}<br/>
+                    <strong>Open Time:</strong> ${this.datePipe.transform(tooltipData?.openTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Close Time:</strong> ${this.datePipe.transform(tooltipData?.closeTime, 'MM/dd/yyyy, hh:mm a')}<br/>
+                    <strong>Volume:</strong> ${tooltipData?.volume}<br/>
+                    <strong>Lost Profit:</strong> ${tooltipData?.profit}<br/>
+                  </div>`;
+        }
       },
       responsive: [
         {
@@ -765,10 +780,6 @@ export class ProviderChartsStandaloneComponent {
           options: {
             chart: {
               height: 120
-            },
-            legend: {
-              fontSize: '12px', // Adjust legend font size for smaller screens
-              position: 'bottom',
             },
             stroke: {
               width: 2
@@ -795,7 +806,8 @@ export class ProviderChartsStandaloneComponent {
             }
           }
         }
-      ]
+      ],
+      noData: this.chartNoData
     };
   }
 

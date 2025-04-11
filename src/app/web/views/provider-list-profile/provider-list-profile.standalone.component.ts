@@ -116,11 +116,10 @@ export class ProviderListProfileStandAloneComponent {
   }
 
   onPerfRiskPortfolioChartMetricChange() {
-    let selectedTab = this.chartsData.perfRiskPortfolioChart.selectedTab, chartData: any = [];
+    let selectedTab = this.chartsData.perfRiskPortfolioChart.selectedTab;
     if(selectedTab == 'performance') { 
-      chartData = this.tradingMetricsData.total;
-      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.totalTradingData = chartData;
-      this._webService.emitOnWebDataChange({action: "onTotalTradingMetricChange", chartConfig: { data: chartData, type: selectedTab }});
+      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.totalTradingData = this.tradingMetricsData.total;
+      this._webService.emitOnWebDataChange({action: "onTotalTradingMetricChange", chartConfig: { data: this.tradingMetricsData.total, type: selectedTab }});
 
       //Perfomance first chart data binding pending
       this._webService.emitOnWebDataChange({action: "onPerformanceMetricChange", chartConfig: { data: [], type: selectedTab }});
@@ -129,6 +128,14 @@ export class ProviderListProfileStandAloneComponent {
       this._webService.emitOnWebDataChange({action: "onRiskMetricChange", chartConfig: { data: [], type: selectedTab }});
       //Assign data here for investors chart.
     } else if(selectedTab == 'portfolio') {
+      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.topTrade = this.tradingMetricsData.largest;
+      this._webService.emitOnWebDataChange({action: "onTopTradeMetricChange", chartConfig: { data: this.tradingMetricsData.largest, type: selectedTab }});
+
+      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.topWonTrade = this.tradingMetricsData.best;
+      this._webService.emitOnWebDataChange({action: "onTopWonTradeMetricChange", chartConfig: { data: this.tradingMetricsData.best, type: selectedTab }});
+
+      this.chartsData.perfRiskPortfolioChart.tabs[selectedTab].charts.topLostTrade = this.tradingMetricsData.worst;
+      this._webService.emitOnWebDataChange({action: "onTopLostTradeMetricChange", chartConfig: { data: this.tradingMetricsData.worst, type: selectedTab }});
       //Assign data here for investors chart.
     }
   }
