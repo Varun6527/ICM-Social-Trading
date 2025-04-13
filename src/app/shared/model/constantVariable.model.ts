@@ -8,7 +8,9 @@ export class ConstantVariable {
             get_Token_URL: '/api/oauth2/token'
         },
         registerPage: {
-          provider: '/api/providers/register'
+          provider: '/api/providers/register',
+          follower: '/api/subscriptions/register',
+          joinLink: '/api/brief/join'
         },
         webLayoutPage: {
             get_User_Profile_details: '/api/profile'
@@ -82,7 +84,7 @@ export class ConstantVariable {
           watchListed_data: "/api/watchlist",
           tradingData: "/api/reports/:accountId/trading",
           instrumentData: "/api/reports/:accountId/instruments",
-          monthlyReturns: "/api/history/:accountId/monthly"
+          monthlyReturns: "/api/history/:accountId/monthly",
         }
     };
     errorMessageObj: any = {
@@ -101,7 +103,8 @@ export class ConstantVariable {
         OfferNotFound: "No Public Offer found for this provider",
         OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer",
         ClientInvalidCredentials: "Invalid account or password",
-        SubscriptionOfferMinBalanceError: "Trading account's balance is less than the Minimum balance specified in the Offer"
+        SubscriptionOfferMinBalanceError: "Trading account's balance is less than the Minimum balance specified in the Offer",
+        Forbidden: "Forbidden"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

@@ -1,0 +1,177 @@
+.login-screen{
+    padding: 50px;
+}
+.login-card-header{
+    padding: 20px;
+    border-bottom: 2px solid #F0F0F0;
+    .button-row{
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        
+        .theme-btn{
+            box-shadow: unset !important;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid var(--primaryBlue);
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flag-btn{
+            box-shadow: unset !important;
+            border-radius: 8px;
+            background: var(--primaryBlue);
+            width: 70px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: unset;
+            cursor: pointer;
+        }
+    }
+}
+.login-card{
+    width: 450px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: white;
+}
+.login-logo{
+    display: block;
+    width: 120px;
+    margin: 0 auto;
+    padding-top: 25px;
+}
+.login-text-content{
+    text-align: center;
+    padding-block: 20px;
+    h4{
+        margin: unset !important;
+        font-size: 30px;
+        font-weight: 500;
+    }
+    p{
+        margin: unset !important;
+        color: #667085;
+        padding: 10px;
+    }
+}
+.login-form{
+    padding: 0px 25px;
+}
+.login-form-content{
+    padding-bottom: 20px;
+    .input-div{
+    display: flex;
+    flex-direction: column;
+    .lb-title{
+        margin-bottom: 5px;
+        color: #344054;
+        font-size: 14px;
+    }
+    .lb-detail {
+        font-size: 10px;
+    }
+    .warn-msg {
+        color:red;
+    }
+    input{
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #D0D5DD;
+        padding: 0px 10px;
+        font-size: 15px;
+    }
+    }
+    &.show-error input {
+        outline: none;
+        border: 2px solid red !important;
+    }
+}
+.login-form-actions{
+    display: flex;
+    padding: 0px 25px;
+    justify-content: center;
+    gap: 20px;
+
+    .remember-me{
+        display: flex;
+        align-items: center;
+        color: #344054;
+        font-size: 14px;
+        p{
+            margin: unset;
+        }
+    }
+    .forgot-password{
+        p{
+            margin: unset;
+            color: var(--primaryBlue);
+            font-weight: 500;
+        }
+        cursor: pointer;
+    }
+    .register{
+        p{
+            margin: unset;
+            color: var(--primaryBlue);
+            font-weight: 500;
+            border-bottom: 1px dashed var(--primaryBlue);
+        } 
+        cursor: pointer;
+    }
+}
+.login-form-button{
+    padding: 0px 25px 15px;
+    button{
+        border-radius: 8px;
+        width: 100%;
+        background-color: var(--primaryBlue);
+        color: white;
+    }
+}
+.login-form-footer{
+    padding: 25px;
+    p{
+        color: #667085;
+        text-align: center;
+        font-size: 14px;
+        margin: unset;
+        a{
+            color: var(--primaryBlue);
+            text-decoration: none;
+        }
+    }
+}
+
+::ng-deep .languageMenu .mat-mdc-menu-panel{
+    background-color: var(--mat-select-panel-background-color);
+  }
+  ::ng-deep .languageMenu .mat-mdc-menu-content {
+    height: 240px;
+    background-color: var(--mat-select-panel-background-color);
+  }
+  ::ng-deep .languageMenu .mat-mdc-menu-item{
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: var(--mat-select-panel-background-color);
+    .mat-mdc-menu-item-text{
+        font-size: 17px !important;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+  }
+
+    ::ng-deep .mat-mdc-select-trigger{
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #D0D5DD;
+        padding: 0px 10px;
+        font-size: 15px;
+    }

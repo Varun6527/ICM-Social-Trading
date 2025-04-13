@@ -86,6 +86,14 @@ export class AuthService extends BaseService {
   registerProvider(data: any) {
     return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.provider}`, data);
   }
+
+  registerFollower(data: any) {
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.follower}`, data);
+  }
+
+  getJoinLinkData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.joinLink}`, data);
+  }
 }
 
 
