@@ -54,43 +54,46 @@
                             </label>
                         </div>
                     </div>
-                    <div class="login-form-content" [ngClass]="{'show-error': showError && followerRegisterForm.controls['providerObj'].errors?.['required']}">
-                        <div class="input-div">
-                            <label class="lb-title">
-                                {{'HOME.Provider' | translate}} *
-                            </label>
-                            <input type="text" formControlName="providerObj" matInput placeholder="Provider 1" [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getOffersOfProvider()">
-                                @for (option of filteredOptions | async; track option) {
-                                <mat-option [value]="option">{{option.nickName}} #{{option.id}}</mat-option>
-                                }
-                            </mat-autocomplete>
-                            <label class="lb-detail" *ngIf="!showError || !followerRegisterForm.controls['providerObj'].errors?.['required']">
-                                {{'PROVIDERS_PROFILE.Select an active provider' | translate}}
-                            </label>
-                            <label class="lb-detail warn-msg" *ngIf="showError && followerRegisterForm.controls['providerObj'].errors?.['required']">
-                                {{"login.FieldRequired"|translate}}
-                            </label>
+                    @if(!this.publicKey || !this.joinLink) {
+                        <div class="login-form-content" [ngClass]="{'show-error': showError && followerRegisterForm.controls['providerObj'].errors?.['required']}">
+                            <div class="input-div">
+                                <label class="lb-title">
+                                    {{'HOME.Provider' | translate}} *
+                                </label>
+                                <input type="text" formControlName="providerObj" matInput placeholder="Provider 1" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getOffersOfProvider()">
+                                    @for (option of filteredOptions | async; track option) {
+                                    <mat-option [value]="option">{{option.nickName}} #{{option.id}}</mat-option>
+                                    }
+                                </mat-autocomplete>
+                                <label class="lb-detail" *ngIf="!showError || !followerRegisterForm.controls['providerObj'].errors?.['required']">
+                                    {{'PROVIDERS_PROFILE.Select an active provider' | translate}}
+                                </label>
+                                <label class="lb-detail warn-msg" *ngIf="showError && followerRegisterForm.controls['providerObj'].errors?.['required']">
+                                    {{"login.FieldRequired"|translate}}
+                                </label>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="login-form-content" [ngClass]="{'show-error': showError && followerRegisterForm.controls['offerObj'].errors?.['required']}">
-                        <div class="input-div">
-                            <label class="lb-title">
-                                {{'PROVIDERS_PROFILE.Offer' | translate}} *
-                            </label>
-                            <mat-select formControlName="offerObj">
-                                <mat-option *ngFor="let obj of offersArr"
-                                    [value]="obj">{{obj.name}}</mat-option>
-                            </mat-select>
-                            <label class="lb-detail" *ngIf="!showError || !followerRegisterForm.controls['offerObj'].errors?.['required']">
-                                {{"PROVIDERS_PROFILE.Select a provider's offer" | translate}}
-                            </label>
-                            <label class="lb-detail warn-msg" *ngIf="showError && followerRegisterForm.controls['offerObj'].errors?.['required']">
-                                {{"login.FieldRequired"|translate}}
-                            </label>
+    
+                        <div class="login-form-content" [ngClass]="{'show-error': showError && followerRegisterForm.controls['offerObj'].errors?.['required']}">
+                            <div class="input-div">
+                                <label class="lb-title">
+                                    {{'PROVIDERS_PROFILE.Offer' | translate}} *
+                                </label>
+                                <mat-select formControlName="offerObj">
+                                    <mat-option *ngFor="let obj of offersArr"
+                                        [value]="obj">{{obj.name}}</mat-option>
+                                </mat-select>
+                                <label class="lb-detail" *ngIf="!showError || !followerRegisterForm.controls['offerObj'].errors?.['required']">
+                                    {{"PROVIDERS_PROFILE.Select a provider's offer" | translate}}
+                                </label>
+                                <label class="lb-detail warn-msg" *ngIf="showError && followerRegisterForm.controls['offerObj'].errors?.['required']">
+                                    {{"login.FieldRequired"|translate}}
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    
                 </div>
                 <div class="login-form-button">
                     <a>

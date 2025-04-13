@@ -61,12 +61,6 @@ export class HomeStandAloneComponent {
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(()=>{
-      this.loadRatingModule();
-    }, 500);
-  }
-
   async loadRatingModule() {
     if(this.isRatingModuleEnabled && this.isFollower) {
       const { ProvidersListStanAloneComponent } = await import('../providers-list/providers-list.standalone.component');
@@ -133,6 +127,9 @@ export class HomeStandAloneComponent {
         response.items.forEach((obj: any) => this.followerDetails.push(new FollowerDetailsUIModal(obj)));
         this.setUpAgGridOfHomePage();
         this.showLoader = false;
+        setTimeout(()=>{
+          this.loadRatingModule();
+        }, 500);
       },
       error: (errorObj) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
