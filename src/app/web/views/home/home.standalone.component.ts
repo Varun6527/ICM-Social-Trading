@@ -55,10 +55,13 @@ export class HomeStandAloneComponent {
     this.isProvider = this._webService.isProviderAccount;
     this.isFollower = this._webService.isSubscriptionAccount;
     this.isRatingModuleEnabled = this._authService.userConfig?.ratings?.integrationMode?.toLowerCase() == "embeddedpage";
-    this.getHomePageData();
     this._webService.subscribeOnWebDataChange('HomeStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
+  }
+
+  ngOnInit() {
+    this.getHomePageData();
   }
 
   async loadRatingModule() {
