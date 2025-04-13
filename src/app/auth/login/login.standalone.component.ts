@@ -13,7 +13,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { BaseLanguageTranslationComponent } from '../../shared/component/languagetranslation/base.language.translation.component';
 import { IcmLoadingOverlayDirective } from '../../shared/directive/icmloadingoverlay/icm.loading.overlay.directive';
 
@@ -22,7 +22,7 @@ import { IcmLoadingOverlayDirective } from '../../shared/directive/icmloadingove
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent, IcmLoadingOverlayDirective]
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent, IcmLoadingOverlayDirective]
 })
 export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
   loginForm: FormGroup;

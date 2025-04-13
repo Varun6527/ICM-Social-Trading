@@ -96,7 +96,9 @@ export class ConstantVariable {
         SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed.",
         SubscriptionGroupNotAllowed: "Unable to subscribe to provider using the selected trading account. Try to use another trading account.",
         OfferNotFound: "No Public Offer found for this provider",
-        OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer"
+        OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer",
+        ClientInvalidCredentials: "Invalid account or password",
+        SubscriptionOfferMinBalanceError: "Trading account's balance is less than the Minimum balance specified in the Offer"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

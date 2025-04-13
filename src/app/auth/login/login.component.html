@@ -2,9 +2,9 @@
     <mat-card class="login-card">
         <div class="login-card-header">
             <div class="button-row">
-                <button class="theme-btn">
+                <!-- <button class="theme-btn">
                     <img src="../../../assets/icons/sun.png"/>
-                </button>
+                </button> -->
                 <button  class="flag-btn" [matMenuTriggerFor]="languageMenu">
                         <img height="24" width="24" [src]="'../../../assets/icons/' + selectedLangObj.icon"/>
                 </button>
@@ -69,10 +69,10 @@
                 </div>
             </form>
             <div class="login-form-actions">
-                <div class="register">
+                <div class="register" [routerLink]="'/portal/registration/provider'">
                     <p>{{"login.RegisterProvider"|translate}}</p>
                 </div>
-                <div class="register">
+                <div class="register" [routerLink]="'/portal/registration/subscription'">
                     <p>{{"login.RegisterFollower"|translate}}</p>
                 </div>
             </div>
