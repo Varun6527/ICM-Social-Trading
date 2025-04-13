@@ -22,7 +22,7 @@ import { IcmLoadingOverlayDirective } from '../../shared/directive/icmloadingove
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent, IcmLoadingOverlayDirective]
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule, MatMenuModule, TranslateModule, ReactiveFormsModule, ShowErrorStandAloneComponent, IcmLoadingOverlayDirective]
 })
 export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
   loginForm: FormGroup;
@@ -36,7 +36,7 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
     super(translate, _authService);
     //Setup ReactiveForm for Login
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.min(1),]],
       password: ['', [Validators.required]]
     });
     //End

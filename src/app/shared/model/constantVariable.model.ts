@@ -7,6 +7,9 @@ export class ConstantVariable {
         loginPage: {
             get_Token_URL: '/api/oauth2/token'
         },
+        registerPage: {
+          provider: '/api/providers/register'
+        },
         webLayoutPage: {
             get_User_Profile_details: '/api/profile'
         },

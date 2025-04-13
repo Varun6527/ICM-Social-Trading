@@ -378,7 +378,11 @@
         "WatchListWarnMenu": "Please note: removing account from watchlist will reset its watch statistic. Please confirm removing {{accountName}} from watchlist.",
         "Return 1M": "Return 1M",
         "There are no public offers": "There are no public offers",
-        "Worst Trade": "Worst Trade"
+        "Worst Trade": "Worst Trade",
+        "Provider Registration": "Provider Registration",
+        "Creating a new provider": "Creating a new provider",
+        "Register": "Register",
+        "Login as a Client": "Login as a Client"
     },
     "OFFERS":{
         "General information about the offer":"General information about the offer",

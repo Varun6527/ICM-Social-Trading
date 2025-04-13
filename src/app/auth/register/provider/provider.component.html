@@ -1,2 +1,100 @@
-<h1>Provider Registration</h1>
+<div class="login-screen">
+    <mat-card class="login-card">
+        <div class="login-card-header">
+            <div class="button-row">
+                <!-- <button class="theme-btn">
+                    <img src="../../../assets/icons/sun.png"/>
+                </button> -->
+                <button  class="flag-btn" [matMenuTriggerFor]="languageMenu">
+                        <img height="24" width="24" [src]="'../../../assets/icons/' + selectedLangObj.icon"/>
+                </button>
+                <mat-menu #languageMenu="matMenu" class="languageMenu">
+                    <button mat-menu-item *ngFor="let lang of languages" (click)="selectLanguage(lang)">
+                        {{lang.name}} 
+                        <ng-container *ngIf="lang.code !== 'en'">
+                            ({{ lang.displayLabel }})
+                        </ng-container>
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+        <mat-card-content>
+            <img class="login-logo" src="../../../assets/logo/ICM Logo Default 1.png">
+            <div class="login-text-content">
+                <h4>{{"PROVIDERS_PROFILE.Provider Registration"|translate}}</h4>
+                <p>{{"PROVIDERS_PROFILE.Creating a new provider"|translate}}</p>
+            </div>
+            <form (ngSubmit)="registerProvider()" [formGroup]="providerRegisterForm">
+                <div class="login-form">
+                    <div class="login-form-content" [ngClass]="{'show-error': showError && (providerRegisterForm.controls['externalLogin'].errors?.['required'] || providerRegisterForm.controls['externalLogin'].errors?.['min'])}">
+                        <div class="input-div">
+                            <label class="lb-title">
+                                {{"SUBSCRIPTION.Trading account"|translate}} *
+                            </label>
+                            <input type="number" autocomplete="off" formControlName="externalLogin" (input)="checkLength()" />
+                            <label class="lb-detail" name="no-autofill" *ngIf="!showError || (!providerRegisterForm.controls['externalLogin'].errors?.['required'] && !providerRegisterForm.controls['externalLogin'].errors?.['min'])">{{"login.TradingAccountId"|translate}}</label>
+                            <label class="lb-detail warn-msg" *ngIf="showError && providerRegisterForm.controls['externalLogin'].errors?.['required']">
+                                {{"login.FieldRequired"|translate}}
+                            </label>
+                            <label class="lb-detail warn-msg"
+                                *ngIf="showError && providerRegisterForm.controls['externalLogin'].errors?.['min']">
+                                {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="login-form-content" [ngClass]="{'show-error': showError && providerRegisterForm.controls['externalPassword'].errors?.['required']}">
+                        <div class="input-div">
+                            <label class="lb-title">
+                                {{"login.Password"|translate}} *
+                            </label>
+                            <input autocomplete="off" name="no-autofill" type="password" formControlName="externalPassword" />
+                            <label class="lb-detail" *ngIf="!showError || !providerRegisterForm.controls['externalPassword'].errors?.['required']">{{"login.TradingAccountPassword"|translate}}</label>
+                            <label class="lb-detail warn-msg" *ngIf="showError && providerRegisterForm.controls['externalPassword'].errors?.['required']">
+                                {{"login.FieldRequired"|translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="login-form-content" [ngClass]="{'show-error': showError && (providerRegisterForm.controls['nickname'].errors?.['required'] || providerRegisterForm.controls['nickname'].errors?.['minlength'])}">
+                        <div class="input-div">
+                            <label class="lb-title">
+                                {{"REPORTS.Nickname"|translate}} *
+                            </label>
+                            <input autocomplete="off" name="no-autofill" type="text" formControlName="nickname" placeholder="Provider 1" maxlength="32" />
+                            <label class="lb-detail" *ngIf="!showError || (!providerRegisterForm.controls['nickname'].errors?.['required'] && !providerRegisterForm.controls['nickname'].errors?.['minlength'])">
+                                {{"REPORTS.Nickname"|translate}}
+                            </label>
+                            <label class="lb-detail warn-msg" *ngIf="showError && providerRegisterForm.controls['nickname'].errors?.['required']">
+                                {{"login.FieldRequired"|translate}}
+                            </label>
+                            <label class="lb-detail warn-msg" *ngIf="showError && providerRegisterForm.controls['nickname'].errors?.['minlength']">
+                                {{"COMMON.Warn6CharMsg" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="login-form-button">
+                    <a>
+                        <button mat-flat-button type="submit" [IcmLoadingOverlay]="showLoader">
+                            {{"PROVIDERS_PROFILE.Register" | translate}}
+                        </button>
+                    </a>
+                </div>
+            </form>
+            <div class="login-form-actions">
+                <div class="register" [routerLink]="'/portal/login'">
+                    <p>{{"PROVIDERS_PROFILE.Login as a Client" | translate}}</p>
+                </div>
+                
+            </div>
+            <div class="login-form-footer">
+                <p>
+                    {{"login.RegisterICMAccount"|translate}}. <a href="https://track.icmcapital.com/?t=copytrading&lang=en"> {{"login.Clickhere"|translate}}! </a>
+                </p>
+                <p>
+                    {{"login.ExistingICMAccount"|translate}}. <a href="https://clients.icmcapital.mu/auth/login"> {{"login.Clickhere"|translate}}! </a>
+                </p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
 <show-error-message></show-error-message>
