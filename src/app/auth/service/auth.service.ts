@@ -12,7 +12,6 @@ export class AuthService extends BaseService {
   public authEmitterReference: any = {};
   public authChangeEmitter = new Subject<any>();
   //Stores All token value from oauth api, also all below data need to store in ngrx.
-  tokenObject: any = {}; 
   userConfig: any;
   //end
 
@@ -22,15 +21,26 @@ export class AuthService extends BaseService {
   }
 
   isAccessTokenGenerated() {
-    return this.tokenObject.access_token ? true : false;
+    return localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') ? true : false;
   }
 
   getAccessToken() {
-    return this.tokenObject.access_token;
+    let token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken');
+    return token;
+  }
+
+  setAccessToken(rememberMe: boolean, result: any) {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem('accessToken', result.access_token);
+  }
+
+  clearAccessToken() {
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   clearUserDataAndToken() {
-    this.tokenObject = {};
+    this.clearAccessToken();
     this.userConfig = undefined;
   }
 

@@ -90,7 +90,7 @@ export class RegisterProviderStandAloneComponent extends BaseLanguageTranslation
     };
     this._authService.loginUser(param).subscribe({
       next: (result)=> {
-        this._authService.tokenObject = result;
+        this._authService.setAccessToken(false, result);
         this.router.navigate([`./portal/providers/${providerId}`]);
         this.showLoader = false;
       },
