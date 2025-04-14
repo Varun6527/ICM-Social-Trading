@@ -95,7 +95,6 @@
                                     </div>
                                 </div>
                             }
-                            
                         </div>
                         <div class="login-form-button">
                             <a>
@@ -109,7 +108,6 @@
                         <div class="register" [routerLink]="'/portal/login'">
                             <p>{{"PROVIDERS_PROFILE.Login as a Client" | translate}}</p>
                         </div>
-                        
                     </div>
                     <div class="login-form-footer">
                         <p>
@@ -123,48 +121,46 @@
             </div>
             <div class="info-section">
                 <div class="info-header">
-                    <h4>Details</h4>
-                    <p>Information about the chosen provider and subscription conditions</p>
+                    <h4>{{"ACCOUNTS.Details" | translate}}</h4>
+                    <p>{{"ACCOUNTS.InfoChosenProviderAndSubscription" | translate}}</p>
                 </div>
-
                 <div class="info-main-container">
                     <div class="info-main-section" *ngIf="followerRegisterForm.controls['providerObj'].value?.nickname">
-                        <h6>Provider</h6>
+                        <h6>{{"HOME.Provider" | translate}}</h6>
                         <div class="d-flex justify-space-between pb-5">
-                            <p>Nickname</p>
+                            <p>{{"HOME.Nickname" | translate}}</p>
                             <p>{{followerRegisterForm.controls['providerObj'].value?.nickname}}</p>
                         </div>
                         <div class="d-flex justify-space-between pb-5">
-                            <p>Visibility</p>
+                            <p>{{"PROVIDERS_PROFILE.Visibility" | translate}}</p>
                             <p>{{followerRegisterForm.controls['providerObj'].value?.visibility}}</p>
                         </div>
                     </div>
                     <div class="info-main-section" *ngIf="followerRegisterForm.controls['offerObj'].value">
-                        <h6>Offer</h6>
+                        <h6>{{"PROVIDERS_PROFILE.Offer" | translate}}</h6>
                         <div class="d-flex justify-space-between pb-5">
-                            <p>Title</p>
+                            <p>{{"PROVIDERS_PROFILE.Title" | translate}}</p>
                             <p>{{followerRegisterForm.controls['offerObj'].value?.name}}</p>
                         </div>
                         <div class="d-flex justify-space-between pb-5">
-                            <p>Performance fee</p>
+                            <p>{{"OFFERS.Performance fee" | translate}}</p>
                             <p>{{followerRegisterForm.controls['offerObj'].value?.performance?.fee}}% ({{followerRegisterForm.controls['offerObj'].value?.performance?.interval}})</p>
                         </div>
                         <div class="d-flex justify-space-between pb-5" *ngIf="followerRegisterForm.controls['offerObj'].value?.filters?.minBalance">
-                            <p>Minimum balance</p>
+                            <p>{{"OFFERS.Minimum balance" | translate}}</p>
                             <p>{{followerRegisterForm.controls['offerObj'].value?.filters?.minBalance | currency: 'USD':'symbol'}}</p>
                         </div>
                     </div>
                     <div class="info-main-section" *ngIf="joinData && joinData?.agent">
-                        <h6>Agent</h6>
+                        <h6>{{"COMMON.Agent" | translate}}</h6>
                         <div class="d-flex justify-space-between pb-5">
-                            <p>Trading account's ID</p>
+                            <p>{{"PROVIDERS_PROFILE.Trading account's ID" | translate}}</p>
                             <p>{{joinData?.agent}}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
     </mat-card>
 </div>
 <show-error-message></show-error-message>
