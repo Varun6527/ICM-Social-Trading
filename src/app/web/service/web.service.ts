@@ -596,6 +596,13 @@ export class WebService extends BaseService {
     delete data['accountId'];
     return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
   }
+
+  getPublicPositionData(data: any) {
+    let url = `${this.constantVar?.http_Api_Url.rating.publicPosition}`;
+    url = url.replace(':accountId', data.accountId);
+    delete data['accountId'];
+    return this.sendHttpGetWithUrlParam(`${this.RATING_SERVER}${url}`, data);
+  }
 // End of Rating api Methods
 }
 

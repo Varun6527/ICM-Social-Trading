@@ -215,10 +215,10 @@ export class ProviderListProfileStandAloneComponent {
   getPositionData() {
     this.showGridLoader = true;
     let param = {
-      providerId: this.ratingData.profileId,
-      $count: true
+      accountId: this.accountId,
+      widget_key: this.widget_key
     }
-    this._webService.getPositionDetails(param).subscribe({
+    this._webService.getPublicPositionData(param).subscribe({
       next: (response: any) => {
         this.gridData = response.items;
         this.showGridLoader = false;
@@ -273,8 +273,8 @@ export class ProviderListProfileStandAloneComponent {
   setupPositionGridConfig() {
     let colDefs = [
       { field: "symbol", headerName: 'PROVIDERS_LIST_PROFILE.Symbol', resizable: false, width: 150, suppressSizeToFit: true },
-      { field: "openDirection", headerName:'PROVIDERS_LIST_PROFILE.Type', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
-      { field: "openVolume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', resizable: false, width: 150 },
+      { field: "direction", headerName:'PROVIDERS_LIST_PROFILE.Type', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
+      { field: "volume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', resizable: false, width: 150 },
       { field: "openTime", sort: 'desc', headerName: 'PROVIDERS_LIST_PROFILE.Open Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
       { field: "openPrice", headerName: 'PROVIDERS_LIST_PROFILE.Open Price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
       { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
