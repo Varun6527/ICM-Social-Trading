@@ -74,7 +74,7 @@ export class FollowerProviderStandAloneComponent extends BaseLanguageTranslation
   getAllProvidersData() {
     this._webService.getAllProvidersData().subscribe({
       next: (response: any) => {
-        this.providersData = response.items.filter((o: any) => o.hasPublicOffers).map((o: any) => { return { nickName: o.nickname, id: o.id, visibility: o.visibility } });
+        this.providersData = response.items.filter((o: any) => o.hasPublicOffers).map((o: any) => { return o });
       },
       error: (errorObj) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
@@ -108,15 +108,15 @@ export class FollowerProviderStandAloneComponent extends BaseLanguageTranslation
   }
 
   displayFn(provider: any): string {
-    return provider && provider.nickName ? provider.nickName : '';
+    return provider && provider.nickname ? provider.nickname : '';
   }
 
   setProvidersAutoComplete() {
     this.filteredOptions = this.getControl['providerObj'].valueChanges.pipe(
       startWith(''),
       map((value) => {
-        const filterValue = typeof value === 'string' ? value.toLowerCase() : value?.nickName.toLowerCase();
-        return this.providersData.filter((data: any) => data.nickName.toLowerCase().includes(filterValue))
+        const filterValue = typeof value === 'string' ? value.toLowerCase() : value?.nickname.toLowerCase();
+        return this.providersData.filter((data: any) => data.nickname.toLowerCase().includes(filterValue))
       }),
     );
   }
