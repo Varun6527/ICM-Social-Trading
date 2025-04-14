@@ -8,9 +8,9 @@
         <div class="profile-header-card">
             <div class="title-area d-flex justify-space-between align-center">
                 <div class="d-flex justify-space-between align-center g-10">
-                    <img class="provider-icon" src="../../../../assets/icons/providerIcon.jpeg" />
+                    <img class="provider-icon" [src]="ratingData.avatarPath" height="40" width="40" />
                     <div class="text">
-                        <p class="heading">Catalog</p>
+                        <p class="heading">{{ratingData?.accountName}}</p>
                     </div>
                 </div>
                 <button class="primary-btn" (click)="openCopyStrategyPopup()">{{"PROVIDERS_LIST_PROFILE.Copy Strategy" |translate}}</button>
