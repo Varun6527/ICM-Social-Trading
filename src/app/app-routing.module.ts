@@ -28,6 +28,28 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'portal/registration/subscription',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./auth/register/follower/follower.standalone.component').then(s => s.FollowerProviderStandAloneComponent),
+        resolve: { myData: UserDataResolver }
+      }
+    ]
+  },
+  {
+    path: 'portal/registration/subscription/:publicKey/:joinLink',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./auth/register/follower/follower.standalone.component').then(s => s.FollowerProviderStandAloneComponent),
+        resolve: { myData: UserDataResolver }
+      }
+    ]
+  },
+  {
     path: 'portal',
     loadChildren: () => import('./web/app/web.module').then(m => m.WebModule),
     canActivate: [AuthGuard],

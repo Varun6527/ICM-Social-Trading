@@ -55,16 +55,13 @@ export class HomeStandAloneComponent {
     this.isProvider = this._webService.isProviderAccount;
     this.isFollower = this._webService.isSubscriptionAccount;
     this.isRatingModuleEnabled = this._authService.userConfig?.ratings?.integrationMode?.toLowerCase() == "embeddedpage";
-    this.getHomePageData();
     this._webService.subscribeOnWebDataChange('HomeStandAloneComponent', (event: any) => {
       this.recieveChildrenEmitter(event);
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(()=>{
-      this.loadRatingModule();
-    }, 500);
+  ngOnInit() {
+    this.getHomePageData();
   }
 
   async loadRatingModule() {
@@ -133,6 +130,9 @@ export class HomeStandAloneComponent {
         response.items.forEach((obj: any) => this.followerDetails.push(new FollowerDetailsUIModal(obj)));
         this.setUpAgGridOfHomePage();
         this.showLoader = false;
+        setTimeout(()=>{
+          this.loadRatingModule();
+        }, 500);
       },
       error: (errorObj) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);

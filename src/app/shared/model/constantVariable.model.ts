@@ -7,6 +7,11 @@ export class ConstantVariable {
         loginPage: {
             get_Token_URL: '/api/oauth2/token'
         },
+        registerPage: {
+          provider: '/api/providers/register',
+          follower: '/api/subscriptions/register',
+          joinLink: '/api/brief/join'
+        },
         webLayoutPage: {
             get_User_Profile_details: '/api/profile'
         },
@@ -79,7 +84,7 @@ export class ConstantVariable {
           watchListed_data: "/api/watchlist",
           tradingData: "/api/reports/:accountId/trading",
           instrumentData: "/api/reports/:accountId/instruments",
-          monthlyReturns: "/api/history/:accountId/monthly"
+          monthlyReturns: "/api/history/:accountId/monthly",
         }
     };
     errorMessageObj: any = {
@@ -96,7 +101,10 @@ export class ConstantVariable {
         SubscriptionRiskParameterDuplicated: "This parameter is used in another rule. Only one use of each parameter is allowed.",
         SubscriptionGroupNotAllowed: "Unable to subscribe to provider using the selected trading account. Try to use another trading account.",
         OfferNotFound: "No Public Offer found for this provider",
-        OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer"
+        OfferPerformanceNotChangeable: "Unable to change performance fee, because there are active subscriptions working by the offer",
+        ClientInvalidCredentials: "Invalid account or password",
+        SubscriptionOfferMinBalanceError: "Trading account's balance is less than the Minimum balance specified in the Offer",
+        Forbidden: "Forbidden"
     }
     providerLabelArr: any = [
         { key: "Registered", value: "Registered" },

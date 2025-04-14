@@ -2,9 +2,9 @@
     <mat-card class="login-card">
         <div class="login-card-header">
             <div class="button-row">
-                <button class="theme-btn">
+                <!-- <button class="theme-btn">
                     <img src="../../../assets/icons/sun.png"/>
-                </button>
+                </button> -->
                 <button  class="flag-btn" [matMenuTriggerFor]="languageMenu">
                         <img height="24" width="24" [src]="'../../../assets/icons/' + selectedLangObj.icon"/>
                 </button>
@@ -27,15 +27,19 @@
             </div>
             <form id="clientLoginForm" (ngSubmit)="loginUser()" [formGroup]="loginForm">
                 <div class="login-form">
-                    <div class="login-form-content" [ngClass]="{'show-error': showLoginFormError && this.loginForm.controls['username'].errors?.['required']}">
+                    <div class="login-form-content" [ngClass]="{'show-error': showLoginFormError && (this.loginForm.controls['username'].errors?.['required'] || this.loginForm.controls['username'].errors?.['min'])}">
                         <div class="input-div">
                             <label class="lb-title">
                                 {{"login.Username"|translate}} *
                             </label>
                             <input type="number" formControlName="username" (input)="checkLength()" />
-                            <label class="lb-detail" *ngIf="!this.showLoginFormError || !this.loginForm.controls['username'].errors?.['required']">{{"login.TradingAccountId"|translate}}</label>
+                            <label class="lb-detail" *ngIf="!this.showLoginFormError || (!this.loginForm.controls['username'].errors?.['required'] && !loginForm.controls['username'].errors?.['min'])">{{"login.TradingAccountId"|translate}}</label>
                             <label class="lb-detail warn-msg" *ngIf="showLoginFormError && this.loginForm.controls['username'].errors?.['required']">
                                 {{"login.FieldRequired"|translate}}
+                            </label>
+                            <label class="lb-detail warn-msg"
+                                *ngIf="showLoginFormError && loginForm.controls['username'].errors?.['min']">
+                                {{"PROVIDERS_PROFILE.Value must be greater than 0" | translate}}
                             </label>
                         </div>
                     </div>
@@ -69,10 +73,10 @@
                 </div>
             </form>
             <div class="login-form-actions">
-                <div class="register">
+                <div class="register" [routerLink]="'/portal/registration/provider'">
                     <p>{{"login.RegisterProvider"|translate}}</p>
                 </div>
-                <div class="register">
+                <div class="register" [routerLink]="'/portal/registration/subscription'">
                     <p>{{"login.RegisterFollower"|translate}}</p>
                 </div>
             </div>

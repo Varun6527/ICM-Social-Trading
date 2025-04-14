@@ -82,6 +82,18 @@ export class AuthService extends BaseService {
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
     return this.http.post(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.loginPage.get_Token_URL}`, body.toString(), { headers });
   }
+
+  registerProvider(data: any) {
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.provider}`, data);
+  }
+
+  registerFollower(data: any) {
+    return this.sendHttpPostAjaxRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.follower}`, data);
+  }
+
+  getJoinLinkData(data: any) {
+    return this.sendHttpGetWithUrlParam(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.registerPage.joinLink}`, data);
+  }
 }
 
 
