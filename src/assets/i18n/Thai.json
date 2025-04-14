@@ -386,7 +386,8 @@
         "Create Subscription": "Create Subscription",
         "Trading information about the new subscription": "Trading information about the new subscription", 
         "Select an active provider": "Select an active provider",
-        "Select a provider's offer": "Select a provider's offer"
+        "Select a provider's offer": "Select a provider's offer",
+        "Trading account's ID": "Trading account's ID"
     },
     "OFFERS":{
         "General information about the offer":"ข้อมูลทั่วไปเกี่ยวกับข้อเสนอ",
