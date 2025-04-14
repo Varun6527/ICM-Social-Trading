@@ -71,7 +71,7 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
     };
     this._authService.loginUser(param).subscribe({
       next: (result)=> {
-        this._authService.tokenObject = result;
+        this._authService.setAccessToken(false, result);
         this.router.navigate([this.redirectUrl ? this.redirectUrl : './portal']);
       },
       error: (errorObj) => {

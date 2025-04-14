@@ -198,7 +198,7 @@ export class FollowerProviderStandAloneComponent extends BaseLanguageTranslation
     };
     this._authService.loginUser(param).subscribe({
       next: (result) => {
-        this._authService.tokenObject = result;
+        this._authService.setAccessToken(false, result);
         this.router.navigate([`./portal/subscriptions/${providerId}`]);
         this.showLoader = false;
       },
