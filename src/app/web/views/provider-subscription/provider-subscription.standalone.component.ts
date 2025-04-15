@@ -17,6 +17,7 @@ import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-d
 import { TradingResultUiModal, TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
 import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
+import { GridApi } from 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-provider-subscription',
@@ -33,6 +34,8 @@ export class ProviderSubscriptionStandAloneComponent {
   subscriptionId: any;
   showPageLoader: boolean = false;
   constantVariable: ConstantVariable = new ConstantVariable();
+  gridApiObj!: GridApi;
+  serverRequestObj: any = {};
 
   readonly beFeesDetailDialog = inject(MatDialog);
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
@@ -51,13 +54,31 @@ export class ProviderSubscriptionStandAloneComponent {
     });
   }
 
+  getOrderByQuery(sortModel: any) {
+    if(sortModel.length == 0) return;
+    let sortQuery = "", sortApiKey = this.tabArrConfig[this.currentSelectedTabIndx]['sortApiKey'];
+    sortModel.forEach((obj: any) => {
+      sortQuery += `${sortApiKey[obj.colId]} ${obj.sort},`;
+    });
+    return sortQuery.slice(0, -1);
+  }
+
+  sendDataToAgGrid(status: boolean, count: number, gridData: any) {
+    let event = this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'];
+    let serverResponse = {
+      status: status,
+      data: gridData,
+      rowCount: count
+    }
+    event.callback(serverResponse);
+  }
+
   async getAllProviderSubscriptionPageData() {
     this.showPageLoader = true;
     let result1 = await this.getSubscriptionData();
     let result2 = await this.getProviderData();
     let result3 = await this.getOfferData();
     this.setUpTabsConfig();
-    this.getGridData(this.tabArrConfig[0]);
     this.showPageLoader = false;
   }
 
@@ -137,8 +158,10 @@ export class ProviderSubscriptionStandAloneComponent {
   getFeesTabConfig() {
     return {
       label: 'PROVIDERS_PROFILE.Fees',
+      sortApiKey: { transactionTitlePopup: "id", platformId: "platformId", transactionAmountViewDisplay: "amount", processTime: "processTime" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { id: "", platformId: "" },
         clear: function() {
           this.type = { id: "", platformId: "" };
@@ -159,7 +182,12 @@ export class ProviderSubscriptionStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -171,8 +199,10 @@ export class ProviderSubscriptionStandAloneComponent {
     let apiUrl = this.constantVariable?.http_Api_Url.webHomePage.follower.result.replace(':subscriptionId', this.subscriptionId);
     return {
       label: 'PROVIDERS_PROFILE.Results',
+      sortApiKey: { resultIdCell: 'id', startTime: 'startTime', endTime: 'endTime', amount: "amount" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { resultId: "" },
         clear: function() {
           this.type = { resultId: "" };
@@ -189,7 +219,12 @@ export class ProviderSubscriptionStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -221,7 +256,7 @@ export class ProviderSubscriptionStandAloneComponent {
       columnDefination: colDefs,
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
-      rowModelType: 'clientSide',
+      rowModelType: 'serverSide',
       rowHeight: undefined
     };
     return gridConfig;
@@ -251,24 +286,27 @@ export class ProviderSubscriptionStandAloneComponent {
 
   onTabChange(event: any) {
     this.currentSelectedTabIndx = event.index;
-    this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
   }
 
   getGridData(tab: any) {
     let gridConfig = tab.grid
-    gridConfig.showLoader = true;
     let param: any = tab.filters.getApiParams();
+    //remove empty param values
+    param = Object.fromEntries(
+      Object.entries(param).filter(([_, value]) => value !== null && value !== undefined && value !== "")
+    );
+    //End
     this._webService.getCommonGridData(gridConfig.apiUrl, param).subscribe({
 
       next: (response: any) => {
         let arr: any = [];
         response.items.forEach((obj: any) => arr.push(new gridConfig.uiModel(obj, gridConfig.uiModelSecondParamData)));
         gridConfig.data = arr;
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(true, response.count, arr);
       },
       error: (errorObj: any) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(false, 0, []);
       }
     })
   }
@@ -284,11 +322,11 @@ export class ProviderSubscriptionStandAloneComponent {
 
   clearFilters(tab: any) {
     tab.filters.clear();
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   refreshDataList(tab: any) {
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   showErrorWarnMessage(msg: any) {
@@ -300,7 +338,22 @@ export class ProviderSubscriptionStandAloneComponent {
   recieveChildrenEmitter(event: any) {
     if(event['action'] == 'open_transact_details_popup') {
       this.openBeFeesDetailsPopup(event['data']);
+    } else if(event['action'] == 'get_server_side_data') {
+      this.setAgGridServerRequestObjInTabConfig(event);
+      this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
+    } else if(event['action'] == "set_grid_api_obj") {
+      this.gridApiObj = event['data'];
     }
+  }
+
+  setAgGridServerRequestObjInTabConfig(event: any) {
+    let obj = {
+      getOrderByQuery: this.getOrderByQuery.bind(this),
+      params: event.params,
+      callback: event.callback
+    };
+    this.serverRequestObj = obj;
+    this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'] = this.serverRequestObj;
   }
 
   openBeFeesDetailsPopup(data: any) {

@@ -301,8 +301,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <common-ag-grid [gridConfig]="tab.grid.config" [gridData]="tab.grid.data"
-                                [showGridLoader]="tab.grid.showLoader">
+                            <common-ag-grid [gridConfig]="tab.grid.config" (emitToParent)="recieveChildrenEmitter($event)"
+                                [showGridLoader]="tab.grid.showLoader" [gridData]="tab.grid.data" >
                             </common-ag-grid>
                         </ng-template>
                     </mat-tab>

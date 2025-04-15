@@ -477,7 +477,7 @@ export class PositionUiModal {
         this.openTime = this.transformDate(obj.openTime);
         this.volume = obj.openVolume;
         this.openDirection = obj.openDirection;
-        this.profit =  new ConvertValueToCurrency(obj.profit, 'USD', false).getConvertedValue();
+        this.profit =  new ConvertValueToCurrency(obj.totalProfit, 'USD', false).getConvertedValue();
         this.closeTime = this.transformDate(obj.closeTime);
         this.copyPosition = obj.copyPosition;
         this.subscriptionId = obj.subscriptionId;

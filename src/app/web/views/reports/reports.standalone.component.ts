@@ -1,5 +1,4 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { ColDef } from "ag-grid-community";
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';

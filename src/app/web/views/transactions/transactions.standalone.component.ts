@@ -13,7 +13,7 @@ import { TransactionHistoryUiModal } from '../../shared/ui-model/web.ui.model';
 import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-dialog/common.dialog.standalone.component';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { MatInputModule } from '@angular/material/input';
-import { GridApi } from 'ag-grid-community';
+import { GridApi } from 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-transactions',

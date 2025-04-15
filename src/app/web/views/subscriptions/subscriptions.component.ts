@@ -24,6 +24,7 @@ import { ActiveOrDeactiveSubscriptionDialog } from '../../shared/dialogBox/activ
 import { CreateUpdateRiskDialog } from '../../shared/dialogBox/create-update-risk-dialog/createUpdateRisk.standalone.component';
 import { DeleteOfferDataDialog } from '../../shared/dialogBox/delete-offer-data/deleteOfferDataDialog.standalone.component';
 import { SubscriptionCommonInfoDialog } from '../../shared/dialogBox/subscription-common-info-dialog/subscriptionCommonInfoDialog.standalone.component';
+import { GridApi } from 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-subscriptions',
@@ -51,6 +52,8 @@ export class SubscriptionsStandAloneComponent {
   constantVariable: ConstantVariable = new ConstantVariable();
   currentSelectedTabIndx: number = 0;
   isEmailExist: boolean = false;
+  gridApiObj!: GridApi;
+  serverRequestObj: any = {};
 
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
   readonly tradingDialog = inject(MatDialog);
@@ -83,9 +86,27 @@ export class SubscriptionsStandAloneComponent {
     this.setupRiskGridConfig();
     let result5 = await this.getRiskData();
     this.setUpTabsConfig();
-    this.getGridData(this.tabArrConfig[0]);
     this.showPageLoader = false;
     this.openImportantInfoPopup();
+  }
+
+  getOrderByQuery(sortModel: any) {
+    if(sortModel.length == 0) return;
+    let sortQuery = "", sortApiKey = this.tabArrConfig[this.currentSelectedTabIndx]['sortApiKey'];
+    sortModel.forEach((obj: any) => {
+      sortQuery += `${sortApiKey[obj.colId]} ${obj.sort},`;
+    });
+    return sortQuery.slice(0, -1);
+  }
+
+  sendDataToAgGrid(status: boolean, count: number, gridData: any) {
+    let event = this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'];
+    let serverResponse = {
+      status: status,
+      data: gridData,
+      rowCount: count
+    }
+    event.callback(serverResponse);
   }
 
   openImportantInfoPopup() {
@@ -119,8 +140,10 @@ export class SubscriptionsStandAloneComponent {
     let apiUrl = this.constantVariable?.http_Api_Url.subscription_profile.position.replace(':subscriptionId', this.subscriptionId);
     return {
       label: 'PROVIDERS_PROFILE.Positions',
+      sortApiKey: { positionSubscriptionNameCell: "position", copyPosition: "copyPosition", symbol: "symbol", openTime: "openTime", positionVolumeCell: "openVolume", profit: "totalProfit", closeTime: "closeTime" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { position: "", posState: "", symbol: "" },
         clear: function() {
           this.type = { position: "", posState: "", symbol: "" };
@@ -141,7 +164,12 @@ export class SubscriptionsStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -153,8 +181,10 @@ export class SubscriptionsStandAloneComponent {
     let apiUrl = this.constantVariable?.http_Api_Url.subscription_profile.deals.replace(':subscriptionId', this.subscriptionId)
     return {
       label: 'PROVIDERS_PROFILE.Deals',
+      sortApiKey: { dealsTitleCell: "dealKey", dealSubscriptionPositionCell: "position",copyDealKey: "copyDealKey", symbol: "symbol", dealsVolumeCell: "volume", price: "price", time: "time" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { dealKey: "", entry: "", symbol: "" },
         clear: function() {
           this.type = { dealKey: "", entry: "", symbol: "" };
@@ -175,7 +205,12 @@ export class SubscriptionsStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -187,8 +222,10 @@ export class SubscriptionsStandAloneComponent {
   getFeesTabConfig() {
     return {
       label: 'PROVIDERS_PROFILE.Fees',
+      sortApiKey: { transactionTitlePopup: "id", platformId: "platformId", transactionAmountViewDisplay: "amount", processTime: "processTime" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { id: "", platformId: "" },
         clear: function() {
           this.type = { id: "", platformId: "" };
@@ -208,7 +245,12 @@ export class SubscriptionsStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -216,12 +258,12 @@ export class SubscriptionsStandAloneComponent {
     }
   }
 
-  getCommonGridDetails(gridType: string, warnMessage: string, uiModel: any, apiUrl: string, secondryModelData?: any) {
+  getCommonGridDetails(gridType: string, warnMessage: string, uiModel: any, apiUrl: string, secondryModelData?: any, rowModelType: any = "serverSide") {
     let commonColDef = this.getGridColDefs(gridType);
     return {
       apiUrl: apiUrl,
       colDef: commonColDef,
-      config: this.getCommonGridConfig(commonColDef, warnMessage),
+      config: this.getCommonGridConfig(commonColDef, warnMessage, rowModelType),
       data: [],
       showLoader: false,
       uiModel: uiModel,
@@ -315,7 +357,7 @@ export class SubscriptionsStandAloneComponent {
 
   setupRiskGridConfig() {
     let colDefs = this.getGridColDefs('risk');
-    this.riskGridConfig = this.getCommonGridConfig(colDefs, 'No rules are added');
+    this.riskGridConfig = this.getCommonGridConfig(colDefs, 'No rules are added', 'clientSide');
   }
 
   getRiskData() {
@@ -343,27 +385,30 @@ export class SubscriptionsStandAloneComponent {
   }
 
   getGridData(tab: any) {
-    let gridConfig = tab.grid
-    gridConfig.showLoader = true;
+    let gridConfig = tab.grid;
     let param: any = tab.filters.getApiParams();
+    //remove empty param values
+    param = Object.fromEntries(
+      Object.entries(param).filter(([_, value]) => value !== null && value !== undefined && value !== "")
+    );
+    //End
     this._webService.getCommonGridData(gridConfig.apiUrl, param).subscribe({
 
       next: (response: any) => {
         let arr: any = [];
         response.items.forEach((obj: any) => arr.push(new gridConfig.uiModel(obj, gridConfig.uiModelSecondParamData)));
         gridConfig.data = arr;
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(true, response.count, arr);
       },
       error: (errorObj: any) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(false, 0, []);
       }
     })
   }
 
   onTabChange(event: any) {
     this.currentSelectedTabIndx = event.index;
-    this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
   }
 
   applyFilters(tab: any) { 
@@ -377,11 +422,11 @@ export class SubscriptionsStandAloneComponent {
 
   clearFilters(tab: any) {
     tab.filters.clear();
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   refreshDataList(tab: any) {
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   getGridColDefs(gridType: string) {
@@ -393,10 +438,9 @@ export class SubscriptionsStandAloneComponent {
       ];
     } else if(gridType == 'position') {
       return [
-
         { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionSubscriptionNameCell' },
         { field: "copyPosition", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
-        { field: "status", headerName: 'COMMON.Status', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "status", headerName: 'COMMON.Status', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
         { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
         { field: "openTime", headerName: 'PROVIDERS_PROFILE.Open Time', sort: 'desc', resizable: false },
         { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionVolumeCell' },
@@ -429,7 +473,7 @@ export class SubscriptionsStandAloneComponent {
     return;
   }
 
-  getCommonGridConfig(colDefs: any, warnMessage: string) {
+  getCommonGridConfig(colDefs: any, warnMessage: string, rowModelType: string) {
     let gridConfig: AgGridConfig = {
       maxHeight: '400px',
       noDataWarnMessage: warnMessage,
@@ -440,7 +484,7 @@ export class SubscriptionsStandAloneComponent {
       columnDefination: colDefs,
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
-      rowModelType: 'clientSide',
+      rowModelType: rowModelType,
       rowHeight: undefined
     };
     return gridConfig;
@@ -463,7 +507,22 @@ export class SubscriptionsStandAloneComponent {
       this.refreshRiskData();
     } else if(event['action'] == 'delete_risk_data') {
       this.deleteRiskData(event['data']);
+    } else if(event['action'] == 'get_server_side_data') {
+      this.setAgGridServerRequestObjInTabConfig(event);
+      this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
+    } else if(event['action'] == "set_grid_api_obj") {
+      this.gridApiObj = event['data'];
     }
+  }
+
+  setAgGridServerRequestObjInTabConfig(event: any) {
+    let obj = {
+      getOrderByQuery: this.getOrderByQuery.bind(this),
+      params: event.params,
+      callback: event.callback
+    };
+    this.serverRequestObj = obj;
+    this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'] = this.serverRequestObj;
   }
 
   async refreshSubscriptionData() {

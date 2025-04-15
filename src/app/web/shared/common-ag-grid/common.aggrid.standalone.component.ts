@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
-import { ColDef, GridApi, GridOptions, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, ModuleRegistry } from 'ag-grid-enterprise';
 import { TranslateService } from '@ngx-translate/core';
 import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import {ServerSideRowModelModule} from 'ag-grid-enterprise';
+import { ServerSideRowModelModule } from 'ag-grid-enterprise';
 
 export interface AgGridConfig {
   maxHeight?: string;
