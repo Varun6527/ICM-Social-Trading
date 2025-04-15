@@ -122,3 +122,24 @@ export class MyReportsGaurd implements CanActivate {
         })
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+
+export class MyAuthGaurdWhenUserLoggedIn implements CanActivate {
+
+    constructor(private _authService: AuthService, private _router: Router) {
+    }
+
+    canActivate(): boolean {
+        let flag = this._authService.isAccessTokenGenerated();
+        if (flag) {
+            this._router.navigate(['./portal']);
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+}
