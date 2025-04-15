@@ -27,6 +27,14 @@ export class WebAuthInterceptor implements HttpInterceptor {
         })
       );
     }
-    return next.handle(req);
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this._authService.clearUserDataAndToken();
+          this._router.navigate(['/portal/login']);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

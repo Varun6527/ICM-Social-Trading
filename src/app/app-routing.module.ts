@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { UserDataResolver } from './shared/resolvers/user.data.resolver';
 import { UserProfileDataResolver } from './shared/resolvers/user.profile.data.resolver';
+import { MyAuthGaurdWhenUserLoggedIn } from './web/gaurd/web.gaurd';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
-        resolve: { myData: UserDataResolver }
+        resolve: { myData: UserDataResolver },
+        canActivate: [MyAuthGaurdWhenUserLoggedIn]
       }
     ]
   },
@@ -23,7 +25,8 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./auth/register/provider/provider.standalone.component').then(s => s.RegisterProviderStandAloneComponent),
-        resolve: { myData: UserDataResolver }
+        resolve: { myData: UserDataResolver },
+        canActivate: [MyAuthGaurdWhenUserLoggedIn]
       }
     ]
   },
@@ -34,7 +37,8 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./auth/register/follower/follower.standalone.component').then(s => s.FollowerProviderStandAloneComponent),
-        resolve: { myData: UserDataResolver }
+        resolve: { myData: UserDataResolver },
+        canActivate: [MyAuthGaurdWhenUserLoggedIn]
       }
     ]
   },
@@ -45,7 +49,8 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () => import('./auth/register/follower/follower.standalone.component').then(s => s.FollowerProviderStandAloneComponent),
-        resolve: { myData: UserDataResolver }
+        resolve: { myData: UserDataResolver },
+        canActivate: [MyAuthGaurdWhenUserLoggedIn]
       }
     ]
   },
