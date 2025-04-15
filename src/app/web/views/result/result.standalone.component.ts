@@ -17,6 +17,7 @@ import { CommonDialogStandAloneComponent } from '../../shared/dialogBox/common-d
 import { TransactionHistoryUiModal, ProfitsUiModal } from '../../shared/ui-model/web.ui.model';
 import { ActionButtonStanAloneComponent } from '../../shared/cell-renderer/action-button-cell-renderer/action-button-cell-renderer.standalone.component';
 import { ConstantVariable } from '../../../shared/model/constantVariable.model';
+import { GridApi } from 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-result',
@@ -41,6 +42,8 @@ export class ResultStandAloneComponent {
   offerData: any = {};
   subscriptionData: any = {};
   resultData: any = {};
+  gridApiObj!: GridApi;
+  serverRequestObj: any = {};
 
   constructor(private _webService: WebService, private route: ActivatedRoute, private _router : Router) {
     this.route.paramMap.subscribe(params => {
@@ -54,6 +57,25 @@ export class ResultStandAloneComponent {
     });
   }
 
+  getOrderByQuery(sortModel: any) {
+    if(sortModel.length == 0) return;
+    let sortQuery = "", sortApiKey = this.tabArrConfig[this.currentSelectedTabIndx]['sortApiKey'];
+    sortModel.forEach((obj: any) => {
+      sortQuery += `${sortApiKey[obj.colId]} ${obj.sort},`;
+    });
+    return sortQuery.slice(0, -1);
+  }
+
+  sendDataToAgGrid(status: boolean, count: number, gridData: any) {
+    let event = this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'];
+    let serverResponse = {
+      status: status,
+      data: gridData,
+      rowCount: count
+    }
+    event.callback(serverResponse);
+  }
+
   async getAllSubscriptionResultPageData() {
     this.showPageLoader = true;
     let result1 = await this.getResultData();
@@ -61,7 +83,6 @@ export class ResultStandAloneComponent {
     let result3 = await this.getProviderData();
     let result4 = await this.getOfferData();
     this.setUpTabsConfig();
-    this.getGridData(this.tabArrConfig[0]);
     this.showPageLoader = false;
   }
 
@@ -155,8 +176,10 @@ export class ResultStandAloneComponent {
     let url = this.constantVariable?.http_Api_Url.webHomePage.follower.profits.replace(':resultId', this.resultId);
     return {
       label: 'PROVIDERS_PROFILE.Profits',
+      sortApiKey: { id: "id", finalProfit: "finalProfit", profitPositionCell: "uniqueId", processTime: "processTime" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { origin: "", uniqueId: "" },
         clear: function() {
           this.type = { origin: "", uniqueId: "" };
@@ -174,7 +197,12 @@ export class ResultStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -185,8 +213,10 @@ export class ResultStandAloneComponent {
   getFeesTabConfig() {
     return {
       label: 'PROVIDERS_PROFILE.Fees',
+      sortApiKey: { transactionTitlePopup: "id", platformId: "platformId", transactionAmountViewDisplay: "amount", processTime: "processTime" },
       filters: {
         show: false,
+        serverRequestObj: this.serverRequestObj,
         type: { id: "", platformId: "" },
         clear: function() {
           this.type = { id: "", platformId: "" };
@@ -206,7 +236,12 @@ export class ResultStandAloneComponent {
             return filterQuery;
           }
           param['$count'] = true;
-          getFilterParam.apply(this) ? param['$filter'] = getFilterParam.apply(this).slice(0, -4) : "";
+          param['$top'] = this.serverRequestObj.params.request.endRow;
+          param['$skip'] = this.serverRequestObj.params.request.startRow;
+          let orderVal = this.serverRequestObj.getOrderByQuery(this.serverRequestObj.params.request.sortModel);
+          param['$orderby'] = orderVal ? orderVal : "";
+          let filterVal = getFilterParam.apply(this);
+          param['$filter'] = filterVal ? filterVal.slice(0, -4) : "";
           return param;
         }
       },
@@ -238,7 +273,7 @@ export class ResultStandAloneComponent {
       columnDefination: colDefs,
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
-      rowModelType: 'clientSide',
+      rowModelType: 'serverSide',
       rowHeight: undefined
     };
     return gridConfig;
@@ -255,9 +290,9 @@ export class ResultStandAloneComponent {
       ]
     } else if (gridType == 'profits') {
       return [
-        { field: "id", headerName: 'COMMON.Id', sort: 'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitId', valueFormatter: (params: any) => `#${params.value}` },
+        { field: "id", headerName: 'COMMON.Id', sort: 'desc', resizable: false, valueFormatter: (params: any) => `#${params.value}` },
         { field: "finalProfit", headerName: 'PROVIDERS_PROFILE.Final Profit', resizable: false },
-        { field: "origin", headerName: 'PROVIDERS_PROFILE.Origin', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "origin", headerName: 'PROVIDERS_PROFILE.Origin', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
         { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitPositionCell' },
         { field: "processTime", headerName: 'PROVIDERS_PROFILE.Process Time', resizable: false }
       ]
@@ -267,24 +302,28 @@ export class ResultStandAloneComponent {
 
   onTabChange(event: any) {
     this.currentSelectedTabIndx = event.index;
-    this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
   }
 
   getGridData(tab: any) {
     let gridConfig = tab.grid
     gridConfig.showLoader = true;
     let param: any = tab.filters.getApiParams();
+    //remove empty param values
+    param = Object.fromEntries(
+      Object.entries(param).filter(([_, value]) => value !== null && value !== undefined && value !== "")
+    );
+    //End
     this._webService.getCommonGridData(gridConfig.apiUrl, param).subscribe({
 
       next: (response: any) => {
         let arr: any = [];
         response.items.forEach((obj: any) => arr.push(new gridConfig.uiModel(obj, gridConfig.uiModelSecondParamData)));
         gridConfig.data = arr;
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(true, response.count, arr);
       },
       error: (errorObj: any) => {
         this.showErrorWarnMessage(errorObj?.error?.errorMessage);
-        gridConfig.showLoader = false;
+        this.sendDataToAgGrid(false, 0, []);
       }
     })
   }
@@ -300,11 +339,11 @@ export class ResultStandAloneComponent {
 
   clearFilters(tab: any) {
     tab.filters.clear();
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   refreshDataList(tab: any) {
-    this.getGridData(tab);
+    this.gridApiObj.refreshServerSide();
   }
 
   showErrorWarnMessage(msg: any) {
@@ -316,7 +355,22 @@ export class ResultStandAloneComponent {
   recieveChildrenEmitter(event: any) {
     if(event['action'] == 'open_transact_details_popup') {
       this.openBeFeesDetailsPopup(event['data']);
+    } else if(event['action'] == 'get_server_side_data') {
+      this.setAgGridServerRequestObjInTabConfig(event);
+      this.getGridData(this.tabArrConfig[this.currentSelectedTabIndx]);
+    } else if(event['action'] == "set_grid_api_obj") {
+      this.gridApiObj = event['data'];
     }
+  }
+
+  setAgGridServerRequestObjInTabConfig(event: any) {
+    let obj = {
+      getOrderByQuery: this.getOrderByQuery.bind(this),
+      params: event.params,
+      callback: event.callback
+    };
+    this.serverRequestObj = obj;
+    this.tabArrConfig[this.currentSelectedTabIndx]['filters']['serverRequestObj'] = this.serverRequestObj;
   }
 
   openBeFeesDetailsPopup(data: any) {
