@@ -85,7 +85,7 @@ export class ConstantVariable {
           tradingData: "/api/reports/:accountId/trading",
           instrumentData: "/api/reports/:accountId/instruments",
           monthlyReturns: "/api/history/:accountId/monthly",
-          publicPosition: "/api/trading/:accountId/positions/public"
+          publicPosition: "/api/trading/:accountId/positions"
         }
     };
     errorMessageObj: any = {
