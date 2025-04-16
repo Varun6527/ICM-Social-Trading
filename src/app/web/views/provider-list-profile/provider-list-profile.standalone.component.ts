@@ -17,6 +17,7 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 import { AuthService } from '../../../auth/service/auth.service';
 import { CommonCellRendererStandAloneComponent } from '../../shared/cell-renderer/common-cell-renderer/common-cell-renderer.standalone.component';
 import { FormsModule } from '@angular/forms';
+import { GridApi } from 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-provider-list-profile',
@@ -62,7 +63,8 @@ export class ProviderListProfileStandAloneComponent {
     }
   };
   tradingStaticsData: any = {};
-
+  sortApiKey:any = {symbol: 'symbol', dateTimeCell: 'openTime', dateTimeCell_2: 'closeTime', currencyCellWithNoSymbol: 'openPrice', currencyCellWithNoSymbol_2: 'closePrice', currencyCell: 'profit'};
+  gridApiObj!: GridApi;
   IConstant: ConstantVariable = new ConstantVariable();
   readonly beFollowerDialog = inject(MatDialog);
   @ViewChild(ShowErrorStandAloneComponent) errorComponent?: ShowErrorStandAloneComponent;
@@ -85,7 +87,6 @@ export class ProviderListProfileStandAloneComponent {
     let result2 = await this.getOffersData();
     this.showPageLoader = false;
     this.setupPositionGridConfig();
-    this.getPositionData();
     this.getAssestsChartsData();
     this.getMonthlyReturnChartsData();
     //Need to call get investor api here which gives us all added investor month by month.
@@ -212,22 +213,49 @@ export class ProviderListProfileStandAloneComponent {
     })
   }
 
-  getPositionData() {
-    this.showGridLoader = true;
-    let param = {
-      accountId: this.accountId,
-      widget_key: this.widget_key
-    }
+  getParamsForPositionAPi(requestParam: any) {
+    let param: any = {};
+    param['$count'] = true;
+    param['accountId'] = this.accountId;
+    param['widget_key'] = this.widget_key;
+    param['$top'] = requestParam.endRow;
+    param['$skip'] = requestParam.startRow;
+    this.getOrderByQuery(requestParam.sortModel) ? param['$orderby'] = this.getOrderByQuery(requestParam.sortModel) : "";
+    return param;
+  }
+
+  getPositionData(event?: any) {
+    let param = this.getParamsForPositionAPi(event.params.request);
     this._webService.getPublicPositionData(param).subscribe({
       next: (response: any) => {
         this.gridData = response.items;
-        this.showGridLoader = false;
+        this.sendDataToAgGrid(true, event, response.count, this.gridData);
       },
       error: (errorObj) => {
-        this.showGridLoader = false;
+        this.sendDataToAgGrid(false, event, 0, []);
         this.showErrorWarnMessage(this.IConstant.errorMessageObj[errorObj?.error?.errorCode]);
       }
     })
+  }
+
+
+
+getOrderByQuery(sortModel: any) {
+  if(sortModel.length == 0) return; 
+  let sortQuery = "";
+  sortModel.forEach((obj: any) => {
+    sortQuery += `${this.sortApiKey[obj.colId]} ${obj.sort},`;
+  });
+  return sortQuery.slice(0, -1);
+}
+
+sendDataToAgGrid(status: boolean, event: any, count: number, transactionGridData: any) {
+  let serverResponse = {
+    status: status,
+    data: transactionGridData,
+    rowCount: count
+  }
+  event.callback(serverResponse)   
 }
 
   getRatingData() {
@@ -273,12 +301,12 @@ export class ProviderListProfileStandAloneComponent {
   setupPositionGridConfig() {
     let colDefs = [
       { field: "symbol", headerName: 'PROVIDERS_LIST_PROFILE.Symbol', resizable: false, width: 150, suppressSizeToFit: true },
-      { field: "direction", headerName:'PROVIDERS_LIST_PROFILE.Type', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
-      { field: "volume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', resizable: false, width: 150 },
+      { field: "direction", headerName:'PROVIDERS_LIST_PROFILE.Type', sortable: false, resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
+      { field: "volume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', sortable: false, resizable: false, width: 150 },
       { field: "openTime", sort: 'desc', headerName: 'PROVIDERS_LIST_PROFILE.Open Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
       { field: "openPrice", headerName: 'PROVIDERS_LIST_PROFILE.Open Price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
       { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
-      { field: "closePrice", headerName: 'PROVIDERS_PROFILE.Close price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
+      { field: "closePrice", headerName: 'PROVIDERS_PROFILE.Close price', sortable: false, resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
       { field: "profit", headerName: 'PROVIDERS_LIST_PROFILE.Profit', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell', cellStyle: (params: any) => { return { color: params.value < 0 ? 'var(--error-message--container-color)' : 'var(--primary-positive-color)' } } }
     ];
     this.setupGridConfig(colDefs);
@@ -295,7 +323,7 @@ export class ProviderListProfileStandAloneComponent {
       columnDefination: colDefs,
       enablePagination: true,
       headerNameLangArr: colDefs.map((o: any) => o.headerName),
-      rowModelType: 'clientSide',
+      rowModelType: 'serverSide',
       rowHeight: undefined
     }
   }
@@ -304,6 +332,10 @@ export class ProviderListProfileStandAloneComponent {
     if (event['action'] == 'follower_created') {
       this.refreshUserProfileAndRedirectToProviderOrFollowerProfile(event.data);
       this.beFollowerDialog.closeAll();
+    } else if(event['action'] == 'get_server_side_data') {
+      this.getPositionData(event);
+    } else if(event['action'] == "set_grid_api_obj") {
+      this.gridApiObj = event['data'];
     }
   }
 

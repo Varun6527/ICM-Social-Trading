@@ -189,7 +189,7 @@
         </div>
         <div class="provider-list-profile-table pb-20">
             <div>
-                <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData"
+                <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData" (emitToParent)="recieveChildrenEmitter($event)"
                     [showGridLoader]="showGridLoader">
                 </common-ag-grid>
             </div>
