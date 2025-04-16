@@ -1,10 +1,12 @@
 .sidenav-parent {
     padding: 15px;
-    position: fixed;
     display: flex;
     flex-direction: column;
     gap: 20px;
     overflow: auto;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     //Nav Scrolling
     &::-webkit-scrollbar {
     width: 10px;
