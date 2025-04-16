@@ -274,8 +274,11 @@ export class ConstantVariable {
         }
       ],
       chart: {
-        height: 60,
+        height: 100,
         width: 200,
+        sparkline: {
+          enabled: true,
+        },
         padding: 0,
         type: "line",
         toolbar: {

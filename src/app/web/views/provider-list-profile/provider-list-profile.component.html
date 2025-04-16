@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <p>{{"PROVIDERS_LIST_PROFILE.Invested"|translate}}</p>
-                        <p class="sub-heading">{{(ratingData?.extension?.investorsEquity || ratingData?.extension?.investorsEquity == 0)  ? (ratingData?.extension?.investorsEquity | currency: ratingData?.account?.currency:'symbol') : '-'}}</p>
+                        <p class="sub-heading">{{(ratingData?.extension?.investorsEquityUsd || ratingData?.extension?.investorsEquityUsd == 0)  ? (ratingData?.extension?.investorsEquityUsd | currency: ratingData?.account?.currency:'symbol') : '-'}}</p>
                     </div>
                 </div>
             </div>
@@ -189,7 +189,7 @@
         </div>
         <div class="provider-list-profile-table pb-20">
             <div>
-                <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData"
+                <common-ag-grid [gridConfig]="gridConfig" [gridData]="gridData" (emitToParent)="recieveChildrenEmitter($event)"
                     [showGridLoader]="showGridLoader">
                 </common-ag-grid>
             </div>
