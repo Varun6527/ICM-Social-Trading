@@ -1,5 +1,5 @@
 .login-screen{
-    padding: 50px;
+    padding: 50px 10px;
 }
 .login-card-header{
     padding: 20px;
@@ -35,7 +35,7 @@
     }
 }
 .login-card{
-    width: 450px;
+    max-width: 450px;
     display: block;
     margin: 0 auto;
     border-radius: 8px;
@@ -167,3 +167,4 @@
         align-items: center;
     }
   }
+
