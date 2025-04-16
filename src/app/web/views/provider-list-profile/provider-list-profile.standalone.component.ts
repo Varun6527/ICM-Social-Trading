@@ -157,7 +157,7 @@ export class ProviderListProfileStandAloneComponent {
         tradeWon: `${wonCount}/${wonPercentage}%`,
         tradeLost: `${lostCount}/${lostPercentage}%`,
         bestTrade: bestProfit !== null ? bestProfit.toFixed(2) : '--',
-        worstTrade: worstProfit !== null ? Math.abs(worstProfit).toFixed(2) : '--',
+        worstTrade: worstProfit !== null ? parseFloat(worstProfit).toFixed(2) : '--',
     };
   }
 

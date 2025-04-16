@@ -123,7 +123,7 @@
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Invested"|translate}}</p>
-                                                <p class="subtitle">{{(rating?.extension?.investorsEquity || rating?.extension?.investorsEquity == 0)  ? (rating?.extension?.investorsEquity | currency: rating?.account?.currency:'symbol') : '-'}}</p>
+                                                <p class="subtitle">{{(rating?.extension?.investorsEquityUsd || rating?.extension?.investorsEquityUsd == 0)  ? (rating?.extension?.investorsEquityUsd | currency: rating?.account?.currency:'symbol') : '-'}}</p>
                                             </div>
                                             <div class="text d-flex flex-column">
                                                 <p class="title">{{"PROVIDERS_LIST.Own Funds"|translate}}</p>
