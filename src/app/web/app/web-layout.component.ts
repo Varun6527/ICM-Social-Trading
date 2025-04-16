@@ -15,14 +15,12 @@ import { Component } from '@angular/core';
   styles: `
     .web-layout{
         display: flex;
-        gap: 15px;
         .sidenav{
-            width: 300px;
+          flex: 1 1 23%;
         }
         .pages{
-            flex: 1;
+            flex: 1 1 77%;
             padding-right: 10px;
-            width:77%; //Dont know but we have to give some width only then rating page is working fine. if we remove it rating page is getting distorted.
         }
     }
   `
