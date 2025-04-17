@@ -128,7 +128,9 @@
                     padding-top: 15px;
 
                     .user-name {
-                        width:140px;
+                        width:100%;
+                        word-break: break-word;
+                        overflow-wrap: break-word;
                     }
 
                     img {

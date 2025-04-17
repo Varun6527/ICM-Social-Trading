@@ -12,18 +12,7 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
-  styles: `
-    .web-layout{
-        display: flex;
-        .sidenav{
-          flex: 1 1 23%;
-        }
-        .pages{
-            flex: 1 1 77%;
-            padding-right: 10px;
-        }
-    }
-  `
+  styleUrls: ['./web-layout-comonent.scss']
 })
 export class WebLayoutComponent {
   
