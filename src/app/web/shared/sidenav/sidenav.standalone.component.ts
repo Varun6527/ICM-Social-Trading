@@ -48,6 +48,10 @@ export class SidenavStanaloneComponent extends BaseLanguageTranslationComponent 
     })
   }
 
+  closeSidenav() {
+    this._webService.emitOnWebDataChange({action: 'close_sidenav_menu_options'});
+  }
+
   getIntialDataForProvider() {
     let param = {scope: 'Active'};
     this._webService.getProviderData(param).subscribe({
