@@ -208,7 +208,8 @@ export class ConstantVariable {
             breakpoint: 600,
             options: {
               chart: {
-                height: 120
+                height: "100%",
+                width: 260
               },
               stroke: {
                 width: 2
@@ -227,7 +228,59 @@ export class ConstantVariable {
             breakpoint: 768,
             options: {
               chart: {
-                height: 130
+                height: "100%",
+                width: 300
+              },
+              grid: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top:0,
+                  bottom: 0
+                }
+              }
+            }
+          },
+          {
+            breakpoint: 426,
+            options: {
+              chart: {
+                height: "100%",
+                width: 300
+              },
+              grid: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top:0,
+                  bottom: 0
+                }
+              }
+            }
+          },
+          {
+            breakpoint: 380,
+            options: {
+              chart: {
+                height: "100%",
+                width: 260
+              },
+              grid: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top:0,
+                  bottom: 0
+                }
+              }
+            }
+          },
+          {
+            breakpoint: 321,
+            options: {
+              chart: {
+                height: "100%",
+                width: 200
               },
               grid: {
                 padding: {
@@ -239,6 +292,7 @@ export class ConstantVariable {
               }
             }
           }
+           
         ]
     };
 
@@ -341,15 +395,18 @@ export class ConstantVariable {
           breakpoint: 600,
           options: {
             chart: {
-              height: 120
+              height: "100%",
+              width: 260
             },
             stroke: {
               width: 2
             },
             grid: {
               padding: {
-                top: -50,
-                bottom: -10
+                left: 0,
+                right: 0,
+                top:0,
+                bottom: 0
               }
             }
           }
@@ -358,16 +415,71 @@ export class ConstantVariable {
           breakpoint: 768,
           options: {
             chart: {
-              height: 130
+              height: "100%",
+              width: 300
             },
             grid: {
               padding: {
-                top: -60,
-                bottom: -15
+                left: 0,
+                right: 0,
+                top:0,
+                bottom: 0
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 426,
+          options: {
+            chart: {
+              height: "100%",
+              width: 300
+            },
+            grid: {
+              padding: {
+                left: 0,
+                right: 0,
+                top:0,
+                bottom: 0
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 380,
+          options: {
+            chart: {
+              height: "100%",
+              width: 260
+            },
+            grid: {
+              padding: {
+                left: 0,
+                right: 0,
+                top:0,
+                bottom: 0
+              }
+            }
+          }
+        },
+        {
+          breakpoint: 321,
+          options: {
+            chart: {
+              height: "100%",
+              width: 200
+            },
+            grid: {
+              padding: {
+                left: 0,
+                right: 0,
+                top:0,
+                bottom: 0
               }
             }
           }
         }
+         
       ]
     };
 

@@ -45,6 +45,97 @@ export class ProviderChartsStandaloneComponent {
       fontSize: '16px'
     }
   };
+  resposivnessConfig: any = [
+    {
+      breakpoint: 600,
+      options: {
+        chart: {
+          height: "100%",
+          width: 260
+        },
+        stroke: {
+          width: 2
+        },
+        grid: {
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 768,
+      options: {
+        chart: {
+          height: "100%",
+          width: 300
+        },
+        grid: {
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 426,
+      options: {
+        chart: {
+          height: "100%",
+          width: 300
+        },
+        grid: {
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 380,
+      options: {
+        chart: {
+          height: "100%",
+          width: 260
+        },
+        grid: {
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 321,
+      options: {
+        chart: {
+          height: "100%",
+          width: 200
+        },
+        grid: {
+          padding: {
+            left: 0,
+            right: 0,
+            top:0,
+            bottom: 0
+          }
+        }
+      }
+    }
+     
+  ]
   
   @Input() chartType: string = "";
   @Input() chartDataConfig: any = {data: [], type: ''};
@@ -154,39 +245,7 @@ export class ProviderChartsStandaloneComponent {
                   </div>`;
         }
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
@@ -231,18 +290,7 @@ export class ProviderChartsStandaloneComponent {
           enabled: true
         }
       },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       plotOptions: {
         bar: {
           horizontal: false,
@@ -369,6 +417,7 @@ export class ProviderChartsStandaloneComponent {
         floating: true, // Make the legend float (position absolute)
         offsetX: 0, // Adjust horizontal position for fine-tuning
       },
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
@@ -427,39 +476,7 @@ export class ProviderChartsStandaloneComponent {
                   </div>`;
         }
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
@@ -481,18 +498,7 @@ export class ProviderChartsStandaloneComponent {
           enabled: true
         }
       },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       plotOptions: {
         bar: {
           horizontal: false,
@@ -592,39 +598,7 @@ export class ProviderChartsStandaloneComponent {
                   </div>`;
         }
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
@@ -683,39 +657,7 @@ export class ProviderChartsStandaloneComponent {
                   </div>`;
         }
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
@@ -774,39 +716,7 @@ export class ProviderChartsStandaloneComponent {
                   </div>`;
         }
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          options: {
-            chart: {
-              height: 120
-            },
-            stroke: {
-              width: 2
-            },
-            grid: {
-              padding: {
-                top: -50,
-                bottom: -10
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 130
-            },
-            grid: {
-              padding: {
-                top: -60,
-                bottom: -15
-              }
-            }
-          }
-        }
-      ],
+      responsive: this.resposivnessConfig,
       noData: this.chartNoData
     };
   }
