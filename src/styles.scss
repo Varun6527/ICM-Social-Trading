@@ -407,3 +407,7 @@ body::-webkit-scrollbar-thumb:hover {
   opacity: 0.5;
   pointer-events: none;
 }
+
+.mat-mdc-tab-labels {
+  flex-flow: row wrap;
+}
