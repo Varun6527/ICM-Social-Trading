@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-icm-date-range-picker',
   template: `
-    <div class="d-flex align-center">
+    <div class="d-flex align-center flex-wrap">
         <button class="secondary-btn datepicker-menu" [matMenuTriggerFor]="dateActions">
             {{("REPORTS." + selectedDateRange) |translate}}
         </button>
@@ -76,6 +76,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
             background: white;
             border: 1px solid #D0D5DD;
         }
+
+        
+        ::ng-deep .d-flex.align-center.flex-wrap {
+          @media screen and (max-width: 455px) {
+            gap: 20px;
+            .datepicker-menu {
+              border-radius: 8px !important;;
+            }
+            .datepicker-filter .mat-mdc-text-field-wrapper {
+              border-radius: 8px !important;
+            }
+          }
+        }
+
   `,
   standalone: true,
   imports: [MatMenuModule, MatDatepickerModule, TranslateModule, MatFormFieldModule]
