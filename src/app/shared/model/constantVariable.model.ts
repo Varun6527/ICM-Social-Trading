@@ -246,7 +246,7 @@ export class ConstantVariable {
             options: {
               chart: {
                 height: "100%",
-                width: 300
+                width: 280
               },
               grid: {
                 padding: {
