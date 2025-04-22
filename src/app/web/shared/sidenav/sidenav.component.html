@@ -9,44 +9,44 @@
         </div> -->
         <div class="sidebar-menu-items">
             <ul class="menu-list-top">
-                <a [routerLink]="'/portal'">
+                <a [routerLink]="'/portal'" (click)="closeSidenav()" *ngIf="isProvider || isFollower">
                     <li [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Home Icon.png" />
                         <p>{{"SIDEBAR.Home"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/providers'" *ngIf="isProvider">
+                <a [routerLink]="'/portal/providers'" (click)="closeSidenav()" *ngIf="isProvider">
                     <li id="provider-menu-relative" routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Providers"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/subscriptions'" *ngIf="isFollower">
+                <a [routerLink]="'/portal/subscriptions'" (click)="closeSidenav()" *ngIf="isFollower">
                     <li routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Portfolio"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/account'" routerLinkActive="menu-active">
+                <a [routerLink]="'/portal/account'" (click)="closeSidenav()" routerLinkActive="menu-active">
                     <li routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/User Icon.png" />
                         <p> {{"SIDEBAR.My Accounts"|translate}}</p>
 
                     </li>
                 </a>
-                <a [routerLink]="'/portal/transactions'" routerLinkActive="menu-active">
+                <a [routerLink]="'/portal/transactions'" (click)="closeSidenav()" routerLinkActive="menu-active">
                     <li routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Transaction Icon.png" />
                         <p> {{"SIDEBAR.Transaction History"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/ratings'" routerLinkActive="menu-active" *ngIf="showRatingWidget">
+                <a [routerLink]="'/portal/ratings'" (click)="closeSidenav()" routerLinkActive="menu-active" *ngIf="showRatingWidget">
                     <li routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/star.png" />
                         <p>{{"SIDEBAR.Providers"|translate}}</p>
                     </li>
                 </a>
-                <a [routerLink]="'/portal/reports'" routerLinkActive="menu-active" *ngIf="(isProvider || isFollower) && showReportsPage">
+                <a [routerLink]="'/portal/reports'" (click)="closeSidenav()" routerLinkActive="menu-active" *ngIf="(isProvider || isFollower) && showReportsPage">
                     <li routerLinkActive="menu-active">
                         <img class="reports-icon" src="../../../../assets/icons/file.png" />
                         <p>{{"SIDEBAR.Reports"|translate}}</p>
