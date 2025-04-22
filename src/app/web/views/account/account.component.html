@@ -9,7 +9,7 @@
             </div>
             <div class="metrics-table">
                 <div class="header-buttons d-flex justify-space-between">
-                    <div class="d-flex g-20 justify-center align-center">
+                    <div class="d-flex g-20 align-center flex-wrap">
                         <button class="secondary-btn" (click)="applyFilters()">
                             <img src="../../../../assets/icons/filterIcon.svg" />
                             {{"COMMON.Filters"|translate}}
@@ -19,7 +19,7 @@
                             {{"COMMON.Clear"|translate}}
                         </button>
                     </div>
-                    <div class="d-flex g-20 common-dropdown">
+                    <div class="d-flex g-20 common-dropdown flex-wrap">
                         <mat-form-field *ngIf="showFilters">
                             <mat-label>{{"PROVIDERS_PROFILE.Scope"|translate}}</mat-label>
                             <mat-select [(ngModel)]="selectedAccountStatus" (selectionChange)="refreshAccountDataList()">
