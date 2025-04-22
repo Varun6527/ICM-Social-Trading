@@ -17,8 +17,8 @@
                                     <p>{{ report.description | translate }}</p>
                                 </div>
                             </div>
-                            <div class="header-buttons d-flex justify-space-between align-center">
-                                <div class="d-flex g-10">
+                            <div class="header-buttons d-flex justify-space-between align-center flex-wrap g-20">
+                                <div class="d-flex g-10 flex-wrap">
                                     <app-icm-date-range-picker *ngIf="report.defaultDateRange"
                                         (emitToParent)="recieveChildrenEmitter($event, report)"
                                         [defaultDateRange]="report.defaultDateRange">
