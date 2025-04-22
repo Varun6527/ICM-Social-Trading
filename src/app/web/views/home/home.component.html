@@ -1,12 +1,12 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content">
         <div class="home-card" *ngIf="!showLoader">
-            <div class="header d-flex justify-space-between align-center" *ngIf="showHeader">
+            <div class="header d-flex justify-space-between align-center flex-wrap g-20" *ngIf="showHeader">
                 <div class="header-title">
                     <h5>{{ 'HOME.HELLO' | translate }}</h5>
                     <p>{{'HOME.Homepage with overall statistics' | translate}}</p>
                 </div>
-                <div class="header-buttons d-flex justify-space-between align-center g-20">
+                <div class="header-buttons d-flex justify-space-between align-center g-20 flex-wrap">
                     <button class="primary-btn" (click)="openBeProviderDialog()">
                         <img src="../../../../assets/icons/plusIcon.png" />
                         {{'HOME.Be A Provider' | translate}}
@@ -20,7 +20,7 @@
             <provider-follower-header-cards [isProvider]="isProvider" [isFollower]="isFollower"></provider-follower-header-cards>
 
             <div class="metrics-table">
-                <div class="header-title" [ngClass]="{'d-flex justify-space-between pb-20': !isProvider && !isFollower}">
+                <div class="header-title d-flex flex-column"[ngClass]="{'d-flex justify-space-between pb-20': !isProvider && !isFollower}">
                     <ng-container *ngIf="isProvider">
                         <h5>{{'HOME.Provider Metrics' | translate}}</h5>
                         <p>{{'HOME.Metrics of individual providers' | translate}}</p>
@@ -33,7 +33,7 @@
                         <h5>{{'ACCOUNTS.Accounts' | translate}}</h5>
                         <p>{{'ACCOUNTS.AccountsAddFromMetaTrade' | translate}}</p>
                     </div>
-                    <div class="d-flex g-20 common-dropdown align-start" *ngIf="!isProvider && !isFollower">
+                    <div class="d-flex g-20 common-dropdown align-start flex-wrap" *ngIf="!isProvider && !isFollower">
                           <mat-form-field>
                             <mat-label>{{'PROVIDERS_PROFILE.Scope' | translate}}</mat-label>
                             <mat-select [(ngModel)]="selectAccountStatus" (selectionChange)="refreshTradeAccountList()">

@@ -11,7 +11,7 @@ import { ConstantVariable } from '../../../shared/model/constantVariable.model';
 @Component({
   selector: 'provider-follower-header-cards',
   template: `
-        <div class="stats d-flex justify-space-between g-20" *ngIf="(isProvider || isFollower) && (providerMetric || followerMetric)">
+        <div class="stats d-flex justify-space-between g-20 flex-wrap" *ngIf="(isProvider || isFollower) && (providerMetric || followerMetric)">
                 <div class="stats-card" [ngClass]="{'justify-center': (providerMetric?.monthlyFeesArr.length === 0) || (followerMetric?.monthlyTradeArr.length === 0) }">
                     <h6>
                         <ng-container *ngIf="isProvider && providerMetric?.monthlyFeesArr.length > 0">

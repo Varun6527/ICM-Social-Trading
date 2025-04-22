@@ -1,0 +1,43 @@
+
+::ng-deep .web-layout {
+    display: flex;
+    @media screen and (max-width: 992px) {
+       flex-flow: row wrap;
+       overflow-x: hidden;
+       .pages {
+            padding-left: 10px;
+       }
+    }
+    .sidenav {
+      flex: 1 1 23%;
+      @media screen and (max-width: 992px) {
+        position: fixed;
+        top:0;
+        right: 100%;
+        height: 100%;
+        width: 100%;
+        z-index: 1000;
+        transition: all 0.3s linear;
+        -moz-transition: all 0.3s linear;
+        -webkit-transition: all 0.3s linear;
+        -o-transition: all 0.3s linear;
+        &.active{
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            app-sidenav{
+                width: 90%;
+                display: flex;
+                background: var(--secondaryBlue);
+                .sidenav-parent {
+                    width: 100%;
+                }
+              }
+          }
+      } 
+      
+    }
+    .pages{
+        flex: 1 1 77%;
+        padding-right: 10px;
+    }
+}
