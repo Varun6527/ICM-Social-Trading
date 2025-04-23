@@ -23,127 +23,99 @@
                 </mat-menu>
             </div>
             <provider-follower-header-cards [isProvider]="true" [isFollower]="false" [getDataById]="true" [id]="providerId"></provider-follower-header-cards>
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Common Information"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Provider's common settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('common_info')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('common_info')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Nickname"|translate}}</h6>
-                                    <p>{{providersData?.nickname}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Visibility"|translate}}</h6>
-                                    <p>{{providersData?.visibility}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Show account name"|translate}}</h6>
-                                    <p>{{providersData?.additional?.showAccountName}}</p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Nickname"|translate}}</h6>
+                                        <p>{{providersData?.nickname}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Visibility"|translate}}</h6>
+                                        <p>{{providersData?.visibility}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Show account name"|translate}}</h6>
+                                        <p>{{providersData?.additional?.showAccountName}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
+                            
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Personal details of account"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of trading strategy by its owner"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('personal_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('personal_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Summary"|translate}}</h6>
-                                    <p>{{providersData?.additional?.summary ? providersData?.additional?.summary : 'No summary' }}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Notes"|translate}}</h6>
-                                    <p>{{providersData?.additional?.notes ? providersData?.additional?.notes : 'No notes'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"PROVIDERS_PROFILE.Strategy"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Provider's settings of publishing deals"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
-                                {{"COMMON.Edit"|translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Hide stops"|translate}}</h6>
-                                    <p>{{providersData?.strategy?.hideStops}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Strategy Mode"|translate}}</h6>
-                                    <p>{{providersData?.strategy?.mode == 'OutOnly'? 'Out only': 'All'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"PROVIDERS_PROFILE.Finance"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Provider's finance settings"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('finance')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
-                                {{"COMMON.Edit"|translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Fee receiver account"|translate}}</h6>
-                                    <p>{{providersData?.externalName}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"PROVIDERS_PROFILE.Offers"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Sets of subscription conditions"|translate}}</p>
-                        </div>
-                        <div class="info-section-left-items">
-                            <div class="d-flex justify-space-between g-10">
-                                <div class="d-flex g-20 common-dropdown align-center">
-                                    <mat-form-field>
-                                        <mat-label>{{"PROVIDERS_PROFILE.Scope" | translate}}</mat-label>
-                                        <mat-select [(ngModel)]="selectedOfferState" (selectionChange)="refreshOffersList()">
-                                          <mat-option value="Active">{{"COMMON.Active"|translate}}</mat-option>
-                                          <mat-option value="all">{{"COMMON.All"| translate}}</mat-option>
-                                        </mat-select>
-                                      </mat-form-field>
-                                </div>
-                                <div><h4 class="divider">|</h4></div>
-                                <div class="d-flex justify-center g-10 align-stretch">
-                                    <button class="secondary-btn" (click)="refreshOffersList()">
-                                        <img src="../../../../assets/icons/rotateIcon.svg" />
-                                        {{"COMMON.Refresh"|translate}}
-                                    </button>
-                                    <button class="primary-btn" (click)="openCreateOfferModal()" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
-                                        <img src="../../../../assets/icons/plusIcon.png" />
-                                        {{"COMMON.Create"|translate}}
-                                    </button>
-                                </div>
+                        <div class="info-section-left-items ">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Summary"|translate}}</h6>
+                                        <p>{{providersData?.additional?.summary ? providersData?.additional?.summary : 'No summary' }}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Notes"|translate}}</h6>
+                                        <p>{{providersData?.additional?.notes ? providersData?.additional?.notes : 'No notes'}}</p>
+                                    </div>
+                                </mat-card>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="table">
-                            <common-ag-grid [gridConfig]="offerGridConfig"
-                            [gridData]="offerGridData" [showGridLoader]="showOfferGridLoder">
-                            </common-ag-grid>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"PROVIDERS_PROFILE.Strategy"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Provider's settings of publishing deals"|translate}}</p>
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('strategy_details')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Hide stops"|translate}}</h6>
+                                        <p>{{providersData?.strategy?.hideStops}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Strategy Mode"|translate}}</h6>
+                                        <p>{{providersData?.strategy?.mode == 'OutOnly'? 'Out only': 'All'}}</p>
+                                    </div>
+                                </mat-card> 
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"PROVIDERS_PROFILE.Finance"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Provider's finance settings"|translate}}</p>
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('finance')" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Fee receiver account"|translate}}</h6>
+                                        <p>{{providersData?.externalName}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,7 +201,50 @@
                     </div>
                 </div>
             </div>
-
+            <div class="info-section d-flex justify-space-between">
+                <div class="info-section-left">
+                    <div class="info-section-offers-list">
+                        <div class="d-flex justify-space-between w-100 info-section-left-header">
+                            <div class="info-section-left-items">
+                                <h4>{{"PROVIDERS_PROFILE.Offers"|translate}}</h4>
+                                <p>{{"PROVIDERS_PROFILE.Sets of subscription conditions"|translate}}</p>
+                            </div>
+                            <div class="info-section-left-items">
+                                <div class="d-flex justify-space-between g-10 flex-wrap flex-sm-nowrap">
+                                    <div class="d-flex g-20 common-dropdown align-center">
+                                        <mat-form-field>
+                                            <mat-label>{{"PROVIDERS_PROFILE.Scope" | translate}}</mat-label>
+                                            <mat-select [(ngModel)]="selectedOfferState" (selectionChange)="refreshOffersList()">
+                                              <mat-option value="Active">{{"COMMON.Active"|translate}}</mat-option>
+                                              <mat-option value="all">{{"COMMON.All"| translate}}</mat-option>
+                                            </mat-select>
+                                          </mat-form-field>
+                                    </div>
+                                    <div><h4 class="divider">|</h4></div>
+                                    <div class="d-flex justify-center g-10 align-stretch">
+                                        <button class="secondary-btn" (click)="refreshOffersList()">
+                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            {{"COMMON.Refresh"|translate}}
+                                        </button>
+                                        <button class="primary-btn" (click)="openCreateOfferModal()" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
+                                            <img src="../../../../assets/icons/plusIcon.png" />
+                                            {{"COMMON.Create"|translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="table">
+                                <common-ag-grid [gridConfig]="offerGridConfig"
+                                [gridData]="offerGridData" [showGridLoader]="showOfferGridLoder">
+                                </common-ag-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section-right"></div>
+            </div>
             <div class="metrics-table">
                 <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
                     class="providerProfile-tabGroup">
