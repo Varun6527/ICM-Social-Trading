@@ -9,7 +9,7 @@
         </div> -->
         <div class="sidebar-menu-items">
             <ul class="menu-list-top">
-                <a [routerLink]="'/portal'" (click)="closeSidenav()" *ngIf="isProvider || isFollower">
+                <a [routerLink]="'/portal'" (click)="closeSidenav()">
                     <li [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-active">
                         <img src="../../../../assets/icons/Home Icon.png" />
                         <p>{{"SIDEBAR.Home"|translate}}</p>
