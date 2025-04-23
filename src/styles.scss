@@ -181,6 +181,12 @@ h6{
 p{
   margin: unset !important;
 }
+.p-15{
+  padding: 15px;
+}
+.p-20{
+  padding: 20px;
+}
 .pb-5{
   padding-block: 5px;
 }
@@ -199,7 +205,9 @@ p{
 .px-10{
   padding-bottom: 10px;
 }
-
+.mb-0{
+  margin-bottom: 0px !important;
+}
 .section-card{
   background: white;
   display: flex;
