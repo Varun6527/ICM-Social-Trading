@@ -5,8 +5,8 @@
                 <button class="secondary-btn"> <img src="../../../../../assets/icons/arrow-left.svg" />{{"COMMON.Back"|translate}}</button>
             </a>
         </div>
-        <div class="profile-header-card">
-            <div class="title-area d-flex justify-space-between align-center">
+        <div class="profile-header-card d-flex flex-column flex-wrap">
+            <div class="title-area d-flex justify-space-between align-center flex-wrap">
                 <div class="d-flex justify-space-between align-center g-10">
                     <img class="provider-icon" [src]="ratingData.avatarPath" height="40" width="40" />
                     <div class="text">
@@ -15,12 +15,12 @@
                 </div>
                 <button class="primary-btn" (click)="openCopyStrategyPopup()">{{"PROVIDERS_LIST_PROFILE.Copy Strategy" |translate}}</button>
             </div>
-            <div class="mid-area d-flex justify-space-between align-center pb-10">
+            <div class="mid-area d-flex justify-space-between align-center pb-10 flex-wrap">
                 <div>
                     <p>{{"PROVIDERS_LIST_PROFILE.Manager Bio"|translate}}</p>
                     <p class="sub-heading">{{ratingData.additional?.summary ? ratingData.additional?.summary : '-'}}</p>
                 </div>
-                <div class="values d-flex justify-space-between align-center g-20">
+                <div class="values d-flex justify-space-between align-center g-20 flex-wrap">
                     <div>
                         <p>{{"PROVIDERS_LIST_PROFILE.Fees"|translate}}</p>
                         <p class="sub-heading">{{offerData?.performance?.fee || offerData?.performance?.fee == 0 ? offerData?.performance?.fee + '%' : '-'}}</p>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="desc-area d-flex justify-space-between align-center pb-10">
+            <div class="desc-area d-flex justify-space-between align-center pb-10 flex-wrap">
                 <div>
                     <p>{{"PROVIDERS_LIST_PROFILE.Description"|translate}}</p>
                     <p class="sub-heading">{{ratingData.additional?.notes ? ratingData.additional?.notes : '-'}}</p>
@@ -50,12 +50,12 @@
                 </div> -->
             </div>
         </div>
-        <div class="pb-20 d-flex justify-space-between g-20">
+        <div class="pb-20 d-flex justify-space-between g-20 first-chart-container">
             <div class="assets-card">
                 <div class="d-flex justify-space-between align-center px-20">
                     <h6>{{"PROVIDERS_LIST_PROFILE.Asset Allocation"|translate}}</h6>
                     <div class="assets-badge">
-                        <mat-button-toggle-group name="fontStyle" [(ngModel)]="chartsData.assestChart.selectedTab" (change)="onAssestMetricChange()" aria-label="Font Style"
+                        <mat-button-toggle-group name="fontStyle" class="flex-wrap" [(ngModel)]="chartsData.assestChart.selectedTab" (change)="onAssestMetricChange()" aria-label="Font Style"
                             [hideSingleSelectionIndicator]="true">
                             <mat-button-toggle value="count">{{"REPORTS.Count"|translate}}</mat-button-toggle>
                             <mat-button-toggle value="volume">{{"PROVIDERS_LIST_PROFILE.Volume"|translate}}</mat-button-toggle>
@@ -87,10 +87,10 @@
             </div>
         </div>
         <div>
-            <div class="performance-card">
+            <div class="performance-card d-flex flex-column">
                 <div class="d-flex justify-center">
                     <div class="performance-badge">
-                        <mat-button-toggle-group name="fontStyle" aria-label="Font Style"
+                        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="flex-wrap"
                             [hideSingleSelectionIndicator]="true" [(ngModel)]="chartsData.perfRiskPortfolioChart.selectedTab" (change)="onPerfRiskPortfolioChartMetricChange()">
                             <mat-button-toggle value="performance">{{"PROVIDERS_LIST_PROFILE.Performance"|translate}}</mat-button-toggle>
                             <mat-button-toggle value="risk">{{"PROVIDERS_LIST_PROFILE.Risk"|translate}}</mat-button-toggle>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="portfolio-tab" [hidden]="chartsData.perfRiskPortfolioChart.selectedTab !== 'portfolio'">
-                    <div class="d-flex justify-space-between align-center g-20 pb-20">
+                    <div class="d-flex justify-space-between align-center pb-20 portfolio-chart-container">
                         <div class="porflio-card">
                             <provider-charts [chartType]="'topTradeMetricChart'" ></provider-charts>
                         </div>
