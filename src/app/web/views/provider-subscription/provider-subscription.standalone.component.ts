@@ -265,11 +265,11 @@ export class ProviderSubscriptionStandAloneComponent {
   getGridColDefs(gridType: string) {
     if (gridType == 'fees') {
       return [
-        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionTitlePopup' },
-        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false },
-        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionAmountViewDisplay' },
-        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false },
-        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
+        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, minWidth: 150, colId: 'transactionTitlePopup' },
+        { field: "platformId", headerName: 'TRANSACTIONS.MT order', minWidth: 150 },
+        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, minWidth: 150, colId: 'transactionAmountViewDisplay' },
+        { field: "processTime", headerName: 'TRANSACTIONS.Processed', minWidth: 200 },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'transactionDetailsPopup', showPopupArraow: true, minWidth: 100 }
       ]
     } else if (gridType == 'results') {
       return [
