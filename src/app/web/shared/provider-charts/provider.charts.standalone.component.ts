@@ -50,8 +50,8 @@ export class ProviderChartsStandaloneComponent {
       breakpoint: 600,
       options: {
         chart: {
-          height: "100%",
-          width: 260
+          height: 'auto',
+          width: "100%"
         },
         stroke: {
           width: 2
@@ -70,8 +70,8 @@ export class ProviderChartsStandaloneComponent {
       breakpoint: 768,
       options: {
         chart: {
-          height: "100%",
-          width: 300
+          height: "auto",
+          width: "100%"
         },
         grid: {
           padding: {
@@ -84,11 +84,12 @@ export class ProviderChartsStandaloneComponent {
       }
     },
     {
-      breakpoint: 426,
+      breakpoint: 475,
       options: {
         chart: {
-          height: "100%",
-          width: 300
+          height: "auto",
+          width: 250,
+          padding:0
         },
         grid: {
           padding: {
@@ -104,8 +105,8 @@ export class ProviderChartsStandaloneComponent {
       breakpoint: 380,
       options: {
         chart: {
-          height: "100%",
-          width: 260
+          height: "auto",
+          width: 200
         },
         grid: {
           padding: {
@@ -121,8 +122,8 @@ export class ProviderChartsStandaloneComponent {
       breakpoint: 321,
       options: {
         chart: {
-          height: "100%",
-          width: 200
+          height: "auto",
+          width: 150
         },
         grid: {
           padding: {

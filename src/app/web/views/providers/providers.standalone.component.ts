@@ -49,10 +49,10 @@ export class ProvidersStandAloneComponent {
   setupProviderTableConfig() {
     let colDefs = [
       { field: "nickName", headerName: 'PROVIDERS.Nickname', resizable: false, suppressSizeToFit: true, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerNameCell', width:250 },
-      { field: "tradingAccount", sortable: false, headerName: 'PROVIDERS.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell'  },
-      { field: "strategyMode", headerName: 'PROVIDERS.Strategy Mode', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-      { field: "equity", headerName: 'PROVIDERS.Equity', resizable: false },
-      { field: "registerTime", headerName: 'PROVIDERS.Registered', resizable: false, width: 200 },
+      { field: "tradingAccount", sortable: false, headerName: 'PROVIDERS.Trading Account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'providerTradingAccountCell', width:250  },
+      { field: "strategyMode", headerName: 'PROVIDERS.Strategy Mode', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell', width:150 },
+      { field: "equity", headerName: 'PROVIDERS.Equity', resizable: false, width:150 },
+      { field: "registerTime", headerName: 'PROVIDERS.Registered', resizable: false, width:250 },
       { field: "actions", sortable: false, headerName: "", cellRenderer: ActionButtonStanAloneComponent, width:200, colId : 'providerProfileRedirection' }
     ];
     this.setupGridConfig(colDefs);
