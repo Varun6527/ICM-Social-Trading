@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
-            <div class="header d-flex justify-space-between align-center">
+            <div class="header d-flex justify-space-between align-center flex-wrap g-20">
                 <div class="header-title">
                     <h5>{{providersData?.nickname}}</h5>
                     <p>{{"PROVIDERS_PROFILE.Provider's profile and sharing settings" | translate}}</p>
@@ -221,7 +221,7 @@
                                           </mat-form-field>
                                     </div>
                                     <div><h4 class="divider">|</h4></div>
-                                    <div class="d-flex justify-center g-10 align-stretch">
+                                    <div class="d-flex justify-center g-10 align-stretch flex-wrap">
                                         <button class="secondary-btn" (click)="refreshOffersList()">
                                             <img src="../../../../assets/icons/rotateIcon.svg" />
                                             {{"COMMON.Refresh"|translate}}

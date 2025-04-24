@@ -20,7 +20,7 @@
             <provider-follower-header-cards [isProvider]="isProvider" [isFollower]="isFollower"></provider-follower-header-cards>
 
             <div class="metrics-table">
-                <div class="header-title d-flex flex-column"[ngClass]="{'d-flex justify-space-between pb-20': !isProvider && !isFollower}">
+                <div class="header-title d-flex flex-column"[ngClass]="{'d-flex justify-space-between pb-20 flex-row': !isProvider && !isFollower}">
                     <ng-container *ngIf="isProvider">
                         <h5>{{'HOME.Provider Metrics' | translate}}</h5>
                         <p>{{'HOME.Metrics of individual providers' | translate}}</p>

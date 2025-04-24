@@ -300,14 +300,14 @@ sendDataToAgGrid(status: boolean, event: any, count: number, transactionGridData
 
   setupPositionGridConfig() {
     let colDefs = [
-      { field: "symbol", headerName: 'PROVIDERS_LIST_PROFILE.Symbol', resizable: false, width: 150, suppressSizeToFit: true },
-      { field: "direction", headerName:'PROVIDERS_LIST_PROFILE.Type', sortable: false, resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, width: 100, colId : 'ratingType' },
-      { field: "volume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', sortable: false, resizable: false, width: 150 },
-      { field: "openTime", sort: 'desc', headerName: 'PROVIDERS_LIST_PROFILE.Open Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
-      { field: "openPrice", headerName: 'PROVIDERS_LIST_PROFILE.Open Price', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
-      { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false, width: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
-      { field: "closePrice", headerName: 'PROVIDERS_PROFILE.Close price', sortable: false, resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
-      { field: "profit", headerName: 'PROVIDERS_LIST_PROFILE.Profit', resizable: false, width: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell', cellStyle: (params: any) => { return { color: params.value < 0 ? 'var(--error-message--container-color)' : 'var(--primary-positive-color)' } } }
+      { field: "symbol", headerName: 'PROVIDERS_LIST_PROFILE.Symbol', minWidth: 150, suppressSizeToFit: true },
+      { field: "direction", headerName:'PROVIDERS_LIST_PROFILE.Type', sortable: false, minWidth: 150, cellRenderer: StatusBtnRendererStandAloneComponent, colId : 'ratingType' },
+      { field: "volume", headerName: 'PROVIDERS_LIST_PROFILE.Contract Size', sortable: false,  minWidth: 150, },
+      { field: "openTime", sort: 'desc', headerName: 'PROVIDERS_LIST_PROFILE.Open Time',  minWidth: 250, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
+      { field: "openPrice", headerName: 'PROVIDERS_LIST_PROFILE.Open Price',  minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
+      { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time',  minWidth: 250, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dateTimeCell' },
+      { field: "closePrice", headerName: 'PROVIDERS_PROFILE.Close price', sortable: false,  minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCellWithNoSymbol' },
+      { field: "profit", headerName: 'PROVIDERS_LIST_PROFILE.Profit',  minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'currencyCell', cellStyle: (params: any) => { return { color: params.value < 0 ? 'var(--error-message--container-color)' : 'var(--primary-positive-color)' } } }
     ];
     this.setupGridConfig(colDefs);
   }
