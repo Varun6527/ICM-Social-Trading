@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
-            <div class="header d-flex justify-space-between align-center">
+            <div class="header d-flex justify-space-between align-center flex-wrap">
                 <div class="header-title">
                     <h5>{{"SUBSCRIPTION.Subscription Profile"|translate}} #{{subscriptionData?.id}}</h5>
                     <p>{{"SUBSCRIPTION.General information about the subscription"|translate}}</p>
@@ -29,17 +29,18 @@
                 <p>{{"PROVIDERS_PROFILE.Suspension reason: Subscription was suspended by the"|translate}} {{subscriptionData.suspension.reason | lowercase}}.</p>
             </div>
 
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Provider Filters"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Setting up initial filters for provider's original trades"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('filters')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('filters')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
                                 {{"COMMON.Edit"|translate}}
                             </button>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
                             <mat-card appearance="outlined">
                                 <div class="d-flex justify-space-between g-20 align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Direction"|translate}}</h6>
@@ -54,79 +55,62 @@
                                     <p>{{subscriptionData?.filters?.maximumLot ? subscriptionData?.filters?.maximumLot : '-'}}</p>
                                 </div>
                             </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"SUBSCRIPTION.Subscription Strategy"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Setting up the difference between source and copied trades"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('strategy')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
-                                {{"COMMON.Edit"|translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"SUBSCRIPTION.Volume scaling"|translate}}</h6>
-                                    <p>{{subscriptionData?.strategy.type ? subscriptionData?.strategy.type : '-'}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{subscriptionData?.strategy.type == 'Fixed' ? ("PROVIDERS_PROFILE.Copies' volumes"|translate) : ("PROVIDERS_PROFILE.Volume multiplier"|translate)}}</h6>
-                                    <p>{{subscriptionData?.strategy?.riskRatio ? subscriptionData?.strategy?.riskRatio : '-'}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between g-20 align-center" *ngIf="subscriptionData?.strategy.type == 'Multiply'">
-                                    <h6>{{"PROVIDERS_PROFILE.Minimum Volume Handling"|translate}}</h6>
-                                    <p>{{subscriptionData?.strategy?.minVolumeHandling ? subscriptionData?.strategy?.minVolumeHandling : '-'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"PROVIDERS_PROFILE.Correction"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Final processing of copies' parameters"|translate}}</p>
-                            <button class="edit-btn info-section-btn" (click)="openCommonInfoDialog('correction')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
-                                {{"COMMON.Edit"|translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between g-20 align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Excess volume processing"|translate}}</h6>
-                                    <p>
-                                        @if(subscriptionData?.correction.riskFactor) {
-                                            {{subscriptionData?.correction.action}} {{subscriptionData?.correction.action == 'Scale down' ? 'from' : 'to' }} {{subscriptionData?.correction.riskFactor}} lot(s)
-                                        } @else {
-                                            -
-                                        }
-                                    </p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"PROVIDERS_PROFILE.Risk Management"|translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Setting up the subscription's acceptable risks"|translate}}</p>
-                        </div>
-                        <div class="info-section-left-items">
-                            <div class="d-flex justify-right g-10">
-                                <div class="d-flex justify-center g-10 align-stretch">
-                                    <button class="primary-btn" (click)="openCreateOrUpdateRiskModal(false)" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
-                                        <img src="../../../../assets/icons/plusIcon.png" />
-                                        {{"COMMON.Create"|translate}}
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="table">
-                            <common-ag-grid [gridConfig]="riskGridConfig"
-                            [gridData]="riskGridData" [showGridLoader]="showRiskGridLoder">
-                            </common-ag-grid>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"SUBSCRIPTION.Subscription Strategy"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Setting up the difference between source and copied trades"|translate}}</p>
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('strategy')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"SUBSCRIPTION.Volume scaling"|translate}}</h6>
+                                        <p>{{subscriptionData?.strategy.type ? subscriptionData?.strategy.type : '-'}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{subscriptionData?.strategy.type == 'Fixed' ? ("PROVIDERS_PROFILE.Copies' volumes"|translate) : ("PROVIDERS_PROFILE.Volume multiplier"|translate)}}</h6>
+                                        <p>{{subscriptionData?.strategy?.riskRatio ? subscriptionData?.strategy?.riskRatio : '-'}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between g-20 align-center" *ngIf="subscriptionData?.strategy.type == 'Multiply'">
+                                        <h6>{{"PROVIDERS_PROFILE.Minimum Volume Handling"|translate}}</h6>
+                                        <p>{{subscriptionData?.strategy?.minVolumeHandling ? subscriptionData?.strategy?.minVolumeHandling : '-'}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"PROVIDERS_PROFILE.Correction"|translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Final processing of copies' parameters"|translate}}</p>
+                            <button class="edit-btn info-section-btn mb-0" (click)="openCommonInfoDialog('correction')" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
+                                {{"COMMON.Edit"|translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between g-20 align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Excess volume processing"|translate}}</h6>
+                                        <p>
+                                            @if(subscriptionData?.correction.riskFactor) {
+                                                {{subscriptionData?.correction.action}} {{subscriptionData?.correction.action == 'Scale down' ? 'from' : 'to' }} {{subscriptionData?.correction.riskFactor}} lot(s)
+                                            } @else {
+                                                -
+                                            }
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <p class="email-not-exist-container" *ngIf="!isEmailExist && subscriptionData.state !== 'Archived'">
                         {{"PROVIDERS_PROFILE.Email Not Exist Warn Msg"|translate}}
                     </p>
@@ -295,6 +279,36 @@
                     </div>
                 </div>
             </div>
+            <div class="info-section d-flex justify-space-between">
+                <div class="info-section-left">
+                    <div class="info-section-offers-list">
+                        <div class="d-flex justify-space-between w-100 info-section-left-header">
+                            <div class="info-section-left-items">
+                                <h4>{{"PROVIDERS_PROFILE.Risk Management"|translate}}</h4>
+                                <p>{{"PROVIDERS_PROFILE.Setting up the subscription's acceptable risks"|translate}}</p>
+                            </div>
+                            <div class="info-section-left-items">
+                                <div class="d-flex justify-right g-10 flex-wrap flex-sm-nowrap">
+                                    <div class="d-flex justify-center g-10 align-stretch">
+                                        <button class="primary-btn" (click)="openCreateOrUpdateRiskModal(false)" [ngClass]="{'btn-disable' : subscriptionData.state == 'Archived'}">
+                                            <img src="../../../../assets/icons/plusIcon.png" />
+                                            {{"COMMON.Create"|translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="table">
+                                <common-ag-grid [gridConfig]="riskGridConfig"
+                                [gridData]="riskGridData" [showGridLoader]="showRiskGridLoder">
+                                </common-ag-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section-right"></div>
+            </div>
 
             <div class="metrics-table">
                 <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
@@ -302,7 +316,7 @@
                     <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
                         <ng-template matTabContent>
                             <div class="header-buttons d-flex justify-space-between pb-20 g-20">
-                                <div class="d-flex g-20 justify-center align-center">
+                                <div class="d-flex g-20 align-center table-filter-container">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
                                         <img src="../../../../assets/icons/filterIcon.svg" />
                                         {{"COMMON.Filters"|translate}}

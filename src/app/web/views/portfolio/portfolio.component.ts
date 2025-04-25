@@ -49,12 +49,12 @@ export class PortfolioStandAloneComponent {
 
   setupFollowerTableConfig() {
     let colDefs = [
-      { field: "refs.provider.name", headerName: 'HOME.Provider', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'followerProfileCell' },
-      { field: "activationStatus", headerName: 'PROVIDERS_PROFILE.Activity', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent, colId : 'activityCell' },
-      { field: "externalAccount", headerName: 'SUBSCRIPTION.Trading account', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'providerTradingAccountCell' },
-      { field: "performance.fee", headerName: 'OFFERS.Performance fee', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'performanceFeeCell' },
-      { field: "registerTime", headerName: 'PROVIDERS.Registered', sort:'desc', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'dateTimeCell' },
-      { field: "actions", sortable: false, headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId : 'followerProfileRedirection' }
+      { field: "refs.provider.name", headerName: 'HOME.Provider', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'followerProfileCell' },
+      { field: "activationStatus", headerName: 'PROVIDERS_PROFILE.Activity', minWidth: 100, cellRenderer: StatusBtnRendererStandAloneComponent, colId : 'activityCell' },
+      { field: "externalAccount", headerName: 'SUBSCRIPTION.Trading account', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'providerTradingAccountCell' },
+      { field: "performance.fee", headerName: 'OFFERS.Performance fee', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'performanceFeeCell' },
+      { field: "registerTime", headerName: 'PROVIDERS.Registered', sort:'desc', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId : 'dateTimeCell' },
+      { field: "actions", sortable: false, headerName: "", cellRenderer: ActionButtonStanAloneComponent, colId : 'followerProfileRedirection', minWidth: 100 }
     ];
     this.setupGridConfig(colDefs);
   }
