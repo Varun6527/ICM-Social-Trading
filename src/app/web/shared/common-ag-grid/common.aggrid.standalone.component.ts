@@ -38,7 +38,7 @@ export interface AgGridConfig {
       </ag-grid-angular>
   </div>
   `,
-  styles: [`@media screen and (max-width: 992px) {::ng-deep .ag-paging-panel { flex-flow: row wrap; justify-content: center; }}`],
+  styles: [`@media screen and (max-width: 992px) {::ng-deep .ag-paging-panel { flex-flow: row wrap; justify-content: center;height: fit-content;padding: 5px;gap: 5px; }}`],
   standalone: true,
   imports: [CommonModule, AgGridModule, TranslateModule]
 })
