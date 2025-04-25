@@ -155,7 +155,7 @@
     @media screen and (max-width: 768px) {
         flex-flow: row wrap;
         gap: 20px;
-        
+
         .table-filter-container {
             flex-wrap: wrap;
             justify-content: center !important;
@@ -267,16 +267,6 @@
     border-radius: 16px;
     color: #027A48 !important;
     width: fit-content;
-}
-
-@media screen and (min-width:0px) {
-    .flex-wrap {
-        flex-wrap: wrap;
-    }
-
-    .divider {
-        display: none;
-    }
 }
 
 @media screen and (min-width:676px) {
