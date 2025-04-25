@@ -155,11 +155,11 @@ export class OffersStandALoneComponent {
       ];
     } else if (gridType == 'offerJoin') {
       return [
-        { field: "key", headerName: 'COMMON.Key', resizable: false, colId: 'offerKeyCell', cellRenderer: CommonCellRendererStandAloneComponent },
-        { field: "expiration", headerName: 'OFFERS.Expiration', resizable: false, colId: 'dateCell', cellRenderer: CommonCellRendererStandAloneComponent },
-        { field: "status", sortable: false, headerName: 'COMMON.Status', resizable: false, cellRenderer: StatusBtnRendererStandAloneComponent },
-        { field: "agent", headerName: 'COMMON.Agent', resizable: false, valueFormatter: (params: any) => `${params.value ? params.value : '-'}` },
-        { field: "actions", headerName: "", sortable: false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerJoinActionCell', resizable: false },
+        { field: "key", headerName: 'COMMON.Key', minWidth:150, colId: 'offerKeyCell', cellRenderer: CommonCellRendererStandAloneComponent },
+        { field: "expiration", headerName: 'OFFERS.Expiration', minWidth:150, colId: 'dateCell', cellRenderer: CommonCellRendererStandAloneComponent },
+        { field: "status", sortable: false, headerName: 'COMMON.Status', minWidth:150, cellRenderer: StatusBtnRendererStandAloneComponent },
+        { field: "agent", headerName: 'COMMON.Agent', minWidth:150, valueFormatter: (params: any) => `${params.value ? params.value : '-'}` },
+        { field: "actions", headerName: "", sortable: false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerJoinActionCell', minWidth:150 },
       ];
     }
     return;

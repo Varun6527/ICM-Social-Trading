@@ -432,42 +432,42 @@ export class SubscriptionsStandAloneComponent {
   getGridColDefs(gridType: string) {
     if(gridType == 'risk') {
       return [
-        { field: "threshold", headerName: 'Parameter', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'thresHoldCell' },
-        { field: "subscriptionAction", headerName: 'Actions', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'subscriptionActionCell' },
-        { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'riskCell', resizable: false },
+        { field: "threshold", headerName: 'Parameter', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'thresHoldCell' },
+        { field: "subscriptionAction", headerName: 'Actions', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'subscriptionActionCell' },
+        { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'riskCell', minWidth: 100 },
       ];
     } else if(gridType == 'position') {
       return [
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionSubscriptionNameCell' },
-        { field: "copyPosition", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
-        { field: "status", headerName: 'COMMON.Status', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
-        { field: "openTime", headerName: 'PROVIDERS_PROFILE.Open Time', sort: 'desc', resizable: false },
-        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionVolumeCell' },
-        { field: "profit", headerName: 'PROVIDERS_PROFILE.Profit', resizable: false },
-        { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', resizable: false },
-        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, resizable: false, colId: 'positionSubscriptionRedirection' },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionSubscriptionNameCell' },
+        { field: "copyPosition", headerName: 'PROVIDERS_PROFILE.Source', minWidth: 150 },
+        { field: "status", headerName: 'COMMON.Status', sortable: false, minWidth: 100, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', minWidth: 150 },
+        { field: "openTime", headerName: 'PROVIDERS_PROFILE.Open Time', sort: 'desc', minWidth: 200 },
+        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'positionVolumeCell' },
+        { field: "profit", headerName: 'PROVIDERS_PROFILE.Profit', minWidth: 100 },
+        { field: "closeTime", headerName: 'PROVIDERS_PROFILE.Close Time', minWidth: 200 },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, minWidth: 100, colId: 'positionSubscriptionRedirection' },
       ]
     } else if(gridType == 'deals') {
       return [
-        { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealSubscriptionPositionCell' },
-        { field: "status", headerName: 'COMMON.Status', sortable : false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "copyDealKey", headerName: 'PROVIDERS_PROFILE.Source', resizable: false },
-        { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
-        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
-        { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },
-        { field: "time", headerName: 'PROVIDERS_PROFILE.Time', sort: 'desc', resizable: false },
-        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, showPopupArraow: true, colId: 'dealsPopup'},
+        { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell'  },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealSubscriptionPositionCell' },
+        { field: "status", headerName: 'COMMON.Status', sortable : false, minWidth: 100, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "copyDealKey", headerName: 'PROVIDERS_PROFILE.Source', minWidth: 150 },
+        { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', sortable: false, minWidth: 100, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', minWidth: 150 },
+        { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
+        { field: "price", headerName: 'PROVIDERS_PROFILE.Price', minWidth: 150 },
+        { field: "time", headerName: 'PROVIDERS_PROFILE.Time', sort: 'desc', minWidth: 200 },
+        { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, showPopupArraow: true, colId: 'dealsPopup', minWidth: 100},
       ]
     } else if(gridType == 'fees') {
       return [
-        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionTitlePopup' },
-        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false, suppressSizeToFit: true },
-        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionAmountViewDisplay'  },
-        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false },
-        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
+        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, minWidth: 200, colId: 'transactionTitlePopup' },
+        { field: "platformId", headerName: 'TRANSACTIONS.MT order', minWidth: 150},
+        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, minWidth: 150, colId: 'transactionAmountViewDisplay'  },
+        { field: "processTime", headerName: 'TRANSACTIONS.Processed', minWidth: 200 },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable : false, colId: 'transactionDetailsPopup', showPopupArraow: true, minWidth: 100 }
       ]
     }
     return;
