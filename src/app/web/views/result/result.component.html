@@ -7,121 +7,127 @@
                     <p>{{"PROVIDERS_PROFILE.General information about the result"|translate}}</p>
                 </div>
             </div>
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Result"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of result"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
-                                    <p class="tag">
-                                        <span>{{resultData.state}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Readiness"|translate}}</h6>
-                                    <p class="tag">
-                                        <span>{{resultData.readiness}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Payment State"|translate}}</h6>
-                                    <p class="tag">
-                                        <span>{{resultData.paymentState}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Start Time"|translate}}</h6>
-                                    <p>
-                                        {{resultData.startTime | date:'M/d/yy, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.End Time"|translate}}</h6>
-                                    <p>
-                                        {{resultData.endTime | date:'M/d/yy, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
+                                        <p class="tag">
+                                            <span>{{resultData.state}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Readiness"|translate}}</h6>
+                                        <p class="tag">
+                                            <span>{{resultData.readiness}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Payment State"|translate}}</h6>
+                                        <p class="tag">
+                                            <span>{{resultData.paymentState}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Start Time"|translate}}</h6>
+                                        <p>
+                                            {{resultData.startTime | date:'M/d/yy, h:mm:ss a'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.End Time"|translate}}</h6>
+                                        <p>
+                                            {{resultData.endTime | date:'M/d/yy, h:mm:ss a'}}
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Result Fees"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of result fees"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"REPORTS.Amount"|translate}}</h6>
-                                    <p>
-                                        {{resultData.amount | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Processed Percent"|translate}}</h6>
-                                    <p>
-                                        {{resultData.processedPercent}}%
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"REPORTS.Amount"|translate}}</h6>
+                                        <p>
+                                            {{resultData.amount | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Processed Percent"|translate}}</h6>
+                                        <p>
+                                            {{resultData.processedPercent}}%
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Result Calculation"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of result calculation"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Result Mode"|translate}}</h6>
-                                    <p class="tag">
-                                        <span>{{resultData.resultMode}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Max Mode"|translate}}</h6>
-                                    <p class="tag">
-                                        <span>{{resultData.maxMode}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Max Profit"|translate}}</h6>
-                                    <p>
-                                        {{resultData.maxProfit | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Previous Max Profit"|translate}}</h6>
-                                    <p>
-                                        {{resultData.previousMaxProfit | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Floating Profit"|translate}}</h6>
-                                    <p>
-                                        {{resultData.floatingProfit | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Previous Floating Profit"|translate}}</h6>
-                                    <p>
-                                        {{resultData.previousFloatingProfit | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Result Profit"|translate}}</h6>
-                                    <p>
-                                        {{resultData.resultProfit | currency: (resultData.currency):'symbol'}}
-                                    </p>
-                                </div>
-                                <strong>({{"PROVIDERS_PROFILE.Result Profit"|translate}} = {{"PROVIDERS_PROFILE.Max Profit"|translate}} - {{"PROVIDERS_PROFILE.Previous Max Profit"|translate}})</strong>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Result Mode"|translate}}</h6>
+                                        <p class="tag">
+                                            <span>{{resultData.resultMode}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Max Mode"|translate}}</h6>
+                                        <p class="tag">
+                                            <span>{{resultData.maxMode}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Max Profit"|translate}}</h6>
+                                        <p>
+                                            {{resultData.maxProfit | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Previous Max Profit"|translate}}</h6>
+                                        <p>
+                                            {{resultData.previousMaxProfit | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Floating Profit"|translate}}</h6>
+                                        <p>
+                                            {{resultData.floatingProfit | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Previous Floating Profit"|translate}}</h6>
+                                        <p>
+                                            {{resultData.previousFloatingProfit | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Result Profit"|translate}}</h6>
+                                        <p>
+                                            {{resultData.resultProfit | currency: (resultData.currency):'symbol'}}
+                                        </p>
+                                    </div>
+                                    <strong>({{"PROVIDERS_PROFILE.Result Profit"|translate}} = {{"PROVIDERS_PROFILE.Max Profit"|translate}} - {{"PROVIDERS_PROFILE.Previous Max Profit"|translate}})</strong>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,8 +262,8 @@
                     class="providerProfile-tabGroup">
                     <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
                         <ng-template matTabContent>
-                            <div class="header-buttons d-flex justify-space-between pb-20 g-20">
-                                <div class="d-flex g-20 justify-center align-center">
+                            <div class="header-buttons d-flex justify-space-between pb-20 flex-wrap g-20">
+                                <div class="d-flex g-20 justify-center align-center table-filter-container">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
                                         <img src="../../../../assets/icons/filterIcon.svg" />
                                         {{"COMMON.Filters"|translate}}

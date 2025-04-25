@@ -282,19 +282,19 @@ export class ResultStandAloneComponent {
   getGridColDefs(gridType: string) {
     if (gridType == 'fees') {
       return [
-        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionTitlePopup' },
-        { field: "platformId", headerName: 'TRANSACTIONS.MT order', resizable: false },
-        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'transactionAmountViewDisplay' },
-        { field: "processTime", headerName: 'TRANSACTIONS.Processed', resizable: false },
-        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'transactionDetailsPopup', showPopupArraow: true, resizable: false }
+        { field: "transactionObj", headerName: 'PROVIDERS_PROFILE.Fees', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, minWidth:150, colId: 'transactionTitlePopup' },
+        { field: "platformId", headerName: 'TRANSACTIONS.MT order', minWidth:150 },
+        { field: "transactionAmountObj", headerName: 'REPORTS.Amount', cellRenderer: CommonCellRendererStandAloneComponent, minWidth:150, colId: 'transactionAmountViewDisplay' },
+        { field: "processTime", headerName: 'TRANSACTIONS.Processed', minWidth:200 },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'transactionDetailsPopup', showPopupArraow: true, minWidth:100 }
       ]
     } else if (gridType == 'profits') {
       return [
-        { field: "id", headerName: 'COMMON.Id', sort: 'desc', resizable: false, valueFormatter: (params: any) => `#${params.value}` },
-        { field: "finalProfit", headerName: 'PROVIDERS_PROFILE.Final Profit', resizable: false },
-        { field: "origin", headerName: 'PROVIDERS_PROFILE.Origin', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitPositionCell' },
-        { field: "processTime", headerName: 'PROVIDERS_PROFILE.Process Time', resizable: false }
+        { field: "id", headerName: 'COMMON.Id', sort: 'desc', minWidth:150, valueFormatter: (params: any) => `#${params.value}` },
+        { field: "finalProfit", headerName: 'PROVIDERS_PROFILE.Final Profit', minWidth:150 },
+        { field: "origin", headerName: 'PROVIDERS_PROFILE.Origin', sortable: false, minWidth:150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+        { field: "position", headerName: 'PROVIDERS_PROFILE.Position', minWidth:150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'profitPositionCell' },
+        { field: "processTime", headerName: 'PROVIDERS_PROFILE.Process Time', minWidth:200 }
       ]
     }
     return;

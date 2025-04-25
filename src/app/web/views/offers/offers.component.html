@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="section-card">
     <mat-card-content class="section-card-content" *ngIf="!showPageLoader">
         <div class="home-card">
-            <div class="header d-flex justify-space-between align-center">
+            <div class="header d-flex justify-space-between align-center flex-wrap g-20">
                 <div class="header-title">
                     <h5>{{offerData.name}}</h5>
                     <p>{{"OFFERS.General information about the offer" | translate}}</p>
@@ -15,122 +15,105 @@
                 </mat-menu>
             </div>
 
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"OFFERS.Common Information" | translate}}</h4>
                             <p>{{"OFFERS.Offer's settings" | translate}}</p>
-                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('common_info')">
+                            <button class="edit-btn info-section-btn mb-0" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('common_info')">
                                 {{"COMMON.Edit" | translate}}
                             </button>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Title" | translate}}</h6>
-                                    <p>{{offerData.name ? offerData.name : '-'}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Visibility" | translate}}</h6>
-                                    <p class="status-badge">{{offerData.visibility ? offerData.visibility : '-'}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Summary" | translate}}</h6>
-                                    <p>{{offerData.additional.summary ? offerData.additional.summary : '-'}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Notes" | translate}}</h6>
-                                    <p>{{offerData.additional.notes ? offerData.additional.notes : '-'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
                         <div class="info-section-left-items">
-                            <h4>{{"OFFERS.Fees" | translate}}</h4>
-                            <p>{{"OFFERS.Setting up fees for the offer" | translate}}</p>
-                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('performance_fees')">
-                                {{"COMMON.Edit" | translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    @if(offerData.performance.fee > 0) {
-                                        <h6>{{"OFFERS.Performance fee" | translate}}</h6>
-                                        <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
-                                    } @else {
-                                        <h6>{{"PROVIDERS_PROFILE.There are no fees" | translate}}</h6>
-                                    }
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"COMMON.Filters" | translate}}</h4>
-                            <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
-                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('filters')">
-                                {{"COMMON.Edit" | translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Minimum balance" | translate}}</h6>
-                                    <p>{{offerData.filters.minBalance ? (offerData.filters.minBalance | currency: 'USD':'symbol') : '-'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"OFFERS.Public Agents" | translate}}</h4>
-                            <p>{{"PROVIDERS_PROFILE.Setting up public agents fee" | translate}} </p>
-                            <button class="edit-btn info-section-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('public_agents')">
-                                {{"COMMON.Edit" | translate}}
-                            </button>
-                        </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"OFFERS.Public agent fee" | translate}}</h6>
-                                    <p>{{offerData.publicAgents.fee ? (offerData.publicAgents.fee + '%') : '-'}}</p>
-                                </div>
-                            </mat-card>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-space-between w-100">
-                        <div class="info-section-left-items">
-                            <h4>{{"OFFERS.Additional Agents" | translate}}</h4>
-                            <p>{{"OFFERS.Setting up additional agents" | translate}}</p>
-                        </div>
-                        <div class="info-section-left-items">
-                            <div class="d-flex justify-right g-10">
-                                <div class="d-flex justify-center g-10 align-stretch">
-                                    <button class="primary-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openAddOrUpdateAgentModal(false)">
-                                        <img src="../../../../assets/icons/plusIcon.png" />
-                                        {{"COMMON.Add" | translate}}
-                                    </button>
-                                </div>
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"OFFERS.Title" | translate}}</h6>
+                                        <p>{{offerData.name ? offerData.name : '-'}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"OFFERS.Visibility" | translate}}</h6>
+                                        <p class="status-badge">{{offerData.visibility ? offerData.visibility : '-'}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"OFFERS.Summary" | translate}}</h6>
+                                        <p>{{offerData.additional.summary ? offerData.additional.summary : '-'}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Notes" | translate}}</h6>
+                                        <p>{{offerData.additional.notes ? offerData.additional.notes : '-'}}</p>
+                                    </div>
+                                </mat-card>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="table">
-                            <common-ag-grid [gridConfig]="agentGridConfig"
-                            [gridData]="agentGridData" [showGridLoader]="showAgentGridLoder">
-                            </common-ag-grid>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"OFFERS.Fees" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up fees for the offer" | translate}}</p>
+                            <button class="edit-btn info-section-btn mb-0" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('performance_fees')">
+                                {{"COMMON.Edit" | translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        @if(offerData.performance.fee > 0) {
+                                            <h6>{{"OFFERS.Performance fee" | translate}}</h6>
+                                            <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
+                                        } @else {
+                                            <h6>{{"PROVIDERS_PROFILE.There are no fees" | translate}}</h6>
+                                        }
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"COMMON.Filters" | translate}}</h4>
+                            <p>{{"OFFERS.Setting up limitations for followers" | translate}} </p>
+                            <button class="edit-btn info-section-btn mb-0" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('filters')">
+                                {{"COMMON.Edit" | translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"OFFERS.Minimum balance" | translate}}</h6>
+                                        <p>{{offerData.filters.minBalance ? (offerData.filters.minBalance | currency: 'USD':'symbol') : '-'}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
+                        <div class="info-section-left-items">
+                            <h4>{{"OFFERS.Public Agents" | translate}}</h4>
+                            <p>{{"PROVIDERS_PROFILE.Setting up public agents fee" | translate}} </p>
+                            <button class="edit-btn info-section-btn mb-0" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openOfferCommonInfoDialog('public_agents')">
+                                {{"COMMON.Edit" | translate}}
+                            </button>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"OFFERS.Public agent fee" | translate}}</h6>
+                                        <p>{{offerData.publicAgents.fee ? (offerData.publicAgents.fee + '%') : '-'}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="info-section-right">
                     <div class="info-section-right-header">
-                        <h4>{{"OFFERS.Offer's Join Links" | translate}}</h4>
-                        <p>{{"OFFERS.Setting up the offer's join links. Join link is the only way to follow a private provider" | translate}}
-                        </p>
+                        <h4>{{"PROVIDERS_PROFILE.Personal Info"|translate}}</h4>
+                        <p>{{"PROVIDERS_PROFILE.Update your personal details here"|translate}}</p>
                     </div>
                     <hr />
                     <div class="info-section-right-card">
@@ -193,7 +176,37 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-space-between w-100 pb-20">
+            <div class="info-section d-flex justify-space-between">
+                <div class="info-section-left">
+                    <div class="info-section-offers-list">
+                        <div class="d-flex justify-space-between w-100 info-section-left-header">
+                            <div class="info-section-left-items">
+                                <h4>{{"OFFERS.Additional Agents" | translate}}</h4>
+                                <p>{{"OFFERS.Setting up additional agents" | translate}}</p>
+                            </div>
+                            <div class="info-section-left-items">
+                                <div class="d-flex justify-right g-10 flex-wrap flex-sm-nowrap">
+                                    <div class="d-flex justify-center g-10 align-stretch">
+                                        <button class="primary-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openAddOrUpdateAgentModal(false)">
+                                            <img src="../../../../assets/icons/plusIcon.png" />
+                                            {{"COMMON.Add" | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-section-left-items">
+                            <div class="table">
+                                <common-ag-grid [gridConfig]="agentGridConfig"
+                                [gridData]="agentGridData" [showGridLoader]="showAgentGridLoder">
+                                </common-ag-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section-right"></div>
+            </div>
+            <div class="d-flex justify-space-between w-100 px-20 table-container">
                 <div class="info-section-left-items padding-0">
                     <h4>{{"OFFERS.Offer's Join Links" | translate}}</h4>
                     <p>{{"OFFERS.Setting up the offer's join links. Join link is the only way to follow a private provider" |
@@ -201,7 +214,7 @@
                     </p>
                 </div>
                 <div class="info-section-left-items padding-0">
-                    <div class="d-flex justify-right g-10">
+                    <div class="d-flex justify-right g-10 table-filter-container">
                         <div class="d-flex justify-space-between g-10 common-dropdown">
                             <mat-form-field class="offers-keyField">
                                 <mat-label>{{"COMMON.Key" | translate}}</mat-label>

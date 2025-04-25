@@ -7,63 +7,70 @@
                     <p>{{"SUBSCRIPTION.General information about the subscription"|translate}}</p>
                 </div>
             </div>
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"SUBSCRIPTION.Subscription Strategy"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of strategy"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Volume scaling"|translate}}</h6>
-                                    <p>{{subscriptionData.strategy.type}}</p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.Volume scaling"|translate}}</h6>
+                                        <p>{{subscriptionData.strategy.type}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"SUBSCRIPTION.Offer"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of Offers"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Title"|translate}}</h6>
-                                    <p>
-                                        <a [routerLink]="['/portal/offers', offerId]" class="default-link">
-                                            <span>{{offerData.name}}</span>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Performance fee"|translate}}</h6>
-                                    <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.Title"|translate}}</h6>
+                                        <p>
+                                            <a [routerLink]="['/portal/offers', offerId]" class="default-link">
+                                                <span>{{offerData.name}}</span>
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.Performance fee"|translate}}</h6>
+                                        <p>{{offerData.performance.fee}}% ({{offerData.performance.interval}})</p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"SUBSCRIPTION.Trading account"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Description of Trading account platform"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.MT name"|translate}}</h6>
-                                    <p>{{subscriptionData.externalName}}</p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.MT login"|translate}}</h6>
-                                    <p>{{subscriptionData.externalAccount}}</p>
-                                </div><div class="d-flex justify-space-between align-center">
-                                    <h6>{{"SUBSCRIPTION.Equity"|translate}}</h6>
-                                    <p>{{subscriptionData.equity | currency: (subscriptionData.currency):'symbol'}}</p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.MT name"|translate}}</h6>
+                                        <p>{{subscriptionData.externalName}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.MT login"|translate}}</h6>
+                                        <p>{{subscriptionData.externalAccount}}</p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"SUBSCRIPTION.Equity"|translate}}</h6>
+                                        <p>{{subscriptionData.equity | currency: (subscriptionData.currency):'symbol'}}</p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +123,7 @@
                     class="providerProfile-tabGroup">
                     <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
                         <ng-template matTabContent>
-                            <div class="header-buttons d-flex justify-space-between pb-20 g-20">
+                            <div class="header-buttons d-flex justify-space-between pb-20 g-20 flex-wrap">
                                 <div class="d-flex g-20 justify-center align-center">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
                                         <img src="../../../../assets/icons/filterIcon.svg" />

@@ -22,13 +22,31 @@
 
 .info-section {
     padding-block: 50px;
+    gap:30px;
+    @media screen and (max-width: 1200px) {
+        gap:25px;
+    }
+    @media screen and (max-width: 1100px) {
+        gap:20px;
+        flex-flow: row wrap;
+    }
+    &.sibling-pb-0 {
+        padding-bottom: 0px;
+    }
+    & + .info-section {
+        padding-top: 0px;
+    }
 
     .info-section-left {
         width: 70%;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        justify-content: space-between;
+        flex:1 1 auto;
+        @media screen and (max-width: 1200px) {
+            width: 60%; 
+        }
+        @media screen and (max-width: 1100px) {
+            width: 100%; 
+            flex: 1 1 100%;
+        }
 
         .info-section-left-items {
             width: 100%;
@@ -60,6 +78,7 @@
             border: 2px solid #EAECF0;
             border-radius: 10px;
             height: fit-content;
+            padding: 15px;
             .mat-mdc-card {
                 border: none !important;
             }
@@ -69,6 +88,15 @@
     .info-section-right {
         width: 25%;
 
+        flex:1 1 auto;
+        @media screen and (max-width: 1200px) {
+            width: 40%; 
+        }
+        @media screen and (max-width: 1100px) {
+            width: 100%; 
+            flex: 1 1 100%;
+            padding: 15px;
+        }
         .info-section-right-header {
 
             h4 {
@@ -156,4 +184,3 @@
   ::ng-deep .mat-mdc-form-field-subscript-wrapper {
       display: none;
   }
-

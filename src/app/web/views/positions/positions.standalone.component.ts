@@ -270,13 +270,13 @@ export class PositionsStandAloneComponent {
     if (gridType == 'deals' ) {
       if(this.isProvider) {
         return [
-          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell' },
-          { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
-          { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', resizable: false },
-          { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
-          { field: "price", headerName: 'PROVIDERS_PROFILE.Price', resizable: false },
-          { field: "time", headerName: 'PROVIDERS_PROFILE.Time', sort: 'desc', resizable: false },
-          { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, showPopupArraow: true, colId: 'dealsPopup'},
+          { field: "dealKey", headerName: 'PROVIDERS_PROFILE.Deal', minWidth: 200, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsTitleCell' },
+          { field: "entry", headerName: 'PROVIDERS_PROFILE.Entry', minWidth: 100, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'tagCell' },
+          { field: "symbol", headerName: 'PROVIDERS_PROFILE.Symbol', minWidth: 100 },
+          { field: "volume", headerName: 'PROVIDERS_PROFILE.Volume', minWidth: 100, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'dealsVolumeCell' },
+          { field: "price", headerName: 'PROVIDERS_PROFILE.Price', minWidth: 100 },
+          { field: "time", headerName: 'PROVIDERS_PROFILE.Time', sort: 'desc', minWidth: 200 },
+          { field: "actions", headerName: "", sortable : false, cellRenderer: ActionButtonStanAloneComponent, showPopupArraow: true, colId: 'dealsPopup', minWidth: 100 },
         ]
       } else {
         return [

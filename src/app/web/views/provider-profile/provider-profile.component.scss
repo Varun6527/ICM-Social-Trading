@@ -209,21 +209,23 @@
 
   
 
-@media screen and (min-width:0px) {
-    .flex-wrap {
-      flex-wrap: wrap;
+  
+
+.header-buttons {
+    @media screen and (max-width: 768px) {
+        flex-flow: row wrap;
+        gap: 20px;
+        justify-content: center !important;
+        
+        .table-filter-container {
+            flex-wrap: wrap;
+            justify-content: center !important;
+
+        }
+        .common-dropdown {
+            flex-flow: row wrap;
+            justify-content: center !important;
+        }
     }
-    .divider {
-        display: none;
-    }
-  }
-  @media screen and (min-width:676px) {
-    .flex-sm-nowrap {
-      flex-wrap: nowrap;
-    }
-    
-    .divider {
-        display: block;
-    }
-  }
+}
 

@@ -7,95 +7,99 @@
                     <p>{{"PROVIDERS_PROFILE.Information about the position"|translate}}</p>
                 </div>
             </div>
-            <div class="info-section d-flex justify-space-between">
+            <div class="info-section sibling-pb-0 d-flex justify-space-between">
                 <div class="info-section-left">
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Common Information"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Common position's information"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>
-                                        @if(this.isProvider) {
-                                            {{"PROVIDERS_PROFILE.Position" | translate}}
-                                        } @else {
-                                            {{"PROVIDERS_PROFILE.MetaTrader position ID" | translate}}
-                                        }
-                                    </h6>
-                                    <p>
-                                        <span>{{positionData.position}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
-                                    <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.state}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
-                                    <h6>{{"COMMON.Status"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.status}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Untrack status"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.untrackStatus}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center" *ngIf="isProvider">
-                                    <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.symbol}}</span>
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>
+                                            @if(this.isProvider) {
+                                                {{"PROVIDERS_PROFILE.Position" | translate}}
+                                            } @else {
+                                                {{"PROVIDERS_PROFILE.MetaTrader position ID" | translate}}
+                                            }
+                                        </h6>
+                                        <p>
+                                            <span>{{positionData.position}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                        <h6>{{"PROVIDERS_PROFILE.State"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.state}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                        <h6>{{"COMMON.Status"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.status}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Untrack status"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.untrackStatus}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center" *ngIf="isProvider">
+                                        <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.symbol}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Opening Data"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Position's opening data"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
-                                    <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.symbol}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Direction"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.currentDirection}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Open volume"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.openVolume}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Open price"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.openPrice | currency:'USD':'':''}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Open time"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.openTime | date:'M/d/yy, h:mm:ss a'}}</span>
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center" *ngIf="isFollower">
+                                        <h6>{{"PROVIDERS_PROFILE.Symbol"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.symbol}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Direction"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.currentDirection}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Open volume"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.openVolume}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Open price"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.openPrice | currency:'USD':'':''}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Open time"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.openTime | date:'M/d/yy, h:mm:ss a'}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Close Data"|translate}}</h4>
                             <p>
@@ -106,95 +110,101 @@
                                 }
                             </p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Close price"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.closePrice | currency:'USD':'':''}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Close time"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.closeTime | date:'M/d/yy, h:mm:ss a'}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Take Profit"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.takeProfit}}</span>
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Close price"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.closePrice | currency:'USD':'':''}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Close time"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.closeTime | date:'M/d/yy, h:mm:ss a'}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Take Profit"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.takeProfit}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Trading Result"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Position's trading result"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Trading Profit"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.totalProfit | currency: 'USD':'symbol'}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.MetaTrader commission"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.commission | currency: 'USD':'symbol'}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Swaps"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.swaps | currency: 'USD':'symbol'}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Taxes"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.taxes | currency: 'USD':'symbol'}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Profit"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionData.profit | currency: 'USD':'symbol'}}</span>
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Trading Profit"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.totalProfit | currency: 'USD':'symbol'}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.MetaTrader commission"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.commission | currency: 'USD':'symbol'}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Swaps"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.swaps | currency: 'USD':'symbol'}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Taxes"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.taxes | currency: 'USD':'symbol'}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Profit"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionData.profit | currency: 'USD':'symbol'}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-space-between w-100" *ngIf="isProvider">
+                    <div class="d-flex justify-space-between w-100 flex-wrap flex-sm-nowrap" *ngIf="isProvider">
                         <div class="info-section-left-items">
                             <h4>{{"PROVIDERS_PROFILE.Copy data"|translate}}</h4>
                             <p>{{"PROVIDERS_PROFILE.Position's copy data"|translate}}</p>
                         </div>
-                        <div class="info-section-left-items info-section-left-items-card">
-                            <mat-card appearance="outlined">
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Copied volume"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionStatsData.copiedVolume}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Copied count"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionStatsData.copiedCount}}</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-space-between align-center">
-                                    <h6>{{"PROVIDERS_PROFILE.Closed count"|translate}}</h6>
-                                    <p>
-                                        <span>{{positionStatsData.closedCount}}</span>
-                                    </p>
-                                </div>
-                            </mat-card>
+                        <div class="info-section-left-items">
+                            <div class="info-section-left-items-card">
+                                <mat-card appearance="outlined">
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Copied volume"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionStatsData.copiedVolume}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Copied count"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionStatsData.copiedCount}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-space-between align-center">
+                                        <h6>{{"PROVIDERS_PROFILE.Closed count"|translate}}</h6>
+                                        <p>
+                                            <span>{{positionStatsData.closedCount}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -320,7 +330,7 @@
                     class="providerProfile-tabGroup">
                     <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
                         <ng-template matTabContent>
-                            <div class="header-buttons d-flex justify-space-between pb-20 g-20">
+                            <div class="header-buttons d-flex justify-space-between pb-20 g-20 flex-wrap">
                                 <div class="d-flex g-20 justify-center align-center">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
                                         <img src="../../../../assets/icons/filterIcon.svg" />

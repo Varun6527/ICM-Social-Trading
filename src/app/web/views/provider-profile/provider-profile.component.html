@@ -210,7 +210,7 @@
                                 <p>{{"PROVIDERS_PROFILE.Sets of subscription conditions"|translate}}</p>
                             </div>
                             <div class="info-section-left-items">
-                                <div class="d-flex justify-space-between g-10 flex-wrap flex-sm-nowrap">
+                                <div class="d-flex justify-space-between g-10 flex-wrap flex-sm-nowrap header-buttons">
                                     <div class="d-flex g-20 common-dropdown align-center">
                                         <mat-form-field>
                                             <mat-label>{{"PROVIDERS_PROFILE.Scope" | translate}}</mat-label>
@@ -221,7 +221,7 @@
                                           </mat-form-field>
                                     </div>
                                     <div><h4 class="divider">|</h4></div>
-                                    <div class="d-flex justify-center g-10 align-stretch flex-wrap">
+                                    <div class="d-flex justify-center g-10 align-stretch table-filter-container">
                                         <button class="secondary-btn" (click)="refreshOffersList()">
                                             <img src="../../../../assets/icons/rotateIcon.svg" />
                                             {{"COMMON.Refresh"|translate}}
@@ -251,7 +251,7 @@
                     <mat-tab label="{{ tab.label |translate }}" *ngFor="let tab of tabArrConfig; let index = index">
                         <ng-template matTabContent>
                             <div class="header-buttons d-flex justify-space-between pb-20 g-20">
-                                <div class="d-flex g-20 justify-center align-center">
+                                <div class="d-flex g-20 align-center flex-wrap table-filter-container">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
                                         <img src="../../../../assets/icons/filterIcon.svg" />
                                         {{"COMMON.Filters"|translate}}

@@ -32,3 +32,21 @@
 .refresh-btn {
     @include common-secondry-btn();
 }
+
+.header-buttons {
+    @media screen and (max-width: 768px) {
+        flex-flow: row wrap;
+        gap: 20px;
+        justify-content: center !important;
+        
+        .table-filter-container {
+            flex-wrap: wrap;
+            justify-content: center !important;
+
+        }
+        .common-dropdown {
+            flex-flow: row wrap;
+            justify-content: center !important;
+        }
+    }
+}
