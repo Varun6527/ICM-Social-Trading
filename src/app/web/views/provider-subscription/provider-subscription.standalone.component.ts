@@ -273,12 +273,12 @@ export class ProviderSubscriptionStandAloneComponent {
       ]
     } else if (gridType == 'results') {
       return [
-        { field: "resultId", headerName: 'PROVIDERS_PROFILE.Results', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, resizable: false, colId: 'resultIdCell' },
-        { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Offer', sortable: false, resizable: false, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'offerTitleCell' },
-        { field: "startTime", headerName: 'PROVIDERS_PROFILE.Start time', resizable: false },
-        { field: "endTime", headerName: 'PROVIDERS_PROFILE.End Time', resizable: false },
-        { field: "amount", headerName: 'PROVIDERS_PROFILE.Fee Amount', resizable: false },
-        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'tradingResultRedirection', resizable: false }
+        { field: "resultId", headerName: 'PROVIDERS_PROFILE.Results', sort: 'desc', cellRenderer: CommonCellRendererStandAloneComponent, minWidth: 200, colId: 'resultIdCell' },
+        { field: "offerTitle", headerName: 'PROVIDERS_PROFILE.Offer', sortable: false, minWidth: 150, cellRenderer: CommonCellRendererStandAloneComponent, colId: 'offerTitleCell' },
+        { field: "startTime", headerName: 'PROVIDERS_PROFILE.Start time', minWidth: 200 },
+        { field: "endTime", headerName: 'PROVIDERS_PROFILE.End Time', minWidth: 200 },
+        { field: "amount", headerName: 'PROVIDERS_PROFILE.Fee Amount', minWidth: 150 },
+        { field: "actions", headerName: "", cellRenderer: ActionButtonStanAloneComponent, sortable: false, colId: 'tradingResultRedirection', minWidth: 100 }
       ]
     }
     return;
