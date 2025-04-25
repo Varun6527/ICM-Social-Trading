@@ -405,11 +405,11 @@ export class ProviderProfileStandAloneComponent {
   getGridColDefs(gridType: string) {
     if(gridType == 'offers') {
       return [
-        { field: "offerId", sort: 'desc', headerName: 'PROVIDERS_PROFILE.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell', width: 150 },
-        { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell', width: 150},
-        { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', width: 150 },
-        { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', width: 150 },
-        { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerRedirection', width: 150 },
+        { field: "offerId", sort: 'desc', headerName: 'PROVIDERS_PROFILE.Title', cellRenderer: CommonCellRendererStandAloneComponent, colId : 'offerCell', minWidth: 150 },
+        { field: "visibility", headerName: 'PROVIDERS_PROFILE.Visibility', cellRenderer: CommonCellRendererStandAloneComponent, colId : 'tagCell', minWidth: 150},
+        { field: "subscriptionCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Subscriptions', minWidth: 150 },
+        { field: "joinLinksCount", sortable: false, headerName: 'PROVIDERS_PROFILE.Join Links', minWidth: 150 },
+        { field: "actions", headerName: "",sortable : false, cellRenderer: ActionButtonStanAloneComponent, colId: 'offerRedirection', minWidth: 150 },
       ];
     } else if(gridType == 'subscription') {
       return [

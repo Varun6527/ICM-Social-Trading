@@ -7,7 +7,7 @@
                     <p>{{"PROVIDERS_PROFILE.List of subscriptions"|translate}}</p>
                 </div>
             </div>
-            <div class="stats d-flex justify-space-between g-20">
+            <div class="stats d-flex justify-space-between g-20 flex-wrap">
                 <div class="stats-card">
                     <h6>{{"PROVIDERS_PROFILE.Subscriptions' Activity"|translate}}</h6>
                     <div class="stats-info">
@@ -88,7 +88,7 @@
 
             <div class="metrics-table">
                 <div class="header-buttons d-flex justify-space-between">
-                    <div class="d-flex g-20 justify-center align-center">
+                    <div class="d-flex g-20 align-center flex-wrap table-filter-container">
                         <button class="secondary-btn" (click)="applyFollowerFilter()">
                             <img src="../../../../assets/icons/filterIcon.svg" />
                             {{"COMMON.Filters"|translate}}
@@ -98,7 +98,7 @@
                             {{"COMMON.Clear"|translate}}
                         </button>
                     </div>
-                    <div class="d-flex g-20 common-dropdown align-center">
+                    <div class="d-flex g-20 common-dropdown align-center flex-wrap justify-end">
                         @if (showFilters) {
                             <mat-form-field>
                                 <mat-label>{{"COMMON.Id"|translate}}</mat-label>
