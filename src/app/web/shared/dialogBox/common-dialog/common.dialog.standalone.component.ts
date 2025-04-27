@@ -13,7 +13,8 @@ import { Router, RouterModule } from '@angular/router';
     styles: [
       `
         ::ng-deep .common-dialog {
-            min-width: 600px !important;
+            width: 95vw;
+            height: 95vh;
             border-radius: 10px !important;
 
             .mat-mdc-dialog-title {
