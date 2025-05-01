@@ -610,6 +610,14 @@
          "ForgotPassword": "Forgot Password",
          "RegisterICMAccount": "To register an ICM Account",
          "ExistingICMAccount": "If you already have existing ICM Account",
-         "Clickhere": "Tekan di sini"
+         "Clickhere": "Tekan di sini",
+         "Administration portal": "Portal pentadbiran",
+         "Rating Administration portal": "Portal Pentadbiran Penilaian",
+         "Use your administrator’s or staff member’s credentials to login.": "Gunakan bukti kelayakan pentadbir atau kakitangan anda untuk log masuk.",
+         "Use your rating administrator’s credentials to login.": "Gunakan kelayakan pentadbir penilaian anda untuk log masuk.",
+         "Administrator's or a staff member's username": "Nama pengguna pentadbir atau kakitangan",
+         "Rating Administrator's username": "Nama pengguna Pentadbir Penilaian",
+         "Administrator's or staff member's password": "Kata laluan pentadbir atau kakitangan",
+         "Rating Administrator's password": "Kata laluan Pentadbir Penilaian"
     }
 }

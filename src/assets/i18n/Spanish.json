@@ -610,6 +610,14 @@
          "ForgotPassword": "Forgot Password",
          "RegisterICMAccount": "To register an ICM Account",
          "ExistingICMAccount": "If you already have existing ICM Account",
-         "Clickhere": "Haga clic aquí"
+         "Clickhere": "Haga clic aquí",
+         "Administration portal": "Portal de administración",
+         "Rating Administration portal": "Portal de administración de calificaciones",
+         "Use your administrator’s or staff member’s credentials to login.": "Utilice las credenciales de su administrador o miembro del personal para iniciar sesión.",
+         "Use your rating administrator’s credentials to login.": "Utilice las credenciales de administrador de su calificación para iniciar sesión.",
+         "Administrator's or a staff member's username": "Nombre de usuario del administrador o de un miembro del personal",
+         "Rating Administrator's username": "Nombre de usuario del administrador de calificación",
+         "Administrator's or staff member's password": "Contraseña del administrador o del miembro del personal",
+         "Rating Administrator's password": "Contraseña del administrador de calificación"
     }
 }

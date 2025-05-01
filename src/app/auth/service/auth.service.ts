@@ -13,6 +13,7 @@ export class AuthService extends BaseService {
   public authChangeEmitter = new Subject<any>();
   //Stores All token value from oauth api, also all below data need to store in ngrx.
   userConfig: any;
+  userRole: string = "";
   //end
 
   constructor(private http: HttpClient) {
@@ -91,6 +92,15 @@ export class AuthService extends BaseService {
     body.set('grant_type', param.grant_type);
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
     return this.http.post(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.loginPage.get_Token_URL}`, body.toString(), { headers });
+  }
+
+  loginRatingAdminUser(param: any) {
+    const body = new URLSearchParams();
+    body.set('username', param.username);
+    body.set('password', param.password);
+    body.set('grant_type', param.grant_type);
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post(`${this.RATING_SERVER}${this.constantVar?.http_Api_Url.loginPage.get_Token_URL}`, body.toString(), { headers });
   }
 
   registerProvider(data: any) {

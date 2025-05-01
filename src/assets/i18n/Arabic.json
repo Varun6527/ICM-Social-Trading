@@ -610,7 +610,16 @@
         "ForgotPassword": "Forgot Password",
         "RegisterICMAccount": "To register an ICM Account",
         "ExistingICMAccount": "If you already have existing ICM Account",
-        "Clickhere": "انقر هنا"
+        "Clickhere": "انقر هنا",
+        "Administration portal": "بوابة الإدارة",
+        "Rating Administration portal": "بوابة إدارة التصنيف",
+        "Use your administrator’s or staff member’s credentials to login.": "استخدم بيانات اعتماد المسؤول أو أحد أعضاء فريق العمل لتسجيل الدخول.",
+        "Use your rating administrator’s credentials to login.": "استخدم بيانات اعتماد المسؤول أو أحد أعضاء فريق العمل لتسجيل الدخول.",
+        "Administrator's or a staff member's username": "اسم المستخدم للمسؤول أو أحد أعضاء الفريق",
+        "Rating Administrator's username": "اسم مستخدم مسؤول التقييم",
+        "Administrator's or staff member's password": "كلمة مرور المسؤول أو عضو الفريق",
+        "Rating Administrator's password": "تقييم كلمة مرور المسؤول"
+        
     }
 }
   
