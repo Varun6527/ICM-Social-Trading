@@ -22,8 +22,24 @@
             <img class="login-logo" src="../../../assets/logo/ICM Logo Default 1.png">
             <div class="login-text-content">
                 <h4>Social Trading</h4>
-                <p>{{"login.Client portal"|translate}}</p>
-                <p>{{"login.Register"|translate}}</p>
+                <p>
+                    @if(loginFormType == 'Client') {
+                        {{"login.Client portal"|translate}}
+                    } @else if(loginFormType == 'Admin') {
+                        {{"login.Administration portal"|translate}}
+                    } @else if(loginFormType == 'RatingAdmin') {
+                        {{"login.Rating Administration portal"|translate}}
+                    }
+                </p>
+                <p>
+                    @if(loginFormType == 'Client') {
+                        {{"login.Register"|translate}}
+                    } @else if(loginFormType == 'Admin') {
+                        {{"login.Use your administrator’s or staff member’s credentials to login."|translate}}
+                    } @else if(loginFormType == 'RatingAdmin') {
+                        {{"login.Use your rating administrator’s credentials to login."|translate}}
+                    }
+                </p>
             </div>
             <form id="clientLoginForm" (ngSubmit)="loginUser()" [formGroup]="loginForm">
                 <div class="login-form">
@@ -32,8 +48,16 @@
                             <label class="lb-title">
                                 {{"login.Username"|translate}} *
                             </label>
-                            <input type="number" formControlName="username" (input)="checkLength()" />
-                            <label class="lb-detail" *ngIf="!this.showLoginFormError || (!this.loginForm.controls['username'].errors?.['required'] && !loginForm.controls['username'].errors?.['min'])">{{"login.TradingAccountId"|translate}}</label>
+                            <input [type]="loginFormType == 'Client' ? 'number' : 'text'" formControlName="username" (input)="checkLength()" />
+                            <label class="lb-detail" *ngIf="!this.showLoginFormError || (!this.loginForm.controls['username'].errors?.['required'] && !loginForm.controls['username'].errors?.['min'])">
+                                @if(loginFormType == 'Client') {
+                                    {{"login.TradingAccountId"|translate}}
+                                } @else if(loginFormType == 'Admin') {
+                                    {{"login.Administrator's or a staff member's username"|translate}}
+                                } @else if(loginFormType == 'RatingAdmin') {
+                                    {{"login.Rating Administrator's username"|translate}}
+                                }
+                            </label>
                             <label class="lb-detail warn-msg" *ngIf="showLoginFormError && this.loginForm.controls['username'].errors?.['required']">
                                 {{"login.FieldRequired"|translate}}
                             </label>
@@ -49,7 +73,15 @@
                                 {{"login.Password"|translate}} *
                             </label>
                             <input type="password" formControlName="password" />
-                            <label class="lb-detail" *ngIf="!this.showLoginFormError || !this.loginForm.controls['password'].errors?.['required']">{{"login.TradingAccountPassword"|translate}}</label>
+                            <label class="lb-detail" *ngIf="!this.showLoginFormError || !this.loginForm.controls['password'].errors?.['required']">
+                                @if(loginFormType == 'Client') {
+                                    {{"login.TradingAccountPassword"|translate}}
+                                } @else if(loginFormType == 'Admin') {
+                                    {{"login.Administrator's or staff member's password"|translate}}
+                                } @else if(loginFormType == 'RatingAdmin') {
+                                    {{"login.Rating Administrator's password"|translate}}
+                                }
+                            </label>
                             <label class="lb-detail warn-msg" *ngIf="showLoginFormError && this.loginForm.controls['password'].errors?.['required']">
                                 {{"login.FieldRequired"|translate}}
                             </label>
@@ -71,22 +103,24 @@
                     </a>
                 </div>
             </form>
-            <div class="login-form-actions">
-                <div class="register" [routerLink]="'/portal/registration/provider'">
-                    <p>{{"login.RegisterProvider"|translate}}</p>
+            @if(loginFormType == 'Client') {
+                <div class="login-form-actions">
+                    <div class="register" [routerLink]="'/portal/registration/provider'">
+                        <p>{{"login.RegisterProvider"|translate}}</p>
+                    </div>
+                    <div class="register" [routerLink]="'/portal/registration/subscription'">
+                        <p>{{"login.RegisterFollower"|translate}}</p>
+                    </div>
                 </div>
-                <div class="register" [routerLink]="'/portal/registration/subscription'">
-                    <p>{{"login.RegisterFollower"|translate}}</p>
+                <div class="login-form-footer">
+                    <p>
+                        {{"login.RegisterICMAccount"|translate}}. <a href="https://track.icmcapital.com/?t=copytrading&lang=en"> {{"login.Clickhere"|translate}}! </a>
+                    </p>
+                    <p>
+                        {{"login.ExistingICMAccount"|translate}}. <a href="https://clients.icmcapital.mu/auth/login"> {{"login.Clickhere"|translate}}! </a>
+                    </p>
                 </div>
-            </div>
-            <div class="login-form-footer">
-                <p>
-                    {{"login.RegisterICMAccount"|translate}}. <a href="https://track.icmcapital.com/?t=copytrading&lang=en"> {{"login.Clickhere"|translate}}! </a>
-                </p>
-                <p>
-                    {{"login.ExistingICMAccount"|translate}}. <a href="https://clients.icmcapital.mu/auth/login"> {{"login.Clickhere"|translate}}! </a>
-                </p>
-            </div>
+            }
         </mat-card-content>
     </mat-card>
 </div>

@@ -58,14 +58,14 @@ export class WebService extends BaseService {
       this.webEmitterReference[unSubscribeedFrom].unsubscribe();
   }
 
-  setOrRefreshUserProfileData(callback: any) {
-    this.sendHttpGetRequest(`${this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webLayoutPage.get_User_Profile_details}`, '').subscribe({
+  setOrRefreshUserProfileData(callback: any, loginFormType? : any) {
+    this.sendHttpGetRequest(`${loginFormType == "RatingAdmin" ? this.RATING_SERVER : this.REST_API_SERVER}${this.constantVar?.http_Api_Url.webLayoutPage.get_User_Profile_details}`, '').subscribe({
         next: (result: any)=>{
             this.userPermissionConfig = result;
             this.isProviderAccount = result?.provider?.view;
             this.isSubscriptionAccount = result?.subscription?.view;
-            this.isReportPageEnable = result?.reports.view;
-            this.showSubscriptionsTradingResults = result?.provider?.showSubscriptionsTradingResults.length > 0
+            this.isReportPageEnable = result?.reports?.view;
+            this.showSubscriptionsTradingResults = result?.provider?.showSubscriptionsTradingResults?.length > 0
             callback({status: true, response: result});
         },
         error: (error: any) => {
@@ -74,7 +74,7 @@ export class WebService extends BaseService {
     });
   }
 
-  setOrRefreshUserProfileDataAsObserver() {
+  setOrRefreshUserProfileDataAsObserver(loginFormType?: any) {
     return new Observable((observer) => {
       if (this.userPermissionConfig) {
         observer.next(true);
@@ -88,7 +88,7 @@ export class WebService extends BaseService {
             observer.error(false);
             observer.complete();
           }
-        });
+        }, loginFormType);
       }
     });
   }

@@ -14,7 +14,32 @@ const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
         resolve: { myData: UserDataResolver },
-        canActivate: [MyAuthGaurdWhenUserLoggedIn]
+        canActivate: [MyAuthGaurdWhenUserLoggedIn],
+        data: { loginFormType: "Client" }
+      }
+    ]
+  },
+  {
+    path: 'admin/login',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
+        resolve: { myData: UserDataResolver },
+        data: { loginFormType: "Admin" }
+      }
+    ]
+  },
+  {
+    path: 'rating/admin/login',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
+        resolve: { myData: UserDataResolver },
+        data: { loginFormType: "RatingAdmin" }
       }
     ]
   },

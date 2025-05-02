@@ -609,6 +609,14 @@
          "ForgotPassword": "Forgot Password",
          "RegisterICMAccount": "To register an ICM Account",
          "ExistingICMAccount": "If you already have existing ICM Account",
-         "Clickhere": "ให้คลิกที่นี่"
+         "Clickhere": "ให้คลิกที่นี่",
+         "Administration portal": "พอร์ทัลการบริหาร",
+         "Rating Administration portal": "พอร์ทัลการบริหารการให้คะแนน",
+         "Use your administrator’s or staff member’s credentials to login.": "ใช้ข้อมูลประจำตัวผู้ดูแลระบบหรือสมาชิกเจ้าหน้าที่ของคุณเพื่อเข้าสู่ระบบ",
+         "Use your rating administrator’s credentials to login.": "ใช้ข้อมูลประจำตัวผู้ดูแลการให้คะแนนของคุณเพื่อเข้าสู่ระบบ",
+         "Administrator's or a staff member's username": "ชื่อผู้ใช้ของผู้ดูแลระบบหรือสมาชิกพนักงาน",
+         "Rating Administrator's username": "ชื่อผู้ใช้ของผู้ดูแลระบบการจัดอันดับ",
+         "Administrator's or staff member's password": "รหัสผ่านของผู้ดูแลระบบหรือเจ้าหน้าที่",
+         "Rating Administrator's password": "รหัสผ่านผู้ดูแลระบบการจัดอันดับ"
     }
 }
