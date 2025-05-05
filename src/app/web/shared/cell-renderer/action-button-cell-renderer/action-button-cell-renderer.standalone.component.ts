@@ -12,9 +12,9 @@ import { TranslateModule } from '@ngx-translate/core';
   template: `
     @if(params.colDef.colId !== 'offerJoinActionCell' && params.colDef.colId !== 'agentActionCell' && params.colDef.colId !== 'riskCell' && params.colDef.colId !== 'copyTradeBtnCell') {
       <button (click)="onActionClick()" class="tableActionBtn">
-        <img *ngIf="!params.colDef.showPopupArraow" src=".././../../../assets/icons/arrowIcon.png"/>
+        <img *ngIf="!params.colDef.showPopupArraow" src="assets/icons/arrowIcon.png"/>
 
-        <img *ngIf="params.colDef.showPopupArraow" src=".././../../../assets/icons/arrow-single.png" />
+        <img *ngIf="params.colDef.showPopupArraow" src="assets/icons/arrow-single.png" />
       </button>
     } @else if(params.colDef.colId === 'copyTradeBtnCell') {
       <div class="d-flex align-center">
@@ -22,21 +22,21 @@ import { TranslateModule } from '@ngx-translate/core';
       </div>
     } @else {
       <button class="tableActionBtn" [matMenuTriggerFor]="actionMenu">
-        <img src=".././../../../assets/icons/three-dots.png" width="20" />
+        <img src="assets/icons/three-dots.png" width="20" />
       </button>
       <mat-menu #actionMenu="matMenu" class="actionMenu">
         @if(params.colDef.colId == 'offerJoinActionCell') {
-          <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src=".././../../../assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
-          <button mat-menu-item (click)="onActionBtnClick('edit')"><img width="20" src=".././../../../assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
-          <button mat-menu-item (click)="onActionBtnClick('delete')"><img width="20" src=".././../../../assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
+          <button mat-menu-item (click)="onActionBtnClick('copy')"><img width="20" src="assets/icons/copy.png"/>{{"PROVIDERS_LIST.Copy"|translate}}</button>
+          <button mat-menu-item (click)="onActionBtnClick('edit')"><img width="20" src="assets/icons/pencil.png"/>{{"COMMON.Edit"|translate}}</button>
+          <button mat-menu-item (click)="onActionBtnClick('delete')"><img width="20" src="assets/icons/trashIcon.png"/>{{"PROVIDERS_PROFILE.Delete"|translate}}</button>
         }
         @if(params.colDef.colId == 'agentActionCell' || params.colDef.colId == 'riskCell') {
           <button mat-menu-item (click)="onActionBtnClick('edit')"> 
-            <img width="20" src=".././../../../assets/icons/pencil.png"/>
+            <img width="20" src="assets/icons/pencil.png"/>
             {{"COMMON.Edit"|translate}}
           </button>
           <button mat-menu-item (click)="onActionBtnClick('delete')">
-          <img width="20" src=".././../../../assets/icons/trashIcon.png"/>
+          <img width="20" src="assets/icons/trashIcon.png"/>
           {{"PROVIDERS_PROFILE.Delete"|translate}}
           </button>
         }

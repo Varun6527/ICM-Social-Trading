@@ -2,7 +2,7 @@
 <p class="text-center">{{'PROVIDERS_PROFILE.Avatar settings' | translate}}</p>
 <mat-dialog-content class="mat-typography">
   <div class="d-flex justify-center align-center pb-20" *ngIf="!avatarPath && !fileObject">
-    <img src="../../../../../assets/icons/default-big-user-profile.png" width="250"/>
+    <img src="assets/icons/default-big-user-profile.png" width="250"/>
   </div>
 
   <div *ngIf="fileObject" class="d-flex justify-center align-center pb-20">
@@ -18,7 +18,7 @@
     <mat-label>{{fileObject ? fileObject.name : 'PROVIDERS_PROFILE.File' | translate}}</mat-label>
     <input type="text" readonly matInput disabled="true"  />
     <span matTextSuffix>
-      <img src="../../../../../assets/icons/upload-icon.png" width="30" height="30" />
+      <img src="assets/icons/upload-icon.png" width="30" height="30" />
     </span>
   </mat-form-field>
 

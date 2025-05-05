@@ -10,7 +10,7 @@ import { WebAuthInterceptor } from './web/interceptor/web.auth.interceptor';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
 @NgModule({

@@ -21,7 +21,7 @@
                     <!-- <div class="stats-subline d-flex align-center">
                         <p class="d-flex align-center g-10">
                             <span class="d-flex align-center positive">
-                                <img src="../../../../assets/icons/arrow-up.png" />
+                                <img src="assets/icons/arrow-up.png" />
                                 100%
                             </span>
                             {{ 'vs last month' | translate }}
@@ -37,7 +37,7 @@
                     <!-- <div class="stats-subline d-flex align-center">
                         <p class="d-flex align-center g-10"> 
                             <span class="d-flex align-center negative">
-                                <img src="../../../../assets/icons/arrow-down.png" /> 
+                                <img src="assets/icons/arrow-down.png" /> 
                                 100%
                             </span>
                             {{ 'vs last month' | translate }}
@@ -53,7 +53,7 @@
                     <!-- <div class="stats-subline d-flex align-center">
                         <p class="d-flex align-center g-10">
                             <span class="d-flex align-center positive">
-                                <img src="../../../../assets/icons/arrow-up.png" />
+                                <img src="assets/icons/arrow-up.png" />
                                 100%
                             </span>
                             {{ 'vs last month' | translate }}
@@ -73,7 +73,7 @@
                     <!-- <div class="stats-subline d-flex align-center">
                         <p class="d-flex align-center g-10">
                             <span class="d-flex align-center positive">
-                                <img src="../../../../assets/icons/arrow-up.png" />
+                                <img src="assets/icons/arrow-up.png" />
                                 100%
                             </span>
                             {{ 'vs last month' | translate }}
@@ -86,11 +86,11 @@
                 <div class="header-buttons d-flex justify-space-between">
                     <div class="d-flex g-20 align-center flex-wrap table-filter-container">
                         <button class="secondary-btn" (click)="applyProvidersFilter()">
-                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            <img src="assets/icons/filterIcon.svg" />
                             {{"COMMON.Filters"|translate}}
                         </button>
                         <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
-                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            <img width="20" src="assets/icons/clear-icon.svg" />
                             {{"COMMON.Clear"|translate}}
                         </button>
                     </div>
@@ -117,15 +117,15 @@
                         }
                         <button class="refresh-btn" (click)="refreshProviderDataList()">
                             @if (selectedFilters.nickName || selectedFilters.externalAccount || selectedFilters.id) {
-                                <img src="../../../../assets/icons/searchIcon.svg" />
+                                <img src="assets/icons/searchIcon.svg" />
                                 {{"PROVIDERS_LIST.Search"|translate}}
                             } @else {
-                                <img src="../../../../assets/icons/rotateIcon.svg" />
+                                <img src="assets/icons/rotateIcon.svg" />
                                 {{"COMMON.Refresh"|translate}}
                             }
                         </button>
                         <button class="primary-btn" (click)="openNewProviderDialog()">
-                            <img src="../../../../assets/icons/plusIcon.png" />
+                            <img src="assets/icons/plusIcon.png" />
                             {{ 'COMMON.Create' | translate }}
                         </button>
                     </div>
@@ -138,7 +138,7 @@
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader"
         class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
 </mat-card>
 
