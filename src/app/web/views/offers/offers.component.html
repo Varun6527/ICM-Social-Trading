@@ -7,11 +7,11 @@
                     <p>{{"OFFERS.General information about the offer" | translate}}</p>
                 </div>
                 <button class="primary-btn action-btn" [matMenuTriggerFor]="actions" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}">
-                    <img src="../../../../assets/icons/actions.png" />
+                    <img src="assets/icons/actions.png" />
                     {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item (click)="openofferArchiveModal()"><img src="../../../../assets/icons/trashIcon.png" width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
+                    <button mat-menu-item (click)="openofferArchiveModal()"><img src="assets/icons/trashIcon.png" width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
 
@@ -188,7 +188,7 @@
                                 <div class="d-flex justify-right g-10 flex-wrap flex-sm-nowrap">
                                     <div class="d-flex justify-center g-10 align-stretch">
                                         <button class="primary-btn" [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openAddOrUpdateAgentModal(false)">
-                                            <img src="../../../../assets/icons/plusIcon.png" />
+                                            <img src="assets/icons/plusIcon.png" />
                                             {{"COMMON.Add" | translate}}
                                         </button>
                                     </div>
@@ -236,7 +236,7 @@
                         <div><h4 class="divider">|</h4></div>
                         <div class="d-flex justify-center g-10 align-stretch">
                             <button [ngClass]="{'btn-disable' : offerData.state == 'Archived'}" (click)="openAddOrUpdateJoinLinkModal(false)" class="primary-btn">
-                                <img src="../../../../assets/icons/plusIcon.png" />
+                                <img src="assets/icons/plusIcon.png" />
                                 {{"COMMON.Add" | translate}}
                             </button>
                         </div>
@@ -253,7 +253,7 @@
         </div>
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
 </mat-card>
 <show-error-message></show-error-message>

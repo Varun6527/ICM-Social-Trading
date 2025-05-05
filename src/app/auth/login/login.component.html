@@ -3,10 +3,10 @@
         <div class="login-card-header">
             <div class="button-row">
                 <!-- <button class="theme-btn">
-                    <img src="../../../assets/icons/sun.png"/>
+                    <img src="assets/icons/sun.png"/>
                 </button> -->
                 <button  class="flag-btn" [matMenuTriggerFor]="languageMenu">
-                        <img height="24" width="24" [src]="'../../../assets/icons/' + selectedLangObj.icon"/>
+                        <img height="24" width="24" [src]="'assets/icons/' + selectedLangObj.icon"/>
                 </button>
                 <mat-menu #languageMenu="matMenu" class="languageMenu">
                     <button mat-menu-item *ngFor="let lang of languages" (click)="selectLanguage(lang)">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <mat-card-content>
-            <img class="login-logo" src="../../../assets/logo/ICM Logo Default 1.png">
+            <img class="login-logo" src="assets/logo/ICM Logo Default 1.png">
             <div class="login-text-content">
                 <h4>Social Trading</h4>
                 <p>

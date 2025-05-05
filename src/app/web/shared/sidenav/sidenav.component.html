@@ -1,76 +1,76 @@
 <div class="sidenav-parent">
     <div class="sidenav-logo">
-        <img src="../../../../assets/logo/ICM Logo White 1.png" />
+        <img src="assets/logo/ICM Logo White 1.png" />
     </div>
     <div class="sidenav-menu">
         <!-- <div class="search-bar">
-            <img src="../../../../assets/icons/searchIcon.png" />
+            <img src="assets/icons/searchIcon.png" />
             <input type="text" placeholder="Search" />
         </div> -->
         <div class="sidebar-menu-items">
             <ul class="menu-list-top">
                 <a [routerLink]="'/portal'" (click)="closeSidenav()">
                     <li [routerLinkActiveOptions]="{exact: true}" routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/Home Icon.png" />
+                        <img src="assets/icons/Home Icon.png" />
                         <p>{{"SIDEBAR.Home"|translate}}</p>
                     </li>
                 </a>
                 <a [routerLink]="'/portal/providers'" (click)="closeSidenav()" *ngIf="isProvider">
                     <li id="provider-menu-relative" routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/Portfolio Icon.png" />
+                        <img src="assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Providers"|translate}}</p>
                     </li>
                 </a>
                 <a [routerLink]="'/portal/subscriptions'" (click)="closeSidenav()" *ngIf="isFollower">
                     <li routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/Portfolio Icon.png" />
+                        <img src="assets/icons/Portfolio Icon.png" />
                         <p>{{"SIDEBAR.My Portfolio"|translate}}</p>
                     </li>
                 </a>
                 <a [routerLink]="'/portal/account'" (click)="closeSidenav()" routerLinkActive="menu-active">
                     <li routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/User Icon.png" />
+                        <img src="assets/icons/User Icon.png" />
                         <p> {{"SIDEBAR.My Accounts"|translate}}</p>
 
                     </li>
                 </a>
                 <a [routerLink]="'/portal/transactions'" (click)="closeSidenav()" routerLinkActive="menu-active">
                     <li routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/Transaction Icon.png" />
+                        <img src="assets/icons/Transaction Icon.png" />
                         <p> {{"SIDEBAR.Transaction History"|translate}}</p>
                     </li>
                 </a>
                 <a [routerLink]="'/portal/ratings'" (click)="closeSidenav()" routerLinkActive="menu-active" *ngIf="showRatingWidget">
                     <li routerLinkActive="menu-active">
-                        <img src="../../../../assets/icons/star.png" />
+                        <img src="assets/icons/star.png" />
                         <p>{{"SIDEBAR.Providers"|translate}}</p>
                     </li>
                 </a>
                 <a [routerLink]="'/portal/reports'" (click)="closeSidenav()" routerLinkActive="menu-active" *ngIf="(isProvider || isFollower) && showReportsPage">
                     <li routerLinkActive="menu-active">
-                        <img class="reports-icon" src="../../../../assets/icons/file.png" />
+                        <img class="reports-icon" src="assets/icons/file.png" />
                         <p>{{"SIDEBAR.Reports"|translate}}</p>
                     </li>
                 </a>
             </ul>
             <ul class="menu-list-bottom">
                 <!-- <li>
-                    <img src="../../../../assets/icons/sun-Icon-white.png" />
+                    <img src="assets/icons/sun-Icon-white.png" />
                     <p>{{"SIDEBAR.Dark/Light Mode"|translate}}</p>
                 </li> -->
                 <li [matMenuTriggerFor]="languageMenu">
-                    <img class="lang-icon" width="24" height="24" [src]="'../../../../assets/icons/' + selectedLangObj.icon" />
+                    <img class="lang-icon" width="24" height="24" [src]="'assets/icons/' + selectedLangObj.icon" />
                     <a href="javascript:void(0)" class="anchor-decore-none">{{selectedLangObj.displayLabel}}</a>
                 </li>
                 <li>
-                    <img src="../../../../assets/icons/settingsIcon.png" />
+                    <img src="assets/icons/settingsIcon.png" />
                     <a (click)="openSettingsPopup()" href="javascript:void(0)" class="anchor-decore-none">{{"SIDEBAR.Settings"|translate}}</a>
                 </li>
                 <li class="logout-item">
                     @if(isProvider && providerData && providerData?.public?.avatarPath) {
                         <img width="40" height="40" [src]="providerData.public.avatarPath" />
                     } @else {
-                        <img width="40" src="../../../../assets/icons/default-user-profile.png" />
+                        <img width="40" src="assets/icons/default-user-profile.png" />
                     }
                     <div class="user-name">
                         @if(isProvider && isFollower) {
@@ -85,7 +85,7 @@
                         <span>{{clientSettings?.settings?.email}}</span>
                     </div>
                     <a (click)="logoutUser()">
-                        <img src="../../../../assets/icons/logout.png" />
+                        <img src="assets/icons/logout.png" />
                     </a>
                 </li>
             </ul>

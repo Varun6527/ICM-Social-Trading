@@ -11,8 +11,8 @@ import { WebService } from '../service/web.service';
       </div>
     <mat-card appearance="outlined" class="section-card header-logo">
       <mat-card-content class="section-card-content">
-        <img width="100" src="../../../assets/logo/ICM Logo Default 1.png" />
-        <img width="20" src="../../../assets/logo/Hamburger-icon.png" (click)="toggleSideNavBar()" />
+        <img width="100" src="assets/logo/ICM Logo Default 1.png" />
+        <img width="20" src="assets/logo/Hamburger-icon.png" (click)="toggleSideNavBar()" />
       </mat-card-content>
     </mat-card>
       <div class="pages">
