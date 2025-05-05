@@ -12,7 +12,7 @@ export class IcmLoadingOverlayDirective {
         let nativeEle = this.elementRef.nativeElement;
         if (null == nativeEle.parentElement.querySelector("img")) {
             var img:any = document.createElement('img');
-            img.src = "/assets/icons/ajax-loader.gif";
+            img.src = "assets/icons/ajax-loader.gif";
             img.setAttribute("class", "no-css");
             img.style.position = "absolute";
             img.style.width ="42px";

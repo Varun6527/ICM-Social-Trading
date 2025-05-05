@@ -18,7 +18,7 @@
     <mat-form-field class="common-field">
       <mat-label>{{"COMMON.Key" | translate}}</mat-label>
       <input type="text" matInput placeholder="ABCD1234" formControlName="key">
-      <span matTextSuffix (click)="copyJoinLink()"><img width="20" src="../.././../../../assets/icons/copy.png"/></span>
+      <span matTextSuffix (click)="copyJoinLink()"><img width="20" src="assets/icons/copy.png"/></span>
     </mat-form-field>
     <p class="pb-10"
       *ngIf="!showError || (!createJoinLinkForm.controls['key'].errors?.['required'] && !createJoinLinkForm.controls['key'].errors?.['min'] && !createJoinLinkForm.controls['key'].errors?.['duplicateKeyMatch'])">

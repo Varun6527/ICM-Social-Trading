@@ -265,11 +265,11 @@
                             <div class="header-buttons d-flex justify-space-between pb-20 flex-wrap g-20">
                                 <div class="d-flex g-20 justify-center align-center table-filter-container">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
-                                        <img src="../../../../assets/icons/filterIcon.svg" />
+                                        <img src="assets/icons/filterIcon.svg" />
                                         {{"COMMON.Filters"|translate}}
                                     </button>
                                     <button class="secondary-btn" *ngIf="tab.filters.show" (click)="clearFilters(tab)">
-                                        <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                                        <img width="20" src="assets/icons/clear-icon.svg" />
                                         {{"COMMON.Clear"|translate}}
                                     </button>
                                 </div>
@@ -298,10 +298,10 @@
                                     }
                                     <button class="secondary-btn" (click)="refreshDataList(tab)">
                                         @if (true) {
-                                            <img src="../../../../assets/icons/searchIcon.svg" />
+                                            <img src="assets/icons/searchIcon.svg" />
                                             {{"PROVIDERS_LIST.Search"|translate}}
                                         } @else {
-                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            <img src="assets/icons/rotateIcon.svg" />
                                             {{"COMMON.Refresh"|translate}}
                                         }
                                     </button>
@@ -317,6 +317,6 @@
         </div>
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
 </mat-card>

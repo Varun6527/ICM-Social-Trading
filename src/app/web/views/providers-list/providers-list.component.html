@@ -34,13 +34,13 @@
                                 </mat-form-field>
                             </form>
                             <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='cards' ? 'secondary-btn-active':''" (click)="switchMode('cards', true)">
-                                <img src="../../../../assets/icons/gridIcon.svg" />
+                                <img src="assets/icons/gridIcon.svg" />
                             </button>
                             <button class="secondary-btn switchMode-btn" [ngClass]="viewMode =='table' ? 'secondary-btn-active':''" (click)="switchMode('table', true)">
-                                <img src="../../../../assets/icons/listIcon.svg" />
+                                <img src="assets/icons/listIcon.svg" />
                             </button>
                             <!-- <button class="secondary-btn">
-                                <img src="../../../../assets/icons/filterIcon.svg" />
+                                <img src="assets/icons/filterIcon.svg" />
                                 {{"PROVIDERS_LIST.More Filters"|translate}}
                             </button> -->
                         </div>
@@ -65,11 +65,11 @@
                                             <a href="javascript:void(0)" [ngClass]="{'btn-disable': disableWatchListBtn}">
                                                 <img #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" *ngIf="rating.isWatchListed"
                                                  (click)="openWatchListWarnMenu(menuTrigger)" width="20" height="20" 
-                                                [src]="rating.isWatchListed ? '../../../../assets/icons/selected-saveIcon.png' : '../../../../assets/icons/saveIcon.png'" />
+                                                [src]="rating.isWatchListed ? 'assets/icons/selected-saveIcon.png' : 'assets/icons/saveIcon.png'" />
 
                                                 <img *ngIf="!rating.isWatchListed"
                                                  (click)="toggleWatchList(rating)" width="20" height="20" 
-                                                [src]="rating.isWatchListed ? '../../../../assets/icons/selected-saveIcon.png' : '../../../../assets/icons/saveIcon.png'" />
+                                                [src]="rating.isWatchListed ? 'assets/icons/selected-saveIcon.png' : 'assets/icons/saveIcon.png'" />
                                             </a>
                                             <mat-menu #menu="matMenu" class="watchlist-warn-menu">
                                                 <p class="pb-20">
@@ -87,9 +87,9 @@
                                             <p class="title">{{"PROVIDERS_PROFILE.Return 1M"|translate}}</p>
                                             <p class="{{rating.returnMonth >= 0 ? 'green-value' : 'red-value' }} d-flex align-center">
                                                 @if(rating.returnMonth >= 0) {
-                                                    <img width="20" height="20" src="../../../../assets/icons/arrow-up.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
+                                                    <img width="20" height="20" src="assets/icons/arrow-up.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
                                                 } @else {
-                                                    <img width="20" height="20" src="../../../../assets/icons/arrow-down.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
+                                                    <img width="20" height="20" src="assets/icons/arrow-down.png" /> {{rating.returnMonth ? rating.returnMonth : 0}}%
                                                 }
                                                 
                                             </p>
@@ -148,7 +148,7 @@
                         </div>
                         } @else {
                         <div class="loader-container" class="half-view-port-height d-flex justify-center align-center">
-                            <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+                            <img src="assets/logo/ICM Logo Default 1.png" />
                         </div>
                         }
                     </div>
@@ -159,11 +159,11 @@
         </div>
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
     <div #observer>
         <div class="loader-container" *ngIf="showMoreDataLoader" class="d-flex justify-center align-center pb-20">
-            <img src="../../../../assets/icons/ajax-loader-large.gif" />
+            <img src="assets/icons/ajax-loader-large.gif" />
         </div>
     </div>
 </mat-card>

@@ -7,19 +7,19 @@
                     <p>{{"PROVIDERS_PROFILE.Provider's profile and sharing settings" | translate}}</p>
                 </div>
                 <button class="primary-btn action-btn" [matMenuTriggerFor]="actions" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
-                    <img src="../../../../assets/icons/actions.png" />
+                    <img src="assets/icons/actions.png" />
                     {{"COMMON.Actions" | translate}}
                 </button>
                 <mat-menu #actions="matMenu" class="actions-menu">
-                    <button mat-menu-item (click)="openUploadAvatarModal()"><img src="../../../../assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
-                    <button mat-menu-item (click)="openSharedLinkModal()"><img src="../../../../assets/icons/{{providersData.sharedProfile.sharedKey ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
+                    <button mat-menu-item (click)="openUploadAvatarModal()"><img src="assets/icons/cameraIcon.png" width="20" height="20"/>{{"PROVIDERS_PROFILE.Update Avatar" | translate}}</button>
+                    <button mat-menu-item (click)="openSharedLinkModal()"><img src="assets/icons/{{providersData.sharedProfile.sharedKey ? 'remove-icon' : 'add-icon'}}.png"  width="20" height="20"/> 
                         @if(providersData.sharedProfile.sharedKey) {
                             {{"PROVIDERS_PROFILE.Delete shared link" | translate}}
                         } @else {
                             {{"PROVIDERS_PROFILE.Create shared link" | translate}}
                         }
                     </button>
-                    <button mat-menu-item (click)="openProviderArchiveModal()"><img src="../../../../assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
+                    <button mat-menu-item (click)="openProviderArchiveModal()"><img src="assets/icons/trashIcon.png"  width="20" height="20"/> {{"COMMON.Archive" | translate}}</button>
                 </mat-menu>
             </div>
             <provider-follower-header-cards [isProvider]="true" [isFollower]="false" [getDataById]="true" [id]="providerId"></provider-follower-header-cards>
@@ -152,7 +152,7 @@
                                 <div class="header d-flex justify-space-between align-center">
                                     <h6>{{"PROVIDERS_PROFILE.Trading Account"|translate}}</h6>
                                     <a (click)="openBeTradingAccountPopup()" href="javascript:void(0)" class="default-link">
-                                        <img src="../../../../assets/icons/arrow-single.png" />
+                                        <img src="assets/icons/arrow-single.png" />
                                     </a>
                                 </div>
                                 <div class="d-flex justify-center items-main">
@@ -223,11 +223,11 @@
                                     <div><h4 class="divider">|</h4></div>
                                     <div class="d-flex justify-center g-10 align-stretch table-filter-container">
                                         <button class="secondary-btn" (click)="refreshOffersList()">
-                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            <img src="assets/icons/rotateIcon.svg" />
                                             {{"COMMON.Refresh"|translate}}
                                         </button>
                                         <button class="primary-btn" (click)="openCreateOfferModal()" [ngClass]="{'btn-disable' : providersData.state == 'Archived'}">
-                                            <img src="../../../../assets/icons/plusIcon.png" />
+                                            <img src="assets/icons/plusIcon.png" />
                                             {{"COMMON.Create"|translate}}
                                         </button>
                                     </div>
@@ -253,11 +253,11 @@
                             <div class="header-buttons d-flex justify-space-between pb-20 g-20">
                                 <div class="d-flex g-20 align-center flex-wrap table-filter-container">
                                     <button class="secondary-btn" (click)="applyFilters(tab)">
-                                        <img src="../../../../assets/icons/filterIcon.svg" />
+                                        <img src="assets/icons/filterIcon.svg" />
                                         {{"COMMON.Filters"|translate}}
                                     </button>
                                     <button class="secondary-btn" *ngIf="tab.filters.show" (click)="clearFilters(tab)">
-                                        <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                                        <img width="20" src="assets/icons/clear-icon.svg" />
                                         {{"COMMON.Clear"|translate}}
                                     </button>
                                 </div>
@@ -346,10 +346,10 @@
                                     }
                                     <button class="secondary-btn" (click)="refreshDataList(tab)">
                                         @if (true) {
-                                            <img src="../../../../assets/icons/searchIcon.svg" />
+                                            <img src="assets/icons/searchIcon.svg" />
                                             {{"PROVIDERS_LIST.Search"|translate}}
                                         } @else {
-                                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                                            <img src="assets/icons/rotateIcon.svg" />
                                             {{"COMMON.Refresh"|translate}}
                                         }
                                     </button>
@@ -365,7 +365,7 @@
         </div>
     </mat-card-content>
     <div class="loader-container" *ngIf="showPageLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
 </mat-card>
 <show-error-message></show-error-message>

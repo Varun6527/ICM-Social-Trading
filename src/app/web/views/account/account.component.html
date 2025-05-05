@@ -11,11 +11,11 @@
                 <div class="header-buttons d-flex justify-space-between flex-wrap g-20">
                     <div class="d-flex g-20 align-center flex-wrap">
                         <button class="secondary-btn" (click)="applyFilters()">
-                            <img src="../../../../assets/icons/filterIcon.svg" />
+                            <img src="assets/icons/filterIcon.svg" />
                             {{"COMMON.Filters"|translate}}
                         </button>
                         <button class="secondary-btn" *ngIf="showFilters" (click)="clearFilters()">
-                            <img width="20" src="../../../../assets/icons/clear-icon.svg" />
+                            <img width="20" src="assets/icons/clear-icon.svg" />
                             {{"COMMON.Clear"|translate}}
                         </button>
                     </div>
@@ -28,7 +28,7 @@
                             </mat-select>
                         </mat-form-field>
                         <button class="refresh-btn" (click)="refreshAccountDataList()">
-                            <img src="../../../../assets/icons/rotateIcon.svg" />
+                            <img src="assets/icons/rotateIcon.svg" />
                             {{"COMMON.Refresh"|translate}}
                         </button>
                     </div>
@@ -40,7 +40,7 @@
         </div>
     </mat-card-content>
     <div class="loader-container" *ngIf="showLoader" class="full-view-port-height d-flex justify-center align-center">
-        <img src="../../../../assets/logo/ICM Logo Default 1.png" />
+        <img src="assets/logo/ICM Logo Default 1.png" />
     </div>
 </mat-card>
 <show-error-message></show-error-message>

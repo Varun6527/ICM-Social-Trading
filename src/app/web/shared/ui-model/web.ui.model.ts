@@ -664,7 +664,7 @@ export class RatingUiModal {
         const result = `${fileServer}/files/${part}`;
         return result;
       } else {
-        return "../../../../assets/icons/default-user-profile.png";
+        return "assets/icons/default-user-profile.png";
       }
     }
 }
