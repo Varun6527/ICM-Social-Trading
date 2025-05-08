@@ -8,6 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { WebAuthInterceptor } from './web/interceptor/web.auth.interceptor';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -37,7 +38,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       provide: HTTP_INTERCEPTORS,
       useClass: WebAuthInterceptor,
       multi: true // Allows adding multiple interceptors
-    }
+    },
+	{ provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })
