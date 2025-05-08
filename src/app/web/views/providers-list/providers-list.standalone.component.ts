@@ -464,7 +464,7 @@ export class ProvidersListStanAloneComponent {
 
   goToProviderRatingProfilePage() {
     let obj: any = this.mySearchForm.controls['providerObj'].value;
-    this._router.navigate([`/portal/ratings/${obj.accountId}`]);
+    this._router.navigate([`/portal/ratings/${this.ratingId}/${obj.accountId}`]);
   }
 
   toggleWatchList(ratingObj: any) {
