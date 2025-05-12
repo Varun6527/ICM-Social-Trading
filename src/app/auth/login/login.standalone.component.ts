@@ -33,6 +33,7 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
   redirectUrl: any;
   showLoader!: boolean;
   loginFormType: string = "";
+  logoType: string = "";
   
   constructor(private activatedRoute: ActivatedRoute, private _webService: WebService, private router: Router, private translate: TranslateService, private fb: FormBuilder, private _authService: AuthService) {
     super(translate, _authService);
@@ -47,6 +48,7 @@ export class LoginStandAloneComponent extends BaseLanguageTranslationComponent {
     });
     this.activatedRoute.data.subscribe((data: any) => {
       this.loginFormType =  data.loginFormType;
+      this.logoType = data.logoType;
     });
   }
 
