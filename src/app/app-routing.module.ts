@@ -7,6 +7,19 @@ import { MyAuthGaurdWhenUserLoggedIn } from './web/gaurd/web.gaurd';
 
 const routes: Routes = [
   {
+    path: 'portal/trader/login',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
+        resolve: { myData: UserDataResolver },
+        canActivate: [MyAuthGaurdWhenUserLoggedIn],
+        data: { loginFormType: "Client", logoType: "Client_Trader_Logo" }
+      }
+    ]
+  },
+  {
     path: 'portal/login',
     children: [
       {
@@ -15,7 +28,7 @@ const routes: Routes = [
         loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
         resolve: { myData: UserDataResolver },
         canActivate: [MyAuthGaurdWhenUserLoggedIn],
-        data: { loginFormType: "Client" }
+        data: { loginFormType: "Client", logoType: "Client_Logo" }
       }
     ]
   },
@@ -27,7 +40,7 @@ const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
         resolve: { myData: UserDataResolver },
-        data: { loginFormType: "Admin" }
+        data: { loginFormType: "Admin", logoType: "Client_Logo" }
       }
     ]
   },
@@ -39,7 +52,7 @@ const routes: Routes = [
         pathMatch: 'full',
         loadComponent: () => import('./auth/login/login.standalone.component').then(s => s.LoginStandAloneComponent),
         resolve: { myData: UserDataResolver },
-        data: { loginFormType: "RatingAdmin" }
+        data: { loginFormType: "RatingAdmin", logoType: "Client_Logo" }
       }
     ]
   },

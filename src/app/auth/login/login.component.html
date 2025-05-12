@@ -19,7 +19,7 @@
             </div>
         </div>
         <mat-card-content>
-            <img class="login-logo" src="assets/logo/ICM Logo Default 1.png">
+            <img class="login-logo" [src]="logoType === 'Client_Logo' ? 'assets/logo/ICM Logo Default 1.png' : 'assets/logo/icm-trader-logo.svg'">
             <div class="login-text-content">
                 <h4>Social Trading</h4>
                 <p>
