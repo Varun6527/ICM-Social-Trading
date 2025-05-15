@@ -5,7 +5,9 @@ import { WebService } from '../../service/web.service';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { ServerSideRowModelModule } from 'ag-grid-enterprise';
+import { ServerSideRowModelModule, LicenseManager } from 'ag-grid-enterprise';
+
+LicenseManager.setLicenseKey("");
 
 export interface AgGridConfig {
   maxHeight?: string;
